@@ -1,42 +1,111 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
+import '../../../database/data_models.dart';
 import '../../../enums.dart';
 
 class AddExerciseState extends Equatable {
+  final bool openModal;
   final MuscleGroup? selectedMuscleGroup;
+  final String? selectedExercise;
+  final List<Sets?> setsDone;
 
-  const AddExerciseState({required this.selectedMuscleGroup});
+  const AddExerciseState(
+      {required this.openModal,
+      required this.selectedMuscleGroup,
+      required this.selectedExercise,
+      required this.setsDone});
 
-  @override
-  List<Object?> get props => [selectedMuscleGroup];
-
-  Color colourModalByPrimaryMuscle(MuscleGroup muscleGroup) {
-    switch (muscleGroup) {
-      case MuscleGroup.chest:
-        return const Color.fromRGBO(255, 80, 80, 1);
-      case MuscleGroup.biceps:
-        return const Color.fromRGBO(255, 140, 80, 1);
-      case MuscleGroup.triceps:
-        return const Color.fromRGBO(250, 250, 100, 1);
-      case MuscleGroup.legs:
-        return const Color.fromRGBO(60, 250, 100, 1);
-      case MuscleGroup.shoulders:
-        return const Color.fromRGBO(10, 200, 255, 1);
-      case MuscleGroup.back:
-        return const Color.fromRGBO(150, 150, 255, 1);
-    }
+  AddExerciseState copyWith(
+      {MuscleGroup? selectedMuscleGroup, String? selectedExercise}) {
+    return AddExerciseState(
+      openModal: openModal,
+      selectedMuscleGroup: selectedMuscleGroup ?? this.selectedMuscleGroup,
+      selectedExercise: selectedExercise ?? this.selectedExercise,
+      setsDone: setsDone,
+    );
   }
 
-  String? muscleGroupToString() {
-    if (selectedMuscleGroup == null) {
-      return null;
-    }
-
+  String muscleGroupToString() {
     String groupName = selectedMuscleGroup.toString().split(".")[1];
     String capitalizedGroupName =
         groupName[0].toUpperCase() + groupName.substring(1);
 
     return capitalizedGroupName;
   }
+
+  @override
+  List<Object?> get props => [
+    openModal,
+    selectedMuscleGroup,
+    selectedExercise,
+    setsDone
+  ];
 }
+
+// class AddExerciseState extends Equatable {
+//   @override
+//   List<Object?> get props => [];
+//
+//   AddExerciseState copyWith() {return AddExerciseState();}
+// }
+//
+// class OpenedAddExerciseModalState extends AddExerciseState {
+//
+//   @override
+//   OpenedAddExerciseModalState copyWith() {return OpenedAddExerciseModalState();}
+// }
+//
+// class SelectedMuscleGroupState extends AddExerciseState {
+//   final MuscleGroup selectedMuscleGroup;
+//
+//   SelectedMuscleGroupState({required this.selectedMuscleGroup});
+//
+//   String muscleGroupToString() {
+//     String groupName = selectedMuscleGroup.toString().split(".")[1];
+//     String capitalizedGroupName =
+//         groupName[0].toUpperCase() + groupName.substring(1);
+//
+//     return capitalizedGroupName;
+//   }
+//
+//   @override
+//   SelectedMuscleGroupState copyWith({required MuscleGroup selectedMuscleGroup}) {
+//     return SelectedMuscleGroupState(selectedMuscleGroup: selectedMuscleGroup);
+//   }
+//
+//   @override
+//   List<Object?> get props => [selectedMuscleGroup];
+// }
+//
+// class SelectedExerciseState extends SelectedMuscleGroupState {
+//   final String exerciseName;
+//
+//   SelectedExerciseState({
+//     required super.selectedMuscleGroup,
+//     required this.exerciseName,
+//   });
+//
+//   @override
+//   SelectedExerciseState copyWith(
+//       {MuscleGroup? selectedMuscleGroup, required String exerciseName}) {
+//     return SelectedExerciseState(
+//         selectedMuscleGroup: selectedMuscleGroup ?? this.selectedMuscleGroup,
+//         exerciseName: exerciseName);
+//   }
+//
+//   @override
+//   List<Object?> get props => [selectedMuscleGroup, exerciseName];
+// }
+//
+// class AddingRepsToExerciseState extends SelectedExerciseState {
+//   final List<Reps> reps;
+//
+//   AddingRepsToExerciseState({
+//     required super.selectedMuscleGroup,
+//     required super.exerciseName,
+//     required this.reps,
+//   });
+//
+//   @override
+//   List<Object?> get props => [selectedMuscleGroup, exerciseName, reps];
+// }

@@ -5,10 +5,9 @@ import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_
 
 class MuscleGroupButton extends StatelessWidget {
   const MuscleGroupButton(
-      {super.key, required this.muscleGroup, required this.iconColour});
+      {super.key, required this.muscleGroup});
 
   final MuscleGroup muscleGroup;
-  final Color iconColour;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class MuscleGroupButton extends StatelessWidget {
       icon: Icon(
         assignIcon(),
         size: 40,
-        color: iconColour,
+        color: muscleGroupColours[muscleGroup],
       ),
     );
   }
