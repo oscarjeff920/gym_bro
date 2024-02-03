@@ -14,8 +14,17 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
             setsDone: []));
 
   openModal() {
+    print("Well.. the modal opened");
     emit(const AddExerciseState(
         openModal: true,
+        selectedMuscleGroup: null,
+        selectedExercise: null,
+        setsDone: []));
+  }
+
+  closeModal() {
+    emit(const AddExerciseState(
+        openModal: false,
         selectedMuscleGroup: null,
         selectedExercise: null,
         setsDone: []));
@@ -38,18 +47,52 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         selectedExercise: exerciseName,
         setsDone: const []));
   }
-
-  addReps(Sets sets) {
+  updateCurrentSet(CurrentSet set) {
     AddExerciseState generatedState = state.copyWith();
 
-    var newSetsDone = generatedState.setsDone;
-    newSetsDone.add(sets);
+    CurrentSet updatedState = set;
+    if (generatedState.currentSet != null) {
+
+      updatedState = CurrentSet(
+        weight: generatedState.currentSet!.weight ?? set.weight,
+        reps: generatedState.currentSet!.reps ?? set.reps,
+        isWarmUp: set.isWarmUp ?? generatedState.currentSet!.isWarmUp,
+        notes: generatedState.currentSet!.notes ?? set.notes,
+      );
+    }
+
+    print("updated set, isWarmUp: ${updatedState.isWarmUp}");
+    emit(AddExerciseState(
+        openModal: true,
+        selectedMuscleGroup: generatedState.selectedMuscleGroup,
+        selectedExercise: generatedState.selectedExercise,
+        currentSet: updatedState,
+        setsDone: generatedState.setsDone
+    ));
+  }
+
+  saveCompletedSet() {
+    AddExerciseState generatedState = state.copyWith();
+
+    List<Sets> setsDone = [];
+    for (var set in generatedState.setsDone) {
+      setsDone.add(set);
+    }
+
+    Sets completedSet = Sets(
+        weight: generatedState.currentSet!.weight!,
+        reps: generatedState.currentSet!.reps!,
+        isWarmUp: generatedState.currentSet!.isWarmUp!,
+        notes: generatedState.currentSet!.notes
+    );
+    setsDone.add(completedSet);
 
     emit(AddExerciseState(
       openModal: true,
       selectedMuscleGroup: generatedState.selectedMuscleGroup,
       selectedExercise: generatedState.selectedExercise,
-      setsDone: newSetsDone
+      currentSet: null,
+      setsDone: setsDone
     ));
   }
 }

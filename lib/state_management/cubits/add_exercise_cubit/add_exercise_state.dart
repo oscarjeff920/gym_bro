@@ -7,13 +7,29 @@ class AddExerciseState extends Equatable {
   final bool openModal;
   final MuscleGroup? selectedMuscleGroup;
   final String? selectedExercise;
-  final List<Sets?> setsDone;
+  final CurrentSet? currentSet;
+  final List<Sets> setsDone;
 
   const AddExerciseState(
       {required this.openModal,
       required this.selectedMuscleGroup,
       required this.selectedExercise,
+      this.currentSet,
       required this.setsDone});
+
+  @override
+  toString() {
+    if (currentSet == null) {
+      return "There is no current set.";
+    }
+    return """
+    Current Set:\n
+    weight: ${currentSet!.weight}\n
+    reps: ${currentSet!.reps}\n
+    isWarmUp: ${currentSet!.isWarmUp}\n
+    notes: ${currentSet!.notes}
+    """;
+  }
 
   AddExerciseState copyWith(
       {MuscleGroup? selectedMuscleGroup, String? selectedExercise}) {
@@ -21,6 +37,7 @@ class AddExerciseState extends Equatable {
       openModal: openModal,
       selectedMuscleGroup: selectedMuscleGroup ?? this.selectedMuscleGroup,
       selectedExercise: selectedExercise ?? this.selectedExercise,
+      currentSet: currentSet,
       setsDone: setsDone,
     );
   }
@@ -34,12 +51,8 @@ class AddExerciseState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-    openModal,
-    selectedMuscleGroup,
-    selectedExercise,
-    setsDone
-  ];
+  List<Object?> get props =>
+      [openModal, selectedMuscleGroup, selectedExercise, currentSet, setsDone];
 }
 
 // class AddExerciseState extends Equatable {

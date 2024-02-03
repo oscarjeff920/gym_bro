@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gym_bro/design/widgets/workout_page/add_exercise_modal_widget/primary_muscle_group_selector/primary_muscle_group_title_widget.dart';
+import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal_sub-widgets/primary_muscle_group_buttons_container_sub-widgets/muscle_group_button_widget.dart';
+import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal_sub-widgets/primary_muscle_group_buttons_container_sub-widgets/primary_muscle_group_title_widget.dart';
 
 import '../../../../enums.dart';
-import 'primary_muscle_group_selector/muscle_group_button_widget.dart';
 
-class PrimaryMuscleGroupWidgets extends StatelessWidget {
+class PrimaryMuscleGroupButtonsContainer extends StatelessWidget {
   final String? currentMuscleGroupName;
 
-  const PrimaryMuscleGroupWidgets({
+  const PrimaryMuscleGroupButtonsContainer({
     super.key,
     required this.currentMuscleGroupName,
   });
