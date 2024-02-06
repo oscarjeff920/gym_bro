@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../enums.dart';
+import '../../../../state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
+import '../../../../state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
 
 class MuscleGroupSetCounter extends StatelessWidget {
   final MuscleGroup muscleGroup;
+
   const MuscleGroupSetCounter({
     super.key, required this.muscleGroup,
   });
@@ -16,10 +20,14 @@ class MuscleGroupSetCounter extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(right: 2),
-          child: Icon(
-            assignIcon(muscleGroup),
-            color: muscleGroupColours[muscleGroup],
-            size: 20,
+          child: BlocBuilder<AddExerciseCubit, AddExerciseState>(
+            builder: (context, state) {
+              return Icon(
+                assignIcon(muscleGroup),
+                color: muscleGroupColours[muscleGroup],
+                size: state.selectedMuscleGroup == muscleGroup ? 30 : 20,
+              );
+            },
           ),
         ),
         Text(
