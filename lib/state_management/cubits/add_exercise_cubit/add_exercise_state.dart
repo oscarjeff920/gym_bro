@@ -4,14 +4,13 @@ import '../../../database/data_models.dart';
 import '../../../enums.dart';
 
 class AddExerciseState extends Equatable {
-  final bool openModal;
   final MuscleGroup? selectedMuscleGroup;
   final String? selectedExercise;
   final CurrentSet? currentSet;
   final List<Sets> setsDone;
 
   const AddExerciseState(
-      {required this.openModal,
+      {
       required this.selectedMuscleGroup,
       required this.selectedExercise,
       this.currentSet,
@@ -34,7 +33,6 @@ class AddExerciseState extends Equatable {
   AddExerciseState copyWith(
       {MuscleGroup? selectedMuscleGroup, String? selectedExercise}) {
     return AddExerciseState(
-      openModal: openModal,
       selectedMuscleGroup: selectedMuscleGroup ?? this.selectedMuscleGroup,
       selectedExercise: selectedExercise ?? this.selectedExercise,
       currentSet: currentSet,
@@ -52,7 +50,7 @@ class AddExerciseState extends Equatable {
 
   @override
   List<Object?> get props =>
-      [openModal, selectedMuscleGroup, selectedExercise, currentSet, setsDone];
+      [selectedMuscleGroup, selectedExercise, currentSet, setsDone];
 }
 
 // class AddExerciseState extends Equatable {

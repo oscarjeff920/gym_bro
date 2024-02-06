@@ -8,31 +8,12 @@ import 'add_exercise_state.dart';
 class AddExerciseCubit extends Cubit<AddExerciseState> {
   AddExerciseCubit()
       : super(const AddExerciseState(
-            openModal: false,
             selectedMuscleGroup: null,
             selectedExercise: null,
             setsDone: []));
 
-  openModal() {
-    print("Well.. the modal opened");
-    emit(const AddExerciseState(
-        openModal: true,
-        selectedMuscleGroup: null,
-        selectedExercise: null,
-        setsDone: []));
-  }
-
-  closeModal() {
-    emit(const AddExerciseState(
-        openModal: false,
-        selectedMuscleGroup: null,
-        selectedExercise: null,
-        setsDone: []));
-  }
-
   selectMuscleGroup(MuscleGroup muscleGroup) {
     emit(AddExerciseState(
-        openModal: true,
         selectedMuscleGroup: muscleGroup,
         selectedExercise: null,
         setsDone: const []));
@@ -42,7 +23,6 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
     AddExerciseState generatedState = state.copyWith();
 
     emit(AddExerciseState(
-        openModal: true,
         selectedMuscleGroup: generatedState.selectedMuscleGroup,
         selectedExercise: exerciseName,
         setsDone: const []));
@@ -63,7 +43,6 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
 
     // print("updated set, isWarmUp: ${updatedState.isWarmUp}");
     emit(AddExerciseState(
-        openModal: true,
         selectedMuscleGroup: generatedState.selectedMuscleGroup,
         selectedExercise: generatedState.selectedExercise,
         currentSet: updatedState,
@@ -88,7 +67,6 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
     setsDone.add(completedSet);
 
     emit(AddExerciseState(
-      openModal: true,
       selectedMuscleGroup: generatedState.selectedMuscleGroup,
       selectedExercise: generatedState.selectedExercise,
       currentSet: null,

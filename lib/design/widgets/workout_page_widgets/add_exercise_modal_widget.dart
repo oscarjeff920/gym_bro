@@ -25,58 +25,50 @@ class AddExerciseModal extends StatelessWidget {
     return Padding(
       // padding: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.only(top: 12, left: 12, right: 12, bottom: 100),
-      child: Stack(children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: BlocBuilder<AddExerciseCubit, AddExerciseState>(
-            builder: (context, state) {
-              Color modalColour = state.selectedMuscleGroup != null
-                  ? muscleGroupColours[state.selectedMuscleGroup]!
-                  : const Color(0xffA9A9A9);
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: BlocBuilder<AddExerciseCubit, AddExerciseState>(
+          builder: (context, state) {
+            Color modalColour = state.selectedMuscleGroup != null
+                ? muscleGroupColours[state.selectedMuscleGroup]!
+                : const Color(0xffA9A9A9);
 
-              return AnimatedContainer(
-                duration: const Duration(milliseconds: 350),
-                color: modalColour,
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      PrimaryMuscleGroupButtonsContainer(
-                        currentMuscleGroupName:
-                            state.selectedMuscleGroup == null
-                                ? null
-                                : state.muscleGroupToString(),
-                      ),
-                      ExerciseSelectorContainer(modalColour: modalColour),
-                      SetsList(
-                          currentSet: state.currentSet,
-                          doneSets: state.setsDone),
-                      TextButton(
-                          onPressed: () {
-                            print(state.toString());
-                          },
-                          child: const Text("find out")),
-                      IconButton(
-                          alignment: Alignment.bottomRight,
-                          onPressed: () {
-                            BlocProvider.of<OpenExerciseModalCubit>(context)
-                                .closeExerciseModal();
-                          },
-                          icon: const Icon(Icons.check_circle))
-                    ],
-                  ),
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 350),
+              color: modalColour,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    PrimaryMuscleGroupButtonsContainer(
+                      currentMuscleGroupName:
+                          state.selectedMuscleGroup == null
+                              ? null
+                              : state.muscleGroupToString(),
+                    ),
+                    ExerciseSelectorContainer(modalColour: modalColour),
+                    SetsList(
+                        currentSet: state.currentSet,
+                        doneSets: state.setsDone),
+                    TextButton(
+                        onPressed: () {
+                          print(state.toString());
+                        },
+                        child: const Text("find out")),
+                    IconButton(
+                        alignment: Alignment.bottomRight,
+                        onPressed: () {
+                          BlocProvider.of<OpenExerciseModalCubit>(context)
+                              .closeExerciseModal();
+                        },
+                        icon: const Icon(Icons.check_circle))
+                  ],
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
-        //   IconButton(
-        //     alignment: Alignment.topLeft,
-        //       onPressed: () {
-        //       print("state.${state.}")
-        //       },
-        //       icon: Icon(Icons.camera_rounded))
-      ]),
+      ),
     );
   }
 }
