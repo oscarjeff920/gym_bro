@@ -18,14 +18,13 @@ List<String> mockDropdownList = [
 ];
 
 class AddExerciseModal extends StatelessWidget {
-  const AddExerciseModal({
-    super.key,
-  });
+  const AddExerciseModal({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      // padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(top: 12, left: 12, right: 12, bottom: 100),
       child: Stack(children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(10),
@@ -37,31 +36,35 @@ class AddExerciseModal extends StatelessWidget {
 
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 350),
-                padding: const EdgeInsets.all(10),
                 color: modalColour,
-                child: Column(
-                  children: [
-                    PrimaryMuscleGroupButtonsContainer(
-                      currentMuscleGroupName: state.selectedMuscleGroup == null
-                          ? null
-                          : state.muscleGroupToString(),
-                    ),
-                    ExerciseSelectorContainer(modalColour: modalColour),
-                    SetsList(
-                        currentSet: state.currentSet, doneSets: state.setsDone),
-                    TextButton(
-                        onPressed: () {
-                          print(state.toString());
-                        },
-                        child: const Text("find out")),
-                    IconButton(
-                        alignment: Alignment.bottomRight,
-                        onPressed: () {
-                          BlocProvider.of<OpenExerciseModalCubit>(context)
-                              .closeExerciseModal();
-                        },
-                        icon: const Icon(Icons.check_circle))
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      PrimaryMuscleGroupButtonsContainer(
+                        currentMuscleGroupName:
+                            state.selectedMuscleGroup == null
+                                ? null
+                                : state.muscleGroupToString(),
+                      ),
+                      ExerciseSelectorContainer(modalColour: modalColour),
+                      SetsList(
+                          currentSet: state.currentSet,
+                          doneSets: state.setsDone),
+                      TextButton(
+                          onPressed: () {
+                            print(state.toString());
+                          },
+                          child: const Text("find out")),
+                      IconButton(
+                          alignment: Alignment.bottomRight,
+                          onPressed: () {
+                            BlocProvider.of<OpenExerciseModalCubit>(context)
+                                .closeExerciseModal();
+                          },
+                          icon: const Icon(Icons.check_circle))
+                    ],
+                  ),
                 ),
               );
             },

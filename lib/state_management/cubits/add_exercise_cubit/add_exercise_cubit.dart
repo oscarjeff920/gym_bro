@@ -61,7 +61,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
       );
     }
 
-    print("updated set, isWarmUp: ${updatedState.isWarmUp}");
+    // print("updated set, isWarmUp: ${updatedState.isWarmUp}");
     emit(AddExerciseState(
         openModal: true,
         selectedMuscleGroup: generatedState.selectedMuscleGroup,

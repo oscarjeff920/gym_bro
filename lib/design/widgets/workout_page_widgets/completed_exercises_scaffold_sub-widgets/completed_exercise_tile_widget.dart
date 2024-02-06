@@ -4,9 +4,15 @@ import 'exercise_tile_base_widget.dart';
 
 class CompletedExerciseTile extends StatelessWidget {
   final Color primaryMuscleGroupColour;
+  final int tileIndex;
+
+  final double tileSpacingValue;
 
   const CompletedExerciseTile(
-      {super.key, required this.primaryMuscleGroupColour});
+      {super.key,
+      required this.primaryMuscleGroupColour,
+      required this.tileIndex,
+      required this.tileSpacingValue});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +22,8 @@ class CompletedExerciseTile extends StatelessWidget {
       clickBehaviour: () {
         print("printed again..");
       },
+      isTop: tileIndex == 1 ? true : false,
+      tileSpacingValue: tileSpacingValue,
     );
   }
 }
