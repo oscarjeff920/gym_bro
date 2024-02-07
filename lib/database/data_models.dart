@@ -12,32 +12,40 @@ class Workout {
 
 class Sets {
   final int? id;
+  final bool isWarmUp;
   final int weight;
   final int reps;
-  final bool isWarmUp;
+  final int? extraReps;
+  final Duration? setDuration;
   final String? notes;
 
   const Sets({
     this.id,
+    required this.isWarmUp,
     required this.weight,
     required this.reps,
-    required this.isWarmUp,
+    this.extraReps,
+    this.setDuration,
     this.notes,
   });
 }
 
 class CurrentSet {
   final int? id;
+  final bool? isWarmUp;
   final int? weight;
   final int? reps;
-  final bool? isWarmUp;
+  final int? extraReps;
+  final Duration? setDuration;
   final String? notes;
 
   const CurrentSet({
     this.id,
+    this.isWarmUp,
     this.weight,
     this.reps,
-    this.isWarmUp,
+    this.extraReps,
+    this.setDuration,
     this.notes,
   });
 }

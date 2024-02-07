@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_cubit.dart';
+
+import '../../../state_management/cubits/workout_timer_cubit/workout_timer_state.dart';
 
 class WorkoutDateTimer extends StatelessWidget {
   const WorkoutDateTimer({
@@ -38,9 +42,14 @@ class WorkoutDateTimer extends StatelessWidget {
             ),
             Expanded(
               child: Center(
-                child: Text(
-                  "00:00:00.0",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                child: BlocBuilder<WorkoutTimerCubit, WorkoutTimerState>(
+                  builder: (context, state) {
+                    return Text(
+                      state.toString(),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    );
+                  },
                 ),
               ),
             )

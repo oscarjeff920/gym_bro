@@ -25,10 +25,13 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
     emit(AddExerciseState(
         selectedMuscleGroup: generatedState.selectedMuscleGroup,
         selectedExercise: exerciseName,
+        currentSet: const CurrentSet(),
         setsDone: const []));
   }
   updateCurrentSet(CurrentSet set) {
     AddExerciseState generatedState = state.copyWith();
+
+    print(set);
 
     CurrentSet updatedState = set;
     if (generatedState.currentSet != null) {

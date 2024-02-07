@@ -26,7 +26,9 @@ class ExerciseSelectorContainer extends StatelessWidget {
                 matchingExercises: state.selectedMuscleGroup != null
                     ? getExercises(state.selectedMuscleGroup!)
                     : []),
-            TimerButton()
+            TimerButton(
+                isExerciseSelected:
+                    state.selectedExercise == null ? false : true)
 
             // Align(
             //   alignment: Alignment.centerRight,

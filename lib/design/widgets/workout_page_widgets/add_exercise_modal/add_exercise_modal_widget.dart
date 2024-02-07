@@ -38,7 +38,7 @@ class AddExerciseModal extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(15),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       flex: 3,
@@ -48,9 +48,12 @@ class AddExerciseModal extends StatelessWidget {
                     ),
                     Expanded(
                       flex: 5,
-                      child: SetsList(
-                          currentSet: state.currentSet,
-                          doneSets: state.setsDone),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: SetsList(
+                            currentSet: state.currentSet,
+                            doneSets: state.setsDone),
+                      ),
                     ),
                     TextButton(
                         onPressed: () {

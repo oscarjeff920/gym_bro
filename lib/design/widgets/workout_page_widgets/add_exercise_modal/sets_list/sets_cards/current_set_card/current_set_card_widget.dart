@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/database/data_models.dart';
 
 import '../../../../../../../state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
+import '../../../../../../../state_management/cubits/set_timer_cubit/set_timer_cubit.dart';
+import '../../../../../../../state_management/cubits/set_timer_cubit/set_timer_state.dart';
 import 'current_set_fields_widget.dart';
 
 class CurrentSetCard extends StatelessWidget {
@@ -20,6 +22,14 @@ class CurrentSetCard extends StatelessWidget {
       child: Row(
         children: [
           CurrentSetFields(
+            fieldName: "Warm Up",
+            isCheckBox: true,
+            updateSetFunction: (value) {
+              BlocProvider.of<AddExerciseCubit>(context)
+                  .updateCurrentSet(CurrentSet(isWarmUp: value));
+            },
+          ),
+          CurrentSetFields(
             fieldName: "Weight",
             updateSetFunction: (value) {
               BlocProvider.of<AddExerciseCubit>(context)
@@ -34,13 +44,13 @@ class CurrentSetCard extends StatelessWidget {
             },
           ),
           CurrentSetFields(
-            fieldName: "Warm Up",
-            isCheckBox: true,
+            fieldName: "Extra Reps",
             updateSetFunction: (value) {
               BlocProvider.of<AddExerciseCubit>(context)
-                  .updateCurrentSet(CurrentSet(isWarmUp: value));
+                  .updateCurrentSet(CurrentSet(extraReps: value));
             },
           ),
+          const TimerSetField(),
           CurrentSetFields(
             fieldName: "Notes",
             updateSetFunction: (value) {
@@ -50,11 +60,11 @@ class CurrentSetCard extends StatelessWidget {
           ),
           IconButton(
               onPressed: currentSet != null &&
-                      currentSet!.weight != null &&
-                      currentSet!.reps != null &&
-                      currentSet!.isWarmUp != null
+                  currentSet!.weight != null &&
+                  currentSet!.reps != null &&
+                  currentSet!.isWarmUp != null
                   ? BlocProvider.of<AddExerciseCubit>(context)
-                      .saveCompletedSet()
+                  .saveCompletedSet()
                   : null,
               disabledColor: Colors.pink.withOpacity(0),
               color: Colors.black,
