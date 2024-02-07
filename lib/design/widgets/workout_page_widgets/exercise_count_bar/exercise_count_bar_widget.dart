@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../enums.dart';
-import 'exercise_count_bar_sub-widgets/muscle_group_set_counter_widget.dart';
+import '../../../../enums.dart';
+import 'muscle_group_set_counter_widget.dart';
 
 class ExerciseCountBar extends StatelessWidget {
   const ExerciseCountBar({super.key});

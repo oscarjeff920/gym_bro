@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/database/data_models.dart';
 
-import '../../../../../state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
+import '../../../../../../../state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 
 class AddExerciseSetButton extends StatelessWidget {
   final bool isEnabled;

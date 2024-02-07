@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/sets_list/sets_list_widget.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
-import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 
-import '../../../enums.dart';
-import '../../../state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
-import 'add_exercise_modal_sub-widgets/exercise_selector_container_widget.dart';
-import 'add_exercise_modal_sub-widgets/primary_muscle_group_buttons_container_widget.dart';
-import 'add_exercise_modal_sub-widgets/sets_list_widget.dart';
+import '../../../../enums.dart';
+import '../../../../state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
+import 'close_modal_button_widget.dart';
+import 'exercise_selector_cluster/exercise_selector_cluster_widget.dart';
 
 List<String> mockDropdownList = [
   'Chest Press',
@@ -37,33 +36,28 @@ class AddExerciseModal extends StatelessWidget {
               duration: const Duration(milliseconds: 350),
               color: modalColour,
               child: Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(15),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    PrimaryMuscleGroupButtonsContainer(
-                      currentMuscleGroupName: state.selectedMuscleGroup == null
-                          ? null
-                          : state.muscleGroupToString(),
+                    Expanded(
+                      flex: 3,
+                      child: ExerciseSelectorCluster(
+                          modalColour: modalColour,
+                          muscleGroupName: state.muscleGroupToString()),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5.0),
-                      child:
-                          ExerciseSelectorContainer(modalColour: modalColour),
+                    Expanded(
+                      flex: 5,
+                      child: SetsList(
+                          currentSet: state.currentSet,
+                          doneSets: state.setsDone),
                     ),
-                    SetsList(
-                        currentSet: state.currentSet, doneSets: state.setsDone),
                     TextButton(
                         onPressed: () {
                           print(state.toString());
                         },
                         child: const Text("find out")),
-                    IconButton(
-                        alignment: Alignment.bottomRight,
-                        onPressed: () {
-                          BlocProvider.of<OpenExerciseModalCubit>(context)
-                              .closeExerciseModal();
-                        },
-                        icon: const Icon(Icons.check_circle))
+                    CloseModalButton()
                   ],
                 ),
               ),

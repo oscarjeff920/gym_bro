@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
+import '../../../../../../../state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 
 class ExerciseDropdownMenu extends StatelessWidget {
   final List matchingExercises;
@@ -28,8 +28,8 @@ class ExerciseDropdownMenu extends StatelessWidget {
         side: MaterialStatePropertyAll(BorderSide(width: 2)),
 
       ),
+      width: 250,
       dropdownMenuEntries: exerciseEntries,
-      width: 300,
       onSelected: (value) {
         BlocProvider.of<AddExerciseCubit>(context)
             .selectExercise(value);

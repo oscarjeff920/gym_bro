@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/database/data_models.dart';
 
-import '../../../../../state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
-import 'current_set_card_sub-widgets/current_set_fields_widget.dart';
+import '../../../../../../../state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
+import 'current_set_fields_widget.dart';
 
 class CurrentSetCard extends StatelessWidget {
   final CurrentSet? currentSet;

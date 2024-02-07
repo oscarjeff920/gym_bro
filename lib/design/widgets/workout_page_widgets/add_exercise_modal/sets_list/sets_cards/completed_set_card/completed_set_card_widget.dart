@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gym_bro/database/data_models.dart';
 
-import '../../../../../database/data_models.dart';
-import 'completed_set_card_sub-widgets/completed_set_fields_widget.dart';
+import 'completed_set_fields_widget.dart';
 
 class CompletedSetCard extends StatelessWidget {
   final Sets set;
