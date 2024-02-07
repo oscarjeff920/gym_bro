@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:gym_bro/enums.dart';
 
 enum MuscleGroup {
   chest,
@@ -31,6 +30,55 @@ IconData assignIcon(MuscleGroup muscleGroup) {
   }
 }
 
+List<String> getExercises (MuscleGroup? muscleGroup) {
+  switch (muscleGroup) {
+    case MuscleGroup.chest:
+      return [
+        "Barbell Bench Press",
+        "Dumbbell Bench Press",
+        "Flies",
+        "Dips",
+      ];
+    case MuscleGroup.shoulders:
+      return [
+        "Standing Military Press",
+        "Front Raises",
+        "Lateral Raises",
+        "Standing Reverse Flies",
+      ];
+    case MuscleGroup.back:
+      return [
+        "Bent Over Rows",
+        "Pull-ups",
+        "Seated Rows",
+      ];
+    case MuscleGroup.biceps:
+      return [
+        "Hammer Curls",
+        "Preacher Machine",
+        "Reverse Curls",
+        "Reverse Grip Pull-ups",
+      ];
+    case MuscleGroup.triceps:
+      return [
+        "Skull Crushers",
+        "Tricep Extension",
+        "Close Grip Bench Press",
+      ];
+    case MuscleGroup.legs:
+      [
+        "Squats",
+        "Leg Press",
+        "Hip Thrusts",
+        "Lunges",
+        "Romanian Dead Lift",
+        "Split Squat"
+      ];
+    case null:
+      return [];
+  }
+  return [];
+}
 
 Map<MuscleGroup, Color> muscleGroupColours = {
   MuscleGroup.chest: const Color.fromRGBO(255, 80, 80, 1),
