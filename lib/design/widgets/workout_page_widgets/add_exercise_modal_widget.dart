@@ -41,15 +41,17 @@ class AddExerciseModal extends StatelessWidget {
                 child: Column(
                   children: [
                     PrimaryMuscleGroupButtonsContainer(
-                      currentMuscleGroupName:
-                          state.selectedMuscleGroup == null
-                              ? null
-                              : state.muscleGroupToString(),
+                      currentMuscleGroupName: state.selectedMuscleGroup == null
+                          ? null
+                          : state.muscleGroupToString(),
                     ),
-                    ExerciseSelectorContainer(modalColour: modalColour),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
+                      child:
+                          ExerciseSelectorContainer(modalColour: modalColour),
+                    ),
                     SetsList(
-                        currentSet: state.currentSet,
-                        doneSets: state.setsDone),
+                        currentSet: state.currentSet, doneSets: state.setsDone),
                     TextButton(
                         onPressed: () {
                           print(state.toString());

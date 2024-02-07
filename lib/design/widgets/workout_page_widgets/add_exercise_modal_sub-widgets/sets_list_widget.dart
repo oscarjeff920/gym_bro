@@ -17,7 +17,7 @@ class SetsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        flex: 10,
+        flex: 7,
         child: ListView(
           children: [
             if (currentSet != null) const CurrentSetCard(),

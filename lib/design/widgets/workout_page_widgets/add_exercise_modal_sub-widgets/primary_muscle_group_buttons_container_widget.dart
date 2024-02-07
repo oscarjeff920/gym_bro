@@ -15,7 +15,7 @@ class PrimaryMuscleGroupButtonsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        flex: 2,
+        flex: 3,
         child: Column(
           children: [
             Expanded(
@@ -50,7 +50,7 @@ class PrimaryMuscleGroupButtonsContainer extends StatelessWidget {
             Expanded(
                 flex: 1,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     for (var group in MuscleGroup.values.toList())
                       MuscleGroupButton(
