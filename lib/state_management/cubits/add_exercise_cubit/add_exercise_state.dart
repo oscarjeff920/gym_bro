@@ -10,8 +10,7 @@ class AddExerciseState extends Equatable {
   final List<Sets> setsDone;
 
   const AddExerciseState(
-      {
-      required this.selectedMuscleGroup,
+      {required this.selectedMuscleGroup,
       required this.selectedExercise,
       this.currentSet,
       required this.setsDone});
@@ -19,9 +18,15 @@ class AddExerciseState extends Equatable {
   @override
   toString() {
     if (currentSet == null) {
-      return "There is no current set.";
+      return """
+      selected muscleGroup: $selectedMuscleGroup\n
+      selected exercise: $selectedExercise\n
+      There is no current set.
+      """;
     }
     return """
+    selected muscleGroup: $selectedMuscleGroup\n
+    selected exercise: $selectedExercise\n
     Current Set:\n
     weight: ${currentSet!.weight}\n
     reps: ${currentSet!.reps}\n
