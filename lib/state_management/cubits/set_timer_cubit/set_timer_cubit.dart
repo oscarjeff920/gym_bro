@@ -10,7 +10,6 @@ class SetTimerCubit extends Cubit<SetTimerState> {
 
   startTimer(){
     emit( const SetTimerStarted(0));
-    print("\n=============\n          tick-tock\n================\n");
 
     _timer = Timer.periodic(const Duration(seconds: 1), onTick);
   }
@@ -18,6 +17,15 @@ class SetTimerCubit extends Cubit<SetTimerState> {
   stopTimer() {
     _timer!.cancel();
     emit(SetTimerStopped(state.elapsed));
+  }
+
+  resetTimer() {
+    switch (state) {
+      case SetTimerReset():
+        null;
+      default:
+        emit(const SetTimerReset());
+    }
   }
 
   onTick(Timer timer) {
