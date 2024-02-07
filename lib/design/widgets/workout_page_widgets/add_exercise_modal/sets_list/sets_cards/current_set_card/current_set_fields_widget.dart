@@ -78,15 +78,6 @@ class TimerSetField extends StatelessWidget {
   }
 }
 
-// class TimerSetField extends CurrentSetFields{
-//   const TimerSetField({
-//     super.key,
-//     super.fieldName = "Set Duration",
-//     required super.updateSetFunction
-//   });
-//
-// }
-
 class IsWarmupCheckbox extends StatefulWidget {
   final Function(dynamic) updateSetFunction;
 
