@@ -21,8 +21,15 @@ class ExerciseDropdownMenu extends StatelessWidget {
 
     return DropdownMenu(
       enabled: isEnabled,
-      menuStyle: const MenuStyle(),
+      menuStyle: const MenuStyle(
+        surfaceTintColor: MaterialStatePropertyAll(Colors.black),
+        backgroundColor: MaterialStatePropertyAll(Colors.yellow),
+        elevation: MaterialStatePropertyAll(100),
+        side: MaterialStatePropertyAll(BorderSide(width: 2)),
+
+      ),
       dropdownMenuEntries: exerciseEntries,
+      width: 300,
       onSelected: (value) {
         BlocProvider.of<AddExerciseCubit>(context)
             .selectExercise(value);
