@@ -4,8 +4,8 @@ import 'package:gym_bro/design/widgets/the_app_bar_widget.dart';
 
 import '../../../state_management/blocs/database_operations_bloc/database_operations_bloc.dart';
 import '../../../state_management/blocs/database_operations_bloc/database_operations_state.dart';
-import '../../widgets/home_page/new_workout_button_scaffold_widget.dart';
-import '../../widgets/home_page/workouts_list_widget.dart';
+import '../../widgets/home_page_widgets/new_workout_button_widget.dart';
+import '../../widgets/home_page_widgets/workouts_list_widget.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,12 +13,18 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const TheAppBar(hasBackButton: false,),
-        body: Stack(children: [
-          BlocBuilder<DatabaseBloc, DatabaseState>(builder: (context, state) {
-            return const WorkoutsList();
-          }),
-          const NewWorkoutButtonScaffold(),
-        ]));
+      appBar: const TheAppBar(
+        hasBackButton: false,
+      ),
+      body: Stack(children: [
+        BlocBuilder<DatabaseBloc, DatabaseState>(builder: (context, state) {
+          return const WorkoutsList();
+        }),
+        Container(
+            alignment: const Alignment(0, 0.8),
+            child: const NewWorkoutButton()
+        ),
+      ]),
+    );
   }
 }

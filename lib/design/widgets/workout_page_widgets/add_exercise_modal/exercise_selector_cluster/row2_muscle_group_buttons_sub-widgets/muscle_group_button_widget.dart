@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/enums.dart';
+import 'package:gym_bro/FE_consts/enums.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 
 class MuscleGroupButton extends StatelessWidget {
@@ -17,27 +17,10 @@ class MuscleGroupButton extends StatelessWidget {
             .selectMuscleGroup(muscleGroup);
       },
       icon: Icon(
-        assignIcon(),
+        assignIcon(muscleGroup),
         size: 40,
         color: muscleGroupColours[muscleGroup],
       ),
     );
-  }
-
-  IconData assignIcon() {
-    switch (muscleGroup) {
-      case MuscleGroup.chest:
-        return Icons.favorite_outline_sharp;
-      case MuscleGroup.shoulders:
-        return Icons.emoji_people;
-      case MuscleGroup.biceps:
-        return Icons.fitness_center;
-      case MuscleGroup.triceps:
-        return Icons.expand;
-      case MuscleGroup.back:
-        return Icons.rowing;
-      case MuscleGroup.legs:
-        return Icons.sports_martial_arts;
-    }
   }
 }
