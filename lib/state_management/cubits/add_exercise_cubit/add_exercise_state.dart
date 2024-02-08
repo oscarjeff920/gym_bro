@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../database/data_models.dart';
-import '../../../enums.dart';
+import '../../../FE_consts/flutter_data_models.dart';
+import '../../../FE_consts/enums.dart';
 
 class AddExerciseState extends Equatable {
   final MuscleGroup? selectedMuscleGroup;
@@ -28,9 +28,11 @@ class AddExerciseState extends Equatable {
     selected muscleGroup: $selectedMuscleGroup\n
     selected exercise: $selectedExercise\n
     Current Set:\n
+    isWarmUp: ${currentSet!.isWarmUp}\n
     weight: ${currentSet!.weight}\n
     reps: ${currentSet!.reps}\n
-    isWarmUp: ${currentSet!.isWarmUp}\n
+    extraReps: ${currentSet!.extraReps}\n,
+    setDuration: ${currentSet!.setDuration}\n
     notes: ${currentSet!.notes}
     """;
   }

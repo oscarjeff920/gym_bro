@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:gym_bro/database/data_models.dart';
+import 'package:gym_bro/FE_consts/flutter_data_models.dart';
 import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/sets_list/sets_cards/completed_set_card/completed_set_card_widget.dart';
 import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/sets_list/sets_cards/current_set_card/current_set_card_widget.dart';
 class SetsList extends StatelessWidget {
@@ -17,7 +17,7 @@ class SetsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        if (currentSet != null) const CurrentSetCard(),
+        if (currentSet != null) CurrentSetCard(currentSet: currentSet),
         for (var set in doneSets)
           CompletedSetCard(set: set)
       ],

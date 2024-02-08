@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_bro/database/data_models.dart';
+import 'package:gym_bro/FE_consts/flutter_data_models.dart';
 
 import 'completed_set_fields_widget.dart';
 
@@ -15,15 +15,17 @@ class CompletedSetCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 5),
-      color: Colors.white38.withOpacity(0.4),
+      color: Colors.white.withOpacity(0.9),
       child: Row(
         children: [
+          CompletedSetFields(
+              fieldName: "Warm Up",
+              isCheckBox: true, isWarmup: set.isWarmUp, value:0 // This is dumb
+          ),
           CompletedSetFields(fieldName: "Weight", value: set.weight,),
           CompletedSetFields(fieldName: "Reps", value: set.reps),
-          CompletedSetFields(
-            fieldName: "Warm Up",
-            isCheckBox: true, isWarmup: set.isWarmUp, value:0 // This is dumb
-          ),
+          CompletedSetFields(fieldName: "Extra Reps", value: set.extraReps),
+          CompletedSetFields(fieldName: "Set Duration", value: set.setDuration),
           CompletedSetFields(fieldName: "Notes", value: set.notes,),
 
 

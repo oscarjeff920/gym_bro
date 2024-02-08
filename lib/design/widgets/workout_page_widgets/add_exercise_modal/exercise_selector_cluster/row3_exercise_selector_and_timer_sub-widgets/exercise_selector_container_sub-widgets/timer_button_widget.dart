@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/database/data_models.dart';
+import 'package:gym_bro/FE_consts/flutter_data_models.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_cubit.dart';
 

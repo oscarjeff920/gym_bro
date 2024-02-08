@@ -1,7 +1,7 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/database/data_models.dart';
-import 'package:gym_bro/enums.dart';
+import 'package:gym_bro/FE_consts/flutter_data_models.dart';
+import 'package:gym_bro/FE_consts/enums.dart';
 
 import 'add_exercise_state.dart';
 
@@ -31,16 +31,16 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
   updateCurrentSet(CurrentSet set) {
     AddExerciseState generatedState = state.copyWith();
 
-    print(set);
-
     CurrentSet updatedState = set;
     if (generatedState.currentSet != null) {
 
       updatedState = CurrentSet(
-        weight: generatedState.currentSet!.weight ?? set.weight,
-        reps: generatedState.currentSet!.reps ?? set.reps,
-        isWarmUp: set.isWarmUp ?? generatedState.currentSet!.isWarmUp,
-        notes: generatedState.currentSet!.notes ?? set.notes,
+        isWarmUp: set.isWarmUp ?? generatedState.currentSet!.isWarmUp ?? false,
+        weight: set.weight ?? generatedState.currentSet!.weight,
+        reps: set.reps ?? generatedState.currentSet!.reps,
+        extraReps: set.extraReps ?? generatedState.currentSet!.extraReps,
+        setDuration: set.setDuration ?? generatedState.currentSet!.setDuration,
+        notes: set.notes ?? generatedState.currentSet!.notes,
       );
     }
 
@@ -62,9 +62,11 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
     }
 
     Sets completedSet = Sets(
+        isWarmUp: generatedState.currentSet!.isWarmUp!,
         weight: generatedState.currentSet!.weight!,
         reps: generatedState.currentSet!.reps!,
-        isWarmUp: generatedState.currentSet!.isWarmUp!,
+        extraReps: generatedState.currentSet!.extraReps,
+        setDuration: generatedState.currentSet!.setDuration,
         notes: generatedState.currentSet!.notes
     );
     setsDone.add(completedSet);
@@ -72,7 +74,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
     emit(AddExerciseState(
       selectedMuscleGroup: generatedState.selectedMuscleGroup,
       selectedExercise: generatedState.selectedExercise,
-      currentSet: null,
+      currentSet: const CurrentSet(),
       setsDone: setsDone
     ));
   }

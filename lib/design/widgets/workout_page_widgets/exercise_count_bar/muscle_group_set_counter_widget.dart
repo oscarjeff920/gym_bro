@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../enums.dart';
+import '../../../../FE_consts/enums.dart';
 import '../../../../state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import '../../../../state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
 

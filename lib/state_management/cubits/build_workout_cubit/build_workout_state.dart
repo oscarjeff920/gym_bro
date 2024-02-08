@@ -1,16 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-import '../add_exercise_cubit/add_exercise_state.dart';
 
 class BuildWorkoutState extends Equatable {
-  final List<AddExerciseState> exercises;
+  final List<int> exerciseIds;
 
-  const BuildWorkoutState({required this.exercises});
+  const BuildWorkoutState({required this.exerciseIds});
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
-
-  // BuildWorkoutState copyWith({AddExerciseState? exercise}) {
-  //   return BuildWorkoutState(exercises: exercise ?? exercises)
+  List<Object?> get props => [];
 }

@@ -3,7 +3,7 @@ import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/e
 import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/exercise_selector_cluster/row2_muscle_group_buttons_sub-widgets/muscle_group_button_widget.dart';
 import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/exercise_selector_cluster/row3_exercise_selector_and_timer_sub-widgets/exercise_selector_container_widget.dart';
 
-import '../../../../../enums.dart';
+import '../../../../../FE_consts/enums.dart';
 
 class ExerciseSelectorCluster extends StatelessWidget {
   final Color modalColour;
