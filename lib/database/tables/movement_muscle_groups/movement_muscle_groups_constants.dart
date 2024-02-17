@@ -1,0 +1,1 @@
+const tableName = "movement_muscle_groups";

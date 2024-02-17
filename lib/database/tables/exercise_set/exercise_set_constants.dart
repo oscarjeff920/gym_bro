@@ -1,0 +1,1 @@
+const tableName = "exercise_set";
