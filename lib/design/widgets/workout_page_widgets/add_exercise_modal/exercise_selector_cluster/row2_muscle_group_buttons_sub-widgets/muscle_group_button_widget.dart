@@ -7,7 +7,7 @@ class MuscleGroupButton extends StatelessWidget {
   const MuscleGroupButton(
       {super.key, required this.muscleGroup});
 
-  final MuscleGroup muscleGroup;
+  final MuscleGroupType muscleGroup;
 
   @override
   Widget build(BuildContext context) {

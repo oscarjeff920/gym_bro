@@ -6,7 +6,7 @@ import '../../../../state_management/cubits/add_exercise_cubit/add_exercise_cubi
 import '../../../../state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
 
 class MuscleGroupSetCounter extends StatelessWidget {
-  final MuscleGroup muscleGroup;
+  final MuscleGroupType muscleGroup;
 
   const MuscleGroupSetCounter({
     super.key, required this.muscleGroup,

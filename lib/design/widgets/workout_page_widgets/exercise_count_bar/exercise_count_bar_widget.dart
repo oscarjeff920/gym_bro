@@ -16,12 +16,12 @@ class ExerciseCountBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          MuscleGroupSetCounter(muscleGroup: MuscleGroup.chest,),
-          MuscleGroupSetCounter(muscleGroup: MuscleGroup.shoulders,),
-          MuscleGroupSetCounter(muscleGroup: MuscleGroup.biceps,),
-          MuscleGroupSetCounter(muscleGroup: MuscleGroup.triceps,),
-          MuscleGroupSetCounter(muscleGroup: MuscleGroup.back,),
-          MuscleGroupSetCounter(muscleGroup: MuscleGroup.legs,),
+          MuscleGroupSetCounter(muscleGroup: MuscleGroupType.chest,),
+          MuscleGroupSetCounter(muscleGroup: MuscleGroupType.shoulders,),
+          MuscleGroupSetCounter(muscleGroup: MuscleGroupType.biceps,),
+          MuscleGroupSetCounter(muscleGroup: MuscleGroupType.triceps,),
+          MuscleGroupSetCounter(muscleGroup: MuscleGroupType.back,),
+          MuscleGroupSetCounter(muscleGroup: MuscleGroupType.legs,),
         ],
       ),
     );
