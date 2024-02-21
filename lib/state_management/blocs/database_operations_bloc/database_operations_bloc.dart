@@ -9,7 +9,7 @@ import 'database_operations_state.dart';
 
 class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   DatabaseBloc() : super(DatabasePowerDownState());
-  final String createTablesCommands = SQL_CREATE_TABLE_COMMANDS;
+  final String createTablesCommands = "";//SQL_CREATE_TABLE_COMMANDS;
 
   @override
   Stream<DatabaseState> mapEventToState(DatabaseEvent event) async* {

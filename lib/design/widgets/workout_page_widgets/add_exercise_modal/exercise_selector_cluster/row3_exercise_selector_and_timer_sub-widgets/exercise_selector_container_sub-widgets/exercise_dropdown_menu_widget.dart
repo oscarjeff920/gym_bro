@@ -15,7 +15,7 @@ class ExerciseDropdownMenu extends StatelessWidget {
     bool isEnabled = matchingExercises == [] ? false : true;
     List<DropdownMenuEntry> exerciseEntries = [
       for (var exercise in matchingExercises) DropdownMenuEntry(
-          value: exercise, label: exercise
+          value: exercise.movementName, label: exercise.movementName
       )
     ];
 

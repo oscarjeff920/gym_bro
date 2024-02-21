@@ -1,1 +1,0 @@
-const tableName = "muscle_group";
