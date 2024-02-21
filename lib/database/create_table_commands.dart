@@ -11,7 +11,7 @@ CREATE TABLE $workoutTableName (
   """
 CREATE TABLE $movementTableName (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL
+    name TEXT UNIQUE NOT NULL
 );
 """,
   """
@@ -61,23 +61,47 @@ CREATE TABLE $exerciseSetTableName (
   """
 
 INSERT INTO $movementTableName (name) VALUES
-  ('flat chest press'),
+  ('flat bench press'),
   ('squats'),
   ('seated shoulder press'),
   ('standing military press'),
-  ('preacher curls'),
+     ('preacher curl machine'),
   ('close grip bench'),
-  ('dips');
+  ('dips'),
+  ('split squat'),
+  ('deadlift'),
+  ('converging shoulder press machine'),
+  
+  ('hack squat'),
+  ('bent over rows barbell (reverse grip)'),
+  ('single arm dumbbell row'),
+  ('lat pull-down machine'),
+     ('dumbbell bench press (flat)'),
+  ('dumbbell incline bench press (3)'),
+  ('standing lateral raise'),
+  ('pulley reverse files (12)'),
+  ('converging shoulder press machine (6)'),
+  ('pulley lateral raise'),
+  
+  ('dumbbell files (2)'),
+  ('dumbbell skull crushers (4)'),
+  ('sissy squat'),
+  ('pull up (reverse grip)'),
+     ('pull up'),
+  ('triceps push-down machine'),
+  ('EZ bar skull crusher (1)'),
+  ('preacher curl'),
+  ('seated row machine (downstairs)');
 """,
   """
 
-INSERT INTO $muscleGroupTableName (name) VALUES
-  ('chest'),
-  ('back'),
-  ('shoulders'),
-  ('biceps'),
-  ('triceps'),
-  ('legs');
+INSERT INTO $muscleGroupTableName VALUES
+  (1, 'chest'),
+  (2, 'back'),
+  (3, 'shoulders'),
+  (4, 'biceps'),
+  (5, 'triceps'),
+  (6, 'legs');
 """,
   """
   
@@ -93,6 +117,44 @@ INSERT INTO $movementMuscleGroupsTableName VALUES
   (6, 1, 'secondary'),
   (6, 5, 'primary'),
   (7, 1, 'secondary'),
-  (7, 5, 'primary');
+  (7, 5, 'primary'),
+  (8, 6, 'primary'),
+  (9, 6, 'primary'),
+  (9, 2, 'primary'),
+  (10, 3, 'primary'),
+  (10, 5, 'secondary'),
+  
+  (11, 6, 'primary'),
+  (12, 2, 'primary'),
+  (12, 4, 'secondary'),
+  (12, 6, 'secondary'),
+  (13, 2, 'primary'),
+  (13, 4, 'secondary'),
+  (14, 2, 'primary'),
+  (14, 4, 'secondary'),
+  (15, 1, 'primary'),
+  (15, 5, 'secondary'),
+  (16, 1, 'primary'),
+  (16, 5, 'secondary'),
+  (17, 3, 'primary'),
+  (18, 2, 'primary'),
+  (18, 3, 'primary'),
+  (19, 3, 'primary'),
+  (19, 5, 'secondary'),
+  (20, 3, 'primary'),
+  
+  (21, 1, 'primary'),
+  (22, 5, 'primary'),
+  (23, 6, 'primary'),
+  (24, 4, 'primary'),
+  (24, 2, 'secondary'),
+  (25, 2, 'primary'),
+  (25, 4, 'secondary'),
+  (26, 5, 'primary'),
+  (26, 1, 'secondary'),
+  (27, 5, 'primary'),
+  (28, 4, 'primary'),
+  (29, 2, 'primary'),
+  (29, 4, 'secondary');
 """,
 ];
