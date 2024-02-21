@@ -29,7 +29,7 @@ class ExerciseSelectorCluster extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              for (var group in MuscleGroup.values.toList())
+              for (var group in MuscleGroupType.values.toList())
                 MuscleGroupButton(
                   muscleGroup: group,
                 )

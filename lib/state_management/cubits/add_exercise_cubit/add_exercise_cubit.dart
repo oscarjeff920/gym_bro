@@ -12,7 +12,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
             selectedExercise: null,
             setsDone: []));
 
-  selectMuscleGroup(MuscleGroup muscleGroup) {
+  selectMuscleGroup(MuscleGroupType muscleGroup) {
     emit(AddExerciseState(
         selectedMuscleGroup: muscleGroup,
         selectedExercise: null,

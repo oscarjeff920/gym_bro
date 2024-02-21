@@ -4,7 +4,7 @@ import '../../../FE_consts/flutter_data_models.dart';
 import '../../../FE_consts/enums.dart';
 
 class AddExerciseState extends Equatable {
-  final MuscleGroup? selectedMuscleGroup;
+  final MuscleGroupType? selectedMuscleGroup;
   final String? selectedExercise;
   final CurrentSet? currentSet;
   final List<Sets> setsDone;
@@ -38,7 +38,7 @@ class AddExerciseState extends Equatable {
   }
 
   AddExerciseState copyWith(
-      {MuscleGroup? selectedMuscleGroup, String? selectedExercise}) {
+      {MuscleGroupType? selectedMuscleGroup, String? selectedExercise}) {
     return AddExerciseState(
       selectedMuscleGroup: selectedMuscleGroup ?? this.selectedMuscleGroup,
       selectedExercise: selectedExercise ?? this.selectedExercise,

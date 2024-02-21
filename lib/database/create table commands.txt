@@ -1,35 +1,85 @@
-CREATE TABLE workout(
-  id INTEGER PRIMARY KEY,
-  date DATE,
-  duration TIME
+CREATE TABLE workout (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT NOT NULL,
+    duration TEXT NOT NULL
 );
 
 CREATE TABLE movement (
-  id INTEGER PRIMARY KEY,
-  name STRING,
-  main_muscle STRING
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
 );
 
-CREATE INDEX name_index
-ON movement(name);
+CREATE TABLE muscle_group (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
+);
 
-CREATE INDEX muscle_index
-ON movement(main_muscle);
+CREATE TABLE movement_muscle_groups (
+    movement_id INTEGER,
+    muscle_group_id INTEGER,
+    role TEXT CHECK(role IN ('primary', 'secondary')),
+    FOREIGN KEY (movement_id) REFERENCES movement(id),
+    FOREIGN KEY (muscle_group_id) REFERENCES muscle_group(id),
+    PRIMARY KEY (movement_id, muscle_group_id)
+);
 
 CREATE TABLE exercise (
-  id INTEGER PRIMARY KEY,
-  movement_id INTEGER FOREIGN KEY REFERENCES movement (movement_id),
-  workout_id INTEGER FOREIGN KEY REFERENCES workout (workout_id)
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    movement_id INTEGER,
+    workout_id INTEGER,
+    exercise_order INTEGER NOT NULL,
+    duration TEXT,
+    num_working_sets INTEGER,
+    FOREIGN KEY (movement_id) REFERENCES movement(id),
+    FOREIGN KEY (workout_id) REFERENCES workout(id)
 );
 
-CREATE TABLE sets (
-  id INTEGER PRIMARY KEY,
-  weight INTEGER,
-  reps INTEGER,
-  superset_reps INTEGER,
-  time_taken TIME,
-  exercise_id INTEGER FOREIGN KEY REFERENCES exercise (exercise_id)
+CREATE TABLE exercise_set (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    exercise_id INTEGER,
+    set_order INTEGER NOT NULL,
+    is_warm_up INTEGER CHECK (is_warm_up IN (0, 1)),
+    weight DECIMAL,
+    reps INTEGER,
+    extra_reps INTEGER,
+    duration TEXT,
+    notes TEXT,
+    FOREIGN KEY (exercise_id) REFERENCES exercise(id)
 );
 
-CREATE INDEX weight_index
-ON sets(weight);
+INSERT INTO movement (name) VALUES
+  ('flat chest press'),
+  ('squats'),
+  ('seated shoulder press'),
+  ('standing military press'),
+  ('preacher curls'),
+  ('close grip bench'),
+  ('dips');
+
+INSERT INTO muscle_group (name) VALUES
+  ('chest'),
+  ('back'),
+  ('shoulders'),
+  ('biceps'),
+  ('triceps'),
+  # ('abs'),
+  # ('quads'),
+  # ('glutes'),
+  # ('hamstrings'),
+  # ('calves'),
+  # ('hip flexors'),
+  ('legs');
+
+INSERT INTO movement_muscle_groups VALUES
+  (1, 1, 'primary'),
+  (1, 5, 'secondary'),
+  (2, 6, 'primary'),
+  (3, 3, 'primary'),
+  (3, 5, 'secondary'),
+  (4, 3, 'primary'),
+  (4, 5, 'secondary'),
+  (5, 4, 'primary'),
+  (6, 1, 'secondary'),
+  (6, 5, 'primary'),
+  (7, 1, 'secondary'),
+  (7, 5, 'primary');

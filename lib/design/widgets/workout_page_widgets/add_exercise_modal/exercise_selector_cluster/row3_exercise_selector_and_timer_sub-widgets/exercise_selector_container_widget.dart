@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/state_management/blocs/movement_table_operations_bloc.dart';
+import 'package:gym_bro/state_management/blocs/movement_table_operations_state.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 
 import '../../../../../../FE_consts/enums.dart';
@@ -28,13 +30,19 @@ class ExerciseSelectorContainer extends StatelessWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            ExerciseDropdownMenu(
-                matchingExercises: state.selectedMuscleGroup != null
-                    ? getExercises(state.selectedMuscleGroup!)
-                    : []),
+            BlocBuilder<MovementTableOperationsBloc, MovementTableOperationsState>(
+              builder: (context, state) {
+                switch (state) {
+                  case MovementTableSuccessfulQueryState():
+                    return ExerciseDropdownMenu(matchingExercises: state.queryResponse);
+                  default:
+                    return Container();
+                }
+              },
+            ),
             TimerButton(
                 isExerciseSelected:
-                    state.selectedExercise == null ? false : true)
+                state.selectedExercise == null ? false : true)
           ],
         );
       },
