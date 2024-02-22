@@ -5,7 +5,9 @@ const SQL_CREATE_TABLE_COMMANDS = [
   """
 CREATE TABLE $workoutTableName (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    date TEXT NOT NULL,
+    year INTEGER NOT NULL,
+    month INTEGER NOT NULL,
+    day INTEGER NOT NULL,
     duration TEXT NOT NULL
 );
 """,
