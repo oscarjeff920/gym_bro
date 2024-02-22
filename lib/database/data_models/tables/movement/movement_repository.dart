@@ -51,7 +51,6 @@ class MovementRepository {
           role = 'primary'
         ;
         """);
-    print(movements);
     return movements
         .map((movement) => MovementMuscleGroupJoin.fromMap(movement))
         .toList();
