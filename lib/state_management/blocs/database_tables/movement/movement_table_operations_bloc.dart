@@ -1,7 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/database/data_models/tables/movement/movement_repository.dart';
-import 'package:gym_bro/state_management/blocs/movement_table_operations_event.dart';
-import 'package:gym_bro/state_management/blocs/movement_table_operations_state.dart';
+
+import 'movement_table_operations_event.dart';
+import 'movement_table_operations_state.dart';
 
 class MovementTableOperationsBloc
     extends Bloc<MovementTableOperationsEvent, MovementTableOperationsState> {

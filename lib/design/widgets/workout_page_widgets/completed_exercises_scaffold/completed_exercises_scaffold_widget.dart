@@ -28,9 +28,12 @@ class CompletedExercisesScaffold extends StatelessWidget {
                   return AddNewExerciseTile(tileSpacingValue: tileSpacingValue);
                 default:
                   return CompletedExerciseTile(
-                      tileIndex: index, primaryMuscleGroupColour: Colors.green, tileSpacingValue:tileSpacingValue,);
+                    tileIndex: index,
+                    primaryMuscleGroupColour: Colors.green,
+                    tileSpacingValue: tileSpacingValue,
+                  );
               }
-            }, childCount: 7),
+            }, childCount: 1 + 0),
           )
         ],
       ),

@@ -8,8 +8,8 @@ import '../../widgets/workout_page_widgets/completed_exercises_scaffold/complete
 import '../../widgets/workout_page_widgets/exercise_count_bar/exercise_count_bar_widget.dart';
 import '../../widgets/workout_page_widgets/workout_date_timer_widget.dart';
 
-class NewWorkoutPage extends StatelessWidget {
-  const NewWorkoutPage({super.key});
+class WorkoutOverviewPage extends StatelessWidget {
+  const WorkoutOverviewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
