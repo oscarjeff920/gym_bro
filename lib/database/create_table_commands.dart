@@ -1,4 +1,5 @@
-import 'data_models/tables/table_constants.dart';
+
+import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 
 const SQL_CREATE_TABLE_COMMANDS = [
   """

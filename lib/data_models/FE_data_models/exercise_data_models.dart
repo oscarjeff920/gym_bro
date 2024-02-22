@@ -1,5 +1,4 @@
 import 'package:gym_bro/constants/enums.dart';
-
 import 'exercise_set_data_models.dart';
 
 // ignore: camel_case_types

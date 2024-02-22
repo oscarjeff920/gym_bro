@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
 
-import '../../../../database/data_models/tables/workout/workout_object.dart';
 
 class WorkoutTableOperationsState extends Equatable{
   @override
@@ -14,7 +14,7 @@ class WorkoutTableQueryState extends WorkoutTableOperationsState{}
 class WorkoutTableSuccessfulQueryState extends WorkoutTableOperationsState{}
 
 class WorkoutTableSuccessfulQueryAllState extends WorkoutTableSuccessfulQueryState{
-  final List<Workout> allWorkoutsQuery;
+  final List<WorkoutTable> allWorkoutsQuery;
 
   WorkoutTableSuccessfulQueryAllState({required this.allWorkoutsQuery});
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/database/data_models/tables/movement/movement_repository.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/movement/movement_repository.dart';
 import 'package:gym_bro/database/database_connector.dart';
 import 'package:gym_bro/design/routing/router.dart';
 import 'package:gym_bro/state_management/blocs/building_workout_bloc/building_workout_bloc.dart';

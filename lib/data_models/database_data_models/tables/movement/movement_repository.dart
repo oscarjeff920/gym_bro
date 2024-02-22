@@ -1,6 +1,6 @@
-import 'package:gym_bro/FE_consts/enums.dart';
-import 'package:gym_bro/database/data_models/joined_tables/movement_muscle_group_join_object.dart';
-import 'package:gym_bro/database/data_models/tables/table_constants.dart';
+import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/data_models/database_data_models/joined_tables/movement_muscle_group_join_object.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:gym_bro/database/database_connector.dart';
 import 'package:sqflite/sqflite.dart';
 

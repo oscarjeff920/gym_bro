@@ -1,4 +1,4 @@
-import 'package:gym_bro/database/data_models/tables/table_constants.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:gym_bro/database/database_connector.dart';
 
 import 'exercise_table_object.dart';
@@ -8,10 +8,10 @@ class ExerciseRepository {
 
   ExerciseRepository(this.databaseHelper);
 
-  Future<List<Exercise>> getAllExercises () async {
+  Future<List<ExerciseTable>> getAllExercises () async {
     final db = await databaseHelper.database;
     final List<Map<String, dynamic>> allExercises = await db.query(exerciseTableName);
 
-    return allExercises.map((exercise) => Exercise.fromMap(exercise)).toList();
+    return allExercises.map((exercise) => ExerciseTable.fromMap(exercise)).toList();
   }
 }

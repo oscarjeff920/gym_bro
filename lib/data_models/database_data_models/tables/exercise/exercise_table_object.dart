@@ -1,4 +1,4 @@
-class Exercise {
+class ExerciseTable {
   final int? id;
   final int movementId;
   final int workoutId;
@@ -6,7 +6,7 @@ class Exercise {
   final Duration? duration;
   final int numbWorkingSets;
 
-  Exercise(
+  ExerciseTable(
       {this.id,
       required this.movementId,
       required this.workoutId,
@@ -14,8 +14,8 @@ class Exercise {
       this.duration,
       required this.numbWorkingSets});
 
-  factory Exercise.fromMap(Map<String, dynamic> map) {
-    return Exercise(
+  factory ExerciseTable.fromMap(Map<String, dynamic> map) {
+    return ExerciseTable(
       id: map['id'],
       movementId: map['movement_id'],
       workoutId: map['workout_id'],

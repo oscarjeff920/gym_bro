@@ -1,4 +1,4 @@
-class ExerciseSet {
+class ExerciseSetTable {
   final int? id;
   final int exerciseId;
   final int setOrder;
@@ -9,7 +9,7 @@ class ExerciseSet {
   final Duration? duration;
   final String? notes;
 
-  ExerciseSet(
+  ExerciseSetTable(
       {required this.id,
       required this.exerciseId,
       required this.setOrder,
@@ -25,8 +25,8 @@ class ExerciseSet {
     return Duration();
   }
 
-  factory ExerciseSet.fromMap(Map<String, dynamic> map) {
-    return ExerciseSet(
+  factory ExerciseSetTable.fromMap(Map<String, dynamic> map) {
+    return ExerciseSetTable(
       id: map['id'],
       exerciseId: map['exercise_id'],
       setOrder: map['set_order'],

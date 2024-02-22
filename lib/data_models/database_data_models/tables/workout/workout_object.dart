@@ -1,9 +1,9 @@
-class Workout {
+class WorkoutTable {
   final int? id;
   final DateTime date;
   final Duration duration;
 
-  Workout({this.id, required this.date, required this.duration});
+  WorkoutTable({this.id, required this.date, required this.duration});
 
   DateTime stringToDate(String dateString) {
     // TODO: make this work
@@ -15,8 +15,8 @@ class Workout {
     return Duration();
   }
 
-  factory Workout.fromMap(Map<String, dynamic> map) {
-    return Workout(
+  factory WorkoutTable.fromMap(Map<String, dynamic> map) {
+    return WorkoutTable(
       id: map['id'],
       date: map['date'],
       duration: map['duration'],

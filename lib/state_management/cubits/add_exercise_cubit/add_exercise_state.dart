@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 
-import '../../../FE_consts/flutter_data_models.dart';
-import '../../../FE_consts/enums.dart';
 
 class AddExerciseState extends Equatable {
   final MuscleGroupType? selectedMuscleGroup;

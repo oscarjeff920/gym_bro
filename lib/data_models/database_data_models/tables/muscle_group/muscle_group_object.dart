@@ -1,11 +1,11 @@
-class MuscleGroup {
+class MuscleGroupTable {
   final int? id;
   final String name;
 
-  MuscleGroup({this.id, required this.name});
+  MuscleGroupTable({this.id, required this.name});
 
-  factory MuscleGroup.fromMap(Map<String, dynamic> map) {
-    return MuscleGroup(
+  factory MuscleGroupTable.fromMap(Map<String, dynamic> map) {
+    return MuscleGroupTable(
         id: map['id'],
         name: map['name']
     );

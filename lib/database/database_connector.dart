@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:gym_bro/database/data_models/tables/table_constants.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';

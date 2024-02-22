@@ -1,4 +1,4 @@
-import 'enums.dart';
+import '../../constants/enums.dart';
 
 class Workout {
   final int? id;

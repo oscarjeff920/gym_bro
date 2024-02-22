@@ -1,18 +1,17 @@
-import 'package:gym_bro/FE_consts/enums.dart';
 import 'package:gym_bro/constants/enums.dart';
 
-class MovementMuscleGroups {
+class MovementMuscleGroupsTable {
   final int movementId;
   final int muscleGroupId;
   final RoleType role;
 
-  MovementMuscleGroups(
+  MovementMuscleGroupsTable(
       {required this.movementId,
       required this.muscleGroupId,
       required this.role});
 
-  factory MovementMuscleGroups.fromMap(Map<String, dynamic> map) {
-    return MovementMuscleGroups(
+  factory MovementMuscleGroupsTable.fromMap(Map<String, dynamic> map) {
+    return MovementMuscleGroupsTable(
         movementId: map['movement_id'],
         muscleGroupId: map['muscle_group_id'],
         role: map['role'] == 'primary' ? RoleType.primary : RoleType.secondary);

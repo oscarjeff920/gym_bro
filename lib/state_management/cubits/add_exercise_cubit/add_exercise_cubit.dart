@@ -1,7 +1,7 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/FE_consts/flutter_data_models.dart';
-import 'package:gym_bro/FE_consts/enums.dart';
+import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 
 import 'add_exercise_state.dart';
 

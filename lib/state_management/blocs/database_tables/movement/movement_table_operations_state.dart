@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../../../database/data_models/joined_tables/movement_muscle_group_join_object.dart';
+import 'package:gym_bro/data_models/database_data_models/joined_tables/movement_muscle_group_join_object.dart';
 
 class MovementTableOperationsState extends Equatable {
   @override

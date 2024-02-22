@@ -1,4 +1,4 @@
-import 'package:gym_bro/FE_consts/enums.dart';
+import 'package:gym_bro/constants/enums.dart';
 
 class MovementMuscleGroupJoin {
   final int? movementId;
@@ -6,7 +6,6 @@ class MovementMuscleGroupJoin {
   final RoleType muscleRole;
   final int? muscleGroupId;
   final MuscleGroupType muscleGroupName;
-
 
   factory MovementMuscleGroupJoin.fromMap(Map<String, dynamic> map) {
     return MovementMuscleGroupJoin(
@@ -18,5 +17,10 @@ class MovementMuscleGroupJoin {
     );
   }
 
-  MovementMuscleGroupJoin({required this.movementId, required this.movementName, required this.muscleRole, required this.muscleGroupId, required this.muscleGroupName});
+  MovementMuscleGroupJoin(
+      {required this.movementId,
+      required this.movementName,
+      required this.muscleRole,
+      required this.muscleGroupId,
+      required this.muscleGroupName});
 }
