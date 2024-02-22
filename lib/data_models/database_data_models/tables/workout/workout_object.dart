@@ -12,16 +12,6 @@ class WorkoutTable {
       required this.day,
       required this.duration});
 
-  DateTime stringToDate(String dateString) {
-    // TODO: make this work
-    return DateTime.now();
-  }
-
-  Duration stringToDuration(String durationString) {
-    // TODO: make this work
-    return Duration();
-  }
-
   factory WorkoutTable.fromMap(Map<String, dynamic> map) {
     return WorkoutTable(
       id: map['id'],
