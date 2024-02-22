@@ -1,4 +1,5 @@
 import 'package:gym_bro/FE_consts/enums.dart';
+import 'package:gym_bro/constants/enums.dart';
 
 class MovementMuscleGroups {
   final int movementId;
