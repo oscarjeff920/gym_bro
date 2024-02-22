@@ -1,12 +1,16 @@
+import 'enums.dart';
+
 class Workout {
   final int? id;
   final DateTime date;
   final DateTime duration;
+  final Map<MuscleGroupType, int> groupSets;
 
   const Workout({
     this.id,
     required this.date,
     required this.duration,
+    required this.groupSets
   });
 }
 
