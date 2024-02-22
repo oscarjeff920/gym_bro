@@ -1,11 +1,18 @@
 import 'package:equatable/equatable.dart';
 
-
 class BuildWorkoutState extends Equatable {
-  final List<int> exerciseIds;
 
-  const BuildWorkoutState({required this.exerciseIds});
+  const BuildWorkoutState();
 
   @override
   List<Object?> get props => [];
+}
+
+class NewWorkoutState extends BuildWorkoutState {
+  final DateTime date;
+
+  const NewWorkoutState({required this.date});
+
+  @override
+  List<Object?> get props => [date];
 }
