@@ -24,10 +24,10 @@ class WorkoutTableOperationsBloc
     try {
       // movementRepository.inspectSchema();
       var query = await workoutRepository.getAllWorkouts();
-      print("\n==========\n = = = = = > $query\n==========\n");
       yield WorkoutTableSuccessfulQueryAllState(allWorkoutsQuery: query);
     }
     catch (e) {
+      print("Whoops.. we've got reached a WorkoutTableQueryErrorState\n$e");
       yield WorkoutTableQueryErrorState();
     }
   }
