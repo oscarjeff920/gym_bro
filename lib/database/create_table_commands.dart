@@ -62,6 +62,10 @@ CREATE TABLE $exerciseSetTableName (
 );
 """,
   """
+INSERT INTO $workoutTableName VALUES
+  (1, 1995, 8, 27, '01:44:12');
+  """,
+  """
 
 INSERT INTO $movementTableName (name) VALUES
   ('flat bench press'),

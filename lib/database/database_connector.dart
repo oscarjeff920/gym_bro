@@ -31,7 +31,7 @@ class DatabaseHelper {
     print("we be initializing db");
 
     return await openDatabase(
-      join(appDocDir.path, 'GymBro.db'),
+      join(appDocDir.path, 'GymBro2.db'),
       onCreate: _createDatabase,
       onUpgrade: null,
       version: 1,
@@ -47,8 +47,8 @@ class DatabaseHelper {
         for (String command in SQL_CREATE_TABLE_COMMANDS) {
           await db.execute(command);
         }
-        var query = await db.rawQuery("SELECT * FROM $movementTableName;");
-        print("======> queried movement table $query");
+        var query = await db.rawQuery("SELECT * FROM $workoutTableName;");
+        print("======> queried workout table $query");
       } catch (e) {
         print("epic fail");
         rethrow;
