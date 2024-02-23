@@ -3,7 +3,7 @@ class WorkoutTable {
   final int year;
   final int month;
   final int day;
-  final Duration duration;
+  final String duration;
 
   WorkoutTable(
       {required this.id,
@@ -11,6 +11,8 @@ class WorkoutTable {
       required this.month,
       required this.day,
       required this.duration});
+
+
 
   factory WorkoutTable.fromMap(Map<String, dynamic> map) {
     return WorkoutTable(
@@ -27,7 +29,7 @@ class WorkoutTable {
       'year': year,
       'month': month,
       'day': day,
-      'duration': duration.toString()
+      'duration': duration
     };
   }
 }

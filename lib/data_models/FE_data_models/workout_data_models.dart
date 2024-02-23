@@ -8,7 +8,7 @@ class WorkoutModel_HomePage {
   final int year;
   final int month;
   final int day;
-  final Duration workoutDuration;
+  final String workoutDuration;
   final MuscleGroupType? primaryMuscleType;
 
   WorkoutModel_HomePage(

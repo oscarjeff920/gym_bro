@@ -21,7 +21,7 @@ class NewWorkoutState extends WorkoutPageGenerateState {
 
 class LoadWorkoutState extends WorkoutPageGenerateState {
   final int id;
-  final Duration workoutDuration;
+  final String workoutDuration;
 
   LoadWorkoutState(
       {required super.year,
