@@ -5,23 +5,24 @@ import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_time
 import '../../../state_management/cubits/workout_timer_cubit/workout_timer_state.dart';
 
 class WorkoutDateTimer extends StatelessWidget {
+  final int? year;
+  final int? month;
+  final int? day;
+
   const WorkoutDateTimer({
-    super.key,
+    super.key, required this.year, required this.month, required this.day,
   });
 
-  String formatDateNow() {
-    DateTime dateToday =
-        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  String formatDate() {
+    String formatYear = year.toString();
+    String formatMonth = month.toString().length == 1
+        ? "0${month.toString()}"
+        : month.toString();
+    String formatDay = day.toString().length == 1
+        ? "0${day.toString()}"
+        : day.toString();
 
-    String year = dateToday.year.toString();
-    String month = dateToday.month.toString().length == 1
-        ? "0${dateToday.month.toString()}"
-        : dateToday.month.toString();
-    String date = dateToday.day.toString().length == 1
-        ? "0${dateToday.day.toString()}"
-        : dateToday.day.toString();
-
-    return "$date / $month / $year";
+    return "$formatDay / $formatMonth / $formatYear";
   }
 
   @override
@@ -35,7 +36,7 @@ class WorkoutDateTimer extends StatelessWidget {
             Expanded(
               child: Center(
                 child: Text(
-                  formatDateNow(),
+                  formatDate(),
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
               ),
