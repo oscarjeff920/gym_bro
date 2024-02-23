@@ -1,27 +1,29 @@
 import 'package:equatable/equatable.dart';
 
 class WorkoutPageWorkoutState extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
+
+class WorkoutPageGenerateState extends WorkoutPageWorkoutState {
   final int year;
   final int month;
   final int day;
 
-  const WorkoutPageWorkoutState(
+  WorkoutPageGenerateState(
       {required this.year, required this.month, required this.day});
-
-  @override
-  List<Object?> get props => [year, month, day];
 }
 
-class NewWorkoutState extends WorkoutPageWorkoutState {
-  const NewWorkoutState(
+class NewWorkoutState extends WorkoutPageGenerateState {
+  NewWorkoutState(
       {required super.year, required super.month, required super.day});
 }
 
-class LoadWorkoutState extends WorkoutPageWorkoutState {
+class LoadWorkoutState extends WorkoutPageGenerateState {
   final int id;
   final Duration workoutDuration;
 
-  const LoadWorkoutState(
+  LoadWorkoutState(
       {required super.year,
       required super.month,
       required super.day,

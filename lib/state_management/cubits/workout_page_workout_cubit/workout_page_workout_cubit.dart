@@ -4,11 +4,11 @@ import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
 import 'workout_page_workout_state.dart';
 
 class WorkoutPageWorkoutCubit extends Cubit<WorkoutPageWorkoutState> {
-  WorkoutPageWorkoutCubit(super.initialState);
+  WorkoutPageWorkoutCubit() : super(WorkoutPageWorkoutState());
 
   buildNewWorkout() {
-    DateTime dateToday =
-        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    DateTime dateToday = DateTime.now();
+    print("we building new workout! ${dateToday.year}/${dateToday.month}/${dateToday.day}");
     emit(NewWorkoutState(
         year: dateToday.year, month: dateToday.month, day: dateToday.day));
   }

@@ -5,15 +5,16 @@ import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_time
 import '../../../state_management/cubits/workout_timer_cubit/workout_timer_state.dart';
 
 class WorkoutDateTimer extends StatelessWidget {
-  final int? year;
-  final int? month;
-  final int? day;
+  final int year;
+  final int month;
+  final int day;
 
   const WorkoutDateTimer({
     super.key, required this.year, required this.month, required this.day,
   });
 
   String formatDate() {
+    print("formatDate: $year/$month/$day");
     String formatYear = year.toString();
     String formatMonth = month.toString().length == 1
         ? "0${month.toString()}"
