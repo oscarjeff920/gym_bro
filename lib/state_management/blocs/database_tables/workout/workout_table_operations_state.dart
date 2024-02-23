@@ -22,6 +22,7 @@ class WorkoutTableSuccessfulQueryAllState
   List<WorkoutModel_HomePage> convertWorkoutsForHomePage() {
     return allWorkoutsQuery
         .map((workout) => WorkoutModel_HomePage(
+            id: workout.id,
             year: workout.year,
             month: workout.month,
             day: workout.day,
