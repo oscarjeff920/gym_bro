@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/design/widgets/the_app_bar_widget.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_state.dart';
 
 import '../../widgets/home_page_widgets/new_workout_button_widget.dart';
@@ -12,10 +13,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<WorkoutTableOperationsBloc>(context).add(QueryAllWorkoutTableEvent());
     return Scaffold(
       appBar: const TheAppBar(
         hasBackButton: false,
       ),
+      backgroundColor: Colors.grey,
       body: Stack(children: [
         BlocBuilder<WorkoutTableOperationsBloc, WorkoutTableOperationsState>(
             builder: (context, state) {

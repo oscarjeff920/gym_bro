@@ -14,7 +14,6 @@ import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_time
 
 import 'data_models/database_data_models/tables/workout/workout_repository.dart';
 import 'state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
-import 'state_management/blocs/database_tables/workout/workout_table_operations_event.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,8 +37,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => DatabaseBloc()),
         BlocProvider(
             create: (context) => WorkoutTableOperationsBloc(
-                workoutRepository: WorkoutRepository(databaseHelper))
-              ..add(QueryAllWorkoutTableEvent())),
+                workoutRepository: WorkoutRepository(databaseHelper))),
         BlocProvider(
             create: (context) => MovementTableOperationsBloc(
                 movementRepository: MovementRepository(databaseHelper))),
