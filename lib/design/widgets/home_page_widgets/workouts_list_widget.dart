@@ -7,16 +7,24 @@ class WorkoutsList extends StatelessWidget {
   final List<WorkoutModel_HomePage> allWorkouts;
 
   const WorkoutsList({super.key, required this.allWorkouts});
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      padding: const EdgeInsets.all(10),
       itemCount: allWorkouts.length,
       itemBuilder: (BuildContext context, int index) {
-
         return ListTile(
-          title: Text(
-              "${allWorkouts[index].year}/${allWorkouts[index].month}/${allWorkouts[index].day}"),
-          onTap: BlocProvider.of<WorkoutPageWorkoutCubit>(context).loadWorkout(allWorkouts[index]),
+          title: Center(
+            child: Text(
+                "${allWorkouts[index].year}/${allWorkouts[index].month}/${allWorkouts[index].day}"),
+          ),
+          tileColor: Colors.white,
+          onTap: () {
+            BlocProvider.of<WorkoutPageWorkoutCubit>(context)
+                .loadWorkout(allWorkouts[index]);
+            Navigator.of(context).pushNamed("/new-workout-page");
+          },
         );
       },
     );
