@@ -13,7 +13,11 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<WorkoutTableOperationsBloc>(context).add(QueryAllWorkoutTableEvent());
+    // sending this event at the top of the build so that whenever the user returns to the page a new request is sent
+    // displaying any changes that may've been made / new completed workouts, instead of just when the app started up
+    BlocProvider.of<WorkoutTableOperationsBloc>(context)
+        .add(QueryAllWorkoutTableEvent());
+
     return Scaffold(
       appBar: const TheAppBar(
         hasBackButton: false,
