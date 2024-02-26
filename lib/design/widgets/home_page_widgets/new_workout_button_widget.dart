@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/state_management/cubits/workout_page_workout_cubit/workout_page_workout_cubit.dart';
+import 'package:gym_bro/state_management/cubits/data_model_cubits/workout_page/workout_page_workout_cubit/workout_page_workout_cubit.dart';
 
 class NewWorkoutButton extends StatelessWidget {
   const NewWorkoutButton({

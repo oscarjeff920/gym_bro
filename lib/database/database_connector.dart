@@ -31,7 +31,7 @@ class DatabaseHelper {
     print("we be initializing db");
 
     return await openDatabase(
-      join(appDocDir.path, 'GymBro2.db'),
+      join(appDocDir.path, 'GymBro3.db'),
       onCreate: _createDatabase,
       onUpgrade: null,
       version: 1,

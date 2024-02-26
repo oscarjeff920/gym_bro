@@ -3,17 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/movement/movement_repository.dart';
 import 'package:gym_bro/database/database_connector.dart';
 import 'package:gym_bro/design/routing/router.dart';
-import 'package:gym_bro/state_management/blocs/building_workout_bloc/building_workout_bloc.dart';
-import 'package:gym_bro/state_management/blocs/database_operations_bloc(deprecated)/database_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/movement/movement_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_cubit.dart';
-import 'package:gym_bro/state_management/cubits/workout_page_workout_cubit/workout_page_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_cubit.dart';
 
 import 'data_models/database_data_models/tables/workout/workout_repository.dart';
+import 'state_management/blocs/(deprecated)database_operations_bloc/database_operations_bloc.dart';
+import 'state_management/blocs/(depricated)building_workout_bloc/building_workout_bloc.dart';
 import 'state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
+import 'state_management/cubits/data_model_cubits/workout_page/workout_page_workout_cubit/workout_page_workout_cubit.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
