@@ -8,9 +8,14 @@ class ExerciseRepository {
 
   ExerciseRepository(this.databaseHelper);
 
-  Future<List<ExerciseTable>> getAllExercises () async {
+  Future<List<ExerciseTable>> getAllExercisesByWorkoutId (int workoutId) async {
     final db = await databaseHelper.database;
-    final List<Map<String, dynamic>> allExercises = await db.query(exerciseTableName);
+    final List<Map<String, dynamic>> allExercises = await db.rawQuery("""
+    SELECT * FROM $exerciseTableName
+    JOIN $movementTableName ON $exerciseTableName.movement_id = $movementTableName.id
+    WHERE $exerciseTableName.workout_id = $workoutId
+    ORDER BY $exerciseTableName.exercise_order ASC;
+    """);
 
     return allExercises.map((exercise) => ExerciseTable.fromMap(exercise)).toList();
   }
