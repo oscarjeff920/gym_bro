@@ -37,6 +37,7 @@ class WorkoutPageWorkoutCubit extends Cubit<WorkoutPageWorkoutState> {
         year: workout.year,
         month: workout.month,
         day: workout.day,
+        workoutDuration: workout.workoutDuration,
         exercises: exercises)
     );
   }

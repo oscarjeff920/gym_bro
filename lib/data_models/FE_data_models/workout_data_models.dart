@@ -26,10 +26,12 @@ class WorkoutModel_WorkoutPage {
   final int year;
   final int month;
   final int day;
+  final String workoutDuration;
 
   WorkoutModel_WorkoutPage(
       {required this.id,
       required this.year,
       required this.month,
-      required this.day});
+      required this.day,
+      required this.workoutDuration});
 }

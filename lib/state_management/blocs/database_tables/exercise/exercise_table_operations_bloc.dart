@@ -16,8 +16,7 @@ class ExerciseTableOperationsBloc
       ExerciseTableOperationsEvent event) async* {
     if (event is QueryAllExerciseByWorkoutEvent) {
       yield* _mapLoadContextsToState(event);
-    }
-    else if (event is ResetExerciseQueryEvent) {
+    } else if (event is ResetExerciseQueryEvent) {
       yield ExerciseTableNotQueriedState();
     }
   }
@@ -35,7 +34,8 @@ class ExerciseTableOperationsBloc
               id: event.selectedWorkout.id,
               year: event.selectedWorkout.year,
               month: event.selectedWorkout.month,
-              day: event.selectedWorkout.day));
+              day: event.selectedWorkout.day,
+              workoutDuration: event.selectedWorkout.workoutDuration));
     } catch (e) {
       print("Whoops.. we've got reached a ExerciseTableQueryErrorState\n$e");
       yield ExerciseTableQueryErrorState();
