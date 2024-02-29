@@ -18,7 +18,7 @@ class TheAppBar extends StatelessWidget implements PreferredSizeWidget{
       ),
       elevation: 20,
       backgroundColor: const Color.fromRGBO(7, 99, 133, 1.0),
-      iconTheme: hasBackButton ? const IconThemeData() : null,
+      iconTheme: hasBackButton ? const IconThemeData(color: Colors.white) : null,
     );
   }
 

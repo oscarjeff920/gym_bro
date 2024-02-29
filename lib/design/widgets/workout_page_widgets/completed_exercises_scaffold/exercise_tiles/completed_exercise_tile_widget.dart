@@ -34,7 +34,7 @@ class CompletedExerciseTile extends StatelessWidget {
       clickBehaviour: () {
         print("printed again..");
       },
-      isTop: tileIndex == 1 ? true : false,
+      isTop: tileIndex == 0 || tileIndex == 1 ? true : false,
       tileSpacingValue: tileSpacingValue,
     );
   }
