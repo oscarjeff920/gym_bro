@@ -53,18 +53,14 @@ CREATE TABLE $exerciseSetTableName (
     exercise_id INTEGER,
     set_order INTEGER NOT NULL,
     is_warm_up INTEGER CHECK (is_warm_up IN (0, 1)),
-    weight DECIMAL,
-    reps INTEGER,
+    weight DECIMAL NOT NULL,
+    reps INTEGER NOT NULL,
     extra_reps INTEGER,
     duration TEXT,
     notes TEXT,
     FOREIGN KEY (exercise_id) REFERENCES exercise(id)
 );
 """,
-  """
-INSERT INTO $workoutTableName VALUES
-  (1, 1995, 8, 27, '01:44:12');
-  """,
   """
 
 INSERT INTO $movementTableName (name) VALUES
@@ -102,13 +98,13 @@ INSERT INTO $movementTableName (name) VALUES
 """,
   """
 
-INSERT INTO $muscleGroupTableName VALUES
-  (1, 'chest'),
-  (2, 'back'),
-  (3, 'shoulders'),
-  (4, 'biceps'),
-  (5, 'triceps'),
-  (6, 'legs');
+INSERT INTO $muscleGroupTableName(name) VALUES
+  ('chest'),
+  ('back'),
+  ('shoulders'),
+  ('biceps'),
+  ('triceps'),
+  ('legs');
 """,
   """
   
@@ -164,4 +160,48 @@ INSERT INTO $movementMuscleGroupsTableName VALUES
   (29, 2, 'primary'),
   (29, 4, 'secondary');
 """,
+  // Mock Data:
+  """
+  INSERT INTO $workoutTableName(year, month, day, duration) VALUES
+  (1988, 02, 16, '01:56:01'),
+  (1995, 8, 27, '01:44:12');
+  """,
+  """
+  INSERT INTO $exerciseTableName(movement_id, workout_id, exercise_order, duration, num_working_sets) VALUES
+  (4 , 1, 1, '05:27', 4),
+  
+  (2 , 2, 1, '10:02', 5),
+  (10, 2, 2, '12:22', 5),
+  (1 , 2, 3, '02:54', 5); 
+  """,
+  """
+  INSERT INTO $exerciseSetTableName(exercise_id, set_order, is_warm_up, weight, reps, extra_reps, duration, notes) VALUES
+  (1, 1, 1, 20, 12, 10, '01:02', 'big effort'),
+  (1, 2, 0, 40, 8 , 6 , '00:58', 'form awkward'),
+  (1, 3, 0, 40, 7 , 4 , '00:46', 'form better'),
+  (1, 4, 0, 40, 5 , 2 , '00:34', null),
+  (1, 5, 0, 40, 5 , 3 , '00:37', 'exhausted'),
+
+  (2, 1, 1, 60, 22, 18, '00:12', null),
+  (2, 2, 0, 70, 8 , 12, '00:22', null),
+  (2, 3, 0, 70, 8 , 11, '00:23', null),
+  (2, 4, 0, 70, 4 , 2 , '00:12', null),
+  (2, 5, 0, 65, 6 , 5 , '00:20', null),
+  (2, 6, 0, 65, 6 , 3 , '00:26', null),
+
+  (3, 1, 1, 12, 12, 10, '00:20', null),
+  (3, 2, 0, 22, 8 , 12, '00:25', 'good stuff'),
+  (3, 3, 0, 22, 8 , 11, '00:21', null),
+  (3, 4, 0, 22, 4 , 2 , '00:31', null),
+  (3, 5, 0, 22, 4 , 1 , '00:12', null),
+  (3, 6, 0, 20, 6 , 3 , '00:15', null),
+
+  (4, 1, 1, 10, 22, 18, '00:12', '2 ez'),
+  (4, 2, 0, 15, 8 , 12, '00:22', 'still ez'),
+  (4, 3, 0, 15, 8 , 11, '00:23', 'better'),
+  (4, 4, 0, 15, 4 , 2 , '00:12', null),
+  (4, 5, 0, 12, 6 , 5 , '00:20', null),
+  (4, 6, 0, 12, 6 , 3 , '00:26', null);
+  """,
+
 ];
