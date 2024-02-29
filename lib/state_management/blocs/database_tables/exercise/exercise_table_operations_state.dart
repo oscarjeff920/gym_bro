@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
+import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
+import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
 
 class ExerciseTableOperationsState extends Equatable {
   @override
@@ -10,16 +11,16 @@ class ExerciseTableNotQueriedState extends ExerciseTableOperationsState {}
 
 class ExerciseTableQueryState extends ExerciseTableOperationsState {}
 
-class ExerciseTableSuccessfulQueryState extends ExerciseTableOperationsState {}
+class ExerciseTableSuccessfulQueryAllByWorkoutIdState
+    extends ExerciseTableQueryState {
+  final WorkoutModel_WorkoutPage selectedWorkout;
+  final List<ExerciseModel_WorkoutPage> allExercisesQuery;
 
-class ExerciseTableSuccessfulQueryAllState
-    extends ExerciseTableSuccessfulQueryState {
-  final List<ExerciseTable> allExercisesQuery;
-
-  ExerciseTableSuccessfulQueryAllState({required this.allExercisesQuery});
+  ExerciseTableSuccessfulQueryAllByWorkoutIdState(
+      {required this.selectedWorkout, required this.allExercisesQuery});
 
   @override
   List<Object> get props => [allExercisesQuery];
 }
 
-class ExerciseTableQueryErrorState extends ExerciseTableOperationsState {}
+class ExerciseTableQueryErrorState extends ExerciseTableQueryState {}

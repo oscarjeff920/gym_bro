@@ -1,15 +1,18 @@
 import 'package:equatable/equatable.dart';
+import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
 
 class ExerciseTableOperationsEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class QueryAllExerciseByWorkoutIdEvent extends ExerciseTableOperationsEvent{
-  final int workoutId;
+class ResetExerciseQueryEvent extends ExerciseTableOperationsEvent{}
 
-  QueryAllExerciseByWorkoutIdEvent({required this.workoutId});
+class QueryAllExerciseByWorkoutEvent extends ExerciseTableOperationsEvent{
+  final WorkoutModel_HomePage selectedWorkout;
+
+  QueryAllExerciseByWorkoutEvent({required this.selectedWorkout});
 
   @override
-  List<Object> get props => [workoutId];
+  List<Object> get props => [selectedWorkout];
 }

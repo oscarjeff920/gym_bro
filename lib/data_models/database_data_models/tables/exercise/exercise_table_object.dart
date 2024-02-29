@@ -3,7 +3,7 @@ class ExerciseTable {
   final int movementId;
   final int workoutId;
   final int exerciseOrder;
-  final Duration? duration;
+  final String? duration;
   final int numbWorkingSets;
 
   ExerciseTable(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_event.dart';
 import 'package:gym_bro/state_management/cubits/data_model_cubits/workout_page/workout_page_workout_cubit/workout_page_workout_cubit.dart';
 
 class NewWorkoutButton extends StatelessWidget {
@@ -13,7 +15,8 @@ class NewWorkoutButton extends StatelessWidget {
     return TextButton(
       onPressed: () {
         BlocProvider.of<WorkoutPageWorkoutCubit>(context).buildNewWorkout();
-        Navigator.of(context).pushNamed("/new-workout-page");
+        BlocProvider.of<ExerciseTableOperationsBloc>(context).add(ResetExerciseQueryEvent());
+        Navigator.of(context).pushNamed("/workout-page");
       },
       style: ButtonStyle(
         padding: MaterialStateProperty.all<EdgeInsets>(

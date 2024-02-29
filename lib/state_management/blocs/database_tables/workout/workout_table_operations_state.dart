@@ -9,9 +9,12 @@ class WorkoutTableOperationsState extends Equatable {
 
 class WorkoutTableNotQueriedState extends WorkoutTableOperationsState {}
 
+// all other states that deal with steps of the query will inherit from this state
+// this way it'll be easy to distinguish between the initial non-queried state
+// to the subsequent states for each stage of the query
 class WorkoutTableQueryState extends WorkoutTableOperationsState {}
 
-class WorkoutTableSuccessfulQueryState extends WorkoutTableOperationsState {}
+class WorkoutTableSuccessfulQueryState extends WorkoutTableQueryState {}
 
 class WorkoutTableSuccessfulQueryAllState
     extends WorkoutTableSuccessfulQueryState {
@@ -31,4 +34,4 @@ class WorkoutTableSuccessfulQueryAllState
   }
 }
 
-class WorkoutTableQueryErrorState extends WorkoutTableOperationsState {}
+class WorkoutTableQueryErrorState extends WorkoutTableQueryState {}

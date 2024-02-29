@@ -1,3 +1,4 @@
+import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
 import 'package:gym_bro/database/database_connector.dart';
@@ -10,7 +11,8 @@ class WorkoutRepository {
   Future<List<WorkoutTable>> getAllWorkouts() async {
     final db = await databaseHelper.database;
 
-    final List<Map<String, dynamic>> workouts = await db.query(workoutTableName);
+    final List<Map<String, dynamic>> workouts =
+        await db.query(workoutTableName, orderBy: 'year DESC, month DESC, day DESC');
     return workouts.map((workout) => WorkoutTable.fromMap(workout)).toList();
   }
 }
