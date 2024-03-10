@@ -42,7 +42,7 @@ class ExerciseSelectorContainer extends StatelessWidget {
             ),
             TimerButton(
                 isExerciseSelected:
-                state.selectedExercise == null ? false : true)
+                state.selectedMovement == null ? false : true)
           ],
         );
       },

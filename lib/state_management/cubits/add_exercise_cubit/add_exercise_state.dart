@@ -5,13 +5,13 @@ import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 
 class AddExerciseState extends Equatable {
   final MuscleGroupType? selectedMuscleGroup;
-  final String? selectedExercise;
+  final String? selectedMovement;
   final CurrentSet? currentSet;
   final List<Sets> setsDone;
 
   const AddExerciseState(
       {required this.selectedMuscleGroup,
-      required this.selectedExercise,
+      required this.selectedMovement,
       this.currentSet,
       required this.setsDone});
 
@@ -20,13 +20,13 @@ class AddExerciseState extends Equatable {
     if (currentSet == null) {
       return """
       selected muscleGroup: $selectedMuscleGroup\n
-      selected exercise: $selectedExercise\n
+      selected exercise: $selectedMovement\n
       There is no current set.
       """;
     }
     return """
     selected muscleGroup: $selectedMuscleGroup\n
-    selected exercise: $selectedExercise\n
+    selected exercise: $selectedMovement\n
     Current Set:\n
     isWarmUp: ${currentSet!.isWarmUp}\n
     weight: ${currentSet!.weight}\n
@@ -41,7 +41,7 @@ class AddExerciseState extends Equatable {
       {MuscleGroupType? selectedMuscleGroup, String? selectedExercise}) {
     return AddExerciseState(
       selectedMuscleGroup: selectedMuscleGroup ?? this.selectedMuscleGroup,
-      selectedExercise: selectedExercise ?? this.selectedExercise,
+      selectedMovement: selectedExercise ?? this.selectedMovement,
       currentSet: currentSet,
       setsDone: setsDone,
     );
@@ -60,5 +60,5 @@ class AddExerciseState extends Equatable {
 
   @override
   List<Object?> get props =>
-      [selectedMuscleGroup, selectedExercise, currentSet, setsDone];
+      [selectedMuscleGroup, selectedMovement, currentSet, setsDone];
 }

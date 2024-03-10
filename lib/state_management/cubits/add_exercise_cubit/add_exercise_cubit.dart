@@ -9,13 +9,13 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
   AddExerciseCubit()
       : super(const AddExerciseState(
             selectedMuscleGroup: null,
-            selectedExercise: null,
+            selectedMovement: null,
             setsDone: []));
 
   selectMuscleGroup(MuscleGroupType muscleGroup) {
     emit(AddExerciseState(
         selectedMuscleGroup: muscleGroup,
-        selectedExercise: null,
+        selectedMovement: null,
         setsDone: const []));
   }
 
@@ -24,7 +24,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
 
     emit(AddExerciseState(
         selectedMuscleGroup: generatedState.selectedMuscleGroup,
-        selectedExercise: exerciseName,
+        selectedMovement: exerciseName,
         currentSet: const CurrentSet(),
         setsDone: const []));
   }
@@ -47,7 +47,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
     // print("updated set, isWarmUp: ${updatedState.isWarmUp}");
     emit(AddExerciseState(
         selectedMuscleGroup: generatedState.selectedMuscleGroup,
-        selectedExercise: generatedState.selectedExercise,
+        selectedMovement: generatedState.selectedMovement,
         currentSet: updatedState,
         setsDone: generatedState.setsDone
     ));
@@ -73,7 +73,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
 
     emit(AddExerciseState(
       selectedMuscleGroup: generatedState.selectedMuscleGroup,
-      selectedExercise: generatedState.selectedExercise,
+      selectedMovement: generatedState.selectedMovement,
       currentSet: const CurrentSet(),
       setsDone: setsDone
     ));

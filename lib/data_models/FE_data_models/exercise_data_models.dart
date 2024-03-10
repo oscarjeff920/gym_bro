@@ -69,22 +69,22 @@ class LoadedExerciseModel {
 }
 
 class NewExerciseModel {
-  final int exerciseOrder;
+  final int? exerciseOrder;
   final String movementName;
-  final int movementId;
-  final String exerciseDuration;
-  final int numWorkingSets;
+  final int? movementId;
+  final String? exerciseDuration;
+  final int? numWorkingSets;
   final MuscleGroupType primaryMuscleGroup;
 
   // final MuscleGroupType secondaryMuscleGroup;
   final List<NewExerciseSetModel> exerciseSets;
 
   NewExerciseModel(
-      {required this.exerciseOrder,
+      {this.exerciseOrder,
       required this.movementName,
-      required this.movementId,
-      required this.exerciseDuration,
-      required this.numWorkingSets,
+      this.movementId,
+      this.exerciseDuration,
+      this.numWorkingSets,
       required this.primaryMuscleGroup,
       // required this.secondaryMuscleGroup,
       required this.exerciseSets});
