@@ -6,7 +6,7 @@ class ExerciseSetTable {
   final double weight;
   final int reps;
   final int? extraReps;
-  final Duration? duration;
+  final String? duration;
   final String? notes;
 
   ExerciseSetTable(
@@ -51,7 +51,7 @@ class ExerciseSetTable {
       'weight': weight,
       'reps': reps,
       'extra_reps': extraReps,
-      'duration': duration != null ? durationToString(duration!) : duration,
+      'duration': duration,
       'notes': notes,
     };
   }

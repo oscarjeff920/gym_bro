@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
+import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/close_modal_button_widget.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_state.dart';
-import 'package:gym_bro/state_management/cubits/data_model_cubits/workout_page/workout_page_workout_cubit/workout_page_workout_cubit.dart';
-import 'package:gym_bro/state_management/cubits/data_model_cubits/workout_page/workout_page_workout_cubit/workout_page_workout_state.dart';
+import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
+import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_state.dart';
 import '../../widgets/the_app_bar_widget.dart';
@@ -19,85 +21,126 @@ class WorkoutOverviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // CHANGE!!!
     double tileSpacingValue = 12;
-    return BlocBuilder<ExerciseTableOperationsBloc,
-        ExerciseTableOperationsState>(builder: (context, state) {
-      switch (state) {
-        case ExerciseTableSuccessfulQueryAllByWorkoutIdState():
-          BlocProvider.of<WorkoutPageWorkoutCubit>(context)
-              .loadExercisesToWorkout(
-                  state.selectedWorkout, state.allExercisesQuery);
-        case ExerciseTableQueryErrorState():
-          Navigator.of(context).pushNamed("/");
-      }
-      return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: const TheAppBar(),
-        body: BlocBuilder<WorkoutPageWorkoutCubit, WorkoutPageWorkoutState>(
-          builder: (context, state) {
-            switch (state) {
-              case WorkoutPageDetailsState():
-                return Column(
-                  children: [
-                    Material(
-                        elevation: 2,
-                        child: WorkoutDateTimer(
-                          year: state.year,
-                          month: state.month,
-                          day: state.day,
-                          workoutDuration: state.workoutDuration,
-                        )),
-                    Expanded(
-                      child: Container(
-                        // COMBINE-SPACING!
-                        child: Stack(children: [
-                          Positioned.fill(
-                              child: CompletedExercisesScaffold(
-                            tileSpacingValue: tileSpacingValue,
-                            exercises: state.exercises,
-                            isCurrentWorkout: state.id == null,
-                          )),
-                          BlocBuilder<OpenExerciseModalCubit,
-                              OpenExerciseModalState>(
-                            builder: (context, state) {
-                              double fadedValue;
-                              switch (state) {
-                                case ExerciseModalOpenedState():
-                                  fadedValue = 0.8;
-                                default:
-                                  fadedValue = 0;
-                              }
-                              return IgnorePointer(
-                                child: AnimatedContainer(
-                                    duration: const Duration(milliseconds: 200),
-                                    color:
-                                        Colors.black.withOpacity(fadedValue)),
-                              );
-                            },
-                          ),
-                          BlocBuilder<OpenExerciseModalCubit,
-                                  OpenExerciseModalState>(
-                              builder: (context, state) {
-                            return IgnorePointer(
-                              ignoring: !state.isOpen,
-                              child: AnimatedOpacity(
-                                opacity: state.isOpen ? 1 : 0,
-                                duration: const Duration(milliseconds: 200),
-                                child: const AddExerciseModal(),
-                              ),
-                            );
-                          }),
-                        ]),
-                      ),
-                    ),
-                    const ExerciseCountBar()
-                  ],
-                );
-              default:
-                return Container();
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: const TheAppBar(),
+          body: BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
+              builder: (context, state) {
+            List<dynamic> exercises;
+            if (state is NewActiveWorkoutState) {
+              exercises = state.exercises;
+            } else if (state is LoadedActiveWorkoutState) {
+              exercises = state.exercises;
+            } else {
+              exercises = [];
             }
-          },
-        ),
-      );
-    });
+            if (state is! NewActiveWorkoutState &&
+                state is! LoadedActiveWorkoutState) {
+              return Container();
+            } else {
+              state as ActiveWorkoutOnState;
+
+              return Column(children: [
+                Material(
+                    elevation: 2,
+                    child: WorkoutDateTimer(
+                      year: state.year,
+                      month: state.month,
+                      day: state.day,
+                      workoutDuration: state is NewActiveWorkoutState
+                          ? state.workoutDuration
+                          : (state as LoadedActiveWorkoutState).workoutDuration,
+                    )),
+                Expanded(
+                  child: Container(
+                    // COMBINE-SPACING!
+                    child: Stack(children: [
+                      Positioned.fill(
+                          child: CompletedExercisesScaffold(
+                        tileSpacingValue: tileSpacingValue,
+                        exercises: exercises
+                            .map((exercise) => GeneralExerciseModel(
+                                exerciseOrder: exercise.exerciseOrder,
+                                movementName: exercise.movementName,
+                                movementId: exercise.movementId,
+                                exerciseDuration: exercise.exerciseDuration,
+                                numWorkingSets: exercise.numWorkingSets,
+                                primaryMuscleGroup: exercise.primaryMuscleGroup,
+                                exerciseSets: []))
+                            .toList(),
+                        isCurrentWorkout:
+                            state is NewActiveWorkoutState ? true : false,
+                      )),
+                      BlocBuilder<OpenExerciseModalCubit,
+                          OpenExerciseModalState>(
+                        builder: (context, state) {
+                          double fadedValue;
+                          switch (state) {
+                            case ExerciseModalOpenedState():
+                              fadedValue = 0.8;
+                            default:
+                              fadedValue = 0;
+                          }
+                          return IgnorePointer(
+                            child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 200),
+                                color: Colors.black.withOpacity(fadedValue)),
+                          );
+                        },
+                      ),
+                      BlocBuilder<OpenExerciseModalCubit,
+                          OpenExerciseModalState>(builder: (context, state) {
+                        return IgnorePointer(
+                          ignoring: !state.isOpen,
+                          child: AnimatedOpacity(
+                            opacity: state.isOpen ? 1 : 0,
+                            duration: const Duration(milliseconds: 200),
+                            child: const Stack(children: [
+                              AddExerciseModal(),
+                              Align(
+                                alignment: Alignment(0, 0.78),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    CloseModalButton(
+                                      isFinished: false,
+                                    ),
+                                    CloseModalButton(
+                                      isFinished: true,
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ]),
+                          ),
+                        );
+                      }),
+                    ]),
+                  ),
+                ),
+                const ExerciseCountBar()
+              ]);
+            }
+          }),
+          floatingActionButton:
+              BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
+            builder: (context, state) {
+              ActiveWorkoutState currentState = state;
+              return BlocBuilder<ExerciseTableOperationsBloc,
+                  ExerciseTableOperationsState>(
+                builder: (context, state) {
+                  return FloatingActionButton(
+                    onPressed: () {
+                      print("");
+                      print(
+                          "activeWorkoutState: $currentState\nExerciseTableOperationsState: $state");
+                    },
+                  );
+                },
+              );
+            },
+          ),
+        );
   }
 }

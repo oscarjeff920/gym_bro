@@ -14,6 +14,7 @@ class ExerciseTableOperationsBloc
   @override
   Stream<ExerciseTableOperationsState> mapEventToState(
       ExerciseTableOperationsEvent event) async* {
+    print("right we here. event: $event");
     if (event is QueryAllExerciseByWorkoutEvent) {
       yield* _mapLoadContextsToState(event);
     } else if (event is ResetExerciseQueryEvent) {
@@ -25,17 +26,18 @@ class ExerciseTableOperationsBloc
       QueryAllExerciseByWorkoutEvent event) async* {
     yield ExerciseTableQueryState();
     try {
+      print("loookie, we got an $event");
       // movementRepository.inspectSchema();
       var query = await exerciseRepository
           .getAllExercisesByWorkoutId(event.selectedWorkout.id!);
       yield ExerciseTableSuccessfulQueryAllByWorkoutIdState(
-          allExercisesQuery: query,
-          selectedWorkout: WorkoutModel_WorkoutPage(
-              id: event.selectedWorkout.id,
-              year: event.selectedWorkout.year,
-              month: event.selectedWorkout.month,
+          selectedWorkout: LoadedWorkoutModel(
+              id: event.selectedWorkout.id!,
               day: event.selectedWorkout.day,
-              workoutDuration: event.selectedWorkout.workoutDuration));
+              month: event.selectedWorkout.month,
+              year: event.selectedWorkout.year,
+              workoutDuration: event.selectedWorkout.duration,
+              exercises: query));
     } catch (e) {
       print("Whoops.. we've got reached a ExerciseTableQueryErrorState\n$e");
       yield ExerciseTableQueryErrorState();

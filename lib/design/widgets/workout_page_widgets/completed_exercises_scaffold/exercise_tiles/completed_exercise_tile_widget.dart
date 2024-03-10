@@ -5,7 +5,7 @@ import 'exercise_tile_base_widget.dart';
 
 class CompletedExerciseTile extends StatelessWidget {
   final Color primaryMuscleGroupColour;
-  final ExerciseModel_WorkoutPage exercise;
+  final GeneralExerciseModel exercise;
   final int tileIndex;
 
   final double tileSpacingValue;
@@ -27,12 +27,11 @@ class CompletedExerciseTile extends StatelessWidget {
           children: [
             Expanded(flex: 2, child: Text(exercise.movementName, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15), textAlign: TextAlign.center)),
             Text("Working Sets: ${exercise.numWorkingSets.toString()}"),
-            Text("Exercise Duration: ${exercise.exerciseTotalDuration}"),
+            Text("Exercise Duration: ${exercise.exerciseDuration}"),
           ],
         ),
       ),
       clickBehaviour: () {
-        print("printed again..");
       },
       isTop: tileIndex == 0 || tileIndex == 1 ? true : false,
       tileSpacingValue: tileSpacingValue,

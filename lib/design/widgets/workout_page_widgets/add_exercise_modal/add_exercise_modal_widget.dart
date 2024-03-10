@@ -60,7 +60,6 @@ class AddExerciseModal extends StatelessWidget {
                           print(state.toString());
                         },
                         child: const Text("find out")),
-                    CloseModalButton()
                   ],
                 ),
               ),

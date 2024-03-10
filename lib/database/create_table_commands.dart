@@ -130,7 +130,6 @@ INSERT INTO $movementMuscleGroupsTableName VALUES
   (11, 6, 'primary'),
   (12, 2, 'primary'),
   (12, 4, 'secondary'),
-  (12, 6, 'secondary'),
   (13, 2, 'primary'),
   (13, 4, 'secondary'),
   (14, 2, 'primary'),

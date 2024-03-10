@@ -4,6 +4,7 @@ import 'package:gym_bro/data_models/database_data_models/tables/movement/movemen
 import 'package:gym_bro/database/database_connector.dart';
 import 'package:gym_bro/design/routing/router.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/movement/movement_table_operations_bloc.dart';
+import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_cubit.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
             create: (context) => ExerciseTableOperationsBloc(
                 exerciseRepository: ExerciseRepository(databaseHelper))),
+        BlocProvider(create: (context) => ActiveWorkoutCubit()),
         BlocProvider(create: (context) => WorkoutPageWorkoutCubit()),
         BlocProvider(create: (context) => OpenExerciseModalCubit()),
         BlocProvider(create: (context) => AddExerciseCubit()),

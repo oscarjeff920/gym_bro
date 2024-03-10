@@ -12,7 +12,7 @@ import 'exercise_tiles/completed_exercise_tile_widget.dart';
 
 class CompletedExercisesScaffold extends StatelessWidget {
   final double tileSpacingValue;
-  final List<ExerciseModel_WorkoutPage> exercises;
+  final List<GeneralExerciseModel> exercises;
   final bool isCurrentWorkout;
 
   const CompletedExercisesScaffold({

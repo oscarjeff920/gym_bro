@@ -19,7 +19,7 @@ class WorkoutDateTimer extends StatelessWidget {
   });
 
   String formatDate() {
-    print("formatDate: $year/$month/$day");
+    // print("formatDate: $year/$month/$day");
     String formatYear = year.toString();
     String formatMonth = month.toString().length == 1
         ? "0${month.toString()}"

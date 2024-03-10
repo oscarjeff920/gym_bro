@@ -20,15 +20,15 @@ class DatabaseHelper {
     if (_database != null) return _database!;
 
     _database = await initializeDB();
-    if (_database != null) print("well we got a db apparently: $_database");
+    // if (_database != null) print("well we got a db apparently: $_database");
     return _database!;
   }
 
   Future<Database> initializeDB() async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
-    print(
-        "\n======================\n===================\npath = ${appDocDir.path}\n");
-    print("we be initializing db");
+    // print(
+    //     "\n======================\n===================\npath = ${appDocDir.path}\n");
+    // print("we be initializing db");
 
     return await openDatabase(
       join(appDocDir.path, 'GymBro.db'),
@@ -39,7 +39,7 @@ class DatabaseHelper {
   }
 
   Future<void> _createDatabase(Database db, int version) async {
-    print("create DB running");
+    // print("create DB running");
     if (version == 1) {
       try {
         // print(SQL_CREATE_TABLE_COMMANDS);
@@ -53,7 +53,7 @@ class DatabaseHelper {
         print("epic fail");
         rethrow;
       }
-      print("executed init table commands");
+      // print("executed init table commands");
 
       // Set the user-defined version number to 1 (placeholder for future upgrades)
       await db.execute('PRAGMA user_version = 1');

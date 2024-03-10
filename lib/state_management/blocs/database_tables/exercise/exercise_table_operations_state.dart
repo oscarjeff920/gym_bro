@@ -13,14 +13,13 @@ class ExerciseTableQueryState extends ExerciseTableOperationsState {}
 
 class ExerciseTableSuccessfulQueryAllByWorkoutIdState
     extends ExerciseTableQueryState {
-  final WorkoutModel_WorkoutPage selectedWorkout;
-  final List<ExerciseModel_WorkoutPage> allExercisesQuery;
+  final LoadedWorkoutModel selectedWorkout;
 
   ExerciseTableSuccessfulQueryAllByWorkoutIdState(
-      {required this.selectedWorkout, required this.allExercisesQuery});
+      {required this.selectedWorkout});
 
   @override
-  List<Object> get props => [allExercisesQuery];
+  List<Object> get props => [selectedWorkout];
 }
 
 class ExerciseTableQueryErrorState extends ExerciseTableQueryState {}
