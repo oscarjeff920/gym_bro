@@ -6,6 +6,7 @@ import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_state.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
+import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
 
 class WorkoutsList extends StatelessWidget {
   final List<WorkoutTable> allWorkouts;
@@ -18,35 +19,32 @@ class WorkoutsList extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       itemCount: allWorkouts.length,
       itemBuilder: (BuildContext context, int index) {
-        return BlocListener<ExerciseTableOperationsBloc,
-            ExerciseTableOperationsState>(
-          listener: (context, state) {
-            switch (state) {
-              case ExerciseTableSuccessfulQueryAllByWorkoutIdState():
-                print(
-                    "====> WorkoutPage in ExerciseTableSuccessfulQueryAllByWorkoutIdState LN#30");
-                BlocProvider.of<ActiveWorkoutCubit>(context)
-                    .loadExercisesToState(state.selectedWorkout);
-            }
+        return BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
+          builder: (context, state) {
+            return ListTile(
+              title: Center(
+                child: Text(
+                    "${allWorkouts[index].day}/${allWorkouts[index].month}/${allWorkouts[index].year}"),
+              ),
+              tileColor: Colors.white,
+              onTap: () {
+                if (state is LoadedActiveWorkoutState &&
+                    state.id == allWorkouts[index].id) {
+                  Navigator.of(context).pushNamed("/workout-page");
+                } else {
+                  BlocProvider.of<ExerciseTableOperationsBloc>(context).add(
+                      QueryAllExerciseByWorkoutEvent(
+                          selectedWorkout: allWorkouts[index]));
+                  BlocProvider.of<ActiveWorkoutCubit>(context)
+                      .loadWorkoutToState(allWorkouts[index]);
+                }
+              },
+            );
           },
-          child: ListTile(
-            title: Center(
-              child: Text(
-                  "${allWorkouts[index].day}/${allWorkouts[index].month}/${allWorkouts[index].year}"),
-            ),
-            tileColor: Colors.white,
-            onTap: () {
-              BlocProvider.of<ExerciseTableOperationsBloc>(context).add(
-                  QueryAllExerciseByWorkoutEvent(
-                      selectedWorkout: allWorkouts[index]));
-              BlocProvider.of<ActiveWorkoutCubit>(context)
-                  .loadWorkoutToState(allWorkouts[index]);
-            },
-          ),
         );
       },
       separatorBuilder: (BuildContext context, int index) {
-        return SizedBox(
+        return const SizedBox(
           height: 12,
         );
       },

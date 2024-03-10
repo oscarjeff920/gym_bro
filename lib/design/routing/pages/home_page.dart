@@ -29,6 +29,8 @@ class HomePage extends StatelessWidget {
           case ExerciseTableSuccessfulQueryAllByWorkoutIdState():
             BlocProvider.of<ActiveWorkoutCubit>(context)
                 .loadExercisesToState(state.selectedWorkout);
+            BlocProvider.of<ExerciseTableOperationsBloc>(context)
+                .add(ResetExerciseQueryEvent());
             Navigator.of(context).pushNamed("/workout-page");
           case ExerciseTableQueryErrorState():
             BlocProvider.of<ExerciseTableOperationsBloc>(context)
