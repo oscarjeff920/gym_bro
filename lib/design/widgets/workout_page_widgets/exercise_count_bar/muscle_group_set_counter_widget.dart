@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
+import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
+import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
 import 'package:gym_bro/state_management/cubits/data_model_cubits/workout_page/workout_page_workout_cubit/workout_page_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/data_model_cubits/workout_page/workout_page_workout_cubit/workout_page_workout_state.dart';
 
@@ -17,17 +20,28 @@ class MuscleGroupSetCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WorkoutPageWorkoutCubit, WorkoutPageWorkoutState>(
+    return BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
       builder: (context, state) {
         int primaryMuscleSets = 0;
         int secondaryMuscleSets = 0;
+
         switch (state) {
-          case WorkoutPageDetailsState():
-            for (var exercise in state.exercises) {
+          case LoadedActiveWorkoutState():
+            List<LoadedExerciseModel> savedExercises = state.exercises;
+
+            for (var exercise in savedExercises) {
               if (exercise.primaryMuscleGroup == muscleGroup) {
                 primaryMuscleSets += exercise.numWorkingSets;
               }
             }
+          case NewActiveWorkoutState():
+            List<NewExerciseModel> savedExercises = state.exercises;
+
+          for (var exercise in savedExercises) {
+            if (exercise.primaryMuscleGroup == muscleGroup) {
+              primaryMuscleSets += exercise.numWorkingSets!;
+            }
+          }
         }
 
         return Row(
