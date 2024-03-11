@@ -16,6 +16,9 @@ class WorkoutTableOperationsBloc
     if (event is QueryAllWorkoutTableEvent) {
       yield* _mapLoadContextsToState(event);
     }
+    else if (event is InsertNewWorkoutIntoTableEvent) {
+      yield* _mapInsertContextsToState(event);
+    }
   }
 
   Stream<WorkoutTableOperationsState> _mapLoadContextsToState(
@@ -29,6 +32,18 @@ class WorkoutTableOperationsBloc
     catch (e) {
       print("Whoops.. we've got reached a WorkoutTableQueryErrorState\n$e");
       yield WorkoutTableQueryErrorState();
+    }
+  }
+
+  Stream<WorkoutTableOperationsState> _mapInsertContextsToState(event) async* {
+    yield WorkoutTableInsertState();
+    try {
+      await workoutRepository.insertNewFullWorkout(event.newWorkout);
+      yield WorkoutTableSuccessfulNewWorkoutInsertState();
+    }
+    catch (e) {
+      print("Whoops.. we've got reached a WorkoutTableInsertErrorState\n$e");
+      yield WorkoutTableInsertErrorState();
     }
   }
 }

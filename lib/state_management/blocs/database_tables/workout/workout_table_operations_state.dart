@@ -35,3 +35,13 @@ class WorkoutTableSuccessfulQueryAllState
 }
 
 class WorkoutTableQueryErrorState extends WorkoutTableQueryState {}
+
+// =================================
+
+class WorkoutTableInsertState extends WorkoutTableOperationsState {}
+
+class WorkoutTableSuccessfulInsertState extends WorkoutTableInsertState{}
+
+class WorkoutTableSuccessfulNewWorkoutInsertState extends WorkoutTableSuccessfulInsertState{}
+
+class WorkoutTableInsertErrorState extends WorkoutTableInsertState{}

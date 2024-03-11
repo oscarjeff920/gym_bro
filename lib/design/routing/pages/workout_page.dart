@@ -128,31 +128,31 @@ class WorkoutOverviewPage extends StatelessWidget {
               ]);
             }
           }),
-      floatingActionButton:
-      BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
-        builder: (context, state) {
-          ActiveWorkoutState activeWorkoutState_ = state;
-          return BlocBuilder<ExerciseTableOperationsBloc,
-              ExerciseTableOperationsState>(
-            builder: (context, state) {
-              ExerciseTableOperationsState exerciseTableState = state;
-              return BlocBuilder<AddExerciseCubit, AddExerciseState>(
-                builder: (context, state) {
-                  AddExerciseState addExerciseState_ = state;
-                  return FloatingActionButton(
-                    onPressed: () {
-                      print("");
-                      print(
-                          "ActiveWorkoutState: $activeWorkoutState_\nExerciseTableOperationsState: $exerciseTableState\nAddExerciseState: $addExerciseState_");
-                      print("");
-                    },
-                  );
-                },
-              );
-            },
-          );
-        },
-      ),
+      // floatingActionButton:
+      // BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
+      //   builder: (context, state) {
+      //     ActiveWorkoutState activeWorkoutState_ = state;
+      //     return BlocBuilder<ExerciseTableOperationsBloc,
+      //         ExerciseTableOperationsState>(
+      //       builder: (context, state) {
+      //         ExerciseTableOperationsState exerciseTableState = state;
+      //         return BlocBuilder<AddExerciseCubit, AddExerciseState>(
+      //           builder: (context, state) {
+      //             AddExerciseState addExerciseState_ = state;
+      //             return FloatingActionButton(
+      //               onPressed: () {
+      //                 print("");
+      //                 print(
+      //                     "ActiveWorkoutState: $activeWorkoutState_\nExerciseTableOperationsState: $exerciseTableState\nAddExerciseState: $addExerciseState_");
+      //                 print("");
+      //               },
+      //             );
+      //           },
+      //         );
+      //       },
+      //     );
+      //   },
+      // ),
     );
   }
 }

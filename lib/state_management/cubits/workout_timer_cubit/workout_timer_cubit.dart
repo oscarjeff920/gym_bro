@@ -1,19 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_state.dart';
 import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_state.dart';
 
 class WorkoutTimerCubit extends Cubit<WorkoutTimerState> {
-  WorkoutTimerCubit() : super(const WorkoutTimerStopped());
+  WorkoutTimerCubit() : super(const WorkoutTimerReset());
 
   Timer? _timer;
 
-  startTimer( [int? time] ){
+  startTimer([int? time]) {
     if (state.elapsed == 0) {
       if (time != null) {
         emit(WorkoutTimerStarted(time));
-      }
-      else {
+      } else {
         emit(const WorkoutTimerStarted(0));
       }
 
@@ -23,6 +23,16 @@ class WorkoutTimerCubit extends Cubit<WorkoutTimerState> {
 
   stopTimer() {
     _timer!.cancel();
+    emit(WorkoutTimerStopped(state.elapsed));
+  }
+
+  resetTimer() {
+    switch (state) {
+      case WorkoutTimerReset():
+        null;
+      default:
+        emit(const WorkoutTimerReset());
+    }
   }
 
   onTick(Timer timer) {
@@ -31,5 +41,4 @@ class WorkoutTimerCubit extends Cubit<WorkoutTimerState> {
         emit(WorkoutTimerStarted(state.elapsed + 1));
     }
   }
-
 }
