@@ -6,7 +6,7 @@ class GeneralExerciseModel {
   final int exerciseOrder;
   final String movementName;
   final int movementId;
-  final String exerciseDuration;
+  final String? exerciseDuration;
   final int numWorkingSets;
   final MuscleGroupType primaryMuscleGroup;
 
@@ -18,7 +18,7 @@ class GeneralExerciseModel {
       required this.exerciseOrder,
       required this.movementName,
       required this.movementId,
-      required this.exerciseDuration,
+      this.exerciseDuration,
       required this.numWorkingSets,
       required this.primaryMuscleGroup,
       // required this.secondaryMuscleGroup,

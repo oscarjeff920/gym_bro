@@ -24,12 +24,15 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
   }
 
   addNewExerciseToWorkoutState(AddExerciseState newExercise) {
-    if (state is NewActiveWorkoutState && newExercise.setsDone.isNotEmpty) {
+    if (state is NewActiveWorkoutState) {
       NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
+
       NewExerciseModel updatedExercise = NewExerciseModel(
           exerciseOrder: currentState.exercises.length + 1,
           movementName: newExercise.selectedMovement!,
+          movementId: newExercise.selectedMovementId,
           primaryMuscleGroup: newExercise.selectedMuscleGroup!,
+          numWorkingSets: newExercise.numWorkingSets,
           exerciseSets: newExercise.setsDone
               .map((set_) => NewExerciseSetModel(
                   exerciseSetOrder: 0,

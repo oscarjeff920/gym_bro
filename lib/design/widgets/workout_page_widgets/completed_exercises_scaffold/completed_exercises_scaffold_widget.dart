@@ -39,8 +39,8 @@ class CompletedExercisesScaffold extends StatelessWidget {
                 } else {
                   return CompletedExerciseTile(
                     tileIndex: index,
-                    primaryMuscleGroupColour: muscleGroupColours[exercises[index].primaryMuscleGroup]!,
-                    tileSpacingValue: tileSpacingValue, exercise: exercises[index],
+                    primaryMuscleGroupColour: muscleGroupColours[exercises[isCurrentWorkout ? index -1 : index].primaryMuscleGroup]!,
+                    tileSpacingValue: tileSpacingValue, exercise: exercises[isCurrentWorkout ? index -1 : index],
                   );
                 }
               }, childCount: isCurrentWorkout ? 1 + exercises.length : exercises.length),

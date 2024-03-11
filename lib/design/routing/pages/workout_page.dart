@@ -6,6 +6,9 @@ import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_state.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
+import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
+import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
+import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_state.dart';
 import '../../widgets/the_app_bar_widget.dart';
@@ -21,11 +24,11 @@ class WorkoutOverviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // CHANGE!!!
     double tileSpacingValue = 12;
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: const TheAppBar(),
-          body: BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
-              builder: (context, state) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: const TheAppBar(),
+      body: BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
+          builder: (context, state) {
             List<dynamic> exercises;
             if (state is NewActiveWorkoutState) {
               exercises = state.exercises;
@@ -57,20 +60,22 @@ class WorkoutOverviewPage extends StatelessWidget {
                     child: Stack(children: [
                       Positioned.fill(
                           child: CompletedExercisesScaffold(
-                        tileSpacingValue: tileSpacingValue,
-                        exercises: exercises
-                            .map((exercise) => GeneralExerciseModel(
-                                exerciseOrder: exercise.exerciseOrder,
-                                movementName: exercise.movementName,
-                                movementId: exercise.movementId,
-                                exerciseDuration: exercise.exerciseDuration,
-                                numWorkingSets: exercise.numWorkingSets,
-                                primaryMuscleGroup: exercise.primaryMuscleGroup,
-                                exerciseSets: []))
-                            .toList(),
-                        isCurrentWorkout:
+                            tileSpacingValue: tileSpacingValue,
+                            exercises: exercises
+                                .map((exercise) =>
+                                GeneralExerciseModel(
+                                    exerciseOrder: exercise.exerciseOrder,
+                                    movementName: exercise.movementName,
+                                    movementId: exercise.movementId,
+                                    exerciseDuration: exercise.exerciseDuration,
+                                    numWorkingSets: exercise.numWorkingSets,
+                                    primaryMuscleGroup: exercise
+                                        .primaryMuscleGroup,
+                                    exerciseSets: []))
+                                .toList(),
+                            isCurrentWorkout:
                             state is NewActiveWorkoutState ? true : false,
-                      )),
+                          )),
                       BlocBuilder<OpenExerciseModalCubit,
                           OpenExerciseModalState>(
                         builder: (context, state) {
@@ -101,7 +106,7 @@ class WorkoutOverviewPage extends StatelessWidget {
                                 alignment: Alignment(0, 0.78),
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  MainAxisAlignment.spaceEvenly,
                                   children: [
                                     CloseModalButton(
                                       isFinished: false,
@@ -123,24 +128,31 @@ class WorkoutOverviewPage extends StatelessWidget {
               ]);
             }
           }),
-          floatingActionButton:
-              BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
+      floatingActionButton:
+      BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
+        builder: (context, state) {
+          ActiveWorkoutState activeWorkoutState_ = state;
+          return BlocBuilder<ExerciseTableOperationsBloc,
+              ExerciseTableOperationsState>(
             builder: (context, state) {
-              ActiveWorkoutState currentState = state;
-              return BlocBuilder<ExerciseTableOperationsBloc,
-                  ExerciseTableOperationsState>(
+              ExerciseTableOperationsState exerciseTableState = state;
+              return BlocBuilder<AddExerciseCubit, AddExerciseState>(
                 builder: (context, state) {
+                  AddExerciseState addExerciseState_ = state;
                   return FloatingActionButton(
                     onPressed: () {
                       print("");
                       print(
-                          "activeWorkoutState: $currentState\nExerciseTableOperationsState: $state");
+                          "ActiveWorkoutState: $activeWorkoutState_\nExerciseTableOperationsState: $exerciseTableState\nAddExerciseState: $addExerciseState_");
+                      print("");
                     },
                   );
                 },
               );
             },
-          ),
-        );
+          );
+        },
+      ),
+    );
   }
 }
