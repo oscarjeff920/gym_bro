@@ -54,34 +54,23 @@ class CompletedExercisesScaffold extends StatelessWidget {
               )
             ],
           ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: tileSpacingValue),
-              child: Ink(
-                decoration: const BoxDecoration(shape: BoxShape.rectangle),
-                width: 50,
-                height: 50,
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
-                    builder: (activeWorkoutContext, activeWorkoutState) {
-                      switch (activeWorkoutState) {
-                        case NewActiveWorkoutState():
-                          return FinishWorkoutButton(
-                              day: activeWorkoutState.day,
-                              month: activeWorkoutState.month,
-                              year: activeWorkoutState.year,
-                              exercises: activeWorkoutState.exercises);
-                        default:
-                          return Container();
-                      }
-                    },
-                  ),
-                ),
-              ),
-            ),
-          )
+          BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
+              builder: (activeWorkoutContext, activeWorkoutState) {
+            switch (activeWorkoutState) {
+              case NewActiveWorkoutState():
+                return Align(
+                    alignment: Alignment.bottomRight,
+                    child: FinishWorkoutButton(
+                      day: activeWorkoutState.day,
+                      month: activeWorkoutState.month,
+                      year: activeWorkoutState.year,
+                      exercises: activeWorkoutState.exercises,
+                      tileSpacingValue: tileSpacingValue,
+                    ));
+              default:
+                return Container();
+            }
+          }),
         ]));
   }
 }

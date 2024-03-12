@@ -8,6 +8,7 @@ import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_time
 import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_state.dart';
 
 class FinishWorkoutButton extends StatelessWidget {
+  final double tileSpacingValue;
   final int day;
   final int month;
   final int year;
@@ -19,37 +20,51 @@ class FinishWorkoutButton extends StatelessWidget {
     required this.month,
     required this.year,
     required this.exercises,
+    required this.tileSpacingValue,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WorkoutTimerCubit, WorkoutTimerState>(
-      builder: (timerContext, timerState) {
-        return TextButton(
-            onPressed: exercises.isNotEmpty
-                ? () {
-                    BlocProvider.of<WorkoutTimerCubit>(context).stopTimer();
-                    BlocProvider.of<WorkoutTableOperationsBloc>(context).add(
-                        InsertNewWorkoutIntoTableEvent(
-                            newWorkout: NewWorkoutModel(
-                                day: day,
-                                month: month,
-                                year: year,
-                                workoutDuration: timerState.elapsed == 0
-                                    ? null
-                                    : timerState.toString(),
-                                exercises: exercises)));
-                    BlocProvider.of<WorkoutTimerCubit>(context).resetTimer();
-                    BlocProvider.of<WorkoutTableOperationsBloc>(context)
-                        .add(QueryAllWorkoutTableEvent());
-                    Navigator.of(context).pushNamed("/");
-                  }
-                : null,
-            child: const Icon(
-              Icons.check_box,
-              size: 50,
-            ));
-      },
+    return Padding(
+      padding: EdgeInsets.only(bottom: tileSpacingValue),
+      child: Ink(
+        decoration: const BoxDecoration(shape: BoxShape.rectangle),
+        width: 50,
+        height: 50,
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: BlocBuilder<WorkoutTimerCubit, WorkoutTimerState>(
+            builder: (timerContext, timerState) {
+              return TextButton(
+                  onPressed: exercises.isNotEmpty
+                      ? () {
+                          BlocProvider.of<WorkoutTimerCubit>(context)
+                              .stopTimer();
+                          BlocProvider.of<WorkoutTableOperationsBloc>(context)
+                              .add(InsertNewWorkoutIntoTableEvent(
+                                  newWorkout: NewWorkoutModel(
+                                      day: day,
+                                      month: month,
+                                      year: year,
+                                      workoutDuration: timerState.elapsed == 0
+                                          ? null
+                                          : timerState.toString(),
+                                      exercises: exercises)));
+                          BlocProvider.of<WorkoutTimerCubit>(context)
+                              .resetTimer();
+                          BlocProvider.of<WorkoutTableOperationsBloc>(context)
+                              .add(QueryAllWorkoutTableEvent());
+                          Navigator.of(context).pushNamed("/");
+                        }
+                      : null,
+                  child: const Icon(
+                    Icons.check_box,
+                    size: 50,
+                  ));
+            },
+          ),
+        ),
+      ),
     );
   }
 }
