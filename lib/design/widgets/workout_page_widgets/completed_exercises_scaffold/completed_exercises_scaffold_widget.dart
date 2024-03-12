@@ -64,6 +64,7 @@ class CompletedExercisesScaffold extends StatelessWidget {
                       day: activeWorkoutState.day,
                       month: activeWorkoutState.month,
                       year: activeWorkoutState.year,
+                      workoutStartTime: activeWorkoutState.workoutStartTime,
                       exercises: activeWorkoutState.exercises,
                       tileSpacingValue: tileSpacingValue,
                     ));

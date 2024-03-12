@@ -8,6 +8,7 @@ CREATE TABLE $workoutTableName (
     year INTEGER NOT NULL,
     month INTEGER NOT NULL,
     day INTEGER NOT NULL,
+    start_time TEXT,
     duration TEXT
 );
 """,

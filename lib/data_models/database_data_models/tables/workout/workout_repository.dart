@@ -13,7 +13,8 @@ class WorkoutRepository {
 
     final List<Map<String, dynamic>> workouts = await db.query(workoutTableName,
         orderBy: 'year DESC, month DESC, day DESC');
-    return workouts.map((workout) => WorkoutTable.fromMap(workout)).toList();
+    final List<WorkoutTable> convertedWorkouts = workouts.map((workout) => WorkoutTable.fromMap(workout)).toList();
+    return convertedWorkouts;
   }
 
   insertNewFullWorkout(NewWorkoutModel newWorkout) async {
@@ -21,8 +22,8 @@ class WorkoutRepository {
 
     await db.transaction((txn) async {
       String insertWorkoutQueryString = """
-      INSERT INTO $workoutTableName (day, month, year, duration) VALUES
-          (${newWorkout.day}, ${newWorkout.month}, ${newWorkout.year}, '${newWorkout.workoutDuration}');
+      INSERT INTO $workoutTableName (day, month, year, start_time, duration) VALUES
+          (${newWorkout.day}, ${newWorkout.month}, ${newWorkout.year}, '${newWorkout.workoutStartTime}', '${newWorkout.workoutDuration}');
       """;
       final newWorkoutId = await txn.rawInsert(insertWorkoutQueryString);
 

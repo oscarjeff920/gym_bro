@@ -36,6 +36,7 @@ class ExerciseTableOperationsBloc
               day: event.selectedWorkout.day,
               month: event.selectedWorkout.month,
               year: event.selectedWorkout.year,
+              workoutStartTime: event.selectedWorkout.workoutStartTime,
               workoutDuration: event.selectedWorkout.duration,
               exercises: query));
     } catch (e) {

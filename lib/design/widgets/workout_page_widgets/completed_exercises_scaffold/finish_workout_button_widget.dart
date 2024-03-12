@@ -12,6 +12,7 @@ class FinishWorkoutButton extends StatelessWidget {
   final int day;
   final int month;
   final int year;
+  final String? workoutStartTime;
   final List<NewExerciseModel> exercises;
 
   const FinishWorkoutButton({
@@ -19,6 +20,7 @@ class FinishWorkoutButton extends StatelessWidget {
     required this.day,
     required this.month,
     required this.year,
+    required this.workoutStartTime,
     required this.exercises,
     required this.tileSpacingValue,
   });
@@ -46,6 +48,7 @@ class FinishWorkoutButton extends StatelessWidget {
                                       day: day,
                                       month: month,
                                       year: year,
+                                      workoutStartTime: workoutStartTime,
                                       workoutDuration: timerState.elapsed == 0
                                           ? null
                                           : timerState.toString(),

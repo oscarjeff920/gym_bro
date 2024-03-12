@@ -10,13 +10,14 @@ class ActiveWorkoutOnState extends ActiveWorkoutState {
   final int day;
   final int month;
   final int year;
+  final String? workoutStartTime;
   final String? workoutDuration;
 
   ActiveWorkoutOnState(
-      {required this.day, required this.month, required this.year, this.workoutDuration});
+      {required this.day, required this.month, required this.year, this.workoutStartTime, this.workoutDuration});
 
   @override
-  List<Object?> get props => [day, month, year];
+  List<Object?> get props => [day, month, year, workoutStartTime, workoutDuration];
 }
 
 class NewActiveWorkoutState extends ActiveWorkoutOnState {
@@ -26,6 +27,7 @@ class NewActiveWorkoutState extends ActiveWorkoutOnState {
     required super.day,
     required super.month,
     required super.year,
+    super.workoutStartTime,
     super.workoutDuration,
     required this.exercises
   });
@@ -47,6 +49,7 @@ class NewActiveWorkoutState extends ActiveWorkoutOnState {
         day: day,
         month: month,
         year: year,
+        workoutStartTime: workoutStartTime,
         workoutDuration: workoutDuration ?? this.workoutDuration,
         exercises: savedExercises
     );
@@ -65,6 +68,7 @@ class LoadedActiveWorkoutState extends ActiveWorkoutOnState {
     required super.day,
     required super.month,
     required super.year,
+    required super.workoutStartTime,
     required super.workoutDuration,
     required this.exercises
   });
@@ -77,6 +81,7 @@ class LoadedActiveWorkoutState extends ActiveWorkoutOnState {
         day: day,
         month: month,
         year: year,
+        workoutStartTime: workoutStartTime,
         workoutDuration: workoutDuration,
         exercises: loadedExercises ?? exercises
     );

@@ -23,6 +23,29 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
         exercises: const []));
   }
 
+  logStartTime() {
+    if (state is NewActiveWorkoutState) {
+      NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
+      if (currentState.workoutStartTime == null) {
+        NewActiveWorkoutState generatedState = currentState.copyWith();
+
+        DateTime timeNow = DateTime.now();
+
+        emit(NewActiveWorkoutState(
+            day: generatedState.day,
+            month: generatedState.month,
+            year: generatedState.year,
+            workoutStartTime:
+                "${timeNow.hour}:${timeNow.minute}:${timeNow.second}",
+            workoutDuration: generatedState.workoutDuration,
+            exercises: generatedState.exercises));
+      }
+    } else {
+      throw StateError(
+          "method logStartTime can only be ran on NewActiveWorkoutState. Current state: $state");
+    }
+  }
+
   addNewExerciseToWorkoutState(AddExerciseState newExercise) {
     if (state is NewActiveWorkoutState) {
       NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
@@ -75,6 +98,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
         day: loadedWorkout.day,
         month: loadedWorkout.month,
         year: loadedWorkout.year,
+        workoutStartTime: loadedWorkout.workoutStartTime,
         workoutDuration: loadedWorkout.duration,
         exercises: const []);
 

@@ -21,8 +21,14 @@ class WorkoutsList extends StatelessWidget {
           builder: (context, state) {
             return ListTile(
               title: Center(
-                child: Text(
-                    "${allWorkouts[index].day}/${allWorkouts[index].month}/${allWorkouts[index].year}"),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                        "${allWorkouts[index].day}/${allWorkouts[index].month}/${allWorkouts[index].year}"),
+                    Text(allWorkouts[index].workoutStartTime ?? "- - -")
+                  ],
+                ),
               ),
               tileColor: Colors.white,
               onTap: () {

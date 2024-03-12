@@ -29,6 +29,7 @@ class WorkoutTableSuccessfulQueryAllState
             day: workout.day,
             month: workout.month,
             year: workout.year,
+            workoutStartTime: workout.workoutStartTime,
             workoutDuration: workout.duration,
             exercises: []))
         .toList();
