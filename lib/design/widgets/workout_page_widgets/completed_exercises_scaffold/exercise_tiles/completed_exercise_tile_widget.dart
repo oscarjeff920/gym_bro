@@ -14,7 +14,8 @@ class CompletedExerciseTile extends StatelessWidget {
       {super.key,
       required this.primaryMuscleGroupColour,
       required this.tileIndex,
-      required this.tileSpacingValue, required this.exercise});
+      required this.tileSpacingValue,
+      required this.exercise});
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +26,34 @@ class CompletedExerciseTile extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Expanded(flex: 2, child: Text(exercise.movementName, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15), textAlign: TextAlign.center)),
+            Expanded(
+                flex: 2,
+                child: Text(capitalizeString(exercise.movementName),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                    textAlign: TextAlign.center)),
             Text("Working Sets: ${exercise.numWorkingSets.toString()}"),
             Text("Exercise Duration: ${exercise.exerciseDuration}"),
           ],
         ),
       ),
-      clickBehaviour: () {
-      },
+      clickBehaviour: () {},
       isTop: tileIndex == 0 || tileIndex == 1 ? true : false,
       tileSpacingValue: tileSpacingValue,
     );
   }
+}
+
+String capitalizeString (String string) {
+  String capitalizedString = "";
+  List<String> stringSplit = string.split(" ");
+
+  for (var string_ in stringSplit) {
+    capitalizedString += "${string_[0].toUpperCase()}${string_.substring(1)} ";
+  }
+
+  return capitalizedString;
 }
