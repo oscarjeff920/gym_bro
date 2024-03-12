@@ -12,7 +12,7 @@ class WorkoutRepository {
     final db = await databaseHelper.database;
 
     final List<Map<String, dynamic>> workouts = await db.query(workoutTableName,
-        orderBy: 'year DESC, month DESC, day DESC');
+        orderBy: 'year DESC, month DESC, day DESC, start_time DESC');
     final List<WorkoutTable> convertedWorkouts = workouts.map((workout) => WorkoutTable.fromMap(workout)).toList();
     return convertedWorkouts;
   }
