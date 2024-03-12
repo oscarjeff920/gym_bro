@@ -10,23 +10,23 @@ class ActiveWorkoutOnState extends ActiveWorkoutState {
   final int day;
   final int month;
   final int year;
+  final String? workoutDuration;
 
   ActiveWorkoutOnState(
-      {required this.day, required this.month, required this.year});
+      {required this.day, required this.month, required this.year, this.workoutDuration});
 
   @override
   List<Object?> get props => [day, month, year];
 }
 
 class NewActiveWorkoutState extends ActiveWorkoutOnState {
-  final String? workoutDuration;
   final List<NewExerciseModel> exercises;
 
   NewActiveWorkoutState({
     required super.day,
     required super.month,
     required super.year,
-    this.workoutDuration,
+    super.workoutDuration,
     required this.exercises
   });
 
@@ -58,7 +58,6 @@ class NewActiveWorkoutState extends ActiveWorkoutOnState {
 
 class LoadedActiveWorkoutState extends ActiveWorkoutOnState {
   final int id;
-  final String workoutDuration;
   final List<LoadedExerciseModel> exercises;
 
   LoadedActiveWorkoutState({
@@ -66,7 +65,7 @@ class LoadedActiveWorkoutState extends ActiveWorkoutOnState {
     required super.day,
     required super.month,
     required super.year,
-    required this.workoutDuration,
+    required super.workoutDuration,
     required this.exercises
   });
 
@@ -86,47 +85,3 @@ class LoadedActiveWorkoutState extends ActiveWorkoutOnState {
   @override
   List<Object?> get props => [id, ...super.props, workoutDuration, exercises];
 }
-
-//============================================
-
-// class ActiveWorkoutState1 extends Equatable {
-//   final int? day;
-//   final int? month;
-//   final int? year;
-//   final String? workoutDuration;
-//   final List<GeneralExerciseModel> exercises;
-//
-//   const ActiveWorkoutState1(
-//       {this.day, this.month, this.year, this.workoutDuration, required this.exercises});
-//
-//   @override
-//   List<Object?> get props => [day, month, year, workoutDuration, exercises];
-// }
-//
-// class WorkoutOnState1 extends ActiveWorkoutState1 {
-//   const WorkoutOnState1({required int day,
-//     required int month,
-//     required int year,
-//     required String workoutDuration, required super.exercises})
-//       : super(
-//       day: day,
-//       month: month,
-//       year: year,
-//       workoutDuration: workoutDuration);
-// }
-//
-// class LoadedWorkoutState1 extends WorkoutOnState1 {
-//   final int id;
-//
-//   // final List<LoadedExerciseModel> loadedExercises;
-//
-//   LoadedWorkoutState1(
-//       {required this.id, required super.day, required super.month, required super.year, required super.workoutDuration, required List<
-//           LoadedExerciseModel> super.exercises}) : super(exercises: exercises)
-// }
-
-// class NewWorkoutState1 extends WorkoutOnState1 {
-//
-//   // const NewWorkoutState(
-//   //     {required List<NewExerciseModel> exercises}) : super();
-// }

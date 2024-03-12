@@ -32,7 +32,7 @@ class LoadedExerciseModel {
   final int exerciseOrder;
   final String movementName;
   final int movementId;
-  final String exerciseDuration;
+  final String? exerciseDuration;
   final int numWorkingSets;
   final MuscleGroupType primaryMuscleGroup;
 

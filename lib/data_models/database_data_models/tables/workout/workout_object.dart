@@ -3,7 +3,7 @@ class WorkoutTable {
   final int year;
   final int month;
   final int day;
-  final String duration;
+  final String? duration;
 
   WorkoutTable(
       {required this.id,
