@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
 
 class ExerciseTableOperationsState extends Equatable {

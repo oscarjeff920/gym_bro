@@ -50,11 +50,11 @@ class TimerButton extends StatelessWidget {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Icon(Icons.timer_outlined),
+                const Icon(Icons.timer_outlined),
                 Text(
                   buttonText,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: 12),
                 ),
               ]));
     });

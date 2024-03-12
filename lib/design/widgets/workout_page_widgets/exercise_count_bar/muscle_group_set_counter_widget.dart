@@ -4,8 +4,6 @@ import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
-import 'package:gym_bro/state_management/cubits/data_model_cubits/workout_page/workout_page_workout_cubit/workout_page_workout_cubit.dart';
-import 'package:gym_bro/state_management/cubits/data_model_cubits/workout_page/workout_page_workout_cubit/workout_page_workout_state.dart';
 
 import '../../../../state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import '../../../../state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
@@ -66,12 +64,12 @@ class MuscleGroupSetCounter extends StatelessWidget {
               textAlign: TextAlign.start,
             ),
             SizedBox(
+              width: 12,
               child: Text(
                 "$secondaryMuscleSets",
                 textScaleFactor: 0.73,
                 textAlign: TextAlign.start,
               ),
-              width: 12,
             )
           ],
         );

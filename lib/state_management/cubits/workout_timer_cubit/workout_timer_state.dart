@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_state.dart';
 
 class WorkoutTimerState extends Equatable{
   final int elapsed;

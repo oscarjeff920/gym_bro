@@ -49,74 +49,71 @@ class WorkoutOverviewPage extends StatelessWidget {
                       workoutDuration: state.workoutDuration,
                     )),
                 Expanded(
-                  child: Container(
-                    // COMBINE-SPACING!
-                    child: Stack(children: [
-                      Positioned.fill(
-                          child: CompletedExercisesScaffold(
-                            tileSpacingValue: tileSpacingValue,
-                            exercises: exercises
-                                .map((exercise) =>
-                                GeneralExerciseModel(
-                                    exerciseOrder: exercise.exerciseOrder,
-                                    movementName: exercise.movementName,
-                                    movementId: exercise.movementId,
-                                    exerciseDuration: exercise.exerciseDuration,
-                                    numWorkingSets: exercise.numWorkingSets,
-                                    primaryMuscleGroup: exercise
-                                        .primaryMuscleGroup,
-                                    exerciseSets: []))
-                                .toList(),
-                            isCurrentWorkout:
-                            state is NewActiveWorkoutState ? true : false,
-                          )),
-                      BlocBuilder<OpenExerciseModalCubit,
-                          OpenExerciseModalState>(
-                        builder: (context, state) {
-                          double fadedValue;
-                          switch (state) {
-                            case ExerciseModalOpenedState():
-                              fadedValue = 0.8;
-                            default:
-                              fadedValue = 0;
-                          }
-                          return IgnorePointer(
-                            child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 200),
-                                color: Colors.black.withOpacity(fadedValue)),
-                          );
-                        },
-                      ),
-                      BlocBuilder<OpenExerciseModalCubit,
-                          OpenExerciseModalState>(builder: (context, state) {
+                  child: Stack(children: [
+                    Positioned.fill(
+                        child: CompletedExercisesScaffold(
+                          tileSpacingValue: tileSpacingValue,
+                          exercises: exercises
+                              .map((exercise) =>
+                              GeneralExerciseModel(
+                                  exerciseOrder: exercise.exerciseOrder,
+                                  movementName: exercise.movementName,
+                                  movementId: exercise.movementId,
+                                  exerciseDuration: exercise.exerciseDuration,
+                                  numWorkingSets: exercise.numWorkingSets,
+                                  primaryMuscleGroup: exercise
+                                      .primaryMuscleGroup,
+                                  exerciseSets: []))
+                              .toList(),
+                          isCurrentWorkout:
+                          state is NewActiveWorkoutState ? true : false,
+                        )),
+                    BlocBuilder<OpenExerciseModalCubit,
+                        OpenExerciseModalState>(
+                      builder: (context, state) {
+                        double fadedValue;
+                        switch (state) {
+                          case ExerciseModalOpenedState():
+                            fadedValue = 0.8;
+                          default:
+                            fadedValue = 0;
+                        }
                         return IgnorePointer(
-                          ignoring: !state.isOpen,
-                          child: AnimatedOpacity(
-                            opacity: state.isOpen ? 1 : 0,
-                            duration: const Duration(milliseconds: 200),
-                            child: const Stack(children: [
-                              AddExerciseModal(),
-                              Align(
-                                alignment: Alignment(0, 0.78),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    CloseModalButton(
-                                      isFinished: false,
-                                    ),
-                                    CloseModalButton(
-                                      isFinished: true,
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ]),
-                          ),
+                          child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              color: Colors.black.withOpacity(fadedValue)),
                         );
-                      }),
-                    ]),
-                  ),
+                      },
+                    ),
+                    BlocBuilder<OpenExerciseModalCubit,
+                        OpenExerciseModalState>(builder: (context, state) {
+                      return IgnorePointer(
+                        ignoring: !state.isOpen,
+                        child: AnimatedOpacity(
+                          opacity: state.isOpen ? 1 : 0,
+                          duration: const Duration(milliseconds: 200),
+                          child: const Stack(children: [
+                            AddExerciseModal(),
+                            Align(
+                              alignment: Alignment(0, 0.78),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  CloseModalButton(
+                                    isFinished: false,
+                                  ),
+                                  CloseModalButton(
+                                    isFinished: true,
+                                  ),
+                                ],
+                              ),
+                            )
+                          ]),
+                        ),
+                      );
+                    }),
+                  ]),
                 ),
                 const ExerciseCountBar()
               ]);

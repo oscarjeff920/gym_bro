@@ -36,7 +36,7 @@ class CurrentSetFields extends StatelessWidget {
                   textInputAction: TextInputAction.next,
                   keyboardType: textInput,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   cursorColor: Colors.white,
                   // controller: _controller,
                   onChanged: (inputtedValue) {
@@ -67,14 +67,14 @@ class TimerSetField extends StatelessWidget {
         children: [
           const Text(
             "Set Duration:",
-            style: const TextStyle(fontSize: 10, color: Colors.white),
+            style: TextStyle(fontSize: 10, color: Colors.white),
             textAlign: TextAlign.center,
           ),
           BlocBuilder<SetTimerCubit, SetTimerState>(
             builder: (context, state) {
               return TextField(
                 readOnly: true,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 controller: TextEditingController()..text = state.toString(),
                 textAlign: TextAlign.center,
               );

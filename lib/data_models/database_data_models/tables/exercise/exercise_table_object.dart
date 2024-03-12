@@ -1,4 +1,3 @@
-import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 
 class ExerciseTable {
   final int? id;
@@ -25,19 +24,6 @@ class ExerciseTable {
       numbWorkingSets: map['numb_working_sets'],
     );
   }
-
-  // GeneralExerciseModel toExerciseModel() {
-  //   return GeneralExerciseModel(
-  //       id: id,
-  //       exerciseOrder: exerciseOrder,
-  //       movementName: movementName,
-  //       movementId: movementId,
-  //       exerciseDuration: exerciseDuration,
-  //       totalWorkingSets: totalWorkingSets,
-  //       primaryMuscleGroup: primaryMuscleGroup,
-  //       secondaryMuscleGroup: secondaryMuscleGroup,
-  //       exerciseSets: exerciseSets)
-  // }
 
   Map<String, dynamic> toMap() {
     return {

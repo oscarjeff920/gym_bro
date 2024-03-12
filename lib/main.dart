@@ -12,11 +12,8 @@ import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_time
 
 import 'data_models/database_data_models/tables/exercise/exercise_repository.dart';
 import 'data_models/database_data_models/tables/workout/workout_repository.dart';
-import 'state_management/blocs/(deprecated)database_operations_bloc/database_operations_bloc.dart';
-import 'state_management/blocs/(depricated)building_workout_bloc/building_workout_bloc.dart';
 import 'state_management/blocs/database_tables/exercise/exercise_table_operations_bloc.dart';
 import 'state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
-import 'state_management/cubits/data_model_cubits/workout_page/workout_page_workout_cubit/workout_page_workout_cubit.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +34,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => DatabaseBloc()),
         BlocProvider(
             create: (context) => WorkoutTableOperationsBloc(
                 workoutRepository: WorkoutRepository(databaseHelper))),
@@ -48,10 +44,8 @@ class MyApp extends StatelessWidget {
             create: (context) => ExerciseTableOperationsBloc(
                 exerciseRepository: ExerciseRepository(databaseHelper))),
         BlocProvider(create: (context) => ActiveWorkoutCubit()),
-        BlocProvider(create: (context) => WorkoutPageWorkoutCubit()),
         BlocProvider(create: (context) => OpenExerciseModalCubit()),
         BlocProvider(create: (context) => AddExerciseCubit()),
-        BlocProvider(create: (context) => BuildingWorkoutBloc()),
         BlocProvider(create: (context) => SetTimerCubit()),
         BlocProvider(create: (context) => WorkoutTimerCubit()),
       ],

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
-import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
 
 import '../../../../state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
@@ -19,7 +18,7 @@ class CloseModalButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration:
-          new BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+          const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
       child: BlocBuilder<AddExerciseCubit, AddExerciseState>(
         builder: (context, state) {
           return IconButton(

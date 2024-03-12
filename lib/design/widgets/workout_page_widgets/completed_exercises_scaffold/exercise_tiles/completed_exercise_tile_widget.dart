@@ -25,7 +25,7 @@ class CompletedExerciseTile extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Expanded(flex: 2, child: Text(exercise.movementName, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15), textAlign: TextAlign.center)),
+            Expanded(flex: 2, child: Text(exercise.movementName, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15), textAlign: TextAlign.center)),
             Text("Working Sets: ${exercise.numWorkingSets.toString()}"),
             Text("Exercise Duration: ${exercise.exerciseDuration}"),
           ],

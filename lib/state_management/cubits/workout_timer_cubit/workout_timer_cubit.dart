@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_state.dart';
 import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_state.dart';
 
 class WorkoutTimerCubit extends Cubit<WorkoutTimerState> {

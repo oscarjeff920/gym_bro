@@ -20,7 +20,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
         day: dateToday.day,
         month: dateToday.month,
         year: dateToday.year,
-        exercises: []));
+        exercises: const []));
   }
 
   addNewExerciseToWorkoutState(AddExerciseState newExercise) {

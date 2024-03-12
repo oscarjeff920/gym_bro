@@ -22,7 +22,7 @@ class ExerciseSetTable {
 
   Duration stringToDuration (String stringDuration) {
     // TODO: work this one out punk
-    return Duration();
+    return const Duration();
   }
 
   factory ExerciseSetTable.fromMap(Map<String, dynamic> map) {

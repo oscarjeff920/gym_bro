@@ -22,14 +22,15 @@ class WorkoutTableSuccessfulQueryAllState
 
   WorkoutTableSuccessfulQueryAllState({required this.allWorkoutsQuery});
 
-  List<WorkoutModel_HomePage> convertWorkoutsForHomePage() {
+  List<LoadedWorkoutModel> convertWorkoutsForHomePage() {
     return allWorkoutsQuery
-        .map((workout) => WorkoutModel_HomePage(
-            id: workout.id,
-            year: workout.year,
-            month: workout.month,
+        .map((workout) => LoadedWorkoutModel(
+            id: workout.id!,
             day: workout.day,
-            workoutDuration: workout.duration))
+            month: workout.month,
+            year: workout.year,
+            workoutDuration: workout.duration,
+            exercises: []))
         .toList();
   }
 }
@@ -40,8 +41,9 @@ class WorkoutTableQueryErrorState extends WorkoutTableQueryState {}
 
 class WorkoutTableInsertState extends WorkoutTableOperationsState {}
 
-class WorkoutTableSuccessfulInsertState extends WorkoutTableInsertState{}
+class WorkoutTableSuccessfulInsertState extends WorkoutTableInsertState {}
 
-class WorkoutTableSuccessfulNewWorkoutInsertState extends WorkoutTableSuccessfulInsertState{}
+class WorkoutTableSuccessfulNewWorkoutInsertState
+    extends WorkoutTableSuccessfulInsertState {}
 
-class WorkoutTableInsertErrorState extends WorkoutTableInsertState{}
+class WorkoutTableInsertErrorState extends WorkoutTableInsertState {}
