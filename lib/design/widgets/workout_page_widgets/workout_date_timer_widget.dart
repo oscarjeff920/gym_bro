@@ -9,6 +9,7 @@ class WorkoutDateTimer extends StatelessWidget {
   final int month;
   final int day;
   final String? workoutDuration;
+  final bool isLoadedWorkout;
 
   const WorkoutDateTimer({
     super.key,
@@ -16,6 +17,7 @@ class WorkoutDateTimer extends StatelessWidget {
     required this.month,
     required this.day,
     this.workoutDuration,
+    required this.isLoadedWorkout,
   });
 
   String formatDate() {
@@ -42,7 +44,7 @@ class WorkoutDateTimer extends StatelessWidget {
               child: Center(
                 child: Text(
                   formatDate(),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
               ),
             ),
@@ -51,11 +53,12 @@ class WorkoutDateTimer extends StatelessWidget {
                 child: BlocBuilder<WorkoutTimerCubit, WorkoutTimerState>(
                   builder: (context, state) {
                     return Text(
-                      workoutDuration == null
-                          ? state.toString()
-                          : workoutDuration!,
+                      isLoadedWorkout ?
+                        workoutDuration == null
+                        ? '- - - -' : workoutDuration!
+                      : state.toString(),
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                          const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                     );
                   },
                 ),
