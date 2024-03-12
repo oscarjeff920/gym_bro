@@ -20,15 +20,11 @@ class DatabaseHelper {
     if (_database != null) return _database!;
 
     _database = await initializeDB();
-    // if (_database != null) print("well we got a db apparently: $_database");
     return _database!;
   }
 
   Future<Database> initializeDB() async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
-    // print(
-    //     "\n======================\n===================\npath = ${appDocDir.path}\n");
-    // print("we be initializing db");
 
     return await openDatabase(
       join(appDocDir.path, 'GymBro.db'),
@@ -61,14 +57,4 @@ class DatabaseHelper {
       throw ArgumentError('Database version $version is not supported');
     }
   }
-//
-// Future<int> insertData(Map<String, dynamic> row) async {
-//   Database db = await _instance.database;
-//   return await db.insert('items', row);
-// }
-//
-// Future<List<Map<String, dynamic>>> queryAll() async {
-//   Database db = await _instance.database;
-//   return await db.query('items');
-// }
 }

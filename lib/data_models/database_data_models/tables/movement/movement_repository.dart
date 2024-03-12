@@ -33,7 +33,7 @@ class MovementRepository {
       MuscleGroupType selectedMuscleGroup) async {
     final db = await databaseHelper.database;
 
-    final List<Map<String, dynamic>> movements = await db.rawQuery("""
+    String dbQuery = """
         SELECT
           $movementTableName.name AS movement_name,
           $muscleGroupTableName.name AS muscle_group_name,
@@ -50,7 +50,9 @@ class MovementRepository {
           AND
           role = 'primary'
         ;
-        """);
+        """;
+
+    final List<Map<String, dynamic>> movements = await db.rawQuery(dbQuery);
     return movements
         .map((movement) => MovementMuscleGroupJoin.fromMap(movement))
         .toList();
