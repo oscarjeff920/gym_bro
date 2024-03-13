@@ -38,8 +38,8 @@ CREATE TABLE $movementMuscleGroupsTableName (
 
 CREATE TABLE $exerciseTableName (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    movement_id INTEGER,
-    workout_id INTEGER,
+    movement_id INTEGER NOT NULL,
+    workout_id INTEGER NOT NULL,
     exercise_order INTEGER NOT NULL,
     duration TEXT,
     num_working_sets INTEGER,
@@ -51,7 +51,7 @@ CREATE TABLE $exerciseTableName (
 
 CREATE TABLE $exerciseSetTableName (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    exercise_id INTEGER,
+    exercise_id INTEGER NOT NULL,
     set_order INTEGER NOT NULL,
     is_warm_up INTEGER CHECK (is_warm_up IN (0, 1)),
     weight DECIMAL NOT NULL,
@@ -210,7 +210,7 @@ INSERT INTO $movementMuscleGroupsTableName VALUES
   (18, 5, 2, null, 6),
   (30, 5, 3, null, 6),
     (31, 5, 4, null, 4),
-  (29, 5, 5, null, 4); 
+  (10, 5, 5, null, 4); 
   """,
   """
   INSERT INTO $exerciseSetTableName
@@ -388,7 +388,7 @@ INSERT INTO $movementMuscleGroupsTableName VALUES
   (25, 5, 0, 8, 8, null, null, null),
   (25, 6, 0, 8, 8, 4, null, null),
     
-  (26, 1, 0, 10, 8.5, null, null, null),
+  (26, 1, 0, 10, 8, null, null, 'failed on 9'),
     (26, 2, 0, 10, 6, null, null, null),
   (26, 3, 0, 10, 4, 2, null, null),
   (26, 4, 0, 10, 4, 2, null, null);  
