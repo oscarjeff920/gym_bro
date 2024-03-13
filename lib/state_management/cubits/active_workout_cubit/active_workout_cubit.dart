@@ -76,10 +76,11 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
     }
   }
 
+  addExerciseSetsToExercises() {}
+
   finishWorkout(String workoutDuration) {
     if (state is NewActiveWorkoutState &&
         (state as NewActiveWorkoutState).exercises.isNotEmpty) {
-      print("Finishing Workout => $workoutDuration");
       NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
 
       NewActiveWorkoutState generatedState =
@@ -92,7 +93,6 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
   }
 
   loadWorkoutToState(WorkoutTable loadedWorkout) {
-    print("=============\n=======> load Workout to state");
     LoadedActiveWorkoutState loadedWorkoutState = LoadedActiveWorkoutState(
         id: loadedWorkout.id!,
         day: loadedWorkout.day,
@@ -102,48 +102,18 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
         workoutDuration: loadedWorkout.duration,
         exercises: const []);
 
-    print('loadedWorkoutState : $loadedWorkoutState');
     emit(loadedWorkoutState);
   }
 
   loadExercisesToState(LoadedWorkoutModel loadedWorkout) {
-    print("=============\n=======> Load exercises to state:");
     if (state is LoadedActiveWorkoutState) {
       LoadedActiveWorkoutState currentState = state as LoadedActiveWorkoutState;
       LoadedActiveWorkoutState generatedState =
           currentState.copyWith(loadedExercises: loadedWorkout.exercises);
 
-      print('loaded exercises to state: $generatedState');
       emit(generatedState);
     } else {
       StateError("Cannot load exercises to state: $state");
     }
-
-    // print("this is our loadedWorkout: $loadedWorkout");
-    // var x = 0;
-    // for (var exercise in loadedWorkout.exercises) {
-    //   print("$x:${exercise.movementName} ");
-    //   x += 1;
-    // }
-    // LoadedWorkoutState createdState = LoadedWorkoutState(
-    //     id: loadedWorkout.id,
-    //     day: loadedWorkout.day,
-    //     month: loadedWorkout.month,
-    //     year: loadedWorkout.year,
-    //     workoutDuration: loadedWorkout.workoutDuration,
-    //     loadedExercises: loadedWorkout.exercises
-    // );
-    // print("this is the state we're creating:\nLoadedWorkoutState: $createdState");
-    // emit(createdState);
   }
-
-// addNewWorkoutToState() {
-//   DateTime dateToday = DateTime.now();
-//
-//   emit(NewWorkoutState(
-//       day: dateToday.day,
-//       month: dateToday.month,
-//       year: dateToday.year,
-//       newExercises: const []));
-// }
 }

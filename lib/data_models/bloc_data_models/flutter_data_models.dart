@@ -17,7 +17,7 @@ class Workout {
 class Sets {
   final int? id;
   final bool isWarmUp;
-  final int weight;
+  final double weight;
   final int reps;
   final int? extraReps;
   final Duration? setDuration;
@@ -37,7 +37,7 @@ class Sets {
 class CurrentSet {
   final int? id;
   final bool? isWarmUp;
-  final int? weight;
+  final double? weight;
   final int? reps;
   final int? extraReps;
   final Duration? setDuration;

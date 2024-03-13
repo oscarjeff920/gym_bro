@@ -14,7 +14,6 @@ class ExerciseTableOperationsBloc
   @override
   Stream<ExerciseTableOperationsState> mapEventToState(
       ExerciseTableOperationsEvent event) async* {
-    print("right we here. event: $event");
     if (event is QueryAllExerciseByWorkoutEvent) {
       yield* _mapLoadContextsToState(event);
     } else if (event is ResetExerciseQueryEvent) {
@@ -26,7 +25,6 @@ class ExerciseTableOperationsBloc
       QueryAllExerciseByWorkoutEvent event) async* {
     yield ExerciseTableQueryState();
     try {
-      print("loookie, we got an $event");
       // movementRepository.inspectSchema();
       var query = await exerciseRepository
           .getAllExercisesByWorkoutId(event.selectedWorkout.id!);

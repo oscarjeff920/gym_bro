@@ -40,6 +40,19 @@ class LoadedExerciseSetModel {
       required this.extraReps,
       required this.repDuration,
       required this.notes});
+
+  factory LoadedExerciseSetModel.fromMap(Map<String, dynamic> map) {
+    return LoadedExerciseSetModel(
+      id: map['id'],
+      exerciseSetOrder: map['set_order'],
+      isWarmUp: map['is_warm_up'],
+      weight: map['weight'],
+      reps: map['reps'],
+      extraReps: map['extra_reps'],
+      repDuration: map['duration'],
+      notes: map['notes']
+    );
+  }
 }
 
 class NewExerciseSetModel {

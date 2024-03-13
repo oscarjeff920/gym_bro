@@ -4,6 +4,8 @@ import 'package:gym_bro/design/widgets/the_app_bar_widget.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_state.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_state.dart';
@@ -27,11 +29,21 @@ class HomePage extends StatelessWidget {
       listener: (listenContext, state) {
         switch (state) {
           case ExerciseTableSuccessfulQueryAllByWorkoutIdState():
+            // Here we're adding the queried exercises into the workout on the ActiveWorkoutState
             BlocProvider.of<ActiveWorkoutCubit>(context)
                 .loadExercisesToState(state.selectedWorkout);
+            // As the result of the query we need to reset the query state
             BlocProvider.of<ExerciseTableOperationsBloc>(context)
                 .add(ResetExerciseQueryEvent());
+
+            // as we have the exercises we can start querying for the exercise sets for each exercise
+            BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
+                QueryAllExerciseSetsByExerciseEvent(
+                    workoutExercises: state.selectedWorkout.exercises));
+
+            // As we've loaded the exercises we can now move to the workout page
             Navigator.of(context).pushNamed("/workout-page");
+
           case ExerciseTableQueryErrorState():
             BlocProvider.of<ExerciseTableOperationsBloc>(context)
                 .add(ResetExerciseQueryEvent());

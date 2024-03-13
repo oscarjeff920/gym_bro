@@ -52,7 +52,6 @@ class LoadedExerciseModel {
   });
 
   factory LoadedExerciseModel.fromMap(Map<String, dynamic> map) {
-    // print(map);
     return LoadedExerciseModel(
       id: map['id'],
       exerciseOrder: map['exercise_order'],

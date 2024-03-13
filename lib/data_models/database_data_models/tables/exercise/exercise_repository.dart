@@ -12,7 +12,6 @@ class ExerciseRepository {
       int workoutId) async {
     final db = await databaseHelper.database;
 
-    print('workoutId: $workoutId');
     String dbQuery = """
     SELECT
       $exerciseTableName.id AS id,

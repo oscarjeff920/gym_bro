@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -35,21 +34,16 @@ class DatabaseHelper {
   }
 
   Future<void> _createDatabase(Database db, int version) async {
-    // print("create DB running");
     if (version == 1) {
       try {
-        // print(SQL_CREATE_TABLE_COMMANDS);
         // await db.execute(SQL_CREATE_TABLE_COMMANDS);
         for (String command in SQL_CREATE_TABLE_COMMANDS) {
           await db.execute(command);
         }
-        var query = await db.rawQuery("SELECT * FROM $workoutTableName;");
-        print("======> queried workout table $query");
       } catch (e) {
         print("epic fail");
         rethrow;
       }
-      // print("executed init table commands");
 
       // Set the user-defined version number to 1 (placeholder for future upgrades)
       await db.execute('PRAGMA user_version = 1');

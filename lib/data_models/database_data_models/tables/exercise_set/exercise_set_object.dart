@@ -31,7 +31,7 @@ class ExerciseSetTable {
       exerciseId: map['exercise_id'],
       setOrder: map['set_order'],
       isWarmUp: map['is_warm_up'] == 1 ? true : false,
-      weight: map['weight'],
+      weight: map['weight'].toDouble(),
       reps: map['reps'],
       extraReps: map['extra_reps'],
       duration: map['duration'],
