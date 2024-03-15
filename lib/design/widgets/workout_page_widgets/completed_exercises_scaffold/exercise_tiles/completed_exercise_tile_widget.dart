@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
+import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
+import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 
 import 'exercise_tile_base_widget.dart';
 
@@ -40,7 +43,11 @@ class CompletedExerciseTile extends StatelessWidget {
           ],
         ),
       ),
-      clickBehaviour: () {},
+      clickBehaviour: () {
+        print("complete tile click behaviour");
+        BlocProvider.of<AddExerciseCubit>(context).addCompletedExercise(exercise);
+        BlocProvider.of<OpenExerciseModalCubit>(context).openExerciseModal();
+        },
       isTop: tileIndex == 0 || tileIndex == 1 ? true : false,
       tileSpacingValue: tileSpacingValue,
     );

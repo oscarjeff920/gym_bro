@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
+import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_repository.dart';
 
 import 'exercise_set_table_operations_event.dart';
@@ -28,7 +29,7 @@ class ExerciseSetTableOperationsBloc extends Bloc<
     try {
       List<LoadedExerciseModel> exercisesWithSets = [];
 
-      for (var exercise in event.workoutExercises) {
+      for (var exercise in event.selectedWorkout.exercises) {
         var query = await exerciseSetRepository.getAllExerciseSetsByExerciseId(exercise.id);
         LoadedExerciseModel newExercise = LoadedExerciseModel(
             id: exercise.id,
@@ -46,7 +47,7 @@ class ExerciseSetTableOperationsBloc extends Bloc<
                 weight: exerciseSet.weight,
                 reps: exerciseSet.reps,
                 extraReps: exerciseSet.extraReps,
-                repDuration: exerciseSet.duration,
+                setDuration: exerciseSet.duration,
                 notes: exerciseSet.notes
             )).toList()
         );
@@ -55,7 +56,14 @@ class ExerciseSetTableOperationsBloc extends Bloc<
       }
 
       yield ExerciseSetTableSuccessfulQueryAllByExerciseIdState(
-          completeWorkoutExercises: exercisesWithSets
+          completeWorkout: LoadedWorkoutModel(
+              id: event.selectedWorkout.id,
+              day: event.selectedWorkout.day,
+              month: event.selectedWorkout.month,
+              year: event.selectedWorkout.year,
+              workoutStartTime: event.selectedWorkout.workoutStartTime,
+              workoutDuration: event.selectedWorkout.workoutDuration,
+              exercises: exercisesWithSets)
       );
     } catch (e) {
       print("We've reached an ExerciseSetTableQueryErrorState\n$e");

@@ -63,7 +63,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
                   weight: set_.weight.toDouble(),
                   reps: set_.reps,
                   extraReps: set_.extraReps,
-                  repDuration: set_.setDuration.toString(),
+                  setDuration: set_.setDuration.toString(),
                   notes: set_.notes))
               .toList());
 
@@ -90,6 +90,18 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
     } else {
       StateError("Cannot update state: $state != NewActiveWorkoutState");
     }
+  }
+  loadCompleteWorkoutToState(LoadedWorkoutModel completeWorkout) {
+    LoadedActiveWorkoutState completeLoadedWorkoutState = LoadedActiveWorkoutState(
+        id: completeWorkout.id,
+        day: completeWorkout.day,
+        month: completeWorkout.month,
+        year: completeWorkout.year,
+        workoutStartTime: completeWorkout.workoutStartTime,
+        workoutDuration: completeWorkout.workoutDuration,
+        exercises: completeWorkout.exercises);
+
+    emit(completeLoadedWorkoutState);
   }
 
   loadWorkoutToState(WorkoutTable loadedWorkout) {

@@ -30,7 +30,8 @@ class WorkoutOverviewPage extends StatelessWidget {
       listener: (context, state) {
         switch (state) {
           case ExerciseSetTableSuccessfulQueryAllByExerciseIdState():
-            // BlocProvider.of<ActiveWorkoutCubit>(context).
+            BlocProvider.of<ActiveWorkoutCubit>(context)
+                .loadCompleteWorkoutToState(state.completeWorkout);
         }
       },
       child: Scaffold(

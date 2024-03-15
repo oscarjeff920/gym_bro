@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
             // as we have the exercises we can start querying for the exercise sets for each exercise
             BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
                 QueryAllExerciseSetsByExerciseEvent(
-                    workoutExercises: state.selectedWorkout.exercises));
+                    selectedWorkout: state.selectedWorkout));
 
             // As we've loaded the exercises we can now move to the workout page
             Navigator.of(context).pushNamed("/workout-page");

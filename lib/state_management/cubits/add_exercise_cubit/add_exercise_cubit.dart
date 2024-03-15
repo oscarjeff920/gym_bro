@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/joined_tables/movement_muscle_group_join_object.dart';
 
@@ -13,6 +14,24 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
             selectedMovementId: null,
             numWorkingSets: 0,
             setsDone: []));
+
+  addCompletedExercise(GeneralExerciseModel completedExercise) {
+    print("adding to AddExerciseState: $completedExercise");
+    print(completedExercise.exerciseSets);
+    emit(AddExerciseState(
+        selectedMuscleGroup: completedExercise.primaryMuscleGroup,
+        selectedMovement: completedExercise.movementName,
+        selectedMovementId: completedExercise.movementId,
+        setsDone: completedExercise.exerciseSets
+            .map((exerciseSet) => Sets(
+            isWarmUp: exerciseSet.isWarmUp,
+            weight: exerciseSet.weight,
+            reps: exerciseSet.reps,
+          extraReps: exerciseSet.extraReps,
+        )).toList(),
+        numWorkingSets: completedExercise.numWorkingSets
+    ));
+  }
 
   clearSavedExercise() {
     emit(const AddExerciseState(

@@ -5,7 +5,7 @@ class GeneralExerciseSetModel {
   final double weight;
   final int reps;
   final int? extraReps;
-  final String? repDuration;
+  final String? setDuration;
   final String? notes;
 
   GeneralExerciseSetModel(
@@ -15,7 +15,7 @@ class GeneralExerciseSetModel {
       required this.weight,
       required this.reps,
       this.extraReps,
-      this.repDuration,
+      this.setDuration,
       this.notes});
 }
 
@@ -28,7 +28,7 @@ class LoadedExerciseSetModel {
   final double weight;
   final int reps;
   final int? extraReps;
-  final String? repDuration;
+  final String? setDuration;
   final String? notes;
 
   LoadedExerciseSetModel(
@@ -38,7 +38,7 @@ class LoadedExerciseSetModel {
       required this.weight,
       required this.reps,
       required this.extraReps,
-      required this.repDuration,
+      required this.setDuration,
       required this.notes});
 
   factory LoadedExerciseSetModel.fromMap(Map<String, dynamic> map) {
@@ -49,7 +49,7 @@ class LoadedExerciseSetModel {
       weight: map['weight'],
       reps: map['reps'],
       extraReps: map['extra_reps'],
-      repDuration: map['duration'],
+      setDuration: map['duration'],
       notes: map['notes']
     );
   }
@@ -61,7 +61,7 @@ class NewExerciseSetModel {
   final double weight;
   final int reps;
   final int? extraReps;
-  final String? repDuration;
+  final String? setDuration;
   final String? notes;
 
   NewExerciseSetModel(
@@ -70,6 +70,6 @@ class NewExerciseSetModel {
       required this.weight,
       required this.reps,
       required this.extraReps,
-      required this.repDuration,
+      required this.setDuration,
       required this.notes});
 }

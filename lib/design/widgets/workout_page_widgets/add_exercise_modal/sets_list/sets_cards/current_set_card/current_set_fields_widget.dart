@@ -14,8 +14,10 @@ class CurrentSetFields extends StatelessWidget {
     super.key,
     required this.fieldName,
     required this.updateSetFunction,
-    this.isCheckBox = false, required this.controller_,
+    this.isCheckBox = false,
+    required this.controller_,
   });
+
   @override
   Widget build(BuildContext context) {
     final _controller = TextEditingController();
@@ -42,9 +44,11 @@ class CurrentSetFields extends StatelessWidget {
                   onChanged: (inputtedValue) {
                     print("--------> cha inputtedValue: $inputtedValue");
                     if (inputtedValue != "") {
-                      updateSetFunction(textInput == TextInputType.text
-                          ? inputtedValue
-                          : int.parse(inputtedValue));
+                        updateSetFunction(textInput == TextInputType.text
+                            ? inputtedValue
+                            : fieldName.toLowerCase() == "weight"
+                                ? double.parse(inputtedValue)
+                                : int.parse(inputtedValue));
                     }
                   },
                 )
