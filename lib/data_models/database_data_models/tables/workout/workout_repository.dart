@@ -21,9 +21,12 @@ class WorkoutRepository {
     final db = await databaseHelper.database;
 
     await db.transaction((txn) async {
+      String? startTime = newWorkout.workoutStartTime == null ? null : "'${newWorkout.workoutStartTime}'";
+      String? workoutDuration = newWorkout.workoutDuration == null ? null : "'${newWorkout.workoutDuration}'";
+
       String insertWorkoutQueryString = """
       INSERT INTO $workoutTableName (day, month, year, start_time, duration) VALUES
-          (${newWorkout.day}, ${newWorkout.month}, ${newWorkout.year}, '${newWorkout.workoutStartTime}', '${newWorkout.workoutDuration}');
+          (${newWorkout.day}, ${newWorkout.month}, ${newWorkout.year}, $startTime, $workoutDuration);
       """;
       final newWorkoutId = await txn.rawInsert(insertWorkoutQueryString);
 

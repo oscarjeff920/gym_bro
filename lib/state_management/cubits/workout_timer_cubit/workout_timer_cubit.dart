@@ -21,7 +21,9 @@ class WorkoutTimerCubit extends Cubit<WorkoutTimerState> {
   }
 
   stopTimer() {
-    _timer!.cancel();
+    if (_timer != null) {
+      _timer!.cancel();
+    }
     emit(WorkoutTimerStopped(state.elapsed));
   }
 
