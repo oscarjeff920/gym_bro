@@ -20,6 +20,7 @@ class TimerButton extends StatelessWidget {
     return BlocBuilder<SetTimerCubit, SetTimerState>(builder: (context, state) {
       Function buttonPressFunction;
       String buttonText;
+      Color timerColour = const Color(0xFF7C7C7C);
       switch (state) {
         case SetTimerReset():
           buttonPressFunction = () {
@@ -35,14 +36,16 @@ class TimerButton extends StatelessWidget {
                 CurrentSet(setDuration: Duration(seconds: state.elapsed)));
           };
           buttonText = "Stop Timer";
+          timerColour = const Color.fromRGBO(255, 0, 0, 1);
         default:
           buttonPressFunction = () => null;
           buttonText = "Set Finished";
       }
       return TextButton(
           style: ButtonStyle(
+            side: MaterialStateProperty.all(const BorderSide(color: Colors.black, width: 1.5)),
             backgroundColor: MaterialStatePropertyAll<Color>(
-                Colors.white.withOpacity(isExerciseSelected ? 1 : 0.3)),
+                timerColour.withOpacity(isExerciseSelected ? 1 : 0.3)),
           ),
           onPressed: isExerciseSelected
               ? () {
@@ -52,11 +55,17 @@ class TimerButton extends StatelessWidget {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Icon(Icons.timer_outlined),
+                const Icon(
+                    Icons.timer_outlined,
+                  color: Color.fromRGBO(230, 230, 150, 1),
+                ),
                 Text(
                   buttonText,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 12),
+                  style: const TextStyle(
+                      fontSize: 12,
+                      color: Color.fromRGBO(230, 230, 150, 1)
+                  ),
                 ),
               ]));
     });

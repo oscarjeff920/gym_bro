@@ -26,7 +26,7 @@ class DatabaseHelper {
     Directory appDocDir = await getApplicationDocumentsDirectory();
 
     return await openDatabase(
-      join(appDocDir.path, 'GymBro.db'),
+      join(appDocDir.path, 'GymBro1.db'),
       onCreate: _createDatabase,
       onUpgrade: null,
       version: 1,
@@ -38,6 +38,7 @@ class DatabaseHelper {
       try {
         // await db.execute(SQL_CREATE_TABLE_COMMANDS);
         for (String command in SQL_CREATE_TABLE_COMMANDS) {
+          print("running command");
           await db.execute(command);
         }
       } catch (e) {
