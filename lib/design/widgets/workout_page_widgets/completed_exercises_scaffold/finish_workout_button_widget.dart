@@ -4,6 +4,7 @@ import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_event.dart';
+import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_cubit.dart';
 import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_state.dart';
 
@@ -57,6 +58,7 @@ class FinishWorkoutButton extends StatelessWidget {
                               .resetTimer();
                           BlocProvider.of<WorkoutTableOperationsBloc>(context)
                               .add(QueryAllWorkoutTableEvent());
+                          BlocProvider.of<ActiveWorkoutCubit>(context).resetState();
                           Navigator.of(context).pushNamed("/");
                         }
                       : null,

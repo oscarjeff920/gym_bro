@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/design/widgets/home_page_widgets/continue_workout_button_widget.dart';
 import 'package:gym_bro/design/widgets/the_app_bar_widget.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_event.dart';
@@ -10,6 +11,7 @@ import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_t
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_state.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
+import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
 
 import '../../widgets/home_page_widgets/new_workout_button_widget.dart';
 import '../../widgets/home_page_widgets/workouts_list_widget.dart';
@@ -60,18 +62,31 @@ class HomePage extends StatelessWidget {
         body: Stack(children: [
           BlocBuilder<WorkoutTableOperationsBloc, WorkoutTableOperationsState>(
               builder: (context, state) {
-                switch (state) {
-                  case WorkoutTableSuccessfulQueryAllState():
-                    return WorkoutsList(
-                        allWorkouts: state.allWorkoutsQuery);
-                  case WorkoutTableQueryErrorState():
-                    return const Center(child: Text(
+            switch (state) {
+              case WorkoutTableSuccessfulQueryAllState():
+                return WorkoutsList(allWorkouts: state.allWorkoutsQuery);
+              case WorkoutTableQueryErrorState():
+                return const Center(
+                    child: Text(
                         "There was an error querying the Workout table.."));
-                  default:
-                    return const Center(
-                        child: Text("Ooops.. something has gone ary"));
-                }
-              }),
+              default:
+                return const Center(
+                    child: Text("Ooops.. something has gone ary"));
+            }
+          }),
+          BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
+            builder: (context, state) {
+              switch (state) {
+                case NewActiveWorkoutState():
+                  return Container(
+                    alignment: const Alignment(0, 0.6),
+                    child: const ContinueWorkoutButton(),
+                  );
+                default:
+                  return Container();
+              }
+            },
+          ),
           Container(
               alignment: const Alignment(0, 0.8),
               child: const NewWorkoutButton()),
@@ -80,3 +95,5 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+
