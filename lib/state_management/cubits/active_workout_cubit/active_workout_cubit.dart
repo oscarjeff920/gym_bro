@@ -92,6 +92,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
     }
   }
   loadCompleteWorkoutToState(LoadedWorkoutModel completeWorkout) {
+    // print("we loading complete workout to state");
     LoadedActiveWorkoutState completeLoadedWorkoutState = LoadedActiveWorkoutState(
         id: completeWorkout.id,
         day: completeWorkout.day,

@@ -16,21 +16,22 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
             setsDone: []));
 
   addCompletedExercise(GeneralExerciseModel completedExercise) {
-    print("adding to AddExerciseState: $completedExercise");
-    print(completedExercise.exerciseSets);
-    emit(AddExerciseState(
+
+    AddExerciseState newState = AddExerciseState(
         selectedMuscleGroup: completedExercise.primaryMuscleGroup,
         selectedMovement: completedExercise.movementName,
         selectedMovementId: completedExercise.movementId,
         setsDone: completedExercise.exerciseSets
             .map((exerciseSet) => Sets(
-            isWarmUp: exerciseSet.isWarmUp,
-            weight: exerciseSet.weight,
-            reps: exerciseSet.reps,
+          isWarmUp: exerciseSet.isWarmUp,
+          weight: exerciseSet.weight,
+          reps: exerciseSet.reps,
           extraReps: exerciseSet.extraReps,
         )).toList(),
         numWorkingSets: completedExercise.numWorkingSets
-    ));
+    );
+
+    emit(newState);
   }
 
   clearSavedExercise() {

@@ -22,8 +22,9 @@ class CompletedExerciseTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool loaded = exercise.exerciseSets.isNotEmpty;
     return ExerciseTileBase(
-      tileColour: primaryMuscleGroupColour,
+      tileColour: loaded ? primaryMuscleGroupColour : Colors.black12,
       centerWidget: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -43,18 +44,21 @@ class CompletedExerciseTile extends StatelessWidget {
           ],
         ),
       ),
-      clickBehaviour: () {
-        print("complete tile click behaviour");
-        BlocProvider.of<AddExerciseCubit>(context).addCompletedExercise(exercise);
-        BlocProvider.of<OpenExerciseModalCubit>(context).openExerciseModal();
-        },
+      clickBehaviour: loaded
+          ? () {
+              BlocProvider.of<AddExerciseCubit>(context)
+                  .addCompletedExercise(exercise);
+              BlocProvider.of<OpenExerciseModalCubit>(context)
+                  .openExerciseModal();
+            }
+          : null,
       isTop: tileIndex == 0 || tileIndex == 1 ? true : false,
       tileSpacingValue: tileSpacingValue,
     );
   }
 }
 
-String capitalizeString (String string) {
+String capitalizeString(String string) {
   String capitalizedString = "";
   List<String> stringSplit = string.split(" ");
 

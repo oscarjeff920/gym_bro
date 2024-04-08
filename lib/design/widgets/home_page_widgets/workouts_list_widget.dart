@@ -32,10 +32,13 @@ class WorkoutsList extends StatelessWidget {
               ),
               tileColor: Colors.white,
               onTap: () {
+                // if the selected workout has already been loaded to state
+                // we can just move onto the workout page, no need to re-query
                 if (state is LoadedActiveWorkoutState &&
                     state.id == allWorkouts[index].id) {
                   Navigator.of(context).pushNamed("/workout-page");
                 } else {
+                  // query selected workout and load it to ActiveWorkoutState
                   BlocProvider.of<ExerciseTableOperationsBloc>(context).add(
                       QueryAllExerciseByWorkoutEvent(
                           selectedWorkout: allWorkouts[index]));

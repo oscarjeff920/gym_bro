@@ -35,7 +35,15 @@ class ExerciseTileBase extends StatelessWidget {
     return Padding(
       padding: usedPadding(),
       child: GestureDetector(
-          onTap: clickBehaviour ??  BlocProvider.of<OpenExerciseModalCubit>(context).openExerciseModal(),
+          // if clickBehaviour != we will open the modal and load the existing exercise
+          onTap: clickBehaviour == null
+              ? () {
+                  BlocProvider.of<OpenExerciseModalCubit>(context)
+                      .openExerciseModal;
+                }
+              : () {
+                  clickBehaviour!();
+                },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Container(
