@@ -28,7 +28,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
           reps: exerciseSet.reps,
           extraReps: exerciseSet.extraReps,
         )).toList(),
-        numWorkingSets: completedExercise.numWorkingSets
+        numWorkingSets: completedExercise.numWorkingSets!
     );
 
     emit(newState);

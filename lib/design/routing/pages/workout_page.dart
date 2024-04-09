@@ -35,11 +35,15 @@ class WorkoutOverviewPage extends StatelessWidget {
         appBar: const TheAppBar(),
         body: BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
             builder: (context, state) {
-          List<dynamic> exercises;
+          List<GeneralExerciseModel> exercises;
           if (state is NewActiveWorkoutState) {
-            exercises = state.exercises;
+            exercises = state.exercises
+                .map((exercise) => exercise.transformToGeneralModel())
+                .toList();
           } else if (state is LoadedActiveWorkoutState) {
-            exercises = state.exercises;
+            exercises = state.exercises
+                .map((exercise) => exercise.transformToGeneralModel())
+                .toList();
           } else {
             exercises = [];
           }
@@ -64,16 +68,7 @@ class WorkoutOverviewPage extends StatelessWidget {
                   Positioned.fill(
                       child: CompletedExercisesScaffold(
                     tileSpacingValue: tileSpacingValue,
-                    exercises: exercises
-                        .map((exercise) => GeneralExerciseModel(
-                            exerciseOrder: exercise.exerciseOrder,
-                            movementName: exercise.movementName,
-                            movementId: exercise.movementId,
-                            exerciseDuration: exercise.exerciseDuration,
-                            numWorkingSets: exercise.numWorkingSets,
-                            primaryMuscleGroup: exercise.primaryMuscleGroup,
-                            exerciseSets: exercise.exerciseSets))
-                        .toList(),
+                    exercises: exercises,
                     isCurrentWorkout:
                         state is NewActiveWorkoutState ? true : false,
                   )),

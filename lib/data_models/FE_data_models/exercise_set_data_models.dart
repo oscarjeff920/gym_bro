@@ -43,15 +43,28 @@ class LoadedExerciseSetModel {
 
   factory LoadedExerciseSetModel.fromMap(Map<String, dynamic> map) {
     return LoadedExerciseSetModel(
-      id: map['id'],
-      exerciseSetOrder: map['set_order'],
-      isWarmUp: map['is_warm_up'],
-      weight: map['weight'],
-      reps: map['reps'],
-      extraReps: map['extra_reps'],
-      setDuration: map['duration'],
-      notes: map['notes']
-    );
+        id: map['id'],
+        exerciseSetOrder: map['set_order'],
+        isWarmUp: map['is_warm_up'],
+        weight: map['weight'],
+        reps: map['reps'],
+        extraReps: map['extra_reps'],
+        setDuration: map['duration'],
+        notes: map['notes']);
+  }
+
+  GeneralExerciseSetModel transformToGeneralModel() {
+    GeneralExerciseSetModel convertedModel = GeneralExerciseSetModel(
+        id: id,
+        exerciseSetOrder: exerciseSetOrder,
+        isWarmUp: isWarmUp,
+        weight: weight,
+        reps: reps,
+        extraReps: extraReps,
+        setDuration: setDuration,
+        notes: notes);
+
+    return convertedModel;
   }
 }
 
@@ -72,4 +85,17 @@ class NewExerciseSetModel {
       required this.extraReps,
       required this.setDuration,
       required this.notes});
+
+  GeneralExerciseSetModel transformToGeneralModel() {
+    GeneralExerciseSetModel convertedModel = GeneralExerciseSetModel(
+        exerciseSetOrder: exerciseSetOrder,
+        isWarmUp: isWarmUp,
+        weight: weight,
+        reps: reps,
+        extraReps: extraReps,
+        setDuration: setDuration,
+        notes: notes);
+
+    return convertedModel;
+  }
 }
