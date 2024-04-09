@@ -7,6 +7,7 @@ import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_state.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_event.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_state.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_state.dart';
@@ -54,46 +55,54 @@ class HomePage extends StatelessWidget {
         }
       },
       listenWhen: (previousState, state) => previousState != state,
-      child: Scaffold(
-        appBar: const TheAppBar(
-          hasBackButton: false,
-        ),
-        backgroundColor: Colors.grey,
-        body: Stack(children: [
-          BlocBuilder<WorkoutTableOperationsBloc, WorkoutTableOperationsState>(
-              builder: (context, state) {
-            switch (state) {
-              case WorkoutTableSuccessfulQueryAllState():
-                return WorkoutsList(allWorkouts: state.allWorkoutsQuery);
-              case WorkoutTableQueryErrorState():
-                return const Center(
-                    child: Text(
-                        "There was an error querying the Workout table.."));
-              default:
-                return const Center(
-                    child: Text("Ooops.. something has gone ary"));
-            }
-          }),
-          BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
-            builder: (context, state) {
-              switch (state) {
-                case NewActiveWorkoutState():
-                  return Container(
-                    alignment: const Alignment(0, 0.6),
-                    child: const ContinueWorkoutButton(),
-                  );
-                default:
-                  return Container();
-              }
-            },
+      child: BlocListener<ExerciseSetTableOperationsBloc,
+          ExerciseSetTableOperationsState>(
+        listener: (context, state) {
+          switch (state) {
+            case ExerciseSetTableSuccessfulQueryAllByExerciseIdState():
+              BlocProvider.of<ActiveWorkoutCubit>(context)
+                  .loadCompleteWorkoutToState(state.completeWorkout);
+          }
+        },
+        child: Scaffold(
+          appBar: const TheAppBar(
+            hasBackButton: false,
           ),
-          Container(
-              alignment: const Alignment(0, 0.8),
-              child: const NewWorkoutButton()),
-        ]),
+          backgroundColor: Colors.grey,
+          body: Stack(children: [
+            BlocBuilder<WorkoutTableOperationsBloc,
+                WorkoutTableOperationsState>(builder: (context, state) {
+              switch (state) {
+                case WorkoutTableSuccessfulQueryAllState():
+                  return WorkoutsList(allWorkouts: state.allWorkoutsQuery);
+                case WorkoutTableQueryErrorState():
+                  return const Center(
+                      child: Text(
+                          "There was an error querying the Workout table.."));
+                default:
+                  return const Center(
+                      child: Text("Ooops.. something has gone ary"));
+              }
+            }),
+            BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
+              builder: (context, state) {
+                switch (state) {
+                  case NewActiveWorkoutState():
+                    return Container(
+                      alignment: const Alignment(0, 0.6),
+                      child: const ContinueWorkoutButton(),
+                    );
+                  default:
+                    return Container();
+                }
+              },
+            ),
+            Container(
+                alignment: const Alignment(0, 0.8),
+                child: const NewWorkoutButton()),
+          ]),
+        ),
       ),
     );
   }
 }
-
-

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/close_modal_button_widget.dart';
-import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_bloc.dart';
-import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_state.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
@@ -21,16 +19,7 @@ class WorkoutOverviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // CHANGE!!!
     double tileSpacingValue = 12;
-    return BlocListener<ExerciseSetTableOperationsBloc,
-        ExerciseSetTableOperationsState>(
-      listener: (context, state) {
-        switch (state) {
-          case ExerciseSetTableSuccessfulQueryAllByExerciseIdState():
-            BlocProvider.of<ActiveWorkoutCubit>(context)
-                .loadCompleteWorkoutToState(state.completeWorkout);
-        }
-      },
-      child: Scaffold(
+    return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: const TheAppBar(),
         body: BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
@@ -146,7 +135,6 @@ class WorkoutOverviewPage extends StatelessWidget {
         //     );
         //   },
         // ),
-      ),
     );
   }
 }
