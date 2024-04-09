@@ -26,8 +26,8 @@ class CloseModalButton extends StatelessWidget {
                 if (state.setsDone.isNotEmpty && isFinished) {
                   BlocProvider.of<ActiveWorkoutCubit>(context)
                       .addNewExerciseToWorkoutState(state);
-                  BlocProvider.of<AddExerciseCubit>(context).clearSavedExercise();
                 }
+                BlocProvider.of<AddExerciseCubit>(context).clearSavedExercise();
                 BlocProvider.of<OpenExerciseModalCubit>(context)
                     .closeExerciseModal();
               },
