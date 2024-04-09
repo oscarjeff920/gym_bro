@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/FE_consts/flutter_data_models.dart';
+import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
+import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_cubit.dart';
-
-import '../../../../../../../state_management/cubits/set_timer_cubit/set_timer_state.dart';
+import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_state.dart';
+import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_cubit.dart';
 
 class TimerButton extends StatelessWidget {
   final bool isExerciseSelected;
@@ -19,10 +20,14 @@ class TimerButton extends StatelessWidget {
     return BlocBuilder<SetTimerCubit, SetTimerState>(builder: (context, state) {
       Function buttonPressFunction;
       String buttonText;
+      Color timerColour = const Color(0xFF7C7C7C);
       switch (state) {
         case SetTimerReset():
-          buttonPressFunction =
-              () => BlocProvider.of<SetTimerCubit>(context).startTimer();
+          buttonPressFunction = () {
+            BlocProvider.of<SetTimerCubit>(context).startTimer();
+            BlocProvider.of<WorkoutTimerCubit>(context).startTimer();
+            BlocProvider.of<ActiveWorkoutCubit>(context).logStartTime();
+          };
           buttonText = "Time the Set";
         case SetTimerStarted():
           buttonPressFunction = () {
@@ -31,14 +36,16 @@ class TimerButton extends StatelessWidget {
                 CurrentSet(setDuration: Duration(seconds: state.elapsed)));
           };
           buttonText = "Stop Timer";
+          timerColour = const Color.fromRGBO(255, 0, 0, 1);
         default:
           buttonPressFunction = () => null;
           buttonText = "Set Finished";
       }
       return TextButton(
           style: ButtonStyle(
+            side: MaterialStateProperty.all(const BorderSide(color: Colors.black, width: 1.5)),
             backgroundColor: MaterialStatePropertyAll<Color>(
-                Colors.white.withOpacity(isExerciseSelected ? 1 : 0.3)),
+                timerColour.withOpacity(isExerciseSelected ? 1 : 0.3)),
           ),
           onPressed: isExerciseSelected
               ? () {
@@ -48,11 +55,17 @@ class TimerButton extends StatelessWidget {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Icon(Icons.timer_outlined),
+                const Icon(
+                    Icons.timer_outlined,
+                  color: Color.fromRGBO(230, 230, 150, 1),
+                ),
                 Text(
                   buttonText,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12),
+                  style: const TextStyle(
+                      fontSize: 12,
+                      color: Color.fromRGBO(230, 230, 150, 1)
+                  ),
                 ),
               ]));
     });

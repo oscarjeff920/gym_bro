@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gym_bro/constants/enums.dart';
 
-import '../../../../FE_consts/enums.dart';
 import 'muscle_group_set_counter_widget.dart';
 
 class ExerciseCountBar extends StatelessWidget {
@@ -10,10 +10,10 @@ class ExerciseCountBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 30,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           color: Colors.black26,
           border: Border(top: BorderSide(color: Colors.black, width: 1))),
-      child: Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           MuscleGroupSetCounter(muscleGroup: MuscleGroupType.chest,),

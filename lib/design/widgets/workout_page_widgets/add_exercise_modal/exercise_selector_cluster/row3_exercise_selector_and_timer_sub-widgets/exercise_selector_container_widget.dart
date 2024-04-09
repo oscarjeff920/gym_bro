@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/state_management/blocs/movement_table_operations_bloc.dart';
-import 'package:gym_bro/state_management/blocs/movement_table_operations_state.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/movement_table_operations_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/movement_table_operations_state.dart';
+
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 
-import '../../../../../../FE_consts/enums.dart';
 import '../../../../../../state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
 import '../../../../../../state_management/cubits/set_timer_cubit/set_timer_cubit.dart';
 import 'exercise_selector_container_sub-widgets/exercise_dropdown_menu_widget.dart';
@@ -42,7 +42,7 @@ class ExerciseSelectorContainer extends StatelessWidget {
             ),
             TimerButton(
                 isExerciseSelected:
-                state.selectedExercise == null ? false : true)
+                state.selectedMovement == null ? false : true)
           ],
         );
       },

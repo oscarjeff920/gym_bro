@@ -14,8 +14,10 @@ class CurrentSetFields extends StatelessWidget {
     super.key,
     required this.fieldName,
     required this.updateSetFunction,
-    this.isCheckBox = false, required this.controller_,
+    this.isCheckBox = false,
+    required this.controller_,
   });
+
   @override
   Widget build(BuildContext context) {
     final _controller = TextEditingController();
@@ -36,15 +38,17 @@ class CurrentSetFields extends StatelessWidget {
                   textInputAction: TextInputAction.next,
                   keyboardType: textInput,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   cursorColor: Colors.white,
                   // controller: _controller,
                   onChanged: (inputtedValue) {
                     print("--------> cha inputtedValue: $inputtedValue");
                     if (inputtedValue != "") {
-                      updateSetFunction(textInput == TextInputType.text
-                          ? inputtedValue
-                          : int.parse(inputtedValue));
+                        updateSetFunction(textInput == TextInputType.text
+                            ? inputtedValue
+                            : fieldName.toLowerCase() == "weight"
+                                ? double.parse(inputtedValue)
+                                : int.parse(inputtedValue));
                     }
                   },
                 )
@@ -67,14 +71,14 @@ class TimerSetField extends StatelessWidget {
         children: [
           const Text(
             "Set Duration:",
-            style: const TextStyle(fontSize: 10, color: Colors.white),
+            style: TextStyle(fontSize: 10, color: Colors.white),
             textAlign: TextAlign.center,
           ),
           BlocBuilder<SetTimerCubit, SetTimerState>(
             builder: (context, state) {
               return TextField(
                 readOnly: true,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 controller: TextEditingController()..text = state.toString(),
                 textAlign: TextAlign.center,
               );

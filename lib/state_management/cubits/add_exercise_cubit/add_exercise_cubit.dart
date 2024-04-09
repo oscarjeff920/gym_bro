@@ -1,7 +1,8 @@
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/FE_consts/flutter_data_models.dart';
-import 'package:gym_bro/FE_consts/enums.dart';
+import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
+import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
+import 'package:gym_bro/data_models/database_data_models/joined_tables/movement_muscle_group_join_object.dart';
 
 import 'add_exercise_state.dart';
 
@@ -9,31 +10,65 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
   AddExerciseCubit()
       : super(const AddExerciseState(
             selectedMuscleGroup: null,
-            selectedExercise: null,
+            selectedMovement: null,
+            selectedMovementId: null,
+            numWorkingSets: 0,
             setsDone: []));
+
+  addCompletedExercise(GeneralExerciseModel completedExercise) {
+
+    AddExerciseState newState = AddExerciseState(
+        selectedMuscleGroup: completedExercise.primaryMuscleGroup,
+        selectedMovement: completedExercise.movementName,
+        selectedMovementId: completedExercise.movementId,
+        setsDone: completedExercise.exerciseSets
+            .map((exerciseSet) => Sets(
+          isWarmUp: exerciseSet.isWarmUp,
+          weight: exerciseSet.weight,
+          reps: exerciseSet.reps,
+          extraReps: exerciseSet.extraReps,
+        )).toList(),
+        numWorkingSets: completedExercise.numWorkingSets!
+    );
+
+    emit(newState);
+  }
+
+  clearSavedExercise() {
+    emit(const AddExerciseState(
+        selectedMuscleGroup: null,
+        selectedMovement: null,
+        selectedMovementId: null,
+        numWorkingSets: 0,
+        setsDone: []));
+  }
 
   selectMuscleGroup(MuscleGroupType muscleGroup) {
     emit(AddExerciseState(
         selectedMuscleGroup: muscleGroup,
-        selectedExercise: null,
-        setsDone: const []));
+        selectedMovement: null,
+        selectedMovementId: null,
+        setsDone: const [],
+        numWorkingSets: 0));
   }
 
-  selectExercise(String exerciseName) {
+  selectExercise(MovementMuscleGroupJoin movementMuscleGroupJoin) {
     AddExerciseState generatedState = state.copyWith();
 
     emit(AddExerciseState(
         selectedMuscleGroup: generatedState.selectedMuscleGroup,
-        selectedExercise: exerciseName,
+        selectedMovement: movementMuscleGroupJoin.movementName,
+        selectedMovementId: movementMuscleGroupJoin.movementId,
         currentSet: const CurrentSet(),
-        setsDone: const []));
+        setsDone: const [],
+        numWorkingSets: 0));
   }
+
   updateCurrentSet(CurrentSet set) {
     AddExerciseState generatedState = state.copyWith();
 
     CurrentSet updatedState = set;
     if (generatedState.currentSet != null) {
-
       updatedState = CurrentSet(
         isWarmUp: set.isWarmUp ?? generatedState.currentSet!.isWarmUp ?? false,
         weight: set.weight ?? generatedState.currentSet!.weight,
@@ -44,38 +79,43 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
       );
     }
 
-    // print("updated set, isWarmUp: ${updatedState.isWarmUp}");
     emit(AddExerciseState(
         selectedMuscleGroup: generatedState.selectedMuscleGroup,
-        selectedExercise: generatedState.selectedExercise,
+        selectedMovement: generatedState.selectedMovement,
+        selectedMovementId: generatedState.selectedMovementId,
         currentSet: updatedState,
-        setsDone: generatedState.setsDone
-    ));
+        setsDone: generatedState.setsDone,
+        numWorkingSets: generatedState.numWorkingSets));
   }
 
   saveCompletedSet() {
     AddExerciseState generatedState = state.copyWith();
 
+    // storing all previous sets in a new array 'setsDone'
+    // for the latest set to be added to then passed to the new state
     List<Sets> setsDone = [];
     for (var set in generatedState.setsDone) {
       setsDone.add(set);
     }
 
+    // converting the completed set from CurrentSet to Sets
     Sets completedSet = Sets(
         isWarmUp: generatedState.currentSet!.isWarmUp!,
         weight: generatedState.currentSet!.weight!,
         reps: generatedState.currentSet!.reps!,
         extraReps: generatedState.currentSet!.extraReps,
         setDuration: generatedState.currentSet!.setDuration,
-        notes: generatedState.currentSet!.notes
-    );
+        notes: generatedState.currentSet!.notes);
     setsDone.add(completedSet);
 
     emit(AddExerciseState(
-      selectedMuscleGroup: generatedState.selectedMuscleGroup,
-      selectedExercise: generatedState.selectedExercise,
-      currentSet: const CurrentSet(),
-      setsDone: setsDone
-    ));
+        selectedMuscleGroup: generatedState.selectedMuscleGroup,
+        selectedMovement: generatedState.selectedMovement,
+        selectedMovementId: generatedState.selectedMovementId,
+        currentSet: const CurrentSet(),
+        setsDone: setsDone,
+        numWorkingSets: completedSet.isWarmUp
+            ? generatedState.numWorkingSets
+            : generatedState.numWorkingSets + 1));
   }
 }

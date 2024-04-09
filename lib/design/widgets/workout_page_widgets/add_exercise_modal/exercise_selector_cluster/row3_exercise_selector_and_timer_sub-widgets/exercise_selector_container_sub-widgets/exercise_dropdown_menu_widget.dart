@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 
-import '../../../../../../../state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 
 class ExerciseDropdownMenu extends StatelessWidget {
   final List matchingExercises;
@@ -15,7 +15,7 @@ class ExerciseDropdownMenu extends StatelessWidget {
     bool isEnabled = matchingExercises == [] ? false : true;
     List<DropdownMenuEntry> exerciseEntries = [
       for (var exercise in matchingExercises) DropdownMenuEntry(
-          value: exercise.movementName, label: exercise.movementName
+          value: exercise, label: exercise.movementName
       )
     ];
 

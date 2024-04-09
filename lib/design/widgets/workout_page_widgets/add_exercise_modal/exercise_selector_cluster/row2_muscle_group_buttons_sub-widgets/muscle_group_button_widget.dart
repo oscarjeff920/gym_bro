@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/FE_consts/enums.dart';
-import 'package:gym_bro/state_management/blocs/movement_table_operations_bloc.dart';
-import 'package:gym_bro/state_management/blocs/movement_table_operations_event.dart';
+import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/movement_table_operations_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/movement_table_operations_event.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 
 class MuscleGroupButton extends StatelessWidget {

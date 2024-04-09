@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_bro/FE_consts/flutter_data_models.dart';
+import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 
 import 'completed_set_fields_widget.dart';
 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 import 'exercise_tile_base_widget.dart';
 
 class AddNewExerciseTile extends StatelessWidget {
@@ -16,7 +18,7 @@ class AddNewExerciseTile extends StatelessWidget {
           size: 50,
         ),
         clickBehaviour: () {
-          print("it clicked....");
+          BlocProvider.of<OpenExerciseModalCubit>(context).openExerciseModal();
         },
         isTop: true,
         tileSpacingValue:

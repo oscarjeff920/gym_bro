@@ -9,9 +9,9 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const HomePage(),
         );
-      case "/new-workout-page":
+      case "/workout-page":
         return MaterialPageRoute(
-          builder: (_) => const NewWorkoutPage(),
+          builder: (_) => const WorkoutOverviewPage(),
         );
       default:
         return null;

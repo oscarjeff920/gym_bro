@@ -7,7 +7,7 @@ class PrimaryMuscleGroupTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return const SizedBox(
         width: double.infinity,
         // height: double.infinity,
         child:

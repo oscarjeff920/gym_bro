@@ -22,5 +22,9 @@ class WorkoutTimerStarted extends WorkoutTimerState{
 }
 
 class WorkoutTimerStopped extends WorkoutTimerState{
-  const WorkoutTimerStopped() : super(0);
+  const WorkoutTimerStopped(int elapsed) : super(elapsed);
+}
+
+class WorkoutTimerReset extends WorkoutTimerState{
+  const WorkoutTimerReset(): super(0);
 }
