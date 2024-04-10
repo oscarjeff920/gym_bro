@@ -51,6 +51,7 @@ class HomePage extends StatelessWidget {
             BlocProvider.of<ExerciseTableOperationsBloc>(context)
                 .add(ResetExerciseQueryEvent());
           case ExerciseTableQueryState():
+            print("ExerciseTableQueryState (HomePage) LN#54");
           default:
         }
       },
@@ -59,6 +60,8 @@ class HomePage extends StatelessWidget {
           ExerciseSetTableOperationsState>(
         listener: (context, state) {
           switch (state) {
+            // once the exerciseSets have been queried for an exercise
+            // the exerciseSets are attached to each exercise and attached to the workout
             case ExerciseSetTableSuccessfulQueryAllByExerciseIdState():
               BlocProvider.of<ActiveWorkoutCubit>(context)
                   .loadCompleteWorkoutToState(state.completeWorkout);
