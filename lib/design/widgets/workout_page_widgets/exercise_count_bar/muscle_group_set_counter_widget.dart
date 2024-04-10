@@ -67,22 +67,22 @@ class MuscleGroupSetCounter extends StatelessWidget {
             Row(
               children: [
                 SizedBox(
-                  width: 28,
-                  height: 28,
+                  width: 30,
+                  height: 30,
                   child: Center(
                     child: Text(
                       "$primaryMuscleSets |",
-                      textScaleFactor: 1.1,
+                      textScaleFactor: 1.2,
                     ),
                   ),
                 ),
                 SizedBox(
-                  width: 14,
-                  height: 14,
+                  width: 16,
+                  height: 16,
                   child: Center(
                     child: Text(
                       "$secondaryMuscleSets",
-                      textScaleFactor: 0.9,
+                      textScaleFactor: 1,
                     ),
                   ),
                 )
