@@ -8,21 +8,48 @@ class ExerciseCountBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 30,
-      decoration: const BoxDecoration(
-          color: Colors.black26,
-          border: Border(top: BorderSide(color: Colors.black, width: 1))),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          MuscleGroupSetCounter(muscleGroup: MuscleGroupType.chest,),
-          MuscleGroupSetCounter(muscleGroup: MuscleGroupType.shoulders,),
-          MuscleGroupSetCounter(muscleGroup: MuscleGroupType.biceps,),
-          MuscleGroupSetCounter(muscleGroup: MuscleGroupType.triceps,),
-          MuscleGroupSetCounter(muscleGroup: MuscleGroupType.back,),
-          MuscleGroupSetCounter(muscleGroup: MuscleGroupType.legs,),
-        ],
+    return Material(
+      elevation: 5,
+      shadowColor: Colors.black,
+      child: Container(
+        height: 60,
+        decoration: const BoxDecoration(
+            color: Colors.black26,
+            border: Border(top: BorderSide(color: Colors.black, width: 1))),
+        child: const Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    MuscleGroupSetCounter(
+                      muscleGroup: MuscleGroupType.chest,
+                    ),
+                    MuscleGroupSetCounter(
+                      muscleGroup: MuscleGroupType.shoulders,
+                    ),
+                    MuscleGroupSetCounter(
+                      muscleGroup: MuscleGroupType.biceps,
+                    ),
+                    MuscleGroupSetCounter(
+                      muscleGroup: MuscleGroupType.triceps,
+                    ),
+                    MuscleGroupSetCounter(
+                      muscleGroup: MuscleGroupType.back,
+                    ),
+                    MuscleGroupSetCounter(
+                      muscleGroup: MuscleGroupType.legs,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

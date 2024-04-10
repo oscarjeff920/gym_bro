@@ -35,42 +35,59 @@ class MuscleGroupSetCounter extends StatelessWidget {
           case NewActiveWorkoutState():
             List<NewExerciseModel> savedExercises = state.exercises;
 
-          for (var exercise in savedExercises) {
-            if (exercise.primaryMuscleGroup == muscleGroup) {
-              primaryMuscleSets += exercise.numWorkingSets!;
+            for (var exercise in savedExercises) {
+              if (exercise.primaryMuscleGroup == muscleGroup) {
+                primaryMuscleSets += exercise.numWorkingSets!;
+              }
             }
-          }
         }
 
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 2),
-              child: BlocBuilder<AddExerciseCubit, AddExerciseState>(
-                builder: (context, state) {
-                  return Icon(
-                    assignIcon(muscleGroup),
-                    color: muscleGroupColours[muscleGroup],
-                    size: state.selectedMuscleGroup == muscleGroup ? 30 : 20,
-                  );
-                },
-              ),
+            BlocBuilder<AddExerciseCubit, AddExerciseState>(
+              builder: (context, state) {
+                return SizedBox(
+                  width: 25,
+                  height: 25,
+                  child: Center(
+                    child: Icon(
+                      assignIcon(muscleGroup),
+                      color: state.selectedMuscleGroup == null ||
+                              state.selectedMuscleGroup == muscleGroup
+                          ? muscleGroupColours[muscleGroup]
+                          : Colors.grey,
+                      size: 30,
+                    ),
+                  ),
+                );
+              },
             ),
-            Text(
-              "$primaryMuscleSets |",
-              textScaleFactor: 0.9,
-              textAlign: TextAlign.start,
+            // ),
+            Row(
+              children: [
+                SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: Center(
+                    child: Text(
+                      "$primaryMuscleSets |",
+                      textScaleFactor: 1.2,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: Center(
+                    child: Text(
+                      "$secondaryMuscleSets",
+                      textScaleFactor: 1,
+                    ),
+                  ),
+                )
+              ],
             ),
-            SizedBox(
-              width: 12,
-              child: Text(
-                "$secondaryMuscleSets",
-                textScaleFactor: 0.73,
-                textAlign: TextAlign.start,
-              ),
-            )
           ],
         );
       },
