@@ -42,12 +42,12 @@ class MuscleGroupSetCounter extends StatelessWidget {
             }
         }
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            BlocBuilder<AddExerciseCubit, AddExerciseState>(
-              builder: (context, state) {
-                return SizedBox(
+        return BlocBuilder<AddExerciseCubit, AddExerciseState>(
+          builder: (context, state) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
                   width: 25,
                   height: 25,
                   child: Center(
@@ -60,35 +60,79 @@ class MuscleGroupSetCounter extends StatelessWidget {
                       size: 30,
                     ),
                   ),
-                );
-              },
-            ),
-            // ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: Center(
-                    child: Text(
-                      "$primaryMuscleSets |",
-                      textScaleFactor: 1.2,
-                    ),
-                  ),
                 ),
-                SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: Center(
-                    child: Text(
-                      "$secondaryMuscleSets",
-                      textScaleFactor: 1,
+                // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SizedBox(
+                      width: 55,
+                      height: 30,
+                      child: Center(
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width:35,
+                              height: 30,
+                              child: Text(
+                                // "22",
+                                "$primaryMuscleSets",
+                                textScaleFactor: 1.9,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: state.selectedMuscleGroup == null ||
+                                          state.selectedMuscleGroup == muscleGroup
+                                      ? Colors.black
+                                      : Colors.grey,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              "|",
+                              textScaleFactor: 1.9,
+                              style: TextStyle(
+                                color: state.selectedMuscleGroup == null ||
+                                        state.selectedMuscleGroup == muscleGroup
+                                    ? Colors.black
+                                    : Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                )
+                    SizedBox(
+                      width: 22,
+                      height: 30,
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Expanded(
+                                flex: 1, child: Container()),
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                // "51",
+                                "$secondaryMuscleSets",
+                                textScaleFactor: 1.2,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: state.selectedMuscleGroup == null ||
+                                          state.selectedMuscleGroup == muscleGroup
+                                      ? Colors.black
+                                      : Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
-            ),
-          ],
+            );
+          },
         );
       },
     );
