@@ -33,13 +33,13 @@ class ExerciseCountBar extends StatelessWidget {
                       muscleGroup: MuscleGroupType.shoulders,
                     ),
                     MuscleGroupSetCounter(
-                      muscleGroup: MuscleGroupType.back,
-                    ),
-                    MuscleGroupSetCounter(
                       muscleGroup: MuscleGroupType.biceps,
                     ),
                     MuscleGroupSetCounter(
                       muscleGroup: MuscleGroupType.triceps,
+                    ),
+                    MuscleGroupSetCounter(
+                      muscleGroup: MuscleGroupType.back,
                     ),
                     MuscleGroupSetCounter(
                       muscleGroup: MuscleGroupType.legs,
