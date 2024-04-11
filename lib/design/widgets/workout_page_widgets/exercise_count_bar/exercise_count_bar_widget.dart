@@ -8,6 +8,8 @@ class ExerciseCountBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double spacerWidth = 10;
+
     return Material(
       elevation: 5,
       shadowColor: Colors.black,
@@ -16,34 +18,41 @@ class ExerciseCountBar extends StatelessWidget {
         decoration: const BoxDecoration(
             color: Colors.black26,
             border: Border(top: BorderSide(color: Colors.black, width: 1))),
-        child: const Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 4),
               child: Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    MuscleGroupSetCounter(
+                    SizedBox(width: spacerWidth),
+                    const MuscleGroupSetCounter(
                       muscleGroup: MuscleGroupType.chest,
                     ),
-                    MuscleGroupSetCounter(
+                    SizedBox(width: spacerWidth),
+                    const MuscleGroupSetCounter(
                       muscleGroup: MuscleGroupType.shoulders,
                     ),
-                    MuscleGroupSetCounter(
+                    SizedBox(width: spacerWidth),
+                    const MuscleGroupSetCounter(
                       muscleGroup: MuscleGroupType.biceps,
                     ),
-                    MuscleGroupSetCounter(
+                    SizedBox(width: spacerWidth),
+                    const MuscleGroupSetCounter(
                       muscleGroup: MuscleGroupType.triceps,
                     ),
-                    MuscleGroupSetCounter(
+                    SizedBox(width: spacerWidth),
+                    const MuscleGroupSetCounter(
                       muscleGroup: MuscleGroupType.back,
                     ),
-                    MuscleGroupSetCounter(
+                    SizedBox(width: spacerWidth),
+                    const MuscleGroupSetCounter(
                       muscleGroup: MuscleGroupType.legs,
                     ),
+                    SizedBox(width: spacerWidth),
                   ],
                 ),
               ),
