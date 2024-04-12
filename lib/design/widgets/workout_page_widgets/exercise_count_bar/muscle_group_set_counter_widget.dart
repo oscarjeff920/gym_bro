@@ -42,82 +42,67 @@ class MuscleGroupSetCounter extends StatelessWidget {
             }
         }
 
+        double totalWidth = 60;
+
         return BlocBuilder<AddExerciseCubit, AddExerciseState>(
           builder: (context, state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 25,
-                  height: 25,
-                  child: Center(
+            return SizedBox(
+              height: 65,
+              width: totalWidth,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
                     child: MuscleIcon(
                       muscleGroup: muscleGroup,
                       selectedMuscleGroup: state.selectedMuscleGroup,
-                      iconSize: 30,
+                      iconSize: 34,
                     ),
                   ),
-                ),
-                // ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SizedBox(
-                      width: 30,
-                      height: 30,
-                      child: Center(
-                        child: Row(
-                          children: [
-                            PrimaryMuscleSetsText(
-                                textScaleFactor: 1.6,
-                                primaryMuscleSets: 22,//primaryMuscleSets,
-                                selectedMuscleGroup:
-                                    state.selectedMuscleGroup,
-                                muscleGroup: muscleGroup),
-                            Align(
-                              alignment: Alignment.center,
-                              child: SizedBox(
-                                width: 3,
-                                child: Text(
-                                  "|",
-                                  textScaleFactor: 1.6,
-                                  style: TextStyle(
-                                    color: state.selectedMuscleGroup == null ||
-                                            state.selectedMuscleGroup ==
-                                                muscleGroup
-                                        ? Colors.black
-                                        : Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                  // ),
+                  SizedBox(
+                    height: 30,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: (totalWidth / 2) - 3,
+                          child: PrimaryMuscleSetsText(
+                              textScaleFactor: 1.5,
+                              primaryMuscleSets: primaryMuscleSets,
+                              selectedMuscleGroup: state.selectedMuscleGroup,
+                              muscleGroup: muscleGroup),
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                      height: 30,
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Expanded(flex: 1, child: Container()),
-                            Expanded(
-                              flex: 2,
-                              child: SecondaryMuscleSetsText(
-                                textScaleFactor: 1.2,
-                                secondaryMuscleSets: 31,//secondaryMuscleSets,
-                                muscleGroup: muscleGroup,
-                                selectedMuscleGroup: state.selectedMuscleGroup,
-                              ),
+                        SizedBox(
+                          width: 5,
+                          child: Text(
+                            "|",
+                            textScaleFactor: 1.5,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: state.selectedMuscleGroup == null ||
+                                      state.selectedMuscleGroup ==
+                                          muscleGroup
+                                  ? Colors.black
+                                  : Colors.grey,
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                        SizedBox(
+                          width: (totalWidth / 2) - 3,
+                          child: SecondaryMuscleSetsText(
+                            textScaleFactor: 1.0,
+                            secondaryMuscleSets: secondaryMuscleSets,
+                            muscleGroup: muscleGroup,
+                            selectedMuscleGroup: state.selectedMuscleGroup,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             );
           },
         );
