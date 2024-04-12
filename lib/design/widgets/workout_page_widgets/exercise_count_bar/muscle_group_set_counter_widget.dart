@@ -42,55 +42,155 @@ class MuscleGroupSetCounter extends StatelessWidget {
             }
         }
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            BlocBuilder<AddExerciseCubit, AddExerciseState>(
-              builder: (context, state) {
-                return SizedBox(
-                  width: 25,
-                  height: 25,
-                  child: Center(
-                    child: Icon(
-                      assignIcon(muscleGroup),
-                      color: state.selectedMuscleGroup == null ||
-                              state.selectedMuscleGroup == muscleGroup
-                          ? muscleGroupColours[muscleGroup]
-                          : Colors.grey,
-                      size: 30,
+        double totalWidth = 60;
+
+        return BlocBuilder<AddExerciseCubit, AddExerciseState>(
+          builder: (context, state) {
+            return SizedBox(
+              height: 65,
+              width: totalWidth,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: MuscleIcon(
+                      muscleGroup: muscleGroup,
+                      selectedMuscleGroup: state.selectedMuscleGroup,
+                      iconSize: 34,
                     ),
                   ),
-                );
-              },
-            ),
-            // ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: Center(
-                    child: Text(
-                      "$primaryMuscleSets |",
-                      textScaleFactor: 1.2,
+                  // ),
+                  SizedBox(
+                    height: 30,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: (totalWidth / 2) - 3,
+                          child: PrimaryMuscleSetsText(
+                              textScaleFactor: 1.5,
+                              primaryMuscleSets: primaryMuscleSets,
+                              selectedMuscleGroup: state.selectedMuscleGroup,
+                              muscleGroup: muscleGroup),
+                        ),
+                        SizedBox(
+                          width: 5,
+                          child: Text(
+                            "|",
+                            textScaleFactor: 1.5,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: state.selectedMuscleGroup == null ||
+                                      state.selectedMuscleGroup ==
+                                          muscleGroup
+                                  ? Colors.black
+                                  : Colors.grey,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: (totalWidth / 2) - 3,
+                          child: SecondaryMuscleSetsText(
+                            textScaleFactor: 1.0,
+                            secondaryMuscleSets: secondaryMuscleSets,
+                            muscleGroup: muscleGroup,
+                            selectedMuscleGroup: state.selectedMuscleGroup,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: Center(
-                    child: Text(
-                      "$secondaryMuscleSets",
-                      textScaleFactor: 1,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ],
+                ],
+              ),
+            );
+          },
         );
       },
+    );
+  }
+}
+
+class SecondaryMuscleSetsText extends StatelessWidget {
+  const SecondaryMuscleSetsText({
+    super.key,
+    required this.secondaryMuscleSets,
+    required this.muscleGroup,
+    required this.selectedMuscleGroup,
+    required this.textScaleFactor,
+  });
+
+  final int secondaryMuscleSets;
+  final MuscleGroupType muscleGroup;
+  final MuscleGroupType? selectedMuscleGroup;
+  final double textScaleFactor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "$secondaryMuscleSets",
+      textAlign: TextAlign.start,
+      textScaleFactor: textScaleFactor,
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: selectedMuscleGroup == null || selectedMuscleGroup == muscleGroup
+            ? Colors.black
+            : Colors.grey,
+      ),
+    );
+  }
+}
+
+class PrimaryMuscleSetsText extends StatelessWidget {
+  const PrimaryMuscleSetsText({
+    super.key,
+    required this.primaryMuscleSets,
+    required this.muscleGroup,
+    required this.selectedMuscleGroup,
+    required this.textScaleFactor,
+  });
+
+  final int primaryMuscleSets;
+  final MuscleGroupType muscleGroup;
+  final MuscleGroupType? selectedMuscleGroup;
+  final double textScaleFactor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "$primaryMuscleSets",
+      textAlign: TextAlign.end,
+      textScaleFactor: textScaleFactor,
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: selectedMuscleGroup == null || selectedMuscleGroup == muscleGroup
+            ? Colors.black
+            : Colors.grey,
+      ),
+    );
+  }
+}
+
+class MuscleIcon extends StatelessWidget {
+  const MuscleIcon({
+    super.key,
+    required this.muscleGroup,
+    required this.selectedMuscleGroup,
+    required this.iconSize,
+  });
+
+  final MuscleGroupType muscleGroup;
+  final MuscleGroupType? selectedMuscleGroup;
+  final double iconSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      assignIcon(muscleGroup),
+      color: selectedMuscleGroup == null || selectedMuscleGroup == muscleGroup
+          ? muscleGroupColours[muscleGroup]
+          : Colors.grey,
+      size: iconSize,
     );
   }
 }

@@ -8,42 +8,52 @@ class ExerciseCountBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double spacerWidth = 5;
+    double spacerHeight = 68;
+
     return Material(
       elevation: 5,
       shadowColor: Colors.black,
       child: Container(
-        height: 60,
+        height: 70,
         decoration: const BoxDecoration(
             color: Colors.black26,
-            border: Border(top: BorderSide(color: Colors.black, width: 1))),
-        child: const Column(
+            border: Border(top: BorderSide(color: Colors.black, width: 2))),
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 4),
               child: Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    MuscleGroupSetCounter(
+                    // SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
+                    const MuscleGroupSetCounter(
                       muscleGroup: MuscleGroupType.chest,
                     ),
-                    MuscleGroupSetCounter(
+                    SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
+                    const MuscleGroupSetCounter(
                       muscleGroup: MuscleGroupType.shoulders,
                     ),
-                    MuscleGroupSetCounter(
+                    SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
+                    const MuscleGroupSetCounter(
                       muscleGroup: MuscleGroupType.biceps,
                     ),
-                    MuscleGroupSetCounter(
+                    SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
+                    const MuscleGroupSetCounter(
                       muscleGroup: MuscleGroupType.triceps,
                     ),
-                    MuscleGroupSetCounter(
+                    SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
+                    const MuscleGroupSetCounter(
                       muscleGroup: MuscleGroupType.back,
                     ),
-                    MuscleGroupSetCounter(
+                    SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
+                    const MuscleGroupSetCounter(
                       muscleGroup: MuscleGroupType.legs,
                     ),
+                    // SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
                   ],
                 ),
               ),
