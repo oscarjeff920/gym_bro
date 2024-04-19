@@ -12,11 +12,13 @@ class ExerciseDropdownMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String addMovementValue = "new movement";
     bool isEnabled = matchingExercises == [] ? false : true;
     List<DropdownMenuEntry> exerciseEntries = [
       for (var exercise in matchingExercises) DropdownMenuEntry(
           value: exercise, label: exercise.movementName
-      )
+      ),
+      DropdownMenuEntry(value: addMovementValue, label: "New Movement", leadingIcon: Icon(Icons.add), style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)))
     ];
 
     return DropdownMenu(
@@ -25,15 +27,19 @@ class ExerciseDropdownMenu extends StatelessWidget {
         surfaceTintColor: MaterialStatePropertyAll(Colors.black),
         backgroundColor: MaterialStatePropertyAll(Colors.yellow),
         elevation: MaterialStatePropertyAll(100),
-        side: MaterialStatePropertyAll(BorderSide(width: 2)),
+        side: MaterialStatePropertyAll(BorderSide(width: 3)),
 
       ),
       width: 250,
       menuHeight: 300,
       dropdownMenuEntries: exerciseEntries,
       onSelected: (value) {
-        BlocProvider.of<AddExerciseCubit>(context)
-            .selectExercise(value);
+        if (value != addMovementValue) {
+          BlocProvider.of<AddExerciseCubit>(context)
+              .selectExercise(value);
+        } else {
+          print("new exercise baby!");
+        }
       },
     );
   }
