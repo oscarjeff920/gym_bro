@@ -37,6 +37,7 @@ class AddExerciseModal extends StatelessWidget {
                           modalColour: modalColour,
                           muscleGroupName: state.muscleGroupToString()),
                     ),
+                    // Expanded(child: Drawer()),
                     Expanded(
                       flex: 5,
                       child: Padding(
