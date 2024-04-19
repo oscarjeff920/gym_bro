@@ -37,7 +37,6 @@ class AddExerciseModal extends StatelessWidget {
                           modalColour: modalColour,
                           muscleGroupName: state.muscleGroupToString()),
                     ),
-                    // Expanded(child: Drawer()),
                     Expanded(
                       flex: 5,
                       child: Padding(
@@ -47,11 +46,11 @@ class AddExerciseModal extends StatelessWidget {
                             doneSets: state.setsDone),
                       ),
                     ),
-                    TextButton(
-                        onPressed: () {
-                          print(state.toString());
-                        },
-                        child: const Text("find out")),
+                    // TextButton(
+                    //     onPressed: () {
+                    //       print(state.toString());
+                    //     },
+                    //     child: const Text("find out")),
                   ],
                 ),
               ),
