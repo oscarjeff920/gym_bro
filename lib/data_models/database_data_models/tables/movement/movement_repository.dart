@@ -49,6 +49,9 @@ class MovementRepository {
           muscle_group_name = '${selectedMuscleGroup.name}'
           AND
           role = 'primary'
+          
+        ORDER BY
+          movement_name ASC
         ;
         """;
 

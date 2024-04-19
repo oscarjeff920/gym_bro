@@ -29,6 +29,7 @@ class ExerciseDropdownMenu extends StatelessWidget {
 
       ),
       width: 250,
+      menuHeight: 300,
       dropdownMenuEntries: exerciseEntries,
       onSelected: (value) {
         BlocProvider.of<AddExerciseCubit>(context)
