@@ -1,17 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-class AddNewMovementInitState extends Equatable {
+class AddNewMovementState extends Equatable {
   final bool isNewMovementSelected;
+  final bool showAnimatedChildren;
 
-  const AddNewMovementInitState({this.isNewMovementSelected = false});
+  const AddNewMovementState(
+      {this.isNewMovementSelected = false, this.showAnimatedChildren = false});
 
   @override
-  List<Object?> get props => [isNewMovementSelected];
-}
-
-class AddNewMovementState extends AddNewMovementInitState {
-  @override
-  final bool isNewMovementSelected;
-
-  const AddNewMovementState({this.isNewMovementSelected = true});
+  List<Object?> get props => [isNewMovementSelected, showAnimatedChildren];
 }
