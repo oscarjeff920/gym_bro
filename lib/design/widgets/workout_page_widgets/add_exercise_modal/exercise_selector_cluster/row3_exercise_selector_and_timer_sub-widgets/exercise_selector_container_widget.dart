@@ -49,14 +49,23 @@ class ExerciseSelectorContainer extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ExerciseDropdownMenu(
-                        selectedMuscleGroup: selectedMuscleGroup,
-                        matchingExercises: dropdownList),
-                    TimerButton(
-                        isExerciseSelected:
-                            addExerciseState.selectedMovement == null
-                                ? false
-                                : true)
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 500),
+                      opacity:
+                          state is MovementTableSuccessfulQueryState ? 1 : 0,
+                      child: ExerciseDropdownMenu(
+                          selectedMuscleGroup: selectedMuscleGroup,
+                          matchingExercises: dropdownList),
+                    ),
+                    Opacity(
+                      opacity:
+                          addExerciseState.selectedMovement != null ? 1 : 0,
+                      child: TimerButton(
+                          isExerciseSelected:
+                              addExerciseState.selectedMovement == null
+                                  ? false
+                                  : true),
+                    )
                   ],
                 ),
               );
