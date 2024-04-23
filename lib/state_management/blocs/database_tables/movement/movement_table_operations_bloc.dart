@@ -16,6 +16,8 @@ class MovementTableOperationsBloc
       MovementTableOperationsEvent event) async* {
     if (event is QueryMovementByPrimaryMuscleEvent) {
       yield* _mapLoadContextsToState(event);
+    } else if (event is ResetMovementTableQueryEvent) {
+      yield MovementTableNotQueriedState();
     }
   }
 

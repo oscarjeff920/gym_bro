@@ -34,94 +34,96 @@ class ExerciseSelectorCluster extends StatelessWidget {
           padding: const EdgeInsets.only(top: 5.0, left: 5, right: 5),
           child: BlocBuilder<AddNewMovementCubit, AddNewMovementState>(
             builder: (context, state) {
-
-              print("isNewMovementSelected: ${state.isNewMovementSelected}");
-              print("showAnimatedChildren: ${state.showAnimatedChildren}");
-
-              return GestureDetector(
-                onTap: () {
-                  context.read<AddNewMovementCubit>().openAddNewMovementExpansionPanel();
-                },
-                child: AnimatedContainer(
-                  // color: const Color.fromRGBO(5, 5, 5, 0.5),
-                  color: const Color.fromRGBO(255, 255, 255, 0.8),
-                  duration: const Duration(milliseconds: 500),
-                  // Duration of the animation
-                  curve: Curves.easeInOut,
-                  // Curve for the animation
-                  height: state.isNewMovementSelected ? 170 : 0,
-                  // Height of the container
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 8, right: 8),
-                    child: AnimatedOpacity(
-                      duration: const Duration(milliseconds: 100),
-                      opacity: state.showAnimatedChildren ? 1 : 0,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Exercise Name:",
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: Color.fromRGBO(10, 10, 10, .6),
-                            ),
+              return AnimatedContainer(
+                // color: const Color.fromRGBO(5, 5, 5, 0.5),
+                color: const Color.fromRGBO(255, 255, 255, 0.8),
+                duration: const Duration(milliseconds: 500),
+                // Duration of the animation
+                curve: Curves.easeInOut,
+                // Curve for the animation
+                height: state.isNewMovementSelected ? 170 : 0,
+                // Height of the container
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 8, right: 8),
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 100),
+                    opacity: state.showAnimatedChildren ? 1 : 0,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Exercise Name:",
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Color.fromRGBO(10, 10, 10, .6),
                           ),
-                          const SizedBox(
-                              height: 30,
-                              child: TextField(
-                                style: TextStyle(fontSize: 20),
+                        ),
+                        const SizedBox(
+                            height: 30,
+                            child: TextField(
+                              // cursorHeight: 22,
+                              textAlignVertical: TextAlignVertical.bottom,
+                              decoration: InputDecoration(
+                                  prefix: SizedBox(
+                                width: 10,
                               )),
-                          const SizedBox(
-                            height: 8,
+                              style: TextStyle(fontSize: 20),
+                            )),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        const Text(
+                          "Primary Muscle Group:",
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Color.fromRGBO(10, 10, 10, .6),
                           ),
-                          const Text(
-                            "Primary Muscle Group:",
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: Color.fromRGBO(10, 10, 10, .6),
-                            ),
-                          ),
-                          SizedBox(
-                              height: 30,
-                              child:
-                                  BlocBuilder<AddExerciseCubit, AddExerciseState>(
-                                builder: (context, state) {
-                                  return TextField(
-                                    style: const TextStyle(fontSize: 20),
-                                    controller: TextEditingController()
-                                      ..text = state.muscleGroupToString() ?? "",
-                                    readOnly: true,
-                                  );
+                        ),
+                        SizedBox(
+                            height: 30,
+                            child:
+                                BlocBuilder<AddExerciseCubit, AddExerciseState>(
+                              builder: (context, state) {
+                                return TextField(
+                                  decoration: const InputDecoration(
+                                      prefix: SizedBox(
+                                    width: 10,
+                                  )),
+                                  style: const TextStyle(fontSize: 20),
+                                  controller: TextEditingController()
+                                    ..text = state.muscleGroupToString() ?? "",
+                                  readOnly: true,
+                                );
+                              },
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  onPressed: () =>
+                                      BlocProvider.of<AddNewMovementCubit>(
+                                              context)
+                                          .closeAddNewMovementExpansionPanel(),
+                                  icon: const Icon(
+                                    Icons.cancel_outlined,
+                                    size: 40,
+                                  )),
+                              IconButton(
+                                onPressed: () {
+                                  BlocProvider.of<AddNewMovementCubit>(context)
+                                      .closeAddNewMovementExpansionPanel();
                                 },
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                IconButton(
-                                    onPressed: () =>
-                                        BlocProvider.of<AddNewMovementCubit>(
-                                                context)
-                                            .closeAddNewMovementExpansionPanel(),
-                                    icon: const Icon(
-                                      Icons.cancel_outlined,
-                                      size: 40,
-                                    )),
-                                IconButton(
-                                  onPressed: () {
-                                    BlocProvider.of<AddNewMovementCubit>(context)
-                                        .closeAddNewMovementExpansionPanel();
-                                  },
-                                  icon: const Icon(Icons.check_circle_outline, size: 40),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                                icon: const Icon(Icons.check_circle_outline,
+                                    size: 40),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),

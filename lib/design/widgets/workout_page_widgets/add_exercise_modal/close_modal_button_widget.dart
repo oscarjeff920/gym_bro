@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/movement_table_operations_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/movement_table_operations_event.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
@@ -28,6 +30,7 @@ class CloseModalButton extends StatelessWidget {
                   BlocProvider.of<ActiveWorkoutCubit>(context)
                       .addNewExerciseToWorkoutState(state);
                 }
+                BlocProvider.of<MovementTableOperationsBloc>(context).add(ResetMovementTableQueryEvent());
                 BlocProvider.of<AddExerciseCubit>(context).clearSavedExercise();
                 BlocProvider.of<AddNewMovementCubit>(context).closeAddNewMovementExpansionPanel();
                 BlocProvider.of<OpenExerciseModalCubit>(context)
