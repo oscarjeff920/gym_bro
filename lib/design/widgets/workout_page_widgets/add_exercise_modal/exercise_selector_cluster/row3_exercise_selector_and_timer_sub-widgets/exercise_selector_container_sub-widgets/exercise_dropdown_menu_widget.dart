@@ -48,7 +48,7 @@ class ExerciseDropdownMenu extends StatelessWidget {
         if (value != addMovementValue) {
           BlocProvider.of<AddExerciseCubit>(context).selectExercise(value);
         } else {
-          selectedMuscleGroup ?? BlocProvider.of<AddExerciseCubit>(context).selectMuscleGroup(selectedMuscleGroup!);
+          BlocProvider.of<AddExerciseCubit>(context).selectMuscleGroup(selectedMuscleGroup!);
           BlocProvider.of<AddNewMovementCubit>(context)
               .openAddNewMovementExpansionPanel();
         }
