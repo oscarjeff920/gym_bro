@@ -41,7 +41,7 @@ class ExerciseSelectorCluster extends StatelessWidget {
                 // Duration of the animation
                 curve: Curves.easeInOut,
                 // Curve for the animation
-                height: state.isNewMovementSelected ? 170 : 0,
+                height: state.isNewMovementSelected ? 175 : 0,
                 // Height of the container
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10, left: 8, right: 8),
@@ -52,32 +52,40 @@ class ExerciseSelectorCluster extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const Text(
-                          "Exercise Name:",
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Color.fromRGBO(10, 10, 10, .6),
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 4.0),
+                          child: Text(
+                            "Exercise Name:",
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Color.fromRGBO(10, 10, 10, .6),
+                            ),
                           ),
                         ),
                         const SizedBox(
-                            height: 30,
+                            height: 35,
                             child: TextField(
-                              // cursorHeight: 22,
                               textAlignVertical: TextAlignVertical.bottom,
                               decoration: InputDecoration(
                                   prefix: SizedBox(
                                 width: 10,
                               )),
-                              style: TextStyle(fontSize: 20),
+                              style: TextStyle(
+                                fontSize: 23,
+                                fontWeight: FontWeight.bold,
+                              ),
                             )),
                         const SizedBox(
                           height: 8,
                         ),
-                        const Text(
-                          "Primary Muscle Group:",
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Color.fromRGBO(10, 10, 10, .6),
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 4.0),
+                          child: Text(
+                            "Primary Muscle Group:",
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Color.fromRGBO(10, 10, 10, 0.6),
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -90,7 +98,10 @@ class ExerciseSelectorCluster extends StatelessWidget {
                                       prefix: SizedBox(
                                     width: 10,
                                   )),
-                                  style: const TextStyle(fontSize: 20),
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                   controller: TextEditingController()
                                     ..text = state.muscleGroupToString() ?? "",
                                   readOnly: true,
