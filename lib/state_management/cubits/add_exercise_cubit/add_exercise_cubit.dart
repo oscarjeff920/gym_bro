@@ -16,20 +16,19 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
             setsDone: []));
 
   addCompletedExercise(GeneralExerciseModel completedExercise) {
-
     AddExerciseState newState = AddExerciseState(
         selectedMuscleGroup: completedExercise.primaryMuscleGroup,
         selectedMovement: completedExercise.movementName,
         selectedMovementId: completedExercise.movementId,
         setsDone: completedExercise.exerciseSets
             .map((exerciseSet) => Sets(
-          isWarmUp: exerciseSet.isWarmUp,
-          weight: exerciseSet.weight,
-          reps: exerciseSet.reps,
-          extraReps: exerciseSet.extraReps,
-        )).toList(),
-        numWorkingSets: completedExercise.numWorkingSets!
-    );
+                  isWarmUp: exerciseSet.isWarmUp,
+                  weight: exerciseSet.weight,
+                  reps: exerciseSet.reps,
+                  extraReps: exerciseSet.extraReps,
+                ))
+            .toList(),
+        numWorkingSets: completedExercise.numWorkingSets!);
 
     emit(newState);
   }
@@ -59,6 +58,18 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         selectedMuscleGroup: generatedState.selectedMuscleGroup,
         selectedMovement: movementMuscleGroupJoin.movementName,
         selectedMovementId: movementMuscleGroupJoin.movementId,
+        currentSet: const CurrentSet(),
+        setsDone: const [],
+        numWorkingSets: 0));
+  }
+
+  addNewMovement(String newMovementName) {
+    AddExerciseState generatedState = state.copyWith();
+
+    emit(AddExerciseState(
+        selectedMuscleGroup: generatedState.selectedMuscleGroup,
+        selectedMovement: newMovementName,
+        selectedMovementId: null,
         currentSet: const CurrentSet(),
         setsDone: const [],
         numWorkingSets: 0));
