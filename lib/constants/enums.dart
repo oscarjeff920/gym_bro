@@ -37,7 +37,7 @@ Map<MuscleGroupType, Color> muscleGroupColours = {
   MuscleGroupType.chest: const Color.fromRGBO(255, 80, 80, 1),
   MuscleGroupType.biceps: const Color.fromRGBO(255, 140, 80, 1),
   MuscleGroupType.triceps: const Color.fromRGBO(240, 220, 100, 1),
-  MuscleGroupType.legs: const Color.fromRGBO(50, 245, 95, 1),
+  MuscleGroupType.legs: const Color.fromRGBO(30, 225, 75, 1),
   MuscleGroupType.shoulders: const Color.fromRGBO(10, 200, 255, 1),
   MuscleGroupType.back: const Color.fromRGBO(150, 150, 255, 1),
 };

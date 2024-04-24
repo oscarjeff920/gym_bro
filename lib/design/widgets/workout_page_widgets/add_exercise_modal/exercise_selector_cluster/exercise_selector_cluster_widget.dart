@@ -62,18 +62,24 @@ class ExerciseSelectorCluster extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                             height: 35,
                             child: TextField(
                               textAlignVertical: TextAlignVertical.bottom,
-                              decoration: InputDecoration(
+                              controller: TextEditingController()
+                                ..text = state.movementName ?? "",
+                              decoration: const InputDecoration(
                                   prefix: SizedBox(
                                 width: 10,
                               )),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 23,
                                 fontWeight: FontWeight.bold,
                               ),
+                              onSubmitted: (String? inputText) {
+                                BlocProvider.of<AddNewMovementCubit>(context)
+                                    .typeMovementName(inputText);
+                              },
                             )),
                         const SizedBox(
                           height: 8,
@@ -124,10 +130,18 @@ class ExerciseSelectorCluster extends StatelessWidget {
                                     size: 40,
                                   )),
                               IconButton(
-                                onPressed: () {
-                                  BlocProvider.of<AddNewMovementCubit>(context)
-                                      .closeAddNewMovementExpansionPanel();
-                                },
+                                disabledColor: Colors.black.withOpacity(0),
+                                onPressed: state.movementName != null
+                                    ? () {
+                                        BlocProvider.of<AddExerciseCubit>(
+                                                context)
+                                            .addNewMovement(
+                                                state.movementName!);
+                                        BlocProvider.of<AddNewMovementCubit>(
+                                                context)
+                                            .closeAddNewMovementExpansionPanel();
+                                      }
+                                    : null,
                                 icon: const Icon(Icons.check_circle_outline,
                                     size: 40),
                               )

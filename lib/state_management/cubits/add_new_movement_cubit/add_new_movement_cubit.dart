@@ -16,4 +16,11 @@ class AddNewMovementCubit extends Cubit<AddNewMovementState> {
   closeAddNewMovementExpansionPanel() {
     emit(const AddNewMovementState());
   }
+
+  typeMovementName(String? name) {
+    emit(AddNewMovementState(
+        isNewMovementSelected: true,
+        showAnimatedChildren: true,
+        movementName: name));
+  }
 }
