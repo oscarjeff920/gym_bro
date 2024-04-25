@@ -114,4 +114,18 @@ class NewExerciseModel {
 
     return convertedModel;
   }
+
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> modelAsMap = {
+      'exerciseOrder': exerciseOrder,
+      'movementName': movementName,
+      'movementId': movementId,
+      'exerciseDuration': exerciseDuration,
+      'numWorkingSets': numWorkingSets,
+      'primaryMuscleGroup': primaryMuscleGroup.toString().split(".").last,
+      'exerciseSets': exerciseSets.map((exerciseSet) => exerciseSet.toMap()).toList()
+    };
+
+    return modelAsMap;
+  }
 }

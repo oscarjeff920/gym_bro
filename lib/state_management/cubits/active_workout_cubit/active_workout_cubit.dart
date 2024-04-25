@@ -91,18 +91,25 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
       StateError("Cannot update state: $state != NewActiveWorkoutState");
     }
   }
+
   loadCompleteWorkoutToState(LoadedWorkoutModel completeWorkout) {
     // print("we loading complete workout ${completeWorkout.id} to state");
-    LoadedActiveWorkoutState completeLoadedWorkoutState = LoadedActiveWorkoutState(
-        id: completeWorkout.id,
-        day: completeWorkout.day,
-        month: completeWorkout.month,
-        year: completeWorkout.year,
-        workoutStartTime: completeWorkout.workoutStartTime,
-        workoutDuration: completeWorkout.workoutDuration,
-        exercises: completeWorkout.exercises);
+    LoadedActiveWorkoutState completeLoadedWorkoutState =
+        LoadedActiveWorkoutState(
+            id: completeWorkout.id,
+            day: completeWorkout.day,
+            month: completeWorkout.month,
+            year: completeWorkout.year,
+            workoutStartTime: completeWorkout.workoutStartTime,
+            workoutDuration: completeWorkout.workoutDuration,
+            exercises: completeWorkout.exercises);
 
     emit(completeLoadedWorkoutState);
+  }
+
+  loadErroredWorkoutToState(Map<String, dynamic> erroredWorkoutState) {
+    // print("we loading complete workout ${completeWorkout.id} to state");
+    print("loadin errored workout to state");
   }
 
   loadWorkoutToState(WorkoutTable loadedWorkout) {
@@ -129,4 +136,5 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
       StateError("Cannot load exercises to state: $state");
     }
   }
+
 }

@@ -13,6 +13,8 @@ import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_t
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_state.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
+import 'package:gym_bro/state_management/cubits/save_error_state_cubit/save_error_state_cubit.dart';
+import 'package:gym_bro/state_management/cubits/save_error_state_cubit/save_error_state_state.dart';
 
 import '../../widgets/home_page_widgets/new_workout_button_widget.dart';
 import '../../widgets/home_page_widgets/workouts_list_widget.dart';
@@ -104,6 +106,24 @@ class HomePage extends StatelessWidget {
                 alignment: const Alignment(0, 0.8),
                 child: const NewWorkoutButton()),
           ]),
+          floatingActionButton:
+              BlocBuilder<SaveErrorStateCubit, SaveErrorStateState>(
+            builder: (context, state) {
+              return FloatingActionButton(
+                onPressed: () {
+                  if (state.errorStateData.isEmpty) {
+                    BlocProvider.of<SaveErrorStateCubit>(context)
+                        .loadErrorState();
+                  }
+                },
+                backgroundColor:
+                    state.errorStateData.isNotEmpty ? Colors.red : null,
+                child: state.errorStateData.isNotEmpty
+                    ? const Icon(Icons.file_download_sharp)
+                    : const Icon(Icons.add),
+              );
+            },
+          ),
         ),
       ),
     );

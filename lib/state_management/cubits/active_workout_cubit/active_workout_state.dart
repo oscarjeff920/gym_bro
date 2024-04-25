@@ -55,6 +55,19 @@ class NewActiveWorkoutState extends ActiveWorkoutOnState {
     );
   }
 
+  newWorkoutToMap() {
+      Map<String, dynamic> modelAsMap = {
+        'day': day,
+        'month': month,
+        'year': year,
+        'workoutStartTime': workoutStartTime,
+        'workoutDuration': workoutDuration,
+        'exercises': exercises.map((exercise) => exercise.toMap()).toList()
+      };
+
+      return modelAsMap;
+    }
+
   @override
   List<Object?> get props => [...super.props, workoutDuration, exercises];
 }
