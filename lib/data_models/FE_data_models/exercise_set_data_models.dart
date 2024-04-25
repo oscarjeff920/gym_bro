@@ -98,4 +98,18 @@ class NewExerciseSetModel {
 
     return convertedModel;
   }
+
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> modelAsMap = {
+      'exerciseSetOrder': exerciseSetOrder,
+      'isWarmUp': isWarmUp,
+      'weight': weight,
+      'reps': reps,
+      'extraReps': extraReps,
+      'setDuration': setDuration,
+      'notes': notes,
+    };
+
+    return modelAsMap;
+  }
 }
