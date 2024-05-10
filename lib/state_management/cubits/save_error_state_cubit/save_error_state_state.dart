@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class SaveErrorStateState extends Equatable {
-  final Map errorStateData;
+  final Map<String, dynamic> errorStateData;
 
   const SaveErrorStateState({this.errorStateData = const {}});
 

@@ -16,7 +16,7 @@ class SaveErrorStateCubit extends Cubit<SaveErrorStateState> {
     Directory rootDirectory = await getApplicationDocumentsDirectory();
     File errorStateFile =
         File('${rootDirectory.path}/error_state/saved_error_state.json');
-    Map<String, dynamic> stateData = {'errorStateData': erroredWorkoutMap};
+    Map<String, dynamic> stateData = erroredWorkoutMap;
 
     await Directory('${rootDirectory.path}/error_state')
         .create(recursive: true);

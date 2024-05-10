@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
@@ -46,6 +47,20 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
     }
   }
 
+  updateNewWorkoutDuration(String? workoutDuration) {
+    if (state is NewActiveWorkoutState && workoutDuration != null) {
+      NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
+
+      emit(NewActiveWorkoutState(
+          day: currentState.day,
+          month: currentState.month,
+          year: currentState.year,
+          workoutStartTime: currentState.workoutStartTime,
+          workoutDuration: workoutDuration,
+          exercises: currentState.exercises));
+    }
+  }
+
   addNewExerciseToWorkoutState(AddExerciseState newExercise) {
     if (state is NewActiveWorkoutState) {
       NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
@@ -75,8 +90,6 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
       StateError("Cannot update state: $state != NewActiveWorkoutState");
     }
   }
-
-  addExerciseSetsToExercises() {}
 
   finishWorkout(String workoutDuration) {
     if (state is NewActiveWorkoutState &&
@@ -108,8 +121,15 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
   }
 
   loadErroredWorkoutToState(Map<String, dynamic> erroredWorkoutState) {
-    // print("we loading complete workout ${completeWorkout.id} to state");
-    print("loadin errored workout to state");
+    NewActiveWorkoutState loadedState = NewActiveWorkoutState(
+        day: erroredWorkoutState['day'],
+        month: erroredWorkoutState['month'],
+        year: erroredWorkoutState['year'],
+        exercises: (erroredWorkoutState['exercises'] as List<dynamic>)
+            .map((exercise) => NewExerciseModel.fromJson(exercise))
+            .toList());
+
+    emit(loadedState);
   }
 
   loadWorkoutToState(WorkoutTable loadedWorkout) {
@@ -136,5 +156,4 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
       StateError("Cannot load exercises to state: $state");
     }
   }
-
 }

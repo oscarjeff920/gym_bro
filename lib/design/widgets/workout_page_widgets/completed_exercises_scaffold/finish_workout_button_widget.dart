@@ -49,7 +49,7 @@ class FinishWorkoutButton extends StatelessWidget {
                         try {
                           BlocProvider.of<WorkoutTimerCubit>(context)
                               .stopTimer();
-                          // throw Exception("testing snackbar");
+                          BlocProvider.of<ActiveWorkoutCubit>(context).updateNewWorkoutDuration(timerState.toString());
                           BlocProvider.of<WorkoutTableOperationsBloc>(context)
                               .add(
                             InsertNewWorkoutIntoTableEvent(
@@ -58,13 +58,12 @@ class FinishWorkoutButton extends StatelessWidget {
                                 month: month,
                                 year: year,
                                 workoutStartTime: workoutStartTime,
-                                workoutDuration: timerState.elapsed == 0
-                                    ? null
-                                    : timerState.toString(),
+                                workoutDuration: (workoutState as NewActiveWorkoutState).workoutDuration,
                                 exercises: exercises,
                               ),
                             ),
                           );
+                          throw Exception("TESTING");
                           BlocProvider.of<WorkoutTimerCubit>(context)
                               .resetTimer();
                           BlocProvider.of<WorkoutTableOperationsBloc>(context)
@@ -76,7 +75,7 @@ class FinishWorkoutButton extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                  'An error occurred while adding workout to database: $e'),
+                                  'An error occurred while adding workout to database:\n$e'),
                               backgroundColor: Colors.red,
                             ),
                           );
