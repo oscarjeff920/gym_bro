@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
@@ -51,13 +50,15 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
     if (state is NewActiveWorkoutState && workoutDuration != null) {
       NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
 
-      emit(NewActiveWorkoutState(
+      NewActiveWorkoutState workoutStateWithDuration = NewActiveWorkoutState(
           day: currentState.day,
           month: currentState.month,
           year: currentState.year,
           workoutStartTime: currentState.workoutStartTime,
           workoutDuration: workoutDuration,
-          exercises: currentState.exercises));
+          exercises: currentState.exercises);
+
+      emit(workoutStateWithDuration);
     }
   }
 
@@ -125,6 +126,8 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
         day: erroredWorkoutState['day'],
         month: erroredWorkoutState['month'],
         year: erroredWorkoutState['year'],
+        workoutStartTime: erroredWorkoutState['workoutStartTime'],
+        workoutDuration: erroredWorkoutState['workoutDuration'],
         exercises: (erroredWorkoutState['exercises'] as List<dynamic>)
             .map((exercise) => NewExerciseModel.fromJson(exercise))
             .toList());
