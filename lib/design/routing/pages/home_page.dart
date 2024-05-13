@@ -105,7 +105,7 @@ class HomePage extends StatelessWidget {
                 alignment: const Alignment(0, 0.8),
                 child: const NewWorkoutButton()),
           ]),
-          floatingActionButton: true ?
+          floatingActionButton: false ?
               const LoadErroredWorkoutButton() : null,
         ),
       ),
