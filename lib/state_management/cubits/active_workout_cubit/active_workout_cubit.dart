@@ -46,6 +46,22 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
     }
   }
 
+  updateNewWorkoutDuration(String? workoutDuration) {
+    if (state is NewActiveWorkoutState && workoutDuration != null) {
+      NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
+
+      NewActiveWorkoutState workoutStateWithDuration = NewActiveWorkoutState(
+          day: currentState.day,
+          month: currentState.month,
+          year: currentState.year,
+          workoutStartTime: currentState.workoutStartTime,
+          workoutDuration: workoutDuration,
+          exercises: currentState.exercises);
+
+      emit(workoutStateWithDuration);
+    }
+  }
+
   addNewExerciseToWorkoutState(AddExerciseState newExercise) {
     if (state is NewActiveWorkoutState) {
       NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
@@ -76,8 +92,6 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
     }
   }
 
-  addExerciseSetsToExercises() {}
-
   finishWorkout(String workoutDuration) {
     if (state is NewActiveWorkoutState &&
         (state as NewActiveWorkoutState).exercises.isNotEmpty) {
@@ -91,18 +105,34 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
       StateError("Cannot update state: $state != NewActiveWorkoutState");
     }
   }
+
   loadCompleteWorkoutToState(LoadedWorkoutModel completeWorkout) {
     // print("we loading complete workout ${completeWorkout.id} to state");
-    LoadedActiveWorkoutState completeLoadedWorkoutState = LoadedActiveWorkoutState(
-        id: completeWorkout.id,
-        day: completeWorkout.day,
-        month: completeWorkout.month,
-        year: completeWorkout.year,
-        workoutStartTime: completeWorkout.workoutStartTime,
-        workoutDuration: completeWorkout.workoutDuration,
-        exercises: completeWorkout.exercises);
+    LoadedActiveWorkoutState completeLoadedWorkoutState =
+        LoadedActiveWorkoutState(
+            id: completeWorkout.id,
+            day: completeWorkout.day,
+            month: completeWorkout.month,
+            year: completeWorkout.year,
+            workoutStartTime: completeWorkout.workoutStartTime,
+            workoutDuration: completeWorkout.workoutDuration,
+            exercises: completeWorkout.exercises);
 
     emit(completeLoadedWorkoutState);
+  }
+
+  loadErroredWorkoutToState(Map<String, dynamic> erroredWorkoutState) {
+    NewActiveWorkoutState loadedState = NewActiveWorkoutState(
+        day: erroredWorkoutState['day'],
+        month: erroredWorkoutState['month'],
+        year: erroredWorkoutState['year'],
+        workoutStartTime: erroredWorkoutState['workoutStartTime'],
+        workoutDuration: erroredWorkoutState['workoutDuration'],
+        exercises: (erroredWorkoutState['exercises'] as List<dynamic>)
+            .map((exercise) => NewExerciseModel.fromJson(exercise))
+            .toList());
+
+    emit(loadedState);
   }
 
   loadWorkoutToState(WorkoutTable loadedWorkout) {

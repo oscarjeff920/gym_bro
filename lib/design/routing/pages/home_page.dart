@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/design/widgets/home_page_widgets/continue_workout_button_widget.dart';
+import 'package:gym_bro/design/widgets/home_page_widgets/load_errored_workout_button_widget.dart';
 import 'package:gym_bro/design/widgets/the_app_bar_widget.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_event.dart';
@@ -104,6 +105,8 @@ class HomePage extends StatelessWidget {
                 alignment: const Alignment(0, 0.8),
                 child: const NewWorkoutButton()),
           ]),
+          floatingActionButton: false ?
+              const LoadErroredWorkoutButton() : null,
         ),
       ),
     );

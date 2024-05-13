@@ -42,4 +42,16 @@ class WorkoutTimerCubit extends Cubit<WorkoutTimerState> {
         emit(WorkoutTimerStarted(state.elapsed + 1));
     }
   }
+
+  setTimer(String alreadyElapsedString) {
+    List<String> splitDuration = alreadyElapsedString.split(":");
+
+    int hoursElapsed = int.parse(splitDuration.first) * 3600;
+    int minutesElapsed = int.parse(splitDuration.elementAt(1)) * 60;
+    int secondsElapsed = int.parse(splitDuration.last);
+
+    int totalSecondsElapsed = hoursElapsed + minutesElapsed + secondsElapsed;
+
+    emit(WorkoutTimerStopped(totalSecondsElapsed));
+  }
 }

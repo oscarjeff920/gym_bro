@@ -13,15 +13,16 @@ class GeneralExerciseModel {
   // final MuscleGroupType secondaryMuscleGroup;
   final List<GeneralExerciseSetModel> exerciseSets;
 
-  GeneralExerciseModel({this.id,
-    this.exerciseOrder,
-    required this.movementName,
-    required this.movementId,
-    this.exerciseDuration,
-    this.numWorkingSets,
-    required this.primaryMuscleGroup,
-    // required this.secondaryMuscleGroup,
-    required this.exerciseSets});
+  GeneralExerciseModel(
+      {this.id,
+      this.exerciseOrder,
+      required this.movementName,
+      required this.movementId,
+      this.exerciseDuration,
+      this.numWorkingSets,
+      required this.primaryMuscleGroup,
+      // required this.secondaryMuscleGroup,
+      required this.exerciseSets});
 }
 
 // ===================================
@@ -59,7 +60,7 @@ class LoadedExerciseModel {
       exerciseDuration: map['exercise_duration'],
       numWorkingSets: map['num_working_sets'],
       primaryMuscleGroup:
-      MuscleGroupType.values.byName(map['primary_muscle_group_name']),
+          MuscleGroupType.values.byName(map['primary_muscle_group_name']),
       // secondaryMuscleGroup: secondaryMuscleGroup,
       exerciseSets: [],
     );
@@ -93,14 +94,15 @@ class NewExerciseModel {
   // final MuscleGroupType secondaryMuscleGroup;
   final List<NewExerciseSetModel> exerciseSets;
 
-  NewExerciseModel({this.exerciseOrder,
-    required this.movementName,
-    this.movementId,
-    this.exerciseDuration,
-    this.numWorkingSets,
-    required this.primaryMuscleGroup,
-    // required this.secondaryMuscleGroup,
-    required this.exerciseSets});
+  NewExerciseModel(
+      {this.exerciseOrder,
+      required this.movementName,
+      this.movementId,
+      this.exerciseDuration,
+      this.numWorkingSets,
+      required this.primaryMuscleGroup,
+      // required this.secondaryMuscleGroup,
+      required this.exerciseSets});
 
   GeneralExerciseModel transformToGeneralModel() {
     GeneralExerciseModel convertedModel = GeneralExerciseModel(
@@ -109,9 +111,40 @@ class NewExerciseModel {
         movementId: movementId,
         numWorkingSets: numWorkingSets,
         primaryMuscleGroup: primaryMuscleGroup,
-        exerciseSets: exerciseSets.map((exerciseSets) => exerciseSets.transformToGeneralModel())
+        exerciseSets: exerciseSets
+            .map((exerciseSets) => exerciseSets.transformToGeneralModel())
             .toList());
 
     return convertedModel;
+  }
+
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> modelAsMap = {
+      'exerciseOrder': exerciseOrder,
+      'movementName': movementName,
+      'movementId': movementId,
+      'exerciseDuration': exerciseDuration,
+      'numWorkingSets': numWorkingSets,
+      'primaryMuscleGroup': primaryMuscleGroup.toString().split(".").last,
+      'exerciseSets':
+          exerciseSets.map((exerciseSet) => exerciseSet.toMap()).toList()
+    };
+
+    return modelAsMap;
+  }
+
+  factory NewExerciseModel.fromJson(Map<String, dynamic> json) {
+    return NewExerciseModel(
+      exerciseOrder: json['exerciseOrder'],
+      movementName: json['movementName'],
+      movementId: json['movementId'],
+      exerciseDuration: json['exerciseDuration'],
+      numWorkingSets: json['numWorkingSets'],
+      primaryMuscleGroup:
+          MuscleGroupType.values.byName(json['primaryMuscleGroup']),
+      exerciseSets: (json['exerciseSets'] as List)
+          .map((setJson) => NewExerciseSetModel.fromJson(setJson))
+          .toList(),
+    );
   }
 }

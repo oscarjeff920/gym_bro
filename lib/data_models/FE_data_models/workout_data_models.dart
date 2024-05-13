@@ -42,4 +42,17 @@ class NewWorkoutModel extends GeneralWorkoutModel {
       super.workoutStartTime,
       super.workoutDuration,
       required this.exercises});
+
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> modelAsMap = {
+      'day': day,
+      'month': month,
+      'year': year,
+      'workoutStartTime': workoutStartTime,
+      'workoutDuration': workoutDuration,
+      'exercises': exercises.map((exercise) => exercise.toMap()).toList()
+    };
+
+    return modelAsMap;
+  }
 }

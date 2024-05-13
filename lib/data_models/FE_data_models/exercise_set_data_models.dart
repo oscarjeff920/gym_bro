@@ -98,4 +98,30 @@ class NewExerciseSetModel {
 
     return convertedModel;
   }
+
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> modelAsMap = {
+      'exerciseSetOrder': exerciseSetOrder,
+      'isWarmUp': isWarmUp,
+      'weight': weight,
+      'reps': reps,
+      'extraReps': extraReps,
+      'setDuration': setDuration,
+      'notes': notes,
+    };
+
+    return modelAsMap;
+  }
+
+  factory NewExerciseSetModel.fromJson(Map<String, dynamic> json) {
+    return NewExerciseSetModel(
+      exerciseSetOrder: json['exerciseSetOrder'],
+      isWarmUp: json['isWarmUp'],
+      weight: json['weight'],
+      reps: json['reps'],
+      extraReps: json['extraReps'],
+      setDuration: json['setDuration'],
+      notes: json['notes'],
+    );
+  }
 }
