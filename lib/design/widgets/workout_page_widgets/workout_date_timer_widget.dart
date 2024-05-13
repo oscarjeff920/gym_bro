@@ -34,6 +34,9 @@ class WorkoutDateTimer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!isLoadedWorkout && workoutDuration != null) {
+      BlocProvider.of<WorkoutTimerCubit>(context).setTimer(workoutDuration!);
+    }
     return Container(
       color: Colors.black12,
       child: SizedBox(

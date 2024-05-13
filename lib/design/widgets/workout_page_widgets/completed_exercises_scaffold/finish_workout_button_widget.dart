@@ -49,7 +49,6 @@ class FinishWorkoutButton extends StatelessWidget {
                         try {
                           BlocProvider.of<WorkoutTimerCubit>(context)
                               .stopTimer();
-                          BlocProvider.of<ActiveWorkoutCubit>(context).updateNewWorkoutDuration(timerState.toString());
                           BlocProvider.of<WorkoutTableOperationsBloc>(context)
                               .add(
                             InsertNewWorkoutIntoTableEvent(
@@ -58,12 +57,11 @@ class FinishWorkoutButton extends StatelessWidget {
                                 month: month,
                                 year: year,
                                 workoutStartTime: workoutStartTime,
-                                workoutDuration: (workoutState as NewActiveWorkoutState).workoutDuration,
+                                workoutDuration: (workoutState as NewActiveWorkoutState).workoutDuration ?? timerState.toString(),
                                 exercises: exercises,
                               ),
                             ),
                           );
-                          throw Exception("TESTING");
                           BlocProvider.of<WorkoutTimerCubit>(context)
                               .resetTimer();
                           BlocProvider.of<WorkoutTableOperationsBloc>(context)
@@ -81,7 +79,7 @@ class FinishWorkoutButton extends StatelessWidget {
                           );
                           NewActiveWorkoutState currentState = workoutState as NewActiveWorkoutState;
                           BlocProvider.of<SaveErrorStateCubit>(context)
-                              .writeErrorState(currentState.newWorkoutToMap());
+                              .writeErrorState(currentState.newWorkoutToMap(), timerState.toString());
                           // Handle error here
                           print("An error occurred: $e");
                         }
