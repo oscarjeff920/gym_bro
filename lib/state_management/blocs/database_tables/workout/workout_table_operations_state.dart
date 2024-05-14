@@ -47,4 +47,9 @@ class WorkoutTableSuccessfulInsertState extends WorkoutTableInsertState {}
 class WorkoutTableSuccessfulNewWorkoutInsertState
     extends WorkoutTableSuccessfulInsertState {}
 
-class WorkoutTableInsertErrorState extends WorkoutTableInsertState {}
+class WorkoutTableInsertErrorState extends WorkoutTableInsertState {
+  final Object error;
+  final NewWorkoutModel insertWorkout;
+
+  WorkoutTableInsertErrorState({required this.error, required this.insertWorkout});
+}

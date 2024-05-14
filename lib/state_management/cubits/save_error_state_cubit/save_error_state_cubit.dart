@@ -12,12 +12,7 @@ class SaveErrorStateCubit extends Cubit<SaveErrorStateState> {
     emit(SaveErrorStateState(errorStateData: erroredWorkoutMap));
   }
 
-  writeErrorState(
-      Map<String, dynamic> erroredWorkoutMap, String? workoutDuration) async {
-    if (workoutDuration != null && erroredWorkoutMap['workoutDuration'] == null) {
-      erroredWorkoutMap['workoutDuration'] = workoutDuration;
-    }
-
+  writeErrorState(Map<String, dynamic> erroredWorkoutMap) async {
     Directory rootDirectory = await getApplicationDocumentsDirectory();
     File errorStateFile =
         File('${rootDirectory.path}/error_state/saved_error_state.json');

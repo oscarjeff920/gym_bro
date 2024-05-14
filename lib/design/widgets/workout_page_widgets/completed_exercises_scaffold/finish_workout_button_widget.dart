@@ -6,7 +6,6 @@ import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_t
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_event.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
-import 'package:gym_bro/state_management/cubits/save_error_state_cubit/save_error_state_cubit.dart';
 import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_cubit.dart';
 import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_state.dart';
 
@@ -46,44 +45,26 @@ class FinishWorkoutButton extends StatelessWidget {
                       onPressed: exercises.isEmpty
                           ? null
                           : () {
-                        try {
-                          BlocProvider.of<WorkoutTimerCubit>(context)
-                              .stopTimer();
-                          BlocProvider.of<WorkoutTableOperationsBloc>(context)
-                              .add(
-                            InsertNewWorkoutIntoTableEvent(
-                              newWorkout: NewWorkoutModel(
-                                day: day,
-                                month: month,
-                                year: year,
-                                workoutStartTime: workoutStartTime,
-                                workoutDuration: (workoutState as NewActiveWorkoutState).workoutDuration ?? timerState.toString(),
-                                exercises: exercises,
-                              ),
-                            ),
-                          );
-                          BlocProvider.of<WorkoutTimerCubit>(context)
-                              .resetTimer();
-                          BlocProvider.of<WorkoutTableOperationsBloc>(context)
-                              .add(QueryAllWorkoutTableEvent());
-                          BlocProvider.of<ActiveWorkoutCubit>(context)
-                              .resetState();
-                          Navigator.of(context).pushNamed("/");
-                        } catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                  'An error occurred while adding workout to database:\n$e'),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                          NewActiveWorkoutState currentState = workoutState as NewActiveWorkoutState;
-                          BlocProvider.of<SaveErrorStateCubit>(context)
-                              .writeErrorState(currentState.newWorkoutToMap(), timerState.toString());
-                          // Handle error here
-                          print("An error occurred: $e");
-                        }
-                      },
+                              BlocProvider.of<WorkoutTimerCubit>(context)
+                                  .stopTimer();
+                              BlocProvider.of<WorkoutTableOperationsBloc>(
+                                      context)
+                                  .add(
+                                InsertNewWorkoutIntoTableEvent(
+                                  newWorkout: NewWorkoutModel(
+                                    day: day,
+                                    month: month,
+                                    year: year,
+                                    workoutStartTime: workoutStartTime,
+                                    workoutDuration:
+                                        (workoutState as NewActiveWorkoutState)
+                                                .workoutDuration ??
+                                            timerState.toString(),
+                                    exercises: exercises,
+                                  ),
+                                ),
+                              );
+                            },
                       child: const Icon(
                         Icons.check_box,
                         size: 50,
