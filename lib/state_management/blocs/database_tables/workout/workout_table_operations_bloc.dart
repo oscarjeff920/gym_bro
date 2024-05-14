@@ -15,8 +15,7 @@ class WorkoutTableOperationsBloc
       WorkoutTableOperationsEvent event) async* {
     if (event is QueryAllWorkoutTableEvent) {
       yield* _mapLoadContextsToState(event);
-    }
-    else if (event is InsertNewWorkoutIntoTableEvent) {
+    } else if (event is InsertNewWorkoutIntoTableEvent) {
       yield* _mapInsertContextsToState(event);
     }
   }
@@ -28,8 +27,7 @@ class WorkoutTableOperationsBloc
       // movementRepository.inspectSchema();
       var query = await workoutRepository.getAllWorkouts();
       yield WorkoutTableSuccessfulQueryAllState(allWorkoutsQuery: query);
-    }
-    catch (e) {
+    } catch (e) {
       print("Whoops.. we've got reached a WorkoutTableQueryErrorState\n$e");
       yield WorkoutTableQueryErrorState();
     }
@@ -40,10 +38,10 @@ class WorkoutTableOperationsBloc
     try {
       await workoutRepository.insertNewFullWorkout(event.newWorkout);
       yield WorkoutTableSuccessfulNewWorkoutInsertState();
-    }
-    catch (e) {
+    } catch (e) {
       print("Whoops.. we've got reached a WorkoutTableInsertErrorState\n$e");
-      yield WorkoutTableInsertErrorState();
+      yield WorkoutTableInsertErrorState(
+          error: e, insertWorkout: event.newWorkout);
     }
   }
 }
