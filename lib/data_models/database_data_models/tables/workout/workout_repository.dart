@@ -1,3 +1,4 @@
+import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
@@ -13,16 +14,58 @@ class WorkoutRepository {
 
     final List<Map<String, dynamic>> workouts = await db.query(workoutTableName,
         orderBy: 'year DESC, month DESC, day DESC, start_time DESC');
-    final List<WorkoutTable> convertedWorkouts = workouts.map((workout) => WorkoutTable.fromMap(workout)).toList();
+    final List<WorkoutTable> convertedWorkouts =
+        workouts.map((workout) => WorkoutTable.fromMap(workout)).toList();
     return convertedWorkouts;
+  }
+
+  insertNewMovement(NewExerciseModel newMovementExercise, txn) async {
+    // first we check to see if the movement does exist in the db
+    String queryString = """
+    SELECT id FROM $movementTableName
+    WHERE name = '${newMovementExercise.movementName.toLowerCase()}';
+    """;
+    final List<Map<String, dynamic>> existingMovementId =
+        await txn.rawQuery(queryString);
+    if (existingMovementId.isNotEmpty) return existingMovementId.first;
+
+    // if the movement doesn't exist we need to insert it
+    String insertNewMovementString = """
+    INSERT INTO $movementTableName (name) VALUES
+      ('${newMovementExercise.movementName.toLowerCase()}');
+    """;
+    final newMovementId = await txn.rawInsert(insertNewMovementString);
+
+    // to make the association between movement and muscle group
+    // we need to get the id of the muscle group in the db
+    String queryMuscleGroupsString = """
+    SELECT id FROM $muscleGroupTableName
+    WHERE name = '${newMovementExercise.primaryMuscleGroup.toString().split(".").last}';
+    """;
+    final List<Map<String, dynamic>> primaryMuscleGroupId =
+        await txn.rawQuery(queryMuscleGroupsString);
+
+    // next we insert the association data
+    String insertNewMovementMuscleGroupsString = """
+    INSERT INTO $movementMuscleGroupsTableName VALUES
+      ($newMovementId, ${primaryMuscleGroupId.first['id']}, 'primary');
+    """;
+
+    await txn.rawInsert(insertNewMovementMuscleGroupsString);
+
+    return newMovementId;
   }
 
   insertNewFullWorkout(NewWorkoutModel newWorkout) async {
     final db = await databaseHelper.database;
 
     await db.transaction((txn) async {
-      String? startTime = newWorkout.workoutStartTime == null ? null : "'${newWorkout.workoutStartTime}'";
-      String? workoutDuration = newWorkout.workoutDuration == null ? null : "'${newWorkout.workoutDuration}'";
+      String? startTime = newWorkout.workoutStartTime == null
+          ? null
+          : "'${newWorkout.workoutStartTime}'";
+      String? workoutDuration = newWorkout.workoutDuration == null
+          ? null
+          : "'${newWorkout.workoutDuration}'";
 
       String insertWorkoutQueryString = """
       INSERT INTO $workoutTableName (day, month, year, start_time, duration) VALUES
@@ -32,10 +75,18 @@ class WorkoutRepository {
 
       int exerciseOrder = 1;
       for (var exercise in newWorkout.exercises) {
+        final int movementId;
+        if (exercise.movementId == null) {
+          // if the movement is new, it needs to be added to the DB to get the id
+          movementId = await insertNewMovement(exercise, txn);
+        } else {
+          movementId = exercise.movementId!;
+        }
+
         String insertExerciseString = """
         INSERT INTO $exerciseTableName 
             (movement_id, workout_id, exercise_order, duration, num_working_sets) VALUES
-            (${exercise.movementId}, $newWorkoutId, $exerciseOrder, '${exercise.exerciseDuration}', ${exercise.numWorkingSets}); 
+            ($movementId, $newWorkoutId, $exerciseOrder, '${exercise.exerciseDuration}', ${exercise.numWorkingSets}); 
         """;
         final newExerciseId = await txn.rawInsert(insertExerciseString);
         exerciseOrder += 1;
