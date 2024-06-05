@@ -29,6 +29,45 @@ class MovementRepository {
     }
   }
 
+  Future<int> insertNewMovement(
+      String movementName, MuscleGroupType primaryMuscleGroup) async {
+    final db = await databaseHelper.database;
+
+    final newMovementId = await db.transaction((txn) async {
+      String insertMovementString = """
+      INSERT INTO $movementTableName (name) VALUES
+        ($movementName);
+      """;
+      int newMovementId = await txn.rawInsert(insertMovementString);
+
+      String queryPrimaryMuscleGroupString = """
+      SELECT id FROM $muscleGroupTableName
+      WHERE name = '${primaryMuscleGroup.name}';
+      """;
+      List<Map> primaryMuscleGroupIdList = await txn.rawQuery(queryPrimaryMuscleGroupString);
+      int primaryMuscleGroupId = primaryMuscleGroupIdList.isNotEmpty ? primaryMuscleGroupIdList.first['id'] : IndexError;
+
+      String insertNewMovementMuscleGroupsString = """
+      INSERT INTO $movementMuscleGroupsTableName VALUES
+        ($newMovementId, $primaryMuscleGroupId, 'primary');
+      """;
+      await txn.rawInsert(insertNewMovementMuscleGroupsString);
+
+      return newMovementId;
+    });
+
+    return newMovementId;
+  }
+
+  Future<int?> doesMovementNameExist({required String movementName}) async {
+    final db = await databaseHelper.database;
+
+    List<Map> movementNameIdList =
+        await db.query(movementTableName, where: "name = '$movementName");
+
+    return movementNameIdList.isEmpty ? null : movementNameIdList.first['id'];
+  }
+
   Future<List<MovementMuscleGroupJoin>> getAllMovementsByMuscleGroup(
       MuscleGroupType selectedMuscleGroup) async {
     final db = await databaseHelper.database;
