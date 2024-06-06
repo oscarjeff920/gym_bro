@@ -5,7 +5,7 @@ class MovementMuscleGroupJoin {
   final String movementName;
   final RoleType muscleRole;
   final int? muscleGroupId;
-  final MuscleGroupType muscleGroupName;
+  final MuscleGroupType muscleGroup;
 
   factory MovementMuscleGroupJoin.fromMap(Map<String, dynamic> map) {
     return MovementMuscleGroupJoin(
@@ -13,14 +13,14 @@ class MovementMuscleGroupJoin {
       movementName: map['movement_name'],
       muscleRole: RoleType.values.byName(map['role']),
       muscleGroupId: map['muscle_group_id'],
-      muscleGroupName: MuscleGroupType.values.byName(map['muscle_group_name']),
+      muscleGroup: MuscleGroupType.values.byName(map['muscle_group_name']),
     );
   }
 
   MovementMuscleGroupJoin(
-      {required this.movementId,
+      {this.movementId,
       required this.movementName,
       required this.muscleRole,
-      required this.muscleGroupId,
-      required this.muscleGroupName});
+      this.muscleGroupId,
+      required this.muscleGroup});
 }

@@ -125,7 +125,7 @@ class NewExerciseModel {
       'movementId': movementId,
       'exerciseDuration': exerciseDuration,
       'numWorkingSets': numWorkingSets,
-      'primaryMuscleGroup': primaryMuscleGroup.toString().split(".").last,
+      'primaryMuscleGroup': primaryMuscleGroup.name,
       'exerciseSets':
           exerciseSets.map((exerciseSet) => exerciseSet.toMap()).toList()
     };

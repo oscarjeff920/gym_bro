@@ -4,6 +4,7 @@ import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exe
 import 'package:gym_bro/data_models/database_data_models/tables/movement/movement_repository.dart';
 import 'package:gym_bro/database/database_connector.dart';
 import 'package:gym_bro/design/routing/router.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_id_bloc/get_movement_id_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/movement/movement_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
@@ -43,6 +44,9 @@ class MyApp extends StatelessWidget {
                 workoutRepository: WorkoutRepository(databaseHelper))),
         BlocProvider(
             create: (context) => MovementTableOperationsBloc(
+                movementRepository: MovementRepository(databaseHelper))),
+        BlocProvider(
+            create: (context) => GetMovementIdBloc(
                 movementRepository: MovementRepository(databaseHelper))),
         BlocProvider(
             create: (context) => ExerciseTableOperationsBloc(

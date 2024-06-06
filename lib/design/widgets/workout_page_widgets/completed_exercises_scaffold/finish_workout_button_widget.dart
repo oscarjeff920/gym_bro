@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_id_bloc/get_movement_id_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_id_bloc/get_movement_id_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_event.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
@@ -47,6 +49,19 @@ class FinishWorkoutButton extends StatelessWidget {
                           : () {
                               BlocProvider.of<WorkoutTimerCubit>(context)
                                   .stopTimer();
+                              List numbOfNewMovements = BlocProvider.of<GetMovementIdBloc>(context).hasNewMovements(exercises);
+                              switch (numbOfNewMovements.length) {
+                                case == 1:
+                                  BlocProvider.of<GetMovementIdBloc>(context).add(
+                                      PassMovementDetailsEvent(
+                                          movementName: numbOfNewMovements.first['value'].movementName,
+                                          muscleGroup: numbOfNewMovements.first['value'].muscleGroup,
+                                      )
+                                  );
+
+
+
+                              }
                               BlocProvider.of<WorkoutTableOperationsBloc>(
                                       context)
                                   .add(

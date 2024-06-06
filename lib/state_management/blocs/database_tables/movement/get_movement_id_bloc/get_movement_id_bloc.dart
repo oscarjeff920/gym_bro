@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/joined_tables/movement_muscle_group_join_object.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/movement/movement_repository.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_id_bloc/get_movement_id_event.dart';
@@ -128,5 +129,15 @@ class GetMovementIdBloc
       }
       return str;
     }).toList();
+  }
+
+  hasNewMovements(List<NewExerciseModel> exercises) {
+    List listOfNewMovements = [];
+
+    for (var entry in exercises.asMap().entries) {
+      if (entry.value.movementId == null) listOfNewMovements.add(entry);
+    }
+
+    return listOfNewMovements;
   }
 }
