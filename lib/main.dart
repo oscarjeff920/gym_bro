@@ -7,6 +7,7 @@ import 'package:gym_bro/design/routing/router.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/movement/movement_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
+import 'package:gym_bro/state_management/cubits/add_new_movement_cubit/add_new_movement_cubit.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 import 'package:gym_bro/state_management/cubits/save_error_state_cubit/save_error_state_cubit.dart';
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_cubit.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AddExerciseCubit()),
         BlocProvider(create: (context) => SetTimerCubit()),
         BlocProvider(create: (context) => WorkoutTimerCubit()),
+        BlocProvider(create: (context) => AddNewMovementCubit()),
         BlocProvider(create: (context) => SaveErrorStateCubit()),
       ],
       child: MaterialApp(

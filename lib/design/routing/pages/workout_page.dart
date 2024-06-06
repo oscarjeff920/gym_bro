@@ -1,37 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
-import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/close_modal_button_widget.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_state.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
-import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_state.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
+import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
+import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_state.dart';
 import 'package:gym_bro/state_management/cubits/save_error_state_cubit/save_error_state_cubit.dart';
 import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_cubit.dart';
-import '../../widgets/the_app_bar_widget.dart';
-import '../../widgets/workout_page_widgets/add_exercise_modal/add_exercise_modal_widget.dart';
-import '../../widgets/workout_page_widgets/completed_exercises_scaffold/completed_exercises_scaffold_widget.dart';
-import '../../widgets/workout_page_widgets/exercise_count_bar/exercise_count_bar_widget.dart';
-import '../../widgets/workout_page_widgets/workout_date_timer_widget.dart';
+import 'package:gym_bro/design/widgets/the_app_bar_widget.dart';
+import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/close_modal_button_widget.dart';
+import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/add_exercise_modal_widget.dart';
+import 'package:gym_bro/design/widgets/workout_page_widgets/completed_exercises_scaffold/completed_exercises_scaffold_widget.dart';
+import 'package:gym_bro/design/widgets/workout_page_widgets/exercise_count_bar/exercise_count_bar_widget.dart';
+import 'package:gym_bro/design/widgets/workout_page_widgets/workout_date_timer_widget.dart';
 
 class WorkoutOverviewPage extends StatelessWidget {
   const WorkoutOverviewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // CHANGE!!!
+    // TODO: CHANGE!!!
     double tileSpacingValue = 12;
     return BlocListener<WorkoutTableOperationsBloc,
         WorkoutTableOperationsState>(
       listener: (context, state) {
         switch (state) {
           case WorkoutTableSuccessfulInsertState():
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Center(
+                  child: Text(
+                    'Successfully Saved Workout!',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+                backgroundColor: Colors.green,
+              ),
+            );
             BlocProvider.of<WorkoutTimerCubit>(context).resetTimer();
-            BlocProvider.of<WorkoutTableOperationsBloc>(context)
-                .add(QueryAllWorkoutTableEvent());
             BlocProvider.of<ActiveWorkoutCubit>(context).resetState();
             Navigator.of(context).pushNamed("/");
           case WorkoutTableInsertErrorState():
@@ -137,31 +149,32 @@ class WorkoutOverviewPage extends StatelessWidget {
             ]);
           }
         }),
-        // floatingActionButton:
-        //     BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
-        //   builder: (context, state) {
-        //     ActiveWorkoutState activeWorkoutState_ = state;
-        //     return BlocBuilder<ExerciseTableOperationsBloc,
-        //         ExerciseTableOperationsState>(
-        //       builder: (context, state) {
-        //         ExerciseTableOperationsState exerciseTableState = state;
-        //         return BlocBuilder<AddExerciseCubit, AddExerciseState>(
-        //           builder: (context, state) {
-        //             AddExerciseState addExerciseState_ = state;
-        //             return FloatingActionButton(
-        //               onPressed: () {
-        //                 print("");
-        //                 print(
-        //                     "ActiveWorkoutState: $activeWorkoutState_\nExerciseTableOperationsState: $exerciseTableState\nAddExerciseState: $addExerciseState_");
-        //                 print("");
-        //               },
-        //             );
-        //           },
-        //         );
-        //       },
-        //     );
-        //   },
-        // ),
+        floatingActionButton: false
+            ? BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
+                builder: (context, state) {
+                  ActiveWorkoutState activeWorkoutState_ = state;
+                  return BlocBuilder<ExerciseTableOperationsBloc,
+                      ExerciseTableOperationsState>(
+                    builder: (context, state) {
+                      ExerciseTableOperationsState exerciseTableState = state;
+                      return BlocBuilder<AddExerciseCubit, AddExerciseState>(
+                        builder: (context, state) {
+                          AddExerciseState addExerciseState_ = state;
+                          return FloatingActionButton(
+                            onPressed: () {
+                              print("");
+                              print(
+                                  "ActiveWorkoutState: $activeWorkoutState_\nExerciseTableOperationsState: $exerciseTableState\nAddExerciseState: $addExerciseState_");
+                              print("");
+                            },
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+              )
+            : null,
       ),
     );
   }

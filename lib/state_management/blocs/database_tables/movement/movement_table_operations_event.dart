@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:gym_bro/constants/enums.dart';
 
-abstract class MovementTableOperationsEvent extends Equatable{
+class MovementTableOperationsEvent extends Equatable{
   @override
   List<Object> get props => [];
 }
@@ -11,3 +11,5 @@ class QueryMovementByPrimaryMuscleEvent extends MovementTableOperationsEvent{
 
   QueryMovementByPrimaryMuscleEvent({required this.selectedMuscleGroup});
 }
+
+class ResetMovementTableQueryEvent extends MovementTableOperationsEvent{}
