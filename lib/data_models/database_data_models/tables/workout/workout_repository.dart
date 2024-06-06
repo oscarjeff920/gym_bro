@@ -27,7 +27,7 @@ class WorkoutRepository {
     """;
     final List<Map<String, dynamic>> existingMovementId =
         await txn.rawQuery(queryString);
-    if (existingMovementId.isNotEmpty) return existingMovementId.first;
+    if (existingMovementId.isNotEmpty) return existingMovementId.first['id'];
 
     // if the movement doesn't exist we need to insert it
     String insertNewMovementString = """
