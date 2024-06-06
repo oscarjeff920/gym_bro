@@ -14,7 +14,6 @@ import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_e
 import 'package:gym_bro/state_management/cubits/save_error_state_cubit/save_error_state_cubit.dart';
 import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_cubit.dart';
 import 'package:gym_bro/design/widgets/the_app_bar_widget.dart';
-import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/close_modal_button_widget.dart';
 import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/add_exercise_modal_widget.dart';
 import 'package:gym_bro/design/widgets/workout_page_widgets/completed_exercises_scaffold/completed_exercises_scaffold_widget.dart';
 import 'package:gym_bro/design/widgets/workout_page_widgets/exercise_count_bar/exercise_count_bar_widget.dart';
@@ -123,23 +122,7 @@ class WorkoutOverviewPage extends StatelessWidget {
                       child: AnimatedOpacity(
                         opacity: state.isOpen ? 1 : 0,
                         duration: const Duration(milliseconds: 200),
-                        child: const Stack(children: [
-                          AddExerciseModal(),
-                          Align(
-                            alignment: Alignment(0, 0.78),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                CloseModalButton(
-                                  isFinished: false,
-                                ),
-                                CloseModalButton(
-                                  isFinished: true,
-                                ),
-                              ],
-                            ),
-                          )
-                        ]),
+                        child: const AddExerciseModal()
                       ),
                     );
                   }),
@@ -149,6 +132,8 @@ class WorkoutOverviewPage extends StatelessWidget {
             ]);
           }
         }),
+
+        // FOR DEBUG
         floatingActionButton: false
             ? BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
                 builder: (context, state) {
