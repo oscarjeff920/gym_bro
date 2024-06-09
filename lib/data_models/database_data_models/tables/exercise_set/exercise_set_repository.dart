@@ -8,6 +8,38 @@ class ExerciseSetRepository {
 
   ExerciseSetRepository(this.databaseHelper);
 
+  Future<List<Map>> getLatestExerciseSetsByMovement(int movementId) async {
+    final db = await databaseHelper.database;
+
+    // Sub-query to find the most recent exercise with movement_id = 1
+    String queryMostRecentExerciseByMovementIdString = """
+    WITH most_recent_exercise AS (
+        SELECT exercise.id
+        FROM exercise
+        JOIN workout ON exercise.workout_id = workout.id
+        WHERE exercise.movement_id = 2
+        ORDER BY workout.year DESC, workout.month DESC, workout.day DESC
+        LIMIT 1
+    )\n
+    """;
+
+    // Main query to get all exercise_set records for the most recent exercise
+    String queryAllExerciseSetsByExerciseIdString = """
+    SELECT exercise_set.*
+    FROM exercise_set
+    JOIN most_recent_exercise ON exercise_set.exercise_id = most_recent_exercise.id
+    ORDER BY exercise_set.set_order ASC;
+    """;
+
+    // Full Query
+    String combinedQueryString = queryMostRecentExerciseByMovementIdString +
+        queryAllExerciseSetsByExerciseIdString;
+
+    List<Map> latestExerciseSetsByMovementId = await db.rawQuery(combinedQueryString);
+
+    return latestExerciseSetsByMovementId;
+  }
+
   Future<List<ExerciseSetTable>> getAllExerciseSetsByExerciseId(int exerciseId) async {
     final db = await databaseHelper.database;
 
