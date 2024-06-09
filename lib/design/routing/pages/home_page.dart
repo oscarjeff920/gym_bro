@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/design/routing/debug_state_checker_widget.dart';
 import 'package:gym_bro/design/widgets/home_page_widgets/continue_workout_button_widget.dart';
 import 'package:gym_bro/design/widgets/home_page_widgets/load_errored_workout_button_widget.dart';
 import 'package:gym_bro/design/widgets/the_app_bar_widget.dart';
@@ -28,87 +29,91 @@ class HomePage extends StatelessWidget {
     BlocProvider.of<WorkoutTableOperationsBloc>(context)
         .add(QueryAllWorkoutTableEvent());
 
-    return BlocListener<ExerciseTableOperationsBloc,
-        ExerciseTableOperationsState>(
-      listener: (listenContext, state) {
-        switch (state) {
-          case ExerciseTableSuccessfulQueryAllByWorkoutIdState():
-            // Here we're adding the queried exercises into the workout on the ActiveWorkoutState
-            BlocProvider.of<ActiveWorkoutCubit>(context)
-                .loadExercisesToState(state.selectedWorkout);
-            // As the result of the query we need to reset the query state
-            BlocProvider.of<ExerciseTableOperationsBloc>(context)
-                .add(ResetExerciseQueryEvent());
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ExerciseTableOperationsBloc, ExerciseTableOperationsState>(
+          listener: (listenContext, state) {
+            switch (state) {
+              case ExerciseTableSuccessfulQueryAllByWorkoutIdState():
+                // As we've loaded the exercises we can now move to the workout page
+                Navigator.of(context).pushNamed("/workout-page");
 
-            // as we have the exercises we can start querying for the exercise sets for each exercise
-            BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
-                QueryAllExerciseSetsByExerciseEvent(
-                    selectedWorkout: state.selectedWorkout));
+                // Here we're adding the queried exercises into the workout on the ActiveWorkoutState
+                BlocProvider.of<ActiveWorkoutCubit>(context)
+                    .loadExercisesToState(state.selectedWorkout);
+                // As the result of the query we need to reset the query state
+                BlocProvider.of<ExerciseTableOperationsBloc>(context)
+                    .add(ResetExerciseQueryEvent());
 
-            // As we've loaded the exercises we can now move to the workout page
-            Navigator.of(context).pushNamed("/workout-page");
+                // as we have the exercises we can start querying for the exercise sets for each exercise
+                BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
+                    QueryAllExerciseSetsByExerciseEvent(
+                        selectedWorkout: state.selectedWorkout));
 
-          case ExerciseTableQueryErrorState():
-            BlocProvider.of<ExerciseTableOperationsBloc>(context)
-                .add(ResetExerciseQueryEvent());
-          case ExerciseTableQueryState():
-            print("ExerciseTableQueryState (HomePage) LN#54");
-          default:
-        }
-      },
-      listenWhen: (previousState, state) => previousState != state,
-      child: BlocListener<ExerciseSetTableOperationsBloc,
-          ExerciseSetTableOperationsState>(
-        listener: (context, state) {
-          switch (state) {
-            // once the exerciseSets have been queried for an exercise
-            // the exerciseSets are attached to each exercise and attached to the workout
-            case ExerciseSetTableSuccessfulQueryAllByExerciseIdState():
-              BlocProvider.of<ActiveWorkoutCubit>(context)
-                  .loadCompleteWorkoutToState(state.completeWorkout);
-          }
-        },
-        child: Scaffold(
-          appBar: const TheAppBar(
-            hasBackButton: false,
-          ),
-          backgroundColor: Colors.grey,
-          body: Stack(children: [
-            BlocBuilder<WorkoutTableOperationsBloc,
-                WorkoutTableOperationsState>(builder: (context, state) {
-              switch (state) {
-                case WorkoutTableSuccessfulQueryAllState():
-                  return WorkoutsList(allWorkouts: state.allWorkoutsQuery);
-                case WorkoutTableQueryErrorState():
-                  return const Center(
-                      child: Text(
-                          "There was an error querying the Workout table.."));
-                default:
-                  return const Center(
-                      child: Text("Ooops.. something has gone ary"));
-              }
-            }),
-            BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
-              builder: (context, state) {
-                switch (state) {
-                  case NewActiveWorkoutState():
-                    return Container(
-                      alignment: const Alignment(0, 0.6),
-                      child: const ContinueWorkoutButton(),
-                    );
-                  default:
-                    return Container();
-                }
-              },
-            ),
-            Container(
-                alignment: const Alignment(0, 0.8),
-                child: const NewWorkoutButton()),
-          ]),
-          // FOR DEBUG
-          floatingActionButton: false ?
-              const LoadErroredWorkoutButton() : null,
+              case ExerciseTableQueryErrorState():
+                BlocProvider.of<ExerciseTableOperationsBloc>(context)
+                    .add(ResetExerciseQueryEvent());
+              case ExerciseTableQueryState():
+                print("ExerciseTableQueryState (HomePage) LN#54");
+              default:
+            }
+          },
+          listenWhen: (previousState, state) => previousState != state,
         ),
+        BlocListener<ExerciseSetTableOperationsBloc,
+            ExerciseSetTableOperationsState>(
+          listener: (context, state) {
+            switch (state) {
+              // once the exerciseSets have been queried for an exercise
+              // the exerciseSets are attached to each exercise and attached to the workout
+              case ExerciseSetTableSuccessfulQueryAllByExerciseIdState():
+                BlocProvider.of<ActiveWorkoutCubit>(context)
+                    .loadCompleteWorkoutToState(state.completeWorkout);
+            }
+          },
+        ),
+      ],
+      child: Scaffold(
+        appBar: const TheAppBar(
+          hasBackButton: false,
+        ),
+        backgroundColor: Colors.grey,
+        body: Stack(children: [
+          BlocBuilder<WorkoutTableOperationsBloc, WorkoutTableOperationsState>(
+              builder: (context, state) {
+            switch (state) {
+              case WorkoutTableSuccessfulQueryAllState():
+                return WorkoutsList(allWorkouts: state.allWorkoutsQuery);
+              case WorkoutTableQueryErrorState():
+                return const Center(
+                    child: Text(
+                        "There was an error querying the Workout table.."));
+              default:
+                return const Center(
+                    child: Text("Ooops.. something has gone ary"));
+            }
+          }),
+          BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
+              builder: (context, state) {
+            return Align(
+              alignment: const Alignment(0, 0.6),
+              child: AnimatedOpacity(
+                opacity: state is NewActiveWorkoutState ? 1 : 0,
+                duration: const Duration(seconds: 5),
+                child: const ContinueWorkoutButton(),
+              ),
+            );
+          }),
+          Container(
+              alignment: const Alignment(0, 0.8),
+              child: const NewWorkoutButton()),
+        ]),
+        // FOR DEBUG
+        floatingActionButton: false
+            ? const LoadErroredWorkoutButton()
+            : true
+                ? const DebugStateChecker()
+                : null,
       ),
     );
   }

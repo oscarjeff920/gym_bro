@@ -13,6 +13,13 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
     emit(ActiveWorkoutState());
   }
 
+  String convertSingleDigitDateTimeToDoubleDigit(int timeDate) {
+    if (timeDate < 10 && timeDate > 0) {
+      return "0$timeDate";
+    }
+    return timeDate.toString();
+  }
+
   createNewWorkoutState() {
     DateTime dateToday = DateTime.now();
 
@@ -20,30 +27,11 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
         day: dateToday.day,
         month: dateToday.month,
         year: dateToday.year,
+        workoutStartTime:
+            "${convertSingleDigitDateTimeToDoubleDigit(dateToday.hour)}:"
+            "${convertSingleDigitDateTimeToDoubleDigit(dateToday.minute)}:"
+            "${convertSingleDigitDateTimeToDoubleDigit(dateToday.second)}",
         exercises: const []));
-  }
-
-  logStartTime() {
-    if (state is NewActiveWorkoutState) {
-      NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
-      if (currentState.workoutStartTime == null) {
-        NewActiveWorkoutState generatedState = currentState.copyWith();
-
-        DateTime timeNow = DateTime.now();
-
-        emit(NewActiveWorkoutState(
-            day: generatedState.day,
-            month: generatedState.month,
-            year: generatedState.year,
-            workoutStartTime:
-                "${timeNow.hour}:${timeNow.minute}:${timeNow.second}",
-            workoutDuration: generatedState.workoutDuration,
-            exercises: generatedState.exercises));
-      }
-    } else {
-      throw StateError(
-          "method logStartTime can only be ran on NewActiveWorkoutState. Current state: $state");
-    }
   }
 
   updateNewWorkoutDuration(String? workoutDuration) {
