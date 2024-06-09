@@ -18,6 +18,9 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
 
   SuccessfulGetLastExerciseSetsByMovementQueryState(
       {required this.lastExerciseSets});
+
+  @override
+  List<Object?> get props => [lastExerciseSets];
 }
 
 class GetLastExerciseSetsQueryErrorState
@@ -25,4 +28,7 @@ class GetLastExerciseSetsQueryErrorState
   final Object error;
 
   GetLastExerciseSetsQueryErrorState({required this.error});
+
+  @override
+  List<Object?> get props => [error];
 }
