@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
-import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_bloc.dart';
-import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_state.dart';
+import 'package:gym_bro/design/routing/debug_state_checker_widget.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_state.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
-import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
-import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_state.dart';
 import 'package:gym_bro/state_management/cubits/save_error_state_cubit/save_error_state_cubit.dart';
@@ -61,34 +58,38 @@ class WorkoutOverviewPage extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         appBar: const TheAppBar(),
         body: BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
-            builder: (context, state) {
-          List<GeneralExerciseModel> exercises;
-          if (state is NewActiveWorkoutState) {
-            exercises = state.exercises
-                .map((exercise) => exercise.transformToGeneralModel())
-                .toList();
-          } else if (state is LoadedActiveWorkoutState) {
-            exercises = state.exercises
-                .map((exercise) => exercise.transformToGeneralModel())
-                .toList();
-          } else {
-            exercises = [];
-          }
-          if (state is! NewActiveWorkoutState &&
-              state is! LoadedActiveWorkoutState) {
-            return Container();
-          } else {
-            state as ActiveWorkoutOnState;
-
+          builder: (context, state) {
+            int year = 0;
+            int month = 0;
+            int day = 0;
+            String? workoutDuration;
+            List<GeneralExerciseModel> exercises = [];
+            switch (state) {
+              case ActiveWorkoutOnState():
+                year = state.year;
+                month = state.month;
+                day = state.day;
+                workoutDuration = state.workoutDuration;
+                switch (state) {
+                  case NewActiveWorkoutState():
+                    exercises = state.exercises
+                        .map((exercise) => exercise.transformToGeneralModel())
+                        .toList();
+                  case LoadedActiveWorkoutState():
+                    exercises = state.exercises
+                        .map((exercise) => exercise.transformToGeneralModel())
+                        .toList();
+                }
+            }
             return Column(children: [
               Material(
                   elevation: 2,
                   child: WorkoutDateTimer(
-                    year: state.year,
-                    month: state.month,
-                    day: state.day,
+                    year: year,
+                    month: month,
+                    day: day,
                     isLoadedWorkout: state is LoadedActiveWorkoutState,
-                    workoutDuration: state.workoutDuration,
+                    workoutDuration: workoutDuration,
                   )),
               Expanded(
                 child: Stack(children: [
@@ -120,46 +121,20 @@ class WorkoutOverviewPage extends StatelessWidget {
                     return IgnorePointer(
                       ignoring: !state.isOpen,
                       child: AnimatedOpacity(
-                        opacity: state.isOpen ? 1 : 0,
-                        duration: const Duration(milliseconds: 200),
-                        child: const AddExerciseModal()
-                      ),
+                          opacity: state.isOpen ? 1 : 0,
+                          duration: const Duration(milliseconds: 200),
+                          child: const AddExerciseModal()),
                     );
                   }),
                 ]),
               ),
               const ExerciseCountBar()
             ]);
-          }
-        }),
+          },
+        ),
 
         // FOR DEBUG
-        floatingActionButton: false
-            ? BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
-                builder: (context, state) {
-                  ActiveWorkoutState activeWorkoutState_ = state;
-                  return BlocBuilder<ExerciseTableOperationsBloc,
-                      ExerciseTableOperationsState>(
-                    builder: (context, state) {
-                      ExerciseTableOperationsState exerciseTableState = state;
-                      return BlocBuilder<AddExerciseCubit, AddExerciseState>(
-                        builder: (context, state) {
-                          AddExerciseState addExerciseState_ = state;
-                          return FloatingActionButton(
-                            onPressed: () {
-                              print("");
-                              print(
-                                  "ActiveWorkoutState: $activeWorkoutState_\nExerciseTableOperationsState: $exerciseTableState\nAddExerciseState: $addExerciseState_");
-                              print("");
-                            },
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-              )
-            : null,
+        floatingActionButton: false ? const DebugStateChecker() : null,
       ),
     );
   }
