@@ -5,6 +5,7 @@ class CompletedSetFields extends StatelessWidget {
   final dynamic value;
   final bool isCheckBox;
   final bool isWarmup;
+  final bool previous;
 
   const CompletedSetFields({
     super.key,
@@ -12,6 +13,7 @@ class CompletedSetFields extends StatelessWidget {
     required this.value,
     this.isCheckBox = false,
     this.isWarmup = false,
+    this.previous = false
   });
 
   @override
@@ -28,7 +30,7 @@ class CompletedSetFields extends StatelessWidget {
         children: [
           Text(
             "$fieldName:",
-            style: const TextStyle(fontSize: 10),
+            style: TextStyle(fontSize: 10, color: previous ? Colors.white: null),
             textAlign: TextAlign.center,
           ),
           !isCheckBox
@@ -37,13 +39,15 @@ class CompletedSetFields extends StatelessWidget {
                   controller: TextEditingController()
                     ..text = usedValue == null ? "" : usedValue.toString(),
                   textAlign: TextAlign.center,
+              style: previous ? const TextStyle(color: Colors.white) : null,
+
                 )
               : Checkbox(
                   value: isWarmup,
                   onChanged: null,
-                  checkColor: Colors.black,
+                  checkColor: previous? Colors.white : Colors.black,
                   fillColor: MaterialStatePropertyAll<Color>(
-                      Colors.black.withOpacity(0)),
+                      previous ? Colors.black: Colors.black.withOpacity(0)),
                 )
         ],
       ),
