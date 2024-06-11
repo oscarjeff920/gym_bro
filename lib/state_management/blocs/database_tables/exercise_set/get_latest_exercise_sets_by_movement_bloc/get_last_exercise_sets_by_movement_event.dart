@@ -7,7 +7,7 @@ class GetLastExerciseSetsByMovementEvent extends Equatable {
 
 class QueryLastExerciseSetsByMovementEvent
     extends GetLastExerciseSetsByMovementEvent {
-  final int movementId;
+  final int? movementId;
 
   QueryLastExerciseSetsByMovementEvent({required this.movementId});
 }

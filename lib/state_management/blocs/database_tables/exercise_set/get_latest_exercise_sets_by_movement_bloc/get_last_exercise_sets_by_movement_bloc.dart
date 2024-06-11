@@ -26,12 +26,18 @@ class GetLastExerciseSetsByMovementBloc extends Bloc<
       QueryLastExerciseSetsByMovementEvent event) async* {
     yield GetLastExerciseSetQueryingState();
     try {
-      List<Map> results = await exerciseSetRepository
-          .getLatestExerciseSetsByMovement(event.movementId);
-      List<Sets> lastExerciseSets =
-          results.map((exerciseSet) => Sets.fromMap(exerciseSet)).toList();
-      yield SuccessfulGetLastExerciseSetsByMovementQueryState(
-          lastExerciseSets: lastExerciseSets);
+      if (event.movementId == null) {
+        yield SuccessfulGetLastExerciseSetsByMovementQueryState(
+            lastExerciseSets: const []);
+      }
+      else {
+        List<Map> results = await exerciseSetRepository
+            .getLatestExerciseSetsByMovement(event.movementId!);
+        List<Sets> lastExerciseSets =
+        results.map((exerciseSet) => Sets.fromMap(exerciseSet)).toList();
+        yield SuccessfulGetLastExerciseSetsByMovementQueryState(
+            lastExerciseSets: lastExerciseSets);
+      }
     } catch (e) {
       yield GetLastExerciseSetsQueryErrorState(error: e);
     }
