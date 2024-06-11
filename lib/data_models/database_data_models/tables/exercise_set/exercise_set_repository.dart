@@ -35,12 +35,14 @@ class ExerciseSetRepository {
     String combinedQueryString = queryMostRecentExerciseByMovementIdString +
         queryAllExerciseSetsByExerciseIdString;
 
-    List<Map> latestExerciseSetsByMovementId = await db.rawQuery(combinedQueryString);
+    List<Map> latestExerciseSetsByMovementId =
+        await db.rawQuery(combinedQueryString);
 
     return latestExerciseSetsByMovementId;
   }
 
-  Future<List<ExerciseSetTable>> getAllExerciseSetsByExerciseId(int exerciseId) async {
+  Future<List<ExerciseSetTable>> getAllExerciseSetsByExerciseId(
+      int exerciseId) async {
     final db = await databaseHelper.database;
 
     String dbQuery = """
@@ -59,7 +61,8 @@ class ExerciseSetRepository {
     ORDER BY $exerciseSetTableName.set_order ASC;
     """;
 
-    final List<Map<String, dynamic>> allExerciseSets = await db.rawQuery(dbQuery);
+    final List<Map<String, dynamic>> allExerciseSets =
+        await db.rawQuery(dbQuery);
 
     return allExerciseSets
         .map((exerciseSet) => ExerciseSetTable.fromMap(exerciseSet))
