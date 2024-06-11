@@ -29,6 +29,16 @@ class SetsList extends StatelessWidget {
                   state.lastExerciseSets.isNotEmpty) {
                 return Column(
                   children: [
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              left: 5, right: 5, bottom: 5),
+                          // color: Colors.black12,
+                          child: const Text(
+                            "Previous Workout:",
+                          ),
+                        )),
                     PreviousSetCard(
                         set: state.provideMatchingPreviousSet(
                             currentSet!, doneSets),
