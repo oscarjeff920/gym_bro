@@ -8,12 +8,10 @@ import 'current_set_fields_widget.dart';
 
 class CurrentSetCard extends StatelessWidget {
   final CurrentSet? currentSet;
+  final Sets? currentPreviousSet;
   final fieldText = TextEditingController();
 
-  CurrentSetCard({
-    super.key,
-    this.currentSet,
-  });
+  CurrentSetCard({super.key, this.currentSet, this.currentPreviousSet});
 
   void clearText() {
     print("looks like we clearing");
@@ -35,28 +33,72 @@ class CurrentSetCard extends StatelessWidget {
               updateSetFunction: (value) {
                 BlocProvider.of<AddExerciseCubit>(context)
                     .updateCurrentSet(CurrentSet(isWarmUp: value));
-              }, controller_: fieldText,
+              },
+              controller_: fieldText,
             ),
             CurrentSetFields(
               fieldName: "Weight",
               updateSetFunction: (value) {
                 BlocProvider.of<AddExerciseCubit>(context)
                     .updateCurrentSet(CurrentSet(weight: value));
-              }, controller_: fieldText,
+              },
+              controller_: fieldText,
+              isBetter: currentPreviousSet == null
+                  ? null
+                  : currentSet == null
+                      ? null
+                      : currentSet!.weight == null
+                          ? null
+                          : currentPreviousSet!.weight == currentSet!.weight!
+                              ? null
+                              : currentPreviousSet!.weight <
+                                  currentSet!.weight!,
             ),
             CurrentSetFields(
               fieldName: "Reps",
               updateSetFunction: (value) {
                 BlocProvider.of<AddExerciseCubit>(context)
                     .updateCurrentSet(CurrentSet(reps: value));
-              }, controller_: fieldText,
+              },
+              controller_: fieldText,
+              isBetter: currentPreviousSet == null
+                  ? null
+                  : currentSet == null
+                      ? null
+                      : currentSet!.weight != null &&
+                              currentSet!.weight! > currentPreviousSet!.weight
+                          ? null
+                          : currentSet!.reps == null
+                              ? null
+                              : currentPreviousSet!.reps == currentSet!.reps!
+                                  ? null
+                                  : currentPreviousSet!.reps <
+                                      currentSet!.reps!,
             ),
             CurrentSetFields(
               fieldName: "Extra Reps",
               updateSetFunction: (value) {
                 BlocProvider.of<AddExerciseCubit>(context)
                     .updateCurrentSet(CurrentSet(extraReps: value));
-              }, controller_: fieldText,
+              },
+              controller_: fieldText,
+              isBetter: currentPreviousSet == null
+                  ? null
+                  : currentSet == null
+                      ? null
+                      : currentSet!.weight != null &&
+                              currentSet!.weight! > currentPreviousSet!.weight
+                          ? null
+                          : currentSet!.extraReps == null
+                              ? null
+                              : currentPreviousSet!.extraReps == null &&
+                                      currentSet!.extraReps != null
+                                  ? true
+                                  : currentPreviousSet!.extraReps! ==
+                                          currentSet!.extraReps!
+                                      ? null
+                                      : currentPreviousSet!.extraReps! <
+                                          currentSet!.extraReps!,
             ),
             const TimerSetField(),
             CurrentSetFields(
@@ -64,18 +106,20 @@ class CurrentSetCard extends StatelessWidget {
               updateSetFunction: (value) {
                 BlocProvider.of<AddExerciseCubit>(context)
                     .updateCurrentSet(CurrentSet(notes: value));
-              }, controller_: fieldText,
+              },
+              controller_: fieldText,
             ),
             IconButton(
                 onPressed: currentSet != null &&
-                    currentSet!.weight != null &&
-                    currentSet!.reps != null &&
-                    currentSet!.isWarmUp != null
+                        currentSet!.weight != null &&
+                        currentSet!.reps != null &&
+                        currentSet!.isWarmUp != null
                     ? () {
-                  BlocProvider.of<AddExerciseCubit>(context).saveCompletedSet();
-                  BlocProvider.of<SetTimerCubit>(context).resetTimer();
-                  clearText();
-                }
+                        BlocProvider.of<AddExerciseCubit>(context)
+                            .saveCompletedSet();
+                        BlocProvider.of<SetTimerCubit>(context).resetTimer();
+                        clearText();
+                      }
                     : null,
                 disabledColor: Colors.pink.withOpacity(0.5),
                 color: Colors.black,

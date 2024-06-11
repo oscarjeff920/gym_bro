@@ -27,23 +27,38 @@ class SetsList extends StatelessWidget {
             builder: (context, state) {
               if (state is SuccessfulGetLastExerciseSetsByMovementQueryState &&
                   state.lastExerciseSets.isNotEmpty) {
+                Sets currentPreviousSet =
+                    state.provideMatchingPreviousSet(currentSet!, doneSets);
                 return Column(
                   children: [
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
                           padding: const EdgeInsets.only(
                               left: 5, right: 5, bottom: 5),
                           // color: Colors.black12,
                           child: const Text(
                             "Previous Workout:",
                           ),
-                        )),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(
+                              left: 5, right: 25, bottom: 5),
+                          // color: Colors.black12,
+                          child: Text(
+                            "Total Sets: ${state.lastExerciseSets.length}",
+                            textScaleFactor: 0.75,
+                          ),
+                        ),
+                      ],
+                    ),
                     PreviousSetCard(
-                        set: state.provideMatchingPreviousSet(
-                            currentSet!, doneSets),
+                        set: currentPreviousSet,
                         setNumber: doneSets.length + 1),
-                    CurrentSetCard(currentSet: currentSet)
+                    CurrentSetCard(
+                        currentSet: currentSet,
+                        currentPreviousSet: currentPreviousSet)
                   ],
                 );
               }
