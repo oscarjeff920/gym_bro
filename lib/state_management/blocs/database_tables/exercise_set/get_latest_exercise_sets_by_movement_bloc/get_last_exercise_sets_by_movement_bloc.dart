@@ -3,7 +3,6 @@ import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_repository.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_state.dart';
-import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_by_muscle_group/movement_get_by_muscle_group_event.dart';
 
 class GetLastExerciseSetsByMovementBloc extends Bloc<
     GetLastExerciseSetsByMovementEvent, GetLastExerciseSetsByMovementState> {
@@ -18,7 +17,7 @@ class GetLastExerciseSetsByMovementBloc extends Bloc<
     switch (event) {
       case QueryLastExerciseSetsByMovementEvent():
         yield* _mapLoadMovementIdToState(event);
-      case ResetMovementByMuscleGroupEvent():
+      case ResetGetLastExerciseSetsByMovementEvent():
         yield GetLastExerciseSetNotQueriedState();
     }
   }

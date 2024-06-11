@@ -11,13 +11,13 @@ class ExerciseSetRepository {
   Future<List<Map>> getLatestExerciseSetsByMovement(int movementId) async {
     final db = await databaseHelper.database;
 
-    // Sub-query to find the most recent exercise with movement_id = 1
+    // Sub-query to find the most recent exercise with movement_id
     String queryMostRecentExerciseByMovementIdString = """
     WITH most_recent_exercise AS (
         SELECT exercise.id
         FROM exercise
         JOIN workout ON exercise.workout_id = workout.id
-        WHERE exercise.movement_id = 2
+        WHERE exercise.movement_id = $movementId
         ORDER BY workout.year DESC, workout.month DESC, workout.day DESC
         LIMIT 1
     )\n

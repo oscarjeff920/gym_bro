@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
+import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 
 class GetLastExerciseSetsByMovementState extends Equatable {
   @override
@@ -37,7 +37,7 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
     totalCompletedSets >= totalSetsLastTime ||
         currentSet.isWarmUp == true && !comparisonSet.isWarmUp
     ) {
-      return const CurrentSet();
+      print("do summin");
     }
 
     // if (comparisonSet.isWarmUp && currentSet.isWarmUp == false) {

@@ -25,6 +25,7 @@ class CurrentSetCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Container(
+        padding: const EdgeInsets.only(left: 5),
         color: const Color(0xFF7C7C7C),
         child: Row(
           children: [
