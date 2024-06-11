@@ -6,12 +6,11 @@ class Workout {
   final DateTime duration;
   final Map<MuscleGroupType, int> groupSets;
 
-  const Workout({
-    this.id,
-    required this.date,
-    required this.duration,
-    required this.groupSets
-  });
+  const Workout(
+      {this.id,
+      required this.date,
+      required this.duration,
+      required this.groupSets});
 }
 
 class Sets {
@@ -32,6 +31,18 @@ class Sets {
     this.setDuration,
     this.notes,
   });
+
+  factory Sets.fromMap(Map map) {
+    return Sets(
+        id: map['id'],
+        isWarmUp: map['is_warm_up'] == 1 ? true : false,
+        weight: map['weight'].toDouble(),
+        reps: map['reps'],
+        extraReps: map['extra_reps'],
+        // TODO: Change this shit. Duration <=> String
+        setDuration: null,
+        notes: map['notes']);
+  }
 }
 
 class CurrentSet {
