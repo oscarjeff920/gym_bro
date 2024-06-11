@@ -18,6 +18,7 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
 
   provideMatchingPreviousSet(
       CurrentSet currentSet, List<Sets> completedSets) {
+    if (lastExerciseSets.isEmpty) throw Error();
     int totalCompletedSets = completedSets.length;
 
     List<Sets> lastTimeWorkingSets = [];
@@ -27,8 +28,8 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
     });
 
     int totalSetsLastTime = lastExerciseSets.length;
-    int totalWorkingSetsLastTime = lastTimeWorkingSets.length;
-    int totalWarmupSetsLastTime = totalSetsLastTime - totalWorkingSetsLastTime;
+    // int totalWorkingSetsLastTime = lastTimeWorkingSets.length;
+    // int totalWarmupSetsLastTime = totalSetsLastTime - totalWorkingSetsLastTime;
     Sets comparisonSet = lastExerciseSets[totalCompletedSets];
 
     // if the user does more sets than last time, no comparison can be made
