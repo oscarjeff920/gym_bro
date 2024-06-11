@@ -28,6 +28,7 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
     });
 
     int totalSetsLastTime = lastExerciseSets.length;
+    if (totalSetsLastTime <= totalCompletedSets) return lastExerciseSets.last;
     // int totalWorkingSetsLastTime = lastTimeWorkingSets.length;
     // int totalWarmupSetsLastTime = totalSetsLastTime - totalWorkingSetsLastTime;
     Sets comparisonSet = lastExerciseSets[totalCompletedSets];

@@ -55,7 +55,10 @@ class SetsList extends StatelessWidget {
                     ),
                     PreviousSetCard(
                         set: currentPreviousSet,
-                        setNumber: doneSets.length + 1),
+                        setNumber:
+                            doneSets.length + 1 >= state.lastExerciseSets.length
+                                ? state.lastExerciseSets.length
+                                : doneSets.length + 1),
                     CurrentSetCard(
                         currentSet: currentSet,
                         currentPreviousSet: currentPreviousSet)
