@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
@@ -27,7 +29,7 @@ class SetsList extends StatelessWidget {
             builder: (context, state) {
               if (state is SuccessfulGetLastExerciseSetsByMovementQueryState &&
                   state.lastExerciseSets.isNotEmpty) {
-                Sets currentPreviousSet =
+                Map currentPreviousSet =
                     state.provideMatchingPreviousSet(currentSet!, doneSets);
                 return Column(
                   children: [
@@ -47,21 +49,26 @@ class SetsList extends StatelessWidget {
                               left: 5, right: 25, bottom: 5),
                           // color: Colors.black12,
                           child: Text(
-                            "Total Sets: ${state.lastExerciseSets.length}",
+                            "Total Sets: ${currentPreviousSet['index']}",
                             textScaleFactor: 0.75,
                           ),
                         ),
                       ],
                     ),
-                    PreviousSetCard(
-                        set: currentPreviousSet,
-                        setNumber:
-                            doneSets.length + 1 >= state.lastExerciseSets.length
-                                ? state.lastExerciseSets.length
-                                : doneSets.length + 1),
+                    AnimatedOpacity(
+                      opacity: doneSets.length > state.lastExerciseSets.length
+                          ? 0.6 : 1,
+                      duration: const Duration(seconds: 1),
+                      child: PreviousSetCard(
+                          set: currentPreviousSet['value'],
+                          setNumber:
+                              doneSets.length > state.lastExerciseSets.length
+                                  ? state.lastExerciseSets.length
+                                  : doneSets.length + 1),
+                    ),
                     CurrentSetCard(
                         currentSet: currentSet,
-                        currentPreviousSet: currentPreviousSet)
+                        currentPreviousSet: currentPreviousSet['value'])
                   ],
                 );
               }

@@ -28,7 +28,7 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
     });
 
     int totalSetsLastTime = lastExerciseSets.length;
-    if (totalSetsLastTime <= totalCompletedSets) return lastExerciseSets.last;
+    if (totalSetsLastTime <= totalCompletedSets) return {'index': lastExerciseSets.length, 'value': lastExerciseSets.last};
     // int totalWorkingSetsLastTime = lastTimeWorkingSets.length;
     // int totalWarmupSetsLastTime = totalSetsLastTime - totalWorkingSetsLastTime;
     Sets comparisonSet = lastExerciseSets[totalCompletedSets];
@@ -46,7 +46,7 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
     //   lastTimeWorkingSets
     // }
     // if (comparisonSet.isWarmUp == currentSet.isWarmUp)
-    return comparisonSet;
+    return {'index': totalCompletedSets, 'value': comparisonSet};
   }
 
   SuccessfulGetLastExerciseSetsByMovementQueryState(
