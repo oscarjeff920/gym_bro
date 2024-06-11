@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
-import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/sets_list/sets_cards/completed_set_card/completed_set_fields_widget.dart';
 
 class PreviousSetCard extends StatelessWidget {
   final Sets set;
@@ -12,49 +11,75 @@ class PreviousSetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 5),
+      padding: const EdgeInsets.only(top: 2),
       color: Colors.black,
       child: Row(
         children: [
-          CompletedSetFields(
-              fieldName: "Warm Up",
-              isCheckBox: true,
-              isWarmup: set.isWarmUp,
-              value: 0,
-              // This is dumb
-              previous: true),
-          CompletedSetFields(
-            fieldName: "Weight",
-            value: set.weight,
-            previous: true,
-          ),
-          CompletedSetFields(
-              fieldName: "Reps", value: set.reps, previous: true),
-          CompletedSetFields(
-              fieldName: "Extra Reps", value: set.extraReps, previous: true),
-          CompletedSetFields(
-              fieldName: "Set Duration",
-              value: set.setDuration,
-              previous: true),
-          CompletedSetFields(
-              fieldName: "Notes", value: set.notes, previous: true),
           Expanded(
-            child: Column(
-              children: [
-                const Text(
-                  "Set Number:",
-                  style: TextStyle(fontSize: 10, color: Colors.white),
-                  textAlign: TextAlign.center,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                const Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 5, top: 7),
+                    child: Text(
+                      "Warm Up:",
+                      style: TextStyle(fontSize: 10, color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
-                TextField(
-                    readOnly: true,
-                    controller: TextEditingController()
-                      ..text = setNumber.toString(),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.white)),
-              ],
+                Checkbox(
+                  value: set.isWarmUp,
+                  onChanged: null,
+                  checkColor: Colors.white,
+                  fillColor:
+                      const MaterialStatePropertyAll<Color>(Colors.black),
+                ),
+              ])),
+          PreviousSetColumns(title: "Weight", value: set.weight),
+          PreviousSetColumns(title: "Reps", value: set.reps),
+          PreviousSetColumns(title: "Extra Reps", value: set.extraReps),
+          PreviousSetColumns(title: "Set Duration", value: set.setDuration),
+          PreviousSetColumns(title: "Notes", value: set.notes),
+          PreviousSetColumns(title: "Set Number", value: setNumber)
+        ],
+      ),
+    );
+  }
+}
+
+class PreviousSetColumns extends StatelessWidget {
+  const PreviousSetColumns(
+      {super.key, required this.title, required this.value});
+
+  final String title;
+  final dynamic value;
+
+  @override
+  Widget build(BuildContext context) {
+    String validatedValue = value == null ? "" : value.toString();
+    return Expanded(
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Text(
+                "$title:",
+                style: const TextStyle(fontSize: 10, color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
             ),
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Text(validatedValue,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white)),
+          ),
         ],
       ),
     );
