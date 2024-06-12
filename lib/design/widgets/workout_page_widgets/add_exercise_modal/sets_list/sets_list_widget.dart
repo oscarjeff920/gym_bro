@@ -26,21 +26,22 @@ class SetsList extends StatelessWidget {
           BlocBuilder<GetLastExerciseSetsByMovementBloc,
               GetLastExerciseSetsByMovementState>(
             builder: (context, state) {
+              print("blood");
               if (state is SuccessfulGetLastExerciseSetsByMovementQueryState &&
-                  state.lastExerciseSets.isNotEmpty) {
+                  state.lastExerciseSetsData['data'].isNotEmpty) {
                 Map currentPreviousSet =
                     state.provideMatchingPreviousSet(currentSet!, doneSets);
                 return Column(
                   children: [
                     PreviousSetCardHeaders(
-                        date: state.date,
+                        date: state.lastExerciseSetsData['dateString'],
                         workingSetsCount:
                             state.getPreviousWorkingSets().length),
                     PreviousSetCard(
                         set: currentPreviousSet['value'],
                         setNumber:
-                            doneSets.length > state.lastExerciseSets.length
-                                ? state.lastExerciseSets.length
+                            doneSets.length > state.lastExerciseSetsData['data'].length
+                                ? state.lastExerciseSetsData['data'].length
                                 : doneSets.length + 1),
                     CurrentSetCard(
                         currentSet: currentSet,

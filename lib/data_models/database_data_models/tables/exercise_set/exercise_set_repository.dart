@@ -62,6 +62,53 @@ class ExerciseSetRepository {
     return returnObj;
   }
 
+  Future<Map> getMovementPRSet(int movementId) async {
+    final db = await databaseHelper.database;
+
+    final Map returnObj = await db.transaction((txn) async {
+      String queryPRForMovementId = """
+      SELECT $exerciseSetTableName.* FROM $exerciseSetTableName
+      JOIN $exerciseTableName ON 
+        $exerciseTableName.id = $exerciseSetTableName.exercise_id
+      WHERE $exerciseTableName.movement_id = $movementId
+      ORDER BY
+        $exerciseSetTableName.weight DESC, 
+        $exerciseSetTableName.reps DESC, 
+        $exerciseSetTableName.extra_reps DESC
+      LIMIT 1;
+      """;
+      List<Map> movementPRList = await txn.rawQuery(queryPRForMovementId);
+      if (movementPRList.isEmpty) {
+        List<Map> returnList = [];
+        return {'data': returnList};
+      }
+      Map movementPR = movementPRList.first;
+
+      String queryPRDate = """
+      SELECT 
+        $workoutTableName.year, 
+        $workoutTableName.month, 
+        $workoutTableName.day 
+      FROM $workoutTableName
+      JOIN $exerciseTableName ON 
+        $workoutTableName.id = $exerciseTableName.workout_id
+      WHERE 
+        $exerciseTableName.id = ${movementPR['exercise_id']};      
+      """;
+      List<Map> movementPRDateList = await txn.rawQuery(queryPRDate);
+      Map movementPRDate = movementPRDateList.first;
+
+      return {
+        'data': movementPR,
+        'year': movementPRDate['year'],
+        'month': movementPRDate['month'],
+        'day': movementPRDate['day']
+      };
+    });
+
+    return returnObj;
+  }
+
   Future<List<ExerciseSetTable>> getAllExerciseSetsByExerciseId(
       int exerciseId) async {
     final db = await databaseHelper.database;

@@ -25,40 +25,52 @@ class GetLastExerciseSetsByMovementBloc extends Bloc<
   Stream<GetLastExerciseSetsByMovementState> _mapLoadMovementIdToState(
       QueryLastExerciseSetsByMovementEvent event) async* {
     yield GetLastExerciseSetQueryingState();
-    try {
-      if (event.movementId == null) {
-        yield SuccessfulGetLastExerciseSetsByMovementQueryState(
-            lastExerciseSets: const [], date: "");
-      } else {
-        Map results = await exerciseSetRepository
+    if (event.movementId == null) {
+      yield SuccessfulGetLastExerciseSetsByMovementQueryState(
+          lastExerciseSetsData: const {}, movementPRData: const {});
+    } else {
+      // Get Previous Exercise Sets
+      try {
+        Map previousSetsObj = await exerciseSetRepository
             .getLatestExerciseSetsByMovement(event.movementId!);
-
-        print(results);
-        print(results['data']);
-        List<Map> retrievedSets = results['data'];
-        if (retrievedSets.isEmpty) {
+        List<Map> retrievedPreviousSets = previousSetsObj['data'];
+        if (retrievedPreviousSets.isEmpty) {
           yield SuccessfulGetLastExerciseSetsByMovementQueryState(
-              lastExerciseSets: const [], date: "");
+              lastExerciseSetsData: previousSetsObj, movementPRData: const {});
           return;
         }
 
-        List<Sets> lastExerciseSets = retrievedSets
+        List<Sets> previousExerciseSets = retrievedPreviousSets
             .map((exerciseSet) => Sets.fromMap(exerciseSet))
             .toList();
 
-        String dateString;
-        if (results['year'] == null) {
-          dateString = "";
-        } else {
-          dateString = state.dateToString(
-              results['year'], results['month'], results['day']);
-        }
+        Map returnPreviousExerciseSetsObj = {
+          'data': previousExerciseSets,
+          'dateString': state.dateToString(previousSetsObj['year'],
+              previousSetsObj['month'], previousSetsObj['day'])
+        };
+
+        // Get Movement PR
+        Map movementPRSetObj =
+            await exerciseSetRepository.getMovementPRSet(event.movementId!);
+        Map movementPR = movementPRSetObj['data'];
+
+        Sets movementPRSet = Sets.fromMap(movementPR);
+
+        Map returnMovementPRSetObj = {
+          'data': movementPRSet,
+          'dateString': state.dateToString(movementPRSetObj['year'],
+              movementPRSetObj['month'], movementPRSetObj['day'])
+        };
+
         yield SuccessfulGetLastExerciseSetsByMovementQueryState(
-            lastExerciseSets: lastExerciseSets, date: dateString);
+            lastExerciseSetsData: returnPreviousExerciseSetsObj,
+            movementPRData: returnMovementPRSetObj);
+      } catch (e) {
+        print(
+            "error in getting movement PR, GetLastExerciseSetsByMovementBloc: $e");
+        yield GetLastExerciseSetsQueryErrorState(error: e);
       }
-    } catch (e) {
-      print("error in GetLastExerciseSetsByMovementBloc: $e");
-      yield GetLastExerciseSetsQueryErrorState(error: e);
     }
   }
 }

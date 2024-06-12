@@ -40,25 +40,24 @@ class GetLastExerciseSetQueryingState
 
 class SuccessfulGetLastExerciseSetsByMovementQueryState
     extends GetLastExerciseSetsByMovementState {
-  final List<Sets> lastExerciseSets;
-  final String date;
-  final Sets? movementPR;
+  final Map lastExerciseSetsData;
+  final Map movementPRData;
 
   SuccessfulGetLastExerciseSetsByMovementQueryState(
-      {required this.lastExerciseSets, required this.date, this.movementPR});
+      {required this.lastExerciseSetsData, required this.movementPRData});
 
   @override
-  List<Object?> get props => [lastExerciseSets];
+  List<Object?> get props => [lastExerciseSetsData, movementPRData];
 
   getPreviousWorkingSets() {
-    List<Sets> workingSets = lastExerciseSets
+    List<Sets> workingSets = lastExerciseSetsData['data']
         .where((exerciseSet) => exerciseSet.isWarmUp == false)
         .toList();
     return workingSets;
   }
 
   provideMatchingPreviousSet(CurrentSet currentSet, List<Sets> completedSets) {
-    if (lastExerciseSets.isEmpty) throw Error();
+    if (lastExerciseSetsData['data'].isEmpty) throw Error();
     int totalCompletedSets = completedSets.length;
 
     List<Sets> lastTimeWorkingSets = [];
@@ -67,13 +66,16 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
       if (!value.isWarmUp) lastTimeWorkingSets.add(value);
     });
 
-    int totalSetsLastTime = lastExerciseSets.length;
+    int totalSetsLastTime = lastExerciseSetsData['data'].length;
     if (totalSetsLastTime <= totalCompletedSets) {
-      return {'index': lastExerciseSets.length, 'value': lastExerciseSets.last};
+      return {
+        'index': lastExerciseSetsData['data'].length,
+        'value': lastExerciseSetsData['data'].last
+      };
     }
     // int totalWorkingSetsLastTime = lastTimeWorkingSets.length;
     // int totalWarmupSetsLastTime = totalSetsLastTime - totalWorkingSetsLastTime;
-    Sets comparisonSet = lastExerciseSets[totalCompletedSets];
+    Sets comparisonSet = lastExerciseSetsData['data'][totalCompletedSets];
 
     // if the user does more sets than last time, no comparison can be made
     // this is also the case if user wants to do more warm up sets than last time
