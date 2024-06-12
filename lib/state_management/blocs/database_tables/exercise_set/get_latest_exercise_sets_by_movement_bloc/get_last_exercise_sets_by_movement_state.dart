@@ -16,8 +16,14 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
     extends GetLastExerciseSetsByMovementState {
   final List<Sets> lastExerciseSets;
 
-  provideMatchingPreviousSet(
-      CurrentSet currentSet, List<Sets> completedSets) {
+  getPreviousWorkingSets() {
+    List<Sets> workingSets = lastExerciseSets
+        .where((exerciseSet) => exerciseSet.isWarmUp == false)
+        .toList();
+    return workingSets;
+  }
+
+  provideMatchingPreviousSet(CurrentSet currentSet, List<Sets> completedSets) {
     if (lastExerciseSets.isEmpty) throw Error();
     int totalCompletedSets = completedSets.length;
 
@@ -28,17 +34,17 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
     });
 
     int totalSetsLastTime = lastExerciseSets.length;
-    if (totalSetsLastTime <= totalCompletedSets) return {'index': lastExerciseSets.length, 'value': lastExerciseSets.last};
+    if (totalSetsLastTime <= totalCompletedSets) {
+      return {'index': lastExerciseSets.length, 'value': lastExerciseSets.last};
+    }
     // int totalWorkingSetsLastTime = lastTimeWorkingSets.length;
     // int totalWarmupSetsLastTime = totalSetsLastTime - totalWorkingSetsLastTime;
     Sets comparisonSet = lastExerciseSets[totalCompletedSets];
 
     // if the user does more sets than last time, no comparison can be made
     // this is also the case if user wants to do more warm up sets than last time
-    if (
-    totalCompletedSets >= totalSetsLastTime ||
-        currentSet.isWarmUp == true && !comparisonSet.isWarmUp
-    ) {
+    if (totalCompletedSets >= totalSetsLastTime ||
+        currentSet.isWarmUp == true && !comparisonSet.isWarmUp) {
       print("do summin");
     }
 

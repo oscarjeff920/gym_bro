@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
@@ -49,7 +47,7 @@ class SetsList extends StatelessWidget {
                               left: 5, right: 25, bottom: 5),
                           // color: Colors.black12,
                           child: Text(
-                            "Total Sets: ${currentPreviousSet['index']}",
+                            "Total Working Sets: ${state.getPreviousWorkingSets().length}",
                             textScaleFactor: 0.75,
                           ),
                         ),
