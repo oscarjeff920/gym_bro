@@ -60,7 +60,7 @@ class CompletedExerciseTile extends StatelessWidget {
 
 String capitalizeString(String string) {
   String capitalizedString = "";
-  List<String> stringSplit = string.split(" ");
+  List<String> stringSplit = string.trim().split(" ");
 
   for (var string_ in stringSplit) {
     capitalizedString += "${string_[0].toUpperCase()}${string_.substring(1)} ";

@@ -76,9 +76,9 @@ class ExerciseSelectorCluster extends StatelessWidget {
                                 fontSize: 23,
                                 fontWeight: FontWeight.bold,
                               ),
-                              onSubmitted: (String? inputText) {
+                              onSubmitted: (String inputText) {
                                 BlocProvider.of<AddNewMovementCubit>(context)
-                                    .typeMovementName(inputText);
+                                    .typeMovementName(inputText.trim());
                               },
                             )),
                         const SizedBox(
