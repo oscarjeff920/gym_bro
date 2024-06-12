@@ -32,6 +32,7 @@ class MovementByMuscleGroupBloc
       yield MovementGetByMuscleGroupSuccessfulQueryState(queryResponse: query);
     }
     catch (e) {
+      print("error in MovementGetByMuscleGroupBloc: $e");
       yield MovementGetByMuscleGroupQueryErrorState(error: e);
     }
   }
