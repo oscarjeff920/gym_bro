@@ -27,8 +27,6 @@ class CompletedSetCard extends StatelessWidget {
           CompletedSetFields(fieldName: "Extra Reps", value: set.extraReps),
           CompletedSetFields(fieldName: "Set Duration", value: set.setDuration),
           CompletedSetFields(fieldName: "Notes", value: set.notes,),
-
-
         ],
       ),
     );

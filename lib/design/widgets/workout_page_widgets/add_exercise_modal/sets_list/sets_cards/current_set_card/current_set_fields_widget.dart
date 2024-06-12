@@ -9,6 +9,7 @@ class CurrentSetFields extends StatelessWidget {
   final bool isCheckBox;
   final Function(dynamic) updateSetFunction;
   final TextEditingController controller_;
+  final bool? isBetter;
 
   const CurrentSetFields({
     super.key,
@@ -16,6 +17,7 @@ class CurrentSetFields extends StatelessWidget {
     required this.updateSetFunction,
     this.isCheckBox = false,
     required this.controller_,
+    this.isBetter
   });
 
   @override
@@ -38,7 +40,10 @@ class CurrentSetFields extends StatelessWidget {
                   textInputAction: TextInputAction.next,
                   keyboardType: textInput,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(
+                      color: isBetter == null ? Colors.white :
+                          isBetter! ? Colors.green : Colors.red
+                  ),
                   cursorColor: Colors.white,
                   // controller: _controller,
                   onChanged: (inputtedValue) {
@@ -78,7 +83,8 @@ class TimerSetField extends StatelessWidget {
             builder: (context, state) {
               return TextField(
                 readOnly: true,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(
+                    color: Colors.white),
                 controller: TextEditingController()..text = state.toString(),
                 textAlign: TextAlign.center,
               );

@@ -43,4 +43,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-*test.db
+*db
+*db-journal
+

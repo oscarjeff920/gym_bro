@@ -39,7 +39,7 @@ class ExerciseTableOperationsBloc
               exercises: query));
     } catch (e) {
       print("Whoops.. we've got reached a ExerciseTableQueryErrorState\n$e");
-      yield ExerciseTableQueryErrorState();
+      yield ExerciseTableQueryErrorState(error: e);
     }
   }
 }

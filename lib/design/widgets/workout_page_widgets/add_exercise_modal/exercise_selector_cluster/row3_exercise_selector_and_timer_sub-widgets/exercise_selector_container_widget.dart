@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/database_data_models/joined_tables/movement_muscle_group_join_object.dart';
-import 'package:gym_bro/state_management/blocs/database_tables/movement/movement_table_operations_bloc.dart';
-import 'package:gym_bro/state_management/blocs/database_tables/movement/movement_table_operations_state.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_by_muscle_group/movement_get_by_muscle_group_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_by_muscle_group/movement_get_by_muscle_group_state.dart';
 
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 
@@ -35,24 +35,24 @@ class ExerciseSelectorContainer extends StatelessWidget {
         builder: (addExerciseContext, addExerciseState) {
           MuscleGroupType? selectedMuscleGroup =
               addExerciseState.selectedMuscleGroup;
-          return BlocBuilder<MovementTableOperationsBloc,
-              MovementTableOperationsState>(
+          return BlocBuilder<MovementByMuscleGroupBloc,
+              MovementGetByMuscleGroupState>(
             builder: (context, state) {
               List<MovementMuscleGroupJoin> dropdownList = [];
               switch (state) {
-                case MovementTableSuccessfulQueryState():
+                case MovementGetByMuscleGroupSuccessfulQueryState():
                   dropdownList = state.queryResponse;
               }
               return AnimatedOpacity(
                 duration: const Duration(milliseconds: 500),
-                opacity: state is MovementTableSuccessfulQueryState ? 1 : 0,
+                opacity: state is MovementGetByMuscleGroupSuccessfulQueryState ? 1 : 0,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     AnimatedOpacity(
                       duration: const Duration(milliseconds: 500),
                       opacity:
-                          state is MovementTableSuccessfulQueryState ? 1 : 0,
+                          state is MovementGetByMuscleGroupSuccessfulQueryState ? 1 : 0,
                       child: ExerciseDropdownMenu(
                           selectedMuscleGroup: selectedMuscleGroup,
                           matchingExercises: dropdownList),

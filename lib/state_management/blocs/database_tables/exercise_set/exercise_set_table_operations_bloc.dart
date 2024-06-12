@@ -67,6 +67,7 @@ class ExerciseSetTableOperationsBloc extends Bloc<
       );
     } catch (e) {
       print("We've reached an ExerciseSetTableQueryErrorState\n$e");
+      yield ExerciseSetTableQueryErrorState(error: e);
     }
   }
 }
