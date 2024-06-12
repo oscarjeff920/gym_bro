@@ -38,8 +38,19 @@ class SetsList extends StatelessWidget {
                           padding: const EdgeInsets.only(
                               left: 5, right: 5, bottom: 5),
                           // color: Colors.black12,
-                          child: const Text(
-                            "Previous Workout:",
+                          child: Row(
+                            children: [
+                              const Text(
+                                "Last Workout",
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.black,
+                                    decorationThickness: 2),
+                              ),
+                              Text(
+                                ": [${state.date}]",
+                              ),
+                            ],
                           ),
                         ),
                         Container(
@@ -47,7 +58,7 @@ class SetsList extends StatelessWidget {
                               left: 5, right: 25, bottom: 5),
                           // color: Colors.black12,
                           child: Text(
-                            "Total Working Sets: ${state.getPreviousWorkingSets().length}",
+                            "Working Sets: ${state.getPreviousWorkingSets().length}",
                             textScaleFactor: 0.75,
                           ),
                         ),
@@ -55,7 +66,8 @@ class SetsList extends StatelessWidget {
                     ),
                     AnimatedOpacity(
                       opacity: doneSets.length > state.lastExerciseSets.length
-                          ? 0.6 : 1,
+                          ? 0.6
+                          : 1,
                       duration: const Duration(seconds: 1),
                       child: PreviousSetCard(
                           set: currentPreviousSet['value'],

@@ -4,6 +4,32 @@ import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 class GetLastExerciseSetsByMovementState extends Equatable {
   @override
   List<Object?> get props => [];
+
+  String dateToString(int year, int month, int day) {
+    String yearString;
+    String monthString;
+    String dayString;
+
+    if (year.toString().length > 2) {
+      yearString = year.toString().substring(year.toString().length - 2);
+    } else {
+      yearString = year.toString();
+    }
+
+    if (month.toString().length == 1) {
+      monthString = "0$month";
+    } else {
+      monthString = month.toString();
+    }
+
+    if (day.toString().length == 1) {
+      dayString = "0$day";
+    } else {
+      dayString = day.toString();
+    }
+
+    return "$dayString/$monthString/$yearString";
+  }
 }
 
 class GetLastExerciseSetNotQueriedState
@@ -15,6 +41,14 @@ class GetLastExerciseSetQueryingState
 class SuccessfulGetLastExerciseSetsByMovementQueryState
     extends GetLastExerciseSetsByMovementState {
   final List<Sets> lastExerciseSets;
+  final String? date;
+  final Sets? movementPR;
+
+  SuccessfulGetLastExerciseSetsByMovementQueryState(
+      {required this.lastExerciseSets, this.date, this.movementPR});
+
+  @override
+  List<Object?> get props => [lastExerciseSets];
 
   getPreviousWorkingSets() {
     List<Sets> workingSets = lastExerciseSets
@@ -54,12 +88,6 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
     // if (comparisonSet.isWarmUp == currentSet.isWarmUp)
     return {'index': totalCompletedSets, 'value': comparisonSet};
   }
-
-  SuccessfulGetLastExerciseSetsByMovementQueryState(
-      {required this.lastExerciseSets});
-
-  @override
-  List<Object?> get props => [lastExerciseSets];
 }
 
 class GetLastExerciseSetsQueryErrorState

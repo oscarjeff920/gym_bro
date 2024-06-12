@@ -41,7 +41,7 @@ class Sets {
         extraReps: map['extra_reps'],
         // TODO: Change this shit. Duration <=> String
         setDuration: null,
-        notes: map['notes']);
+        notes: map['notes'] ?? "");
   }
 }
 

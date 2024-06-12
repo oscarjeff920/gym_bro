@@ -29,14 +29,25 @@ class GetLastExerciseSetsByMovementBloc extends Bloc<
       if (event.movementId == null) {
         yield SuccessfulGetLastExerciseSetsByMovementQueryState(
             lastExerciseSets: const []);
-      }
-      else {
-        List<Map> results = await exerciseSetRepository
+      } else {
+        Map results = await exerciseSetRepository
             .getLatestExerciseSetsByMovement(event.movementId!);
-        List<Sets> lastExerciseSets =
-        results.map((exerciseSet) => Sets.fromMap(exerciseSet)).toList();
+
+        List<Map> retrievedSets = results['data'];
+
+        List<Sets> lastExerciseSets = retrievedSets
+            .map((exerciseSet) => Sets.fromMap(exerciseSet))
+            .toList();
+
+        String dateString;
+        if (results['year'] == null) {
+          dateString = "";
+        } else {
+          dateString = state.dateToString(
+              results['year'], results['month'], results['day']);
+        }
         yield SuccessfulGetLastExerciseSetsByMovementQueryState(
-            lastExerciseSets: lastExerciseSets);
+            lastExerciseSets: lastExerciseSets, date: dateString);
       }
     } catch (e) {
       yield GetLastExerciseSetsQueryErrorState(error: e);
