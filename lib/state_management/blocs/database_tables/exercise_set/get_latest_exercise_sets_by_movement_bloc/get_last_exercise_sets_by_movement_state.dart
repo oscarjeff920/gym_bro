@@ -41,11 +41,11 @@ class GetLastExerciseSetQueryingState
 class SuccessfulGetLastExerciseSetsByMovementQueryState
     extends GetLastExerciseSetsByMovementState {
   final List<Sets> lastExerciseSets;
-  final String? date;
+  final String date;
   final Sets? movementPR;
 
   SuccessfulGetLastExerciseSetsByMovementQueryState(
-      {required this.lastExerciseSets, this.date, this.movementPR});
+      {required this.lastExerciseSets, required this.date, this.movementPR});
 
   @override
   List<Object?> get props => [lastExerciseSets];

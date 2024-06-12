@@ -28,7 +28,7 @@ class GetLastExerciseSetsByMovementBloc extends Bloc<
     try {
       if (event.movementId == null) {
         yield SuccessfulGetLastExerciseSetsByMovementQueryState(
-            lastExerciseSets: const []);
+            lastExerciseSets: const [], date: "");
       } else {
         Map results = await exerciseSetRepository
             .getLatestExerciseSetsByMovement(event.movementId!);
