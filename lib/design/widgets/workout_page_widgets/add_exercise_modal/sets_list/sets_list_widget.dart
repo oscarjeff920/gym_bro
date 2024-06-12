@@ -38,19 +38,16 @@ class SetsList extends StatelessWidget {
                           padding: const EdgeInsets.only(
                               left: 5, right: 5, bottom: 5),
                           // color: Colors.black12,
-                          child: Row(
-                            children: [
-                              const Text(
-                                "Last Workout",
-                                style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: Colors.black,
-                                    decorationThickness: 2),
-                              ),
-                              Text(
-                                ": [${state.date}]",
-                              ),
-                            ],
+                          child: const Text(
+                            "Last Workout:",
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          // color: Colors.black12,
+                          child: Text(
+                            "${state.date}",
+                            textScaleFactor: 1,
                           ),
                         ),
                         Container(
