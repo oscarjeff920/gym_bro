@@ -33,7 +33,14 @@ class GetLastExerciseSetsByMovementBloc extends Bloc<
         Map results = await exerciseSetRepository
             .getLatestExerciseSetsByMovement(event.movementId!);
 
+        print(results);
+        print(results['data']);
         List<Map> retrievedSets = results['data'];
+        if (retrievedSets.isEmpty) {
+          yield SuccessfulGetLastExerciseSetsByMovementQueryState(
+              lastExerciseSets: const [], date: "");
+          return;
+        }
 
         List<Sets> lastExerciseSets = retrievedSets
             .map((exerciseSet) => Sets.fromMap(exerciseSet))
@@ -50,6 +57,7 @@ class GetLastExerciseSetsByMovementBloc extends Bloc<
             lastExerciseSets: lastExerciseSets, date: dateString);
       }
     } catch (e) {
+      print("error in GetLastExerciseSetsByMovementBloc: $e");
       yield GetLastExerciseSetsQueryErrorState(error: e);
     }
   }

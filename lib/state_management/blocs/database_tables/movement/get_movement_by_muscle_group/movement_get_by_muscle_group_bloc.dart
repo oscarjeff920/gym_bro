@@ -32,7 +32,7 @@ class MovementByMuscleGroupBloc
       yield MovementGetByMuscleGroupSuccessfulQueryState(queryResponse: query);
     }
     catch (e) {
-      yield MovementGetByMuscleGroupQueryErrorState();
+      yield MovementGetByMuscleGroupQueryErrorState(error: e);
     }
   }
 }

@@ -33,6 +33,10 @@ class ExerciseSetRepository {
       """;
       List<Map> latestExercise =
           await txn.rawQuery(queryMostRecentExerciseByMovementIdString);
+      if (latestExercise.isEmpty) {
+        List<Map> returnList = [];
+        return {'data': returnList};
+      }
 
       // Main query to get all exercise_set records for the most recent exercise
       String queryAllExerciseSetsByExerciseIdString = """

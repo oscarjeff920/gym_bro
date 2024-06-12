@@ -19,5 +19,8 @@ class MovementGetByMuscleGroupSuccessfulQueryState extends MovementGetByMuscleGr
 }
 
 class MovementGetByMuscleGroupQueryErrorState extends MovementGetByMuscleGroupState{
+  final Object error;
+
+  MovementGetByMuscleGroupQueryErrorState({required this.error});
 
 }

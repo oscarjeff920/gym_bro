@@ -21,4 +21,8 @@ class ExerciseTableSuccessfulQueryAllByWorkoutIdState
   List<Object> get props => [selectedWorkout];
 }
 
-class ExerciseTableQueryErrorState extends ExerciseTableQueryState {}
+class ExerciseTableQueryErrorState extends ExerciseTableQueryState {
+  final Object error;
+
+  ExerciseTableQueryErrorState({required this.error});
+}
