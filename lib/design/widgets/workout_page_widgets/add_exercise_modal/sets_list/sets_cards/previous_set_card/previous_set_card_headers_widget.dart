@@ -44,7 +44,7 @@ class PreviousSetCardHeaders extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(bottom: 5),
+            padding: const EdgeInsets.only(bottom: 5, right: 15),
             // color: Colors.black12,
             child: Text(
               date,
