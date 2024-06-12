@@ -8,10 +8,10 @@ import 'current_set_fields_widget.dart';
 
 class CurrentSetCard extends StatelessWidget {
   final CurrentSet? currentSet;
-  final Sets? currentPreviousSet;
+  final Sets? comparisonSet;
   final fieldText = TextEditingController();
 
-  CurrentSetCard({super.key, this.currentSet, this.currentPreviousSet});
+  CurrentSetCard({super.key, this.currentSet, this.comparisonSet});
 
   void clearText() {
     print("looks like we clearing");
@@ -43,15 +43,15 @@ class CurrentSetCard extends StatelessWidget {
                     .updateCurrentSet(CurrentSet(weight: value));
               },
               controller_: fieldText,
-              isBetter: currentPreviousSet == null
+              isBetter: comparisonSet == null
                   ? null
                   : currentSet == null
                       ? null
                       : currentSet!.weight == null
                           ? null
-                          : currentPreviousSet!.weight == currentSet!.weight!
+                          : comparisonSet!.weight == currentSet!.weight!
                               ? null
-                              : currentPreviousSet!.weight <
+                              : comparisonSet!.weight <
                                   currentSet!.weight!,
             ),
             CurrentSetFields(
@@ -61,18 +61,18 @@ class CurrentSetCard extends StatelessWidget {
                     .updateCurrentSet(CurrentSet(reps: value));
               },
               controller_: fieldText,
-              isBetter: currentPreviousSet == null
+              isBetter: comparisonSet == null
                   ? null
                   : currentSet == null
                       ? null
                       : currentSet!.weight != null &&
-                              currentSet!.weight! > currentPreviousSet!.weight
+                              currentSet!.weight! > comparisonSet!.weight
                           ? null
                           : currentSet!.reps == null
                               ? null
-                              : currentPreviousSet!.reps == currentSet!.reps!
+                              : comparisonSet!.reps == currentSet!.reps!
                                   ? null
-                                  : currentPreviousSet!.reps <
+                                  : comparisonSet!.reps <
                                       currentSet!.reps!,
             ),
             CurrentSetFields(
@@ -82,22 +82,22 @@ class CurrentSetCard extends StatelessWidget {
                     .updateCurrentSet(CurrentSet(extraReps: value));
               },
               controller_: fieldText,
-              isBetter: currentPreviousSet == null
+              isBetter: comparisonSet == null
                   ? null
                   : currentSet == null
                       ? null
                       : currentSet!.weight != null &&
-                              currentSet!.weight! > currentPreviousSet!.weight
+                              currentSet!.weight! > comparisonSet!.weight
                           ? null
                           : currentSet!.extraReps == null
                               ? null
-                              : currentPreviousSet!.extraReps == null &&
+                              : comparisonSet!.extraReps == null &&
                                       currentSet!.extraReps != null
                                   ? true
-                                  : currentPreviousSet!.extraReps! ==
+                                  : comparisonSet!.extraReps! ==
                                           currentSet!.extraReps!
                                       ? null
-                                      : currentPreviousSet!.extraReps! <
+                                      : comparisonSet!.extraReps! <
                                           currentSet!.extraReps!,
             ),
             const TimerSetField(),

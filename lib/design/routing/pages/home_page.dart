@@ -111,7 +111,7 @@ class HomePage extends StatelessWidget {
         // FOR DEBUG
         floatingActionButton: false
             ? const LoadErroredWorkoutButton()
-            : true
+            : false
                 ? const DebugStateChecker()
                 : null,
       ),

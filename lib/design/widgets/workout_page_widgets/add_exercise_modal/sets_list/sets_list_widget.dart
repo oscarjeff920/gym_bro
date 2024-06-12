@@ -7,6 +7,8 @@ import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/s
 import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/sets_list/sets_cards/previous_set_card/previous_set_card_widget.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_state.dart';
+import 'package:gym_bro/state_management/cubits/display_pr_cubit/display_pr_cubit.dart';
+import 'package:gym_bro/state_management/cubits/display_pr_cubit/display_pr_state.dart';
 
 class SetsList extends StatelessWidget {
   final CurrentSet? currentSet;
@@ -26,27 +28,48 @@ class SetsList extends StatelessWidget {
           BlocBuilder<GetLastExerciseSetsByMovementBloc,
               GetLastExerciseSetsByMovementState>(
             builder: (context, state) {
-              print("blood");
               if (state is SuccessfulGetLastExerciseSetsByMovementQueryState &&
                   state.lastExerciseSetsData['data'].isNotEmpty) {
                 Map currentPreviousSet =
                     state.provideMatchingPreviousSet(currentSet!, doneSets);
-                return Column(
-                  children: [
-                    PreviousSetCardHeaders(
-                        date: state.lastExerciseSetsData['dateString'],
-                        workingSetsCount:
-                            state.getPreviousWorkingSets().length),
-                    PreviousSetCard(
-                        set: currentPreviousSet['value'],
-                        setNumber:
-                            doneSets.length > state.lastExerciseSetsData['data'].length
-                                ? state.lastExerciseSetsData['data'].length
-                                : doneSets.length + 1),
-                    CurrentSetCard(
-                        currentSet: currentSet,
-                        currentPreviousSet: currentPreviousSet['value'])
-                  ],
+                return BlocBuilder<DisplayPrCubit, DisplayPrState>(
+                  builder: (prContext, prState_) {
+                    String displayDate;
+                    Sets displaySet;
+                    int currentSetNumber;
+                    int totalWorkingSetsCount;
+                    if (prState_.displayedPR) {
+                      displayDate = state.movementPRData['dateString'];
+                      displaySet = state.movementPRData['data'];
+                      currentSetNumber = 0;
+                      totalWorkingSetsCount = 0;
+                    } else {
+                      displayDate = state.lastExerciseSetsData['dateString'];
+                      displaySet = currentPreviousSet['value'];
+                      currentSetNumber = doneSets.length >
+                              state.lastExerciseSetsData['data'].length
+                          ? state.lastExerciseSetsData['data'].length
+                          : doneSets.length + 1;
+                      totalWorkingSetsCount =
+                          state.getPreviousWorkingSets().length;
+                    }
+
+                    return Column(
+                      children: [
+                        PreviousSetCardHeaders(
+                            isPr: prState_.displayedPR,
+                            date: displayDate,
+                            workingSetsCount: totalWorkingSetsCount
+                        ),
+                        PreviousSetCard(
+                            set: displaySet,
+                            setNumber: currentSetNumber),
+                        CurrentSetCard(
+                            currentSet: currentSet,
+                            comparisonSet: displaySet)
+                      ],
+                    );
+                  },
                 );
               }
               return CurrentSetCard(currentSet: currentSet);
