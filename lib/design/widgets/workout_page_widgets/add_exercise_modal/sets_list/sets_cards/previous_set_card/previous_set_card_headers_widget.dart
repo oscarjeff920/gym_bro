@@ -35,7 +35,7 @@ class PreviousSetCardHeaders extends StatelessWidget {
                         EdgeInsets.zero),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
-                  child: Text(isPr ? "PR:" : "Last Workout:"),
+                  child: Text(isPr ? "Personal Record:" : "Last Workout:"),
                   onPressed: () {
                     BlocProvider.of<DisplayPrCubit>(context).togglePr();
                   },
@@ -51,10 +51,12 @@ class PreviousSetCardHeaders extends StatelessWidget {
               textScaleFactor: 1,
             ),
           ),
-          Container(
-            padding: const EdgeInsets.only(left: 5, right: 25, bottom: 5),
+          SizedBox(
+            height: 20,
+            width: 100,
+            // padding: const EdgeInsets.only(left: 5, right: 25, bottom: 5),
             // color: Colors.black12,
-            child: Text(
+            child: isPr ? const Text("") :Text(
               "Working Sets: $workingSetsCount",
               textScaleFactor: 0.75,
             ),
