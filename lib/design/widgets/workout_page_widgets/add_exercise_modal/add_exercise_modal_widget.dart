@@ -47,11 +47,6 @@ class AddExerciseModal extends StatelessWidget {
                                 doneSets: state.setsDone),
                           ),
                         ),
-                        // TextButton(
-                        //     onPressed: () {
-                        //       print(state.toString());
-                        //     },
-                        //     child: const Text("find out")),
                       ],
                     ),
                   ),
