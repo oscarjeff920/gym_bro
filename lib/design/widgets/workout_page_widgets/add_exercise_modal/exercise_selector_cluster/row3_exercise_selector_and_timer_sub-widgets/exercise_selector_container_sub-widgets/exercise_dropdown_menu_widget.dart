@@ -58,21 +58,24 @@ class ExerciseDropdownMenu extends StatelessWidget {
               onSelected: (value) {
                 final int? movementId;
 
-                if (value != addMovementValue) {
-                  movementId = value.movementId;
-                  BlocProvider.of<AddExerciseCubit>(context)
-                      .selectExercise(value);
-                  BlocProvider.of<AddNewMovementCubit>(context)
-                      .closeAddNewMovementExpansionPanel();
-                } else {
+                if (value == addMovementValue) {
                   movementId = null;
                   BlocProvider.of<AddExerciseCubit>(context)
                       .selectMuscleGroup(selectedMuscleGroup!);
+                  BlocProvider.of<GetLastExerciseSetsByMovementBloc>(context)
+                      .add(ResetGetLastExerciseSetsByMovementEvent());
                   BlocProvider.of<AddNewMovementCubit>(context)
                       .openAddNewMovementExpansionPanel();
+                } else {
+                  movementId = value.movementId;
+                  BlocProvider.of<AddExerciseCubit>(context)
+                      .selectExercise(value);
+                  BlocProvider.of<GetLastExerciseSetsByMovementBloc>(context)
+                      .add(QueryLastExerciseSetsByMovementEvent(
+                      movementId: movementId));
+                  BlocProvider.of<AddNewMovementCubit>(context)
+                      .closeAddNewMovementExpansionPanel();
                 }
-                BlocProvider.of<GetLastExerciseSetsByMovementBloc>(context).add(QueryLastExerciseSetsByMovementEvent(
-                movementId: movementId));
               },
             );
           default:
