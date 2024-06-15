@@ -44,7 +44,7 @@ class AddNewMovementNameTextField extends StatelessWidget {
           ),
           onSubmitted: (String inputText) {
             BlocProvider.of<AddNewMovementCubit>(context)
-                .typeMovementName(inputText.trim().toLowerCase());
+                .typeMovementName(inputText.trim());
           },
         ));
   }
