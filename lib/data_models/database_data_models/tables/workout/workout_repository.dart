@@ -20,10 +20,11 @@ class WorkoutRepository {
   }
 
   insertNewMovement(NewExerciseModel newMovementExercise, txn) async {
+    String lowerCaseMovementName = newMovementExercise.movementName.toLowerCase();
     // first we check to see if the movement does exist in the db
     String queryString = """
     SELECT id FROM $movementTableName
-    WHERE name = '${newMovementExercise.movementName.toLowerCase()}';
+    WHERE name = '$lowerCaseMovementName';
     """;
     final List<Map<String, dynamic>> existingMovementId =
         await txn.rawQuery(queryString);
@@ -32,7 +33,7 @@ class WorkoutRepository {
     // if the movement doesn't exist we need to insert it
     String insertNewMovementString = """
     INSERT INTO $movementTableName (name) VALUES
-      ('${newMovementExercise.movementName.toLowerCase()}');
+      ('$lowerCaseMovementName');
     """;
     final newMovementId = await txn.rawInsert(insertNewMovementString);
 
