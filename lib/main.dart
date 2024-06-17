@@ -20,6 +20,7 @@ import 'data_models/database_data_models/tables/workout/workout_repository.dart'
 import 'state_management/blocs/database_tables/exercise/exercise_table_operations_bloc.dart';
 import 'state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_bloc.dart';
 import 'state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
+import 'state_management/cubits/backup_current_workout_cubit/backup_current_workout_cubit.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,6 +67,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => WorkoutTimerCubit()),
         BlocProvider(create: (context) => DisplayPrCubit()),
         BlocProvider(create: (context) => AddNewMovementCubit()),
+        BlocProvider(create: (context) => BackupCurrentWorkoutCubit()..loadBackupState()),
         BlocProvider(create: (context) => SaveErrorStateCubit()),
       ],
       child: MaterialApp(
