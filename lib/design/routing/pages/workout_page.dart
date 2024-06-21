@@ -6,6 +6,7 @@ import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_t
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_state.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
+import 'package:gym_bro/state_management/cubits/backup_current_workout_cubit/backup_current_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_state.dart';
 import 'package:gym_bro/state_management/cubits/save_error_state_cubit/save_error_state_cubit.dart';
@@ -23,37 +24,50 @@ class WorkoutOverviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: CHANGE!!!
     double tileSpacingValue = 12;
-    return BlocListener<WorkoutTableOperationsBloc,
-        WorkoutTableOperationsState>(
-      listener: (context, state) {
-        switch (state) {
-          case WorkoutTableSuccessfulInsertState():
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Center(
-                  child: Text(
-                    'Successfully Saved Workout!',
-                    style: TextStyle(color: Colors.black),
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<WorkoutTableOperationsBloc, WorkoutTableOperationsState>(
+          listener: (context, state) {
+            switch (state) {
+              case WorkoutTableSuccessfulInsertState():
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Center(
+                      child: Text(
+                        'Successfully Saved Workout!',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    backgroundColor: Colors.green,
                   ),
-                ),
-                backgroundColor: Colors.green,
-              ),
-            );
-            BlocProvider.of<WorkoutTimerCubit>(context).resetTimer();
-            BlocProvider.of<ActiveWorkoutCubit>(context).resetState();
-            Navigator.of(context).pushNamed("/");
-          case WorkoutTableInsertErrorState():
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                    'An error occurred while adding workout to database:\n${state.error}'),
-                backgroundColor: Colors.red,
-              ),
-            );
-            BlocProvider.of<SaveErrorStateCubit>(context)
-                .writeErrorState(state.insertWorkout.toMap());
-        }
-      },
+                );
+                BlocProvider.of<WorkoutTimerCubit>(context).resetTimer();
+                BlocProvider.of<ActiveWorkoutCubit>(context).resetState();
+                BlocProvider.of<BackupCurrentWorkoutCubit>(context)
+                    .clearBackedUpWorkout();
+                Navigator.of(context).pushNamed("/");
+              case WorkoutTableInsertErrorState():
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                        'An error occurred while adding workout to database:\n${state.error}'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+                BlocProvider.of<SaveErrorStateCubit>(context)
+                    .writeErrorState(state.insertWorkout.toMap());
+            }
+          },
+        ),
+        BlocListener<ActiveWorkoutCubit, ActiveWorkoutState>(
+          listener: (context, state) {
+            if (state is NewActiveWorkoutState) {
+              BlocProvider.of<BackupCurrentWorkoutCubit>(context)
+                  .writeCurrentWorkoutState(state.newWorkoutToMap());
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: const TheAppBar(),

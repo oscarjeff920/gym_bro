@@ -16,14 +16,13 @@ class LoadErroredWorkoutButton extends StatelessWidget {
         return FloatingActionButton(
           onPressed: () {
             if (state.errorStateData.isEmpty) {
-              BlocProvider.of<SaveErrorStateCubit>(context)
-                  .loadErrorState();
+              BlocProvider.of<SaveErrorStateCubit>(context).loadErrorState();
             } else {
-              BlocProvider.of<ActiveWorkoutCubit>(context).loadErroredWorkoutToState(state.errorStateData);
+              BlocProvider.of<ActiveWorkoutCubit>(context)
+                  .loadSavedJsonWorkoutToState(state.errorStateData);
             }
           },
-          backgroundColor:
-          state.errorStateData.isNotEmpty ? Colors.red : null,
+          backgroundColor: state.errorStateData.isNotEmpty ? Colors.red : null,
           child: state.errorStateData.isNotEmpty
               ? const Icon(Icons.file_download_sharp)
               : const Icon(Icons.add),

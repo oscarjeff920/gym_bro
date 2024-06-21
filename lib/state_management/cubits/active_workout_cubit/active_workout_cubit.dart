@@ -109,14 +109,14 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
     emit(completeLoadedWorkoutState);
   }
 
-  loadErroredWorkoutToState(Map<String, dynamic> erroredWorkoutState) {
+  loadSavedJsonWorkoutToState(Map<String, dynamic> savedJsonWorkoutState) {
     NewActiveWorkoutState loadedState = NewActiveWorkoutState(
-        day: erroredWorkoutState['day'],
-        month: erroredWorkoutState['month'],
-        year: erroredWorkoutState['year'],
-        workoutStartTime: erroredWorkoutState['workoutStartTime'],
-        workoutDuration: erroredWorkoutState['workoutDuration'],
-        exercises: (erroredWorkoutState['exercises'] as List<dynamic>)
+        day: savedJsonWorkoutState['day'],
+        month: savedJsonWorkoutState['month'],
+        year: savedJsonWorkoutState['year'],
+        workoutStartTime: savedJsonWorkoutState['workoutStartTime'],
+        workoutDuration: savedJsonWorkoutState['workoutDuration'],
+        exercises: (savedJsonWorkoutState['exercises'] as List<dynamic>)
             .map((exercise) => NewExerciseModel.fromJson(exercise))
             .toList());
 

@@ -15,6 +15,8 @@ import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_t
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_state.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
+import 'package:gym_bro/state_management/cubits/backup_current_workout_cubit/backup_current_workout_cubit.dart';
+import 'package:gym_bro/state_management/cubits/backup_current_workout_cubit/backup_current_workout_state.dart';
 
 import '../../widgets/home_page_widgets/new_workout_button_widget.dart';
 import '../../widgets/home_page_widgets/workouts_list_widget.dart';
@@ -72,6 +74,25 @@ class HomePage extends StatelessWidget {
             }
           },
         ),
+        BlocListener<BackupCurrentWorkoutCubit, BackupCurrentWorkoutState>(
+            listener: (context, state) {
+          if (state.backupWorkoutData.isNotEmpty) {
+            BlocProvider.of<ActiveWorkoutCubit>(context)
+                .loadSavedJsonWorkoutToState(state.backupWorkoutData);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Center(
+                  child: Text(
+                    'Resuming the backed up workout',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+                backgroundColor: Colors.blue,
+              ),
+            );
+            Navigator.of(context).pushNamed("/workout-page");
+          }
+        })
       ],
       child: Scaffold(
         appBar: const TheAppBar(
