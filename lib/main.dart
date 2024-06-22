@@ -21,6 +21,7 @@ import 'state_management/blocs/database_tables/exercise/exercise_table_operation
 import 'state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_bloc.dart';
 import 'state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
 import 'state_management/cubits/backup_current_workout_cubit/backup_current_workout_cubit.dart';
+import 'state_management/cubits/toggle_workout_week_widget_cubit/toggle_workout_week_widget_cubit.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ActiveWorkoutCubit()),
         BlocProvider(create: (context) => OpenExerciseModalCubit()),
         BlocProvider(create: (context) => AddExerciseCubit()),
+        BlocProvider(create: (context) => ToggleWorkoutWeekWidgetCubit()),
         BlocProvider(create: (context) => SetTimerCubit()),
         BlocProvider(create: (context) => WorkoutTimerCubit()),
         BlocProvider(create: (context) => DisplayPrCubit()),

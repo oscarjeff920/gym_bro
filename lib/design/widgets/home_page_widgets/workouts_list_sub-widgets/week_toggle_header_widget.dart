@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/state_management/cubits/toggle_workout_week_widget_cubit/toggle_workout_week_widget_cubit.dart';
 
 class WeekToggleHeader extends StatelessWidget {
   const WeekToggleHeader(
       {super.key,
-        required this.headerString,
-        required this.index,
-        required this.weekStartDate,
-        this.isCurrentWeek = false,
-        this.isToggledOn = false});
+      required this.headerString,
+      required this.index,
+      required this.weekStartDate,
+      this.isCurrentWeek = false,
+      this.isToggledOn = false});
 
   final bool isToggledOn;
   final bool isCurrentWeek;
@@ -23,13 +25,17 @@ class WeekToggleHeader extends StatelessWidget {
         elevation: MaterialStateProperty.all(8),
         padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
         minimumSize: MaterialStateProperty.all(Size(0, 0)),
-        backgroundColor: MaterialStateProperty.all(isCurrentWeek ? Colors.amber : Colors.black),
+        backgroundColor: MaterialStateProperty.all(
+            isCurrentWeek ? Colors.amber : Colors.black),
         foregroundColor: MaterialStateProperty.all(Colors.white),
         shape: MaterialStateProperty.all(RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0.0), // Square corners
         )),
       ),
-      onPressed: isCurrentWeek ? null : () {},
+      onPressed: () {
+        BlocProvider.of<ToggleWorkoutWeekWidgetCubit>(context)
+            .toggleWorkoutWeek(index);
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -42,15 +48,15 @@ class WeekToggleHeader extends StatelessWidget {
                   "$headerString: ",
                   style: TextStyle(
                       fontWeight:
-                      isCurrentWeek ? FontWeight.w800 : FontWeight.w500),
+                          isCurrentWeek ? FontWeight.w800 : FontWeight.w500),
                 ),
               ),
               // Container(width: 1, height: 100, color: Colors.black,),
               Text(
                 // "Week Beginning: "
                 "${weekStartDate.day < 10 ? "0${weekStartDate.day}" : weekStartDate.day}/"
-                    "${weekStartDate.month < 10 ? "0${weekStartDate.month}" : weekStartDate.month}/"
-                    "${weekStartDate.year}",
+                "${weekStartDate.month < 10 ? "0${weekStartDate.month}" : weekStartDate.month}/"
+                "${weekStartDate.year}",
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ],

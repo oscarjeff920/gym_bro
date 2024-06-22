@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
+import 'package:gym_bro/state_management/cubits/toggle_workout_week_widget_cubit/toggle_workout_week_widget_cubit.dart';
+import 'package:gym_bro/state_management/cubits/toggle_workout_week_widget_cubit/toggle_workout_week_widget_state.dart';
 
 import 'workouts_list_sub-widgets/week_toggle_header_widget.dart';
 import 'workouts_list_sub-widgets/weekday_workout_cards_container_widget.dart';
@@ -14,38 +16,47 @@ class WorkoutsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final workoutMapEntries = allWorkouts.entries.toList();
-    return ListView.separated(
-      padding: const EdgeInsets.all(10),
-      itemCount: workoutMapEntries.length,
-      separatorBuilder: (BuildContext context, int index) {
-        return const SizedBox(
-          height: 12,
-        );
-      },
-      itemBuilder: (BuildContext context, int index) {
-        return BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
-          builder: (context, state) {
-            return WorkoutWeekBlockContainer(
-              index: index,
-              workoutsOfTheWeek: workoutMapEntries[index].value,
-              weekStartDate: workoutMapEntries[index].key,
-              // weekStartDate: allWorkouts[index].keys.first
-            );
-            // return ClickableWorkoutListTile(allWorkouts: allWorkouts);
-          },
-        );
-      },
-    );
+    final List<MapEntry<DateTime, Map<int, LoadedWorkoutModel>>>
+    workoutMapEntries = allWorkouts.entries.toList();
+    return BlocBuilder<ToggleWorkoutWeekWidgetCubit,
+        ToggleWorkoutWeekWidgetState>(
+        builder: (context, state) {
+          if (state is ToggleWorkoutWeekWidgetInitState) {
+            BlocProvider.of<
+              ToggleWorkoutWeekWidgetCubit>(context)
+              .loadWorkoutWeeks(workoutMapEntries);
+          }
+          return ListView.separated(
+            padding: const EdgeInsets.all(10),
+            itemCount: workoutMapEntries.length,
+            separatorBuilder: (BuildContext context, int index) {
+              return const SizedBox(
+                height: 12,
+              );
+            },
+            itemBuilder: (BuildContext context, int index) {
+              return BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
+                builder: (context, state) {
+                  return WorkoutWeekBlockContainer(
+                    index: index,
+                    workoutsOfTheWeek: workoutMapEntries[index].value,
+                    weekStartDate: workoutMapEntries[index].key,
+                    // weekStartDate: allWorkouts[index].keys.first
+                  );
+                  // return ClickableWorkoutListTile(allWorkouts: allWorkouts);
+                },
+              );
+            },
+          );
+        });
   }
 }
 
 class WorkoutWeekBlockContainer extends StatelessWidget {
-  const WorkoutWeekBlockContainer(
-      {super.key,
-      required this.index,
-      required this.workoutsOfTheWeek,
-      required this.weekStartDate});
+  const WorkoutWeekBlockContainer({super.key,
+    required this.index,
+    required this.workoutsOfTheWeek,
+    required this.weekStartDate});
 
   final int index;
   final DateTime weekStartDate;
@@ -67,42 +78,48 @@ class WorkoutWeekBlockContainer extends StatelessWidget {
 
     return Container(
       color: Colors.white,
-      child: Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          WeekToggleHeader(
-              headerString: headerString,
-              index: index,
-              weekStartDate: weekStartDate,
-              isCurrentWeek: index == 0,
-              isToggledOn: index == 0 || index == 3
-          ),
-          // WeekToggleHeader(
-          //     headerString: headerString,
-          //     index: index,
-          //     weekStartDate: weekStartDate),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 350),
-            height: index == 0 || index == 0 ? 183 : 0,
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 600),
-              opacity: index == 0 || index == 0 ? 1 : 0,
-              child: WeekDayWorkoutCardsAnimatedContainer(
-                  weekDayIntegerMap: weekDayIntegerMap,
-                  weekStartDate: weekStartDate,
-                  workoutsOfTheWeek: workoutsOfTheWeek,
+      child: BlocBuilder<ToggleWorkoutWeekWidgetCubit,
+          ToggleWorkoutWeekWidgetState>(
+        builder: (context, state) {
+          bool isToggled = index == 0 ? true : false;
+          if (state is ToggleWorkoutWeekWidgetLoadedWeeksState) {
+            isToggled = state.isExpandedArray[index];
+          }
 
+          return Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              WeekToggleHeader(
+                  headerString: headerString,
+                  index: index,
+                  weekStartDate: weekStartDate,
+                  isCurrentWeek: index == 0,
+                  isToggledOn: isToggled),
+              // WeekToggleHeader(
+              //     headerString: headerString,
+              //     index: index,
+              //     weekStartDate: weekStartDate),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 350),
+                height: isToggled ? 183 : 0,
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 600),
+                  opacity: isToggled ? 1 : 0,
+                  child: WeekDayWorkoutCardsAnimatedContainer(
+                    weekDayIntegerMap: weekDayIntegerMap,
+                    weekStartDate: weekStartDate,
+                    workoutsOfTheWeek: workoutsOfTheWeek,
+                  ),
+                ),
               ),
-            ),
-          ),
-          // ExerciseCountBar()
-        ],
+              // ExerciseCountBar()
+            ],
+          );
+        },
       ),
     );
   }
 }
-
-
 
 // class ClickableWorkoutListTile extends StatelessWidget {
 //   const ClickableWorkoutListTile({
