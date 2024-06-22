@@ -9,18 +9,67 @@ class WorkoutRepository {
 
   WorkoutRepository(this.databaseHelper);
 
-  Future<List<WorkoutTable>> getAllWorkouts() async {
+  // Methods to list workouts on home page:
+
+  Future<List<WorkoutTable>> getAllWorkouts(
+      {required int limit, required int offset}) async {
     final db = await databaseHelper.database;
 
     final List<Map<String, dynamic>> workouts = await db.query(workoutTableName,
-        orderBy: 'year DESC, month DESC, day DESC, start_time DESC');
+        orderBy: 'year DESC, month DESC, day DESC, start_time DESC',
+        limit: limit,
+        offset: offset);
     final List<WorkoutTable> convertedWorkouts =
         workouts.map((workout) => WorkoutTable.fromMap(workout)).toList();
+
     return convertedWorkouts;
   }
 
+  Future<Map<DateTime, Map<int, WorkoutTable>>> retrieveWorkoutsAndGroupByWeek(
+      {required int limit, required int offset}) async {
+    List<WorkoutTable> retrievedWorkouts =
+        await getAllWorkouts(limit: limit, offset: offset);
+    Map<DateTime, Map<int, WorkoutTable>> workoutsGroupedByWeek =
+        groupWorkoutsByWeek(retrievedWorkouts);
+
+    return workoutsGroupedByWeek;
+  }
+
+  groupWorkoutsByWeek(List<WorkoutTable> ungroupedWorkouts) {
+    Map<DateTime, Map<int, LoadedWorkoutModel>> workoutsGroupedByWeek = {};
+
+    for (var workout in ungroupedWorkouts) {
+      DateTime date = DateTime(workout.year, workout.month, workout.day);
+      int weekdayInteger = date.weekday;
+
+      DateTime weekBeginningDate = getWeekBeginningDate(date, weekdayInteger);
+
+      if (workoutsGroupedByWeek.containsKey(weekBeginningDate)) {
+        workoutsGroupedByWeek[weekBeginningDate]![weekdayInteger] =
+            LoadedWorkoutModel.fromTableModel(workout);
+      } else {
+        workoutsGroupedByWeek[weekBeginningDate] = {
+          weekdayInteger: LoadedWorkoutModel.fromTableModel(workout)
+        };
+      }
+    }
+
+    return workoutsGroupedByWeek;
+  }
+
+  getWeekBeginningDate(DateTime date, int weekdayInteger) {
+    int daysFromMonday = weekdayInteger - (weekdayInteger - 1);
+
+    DateTime weekBeginningDate = date.subtract(Duration(days: daysFromMonday));
+
+    return weekBeginningDate;
+  }
+
+  // Insert New Movement method
+
   insertNewMovement(NewExerciseModel newMovementExercise, txn) async {
-    String lowerCaseMovementName = newMovementExercise.movementName.toLowerCase();
+    String lowerCaseMovementName =
+        newMovementExercise.movementName.toLowerCase();
     // first we check to see if the movement does exist in the db
     String queryString = """
     SELECT id FROM $movementTableName
