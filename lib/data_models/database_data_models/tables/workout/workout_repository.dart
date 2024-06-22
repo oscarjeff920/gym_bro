@@ -25,18 +25,27 @@ class WorkoutRepository {
     return convertedWorkouts;
   }
 
-  Future<Map<DateTime, Map<int, WorkoutTable>>> retrieveWorkoutsAndGroupByWeek(
-      {required int limit, required int offset}) async {
+  Future<Map<DateTime, Map<int, LoadedWorkoutModel>>>
+      retrieveWorkoutsAndGroupByWeek(
+          {required int limit, required int offset}) async {
     List<WorkoutTable> retrievedWorkouts =
         await getAllWorkouts(limit: limit, offset: offset);
-    Map<DateTime, Map<int, WorkoutTable>> workoutsGroupedByWeek =
+
+    Map<DateTime, Map<int, LoadedWorkoutModel>> workoutsGroupedByWeek =
         groupWorkoutsByWeek(retrievedWorkouts);
 
     return workoutsGroupedByWeek;
   }
 
-  groupWorkoutsByWeek(List<WorkoutTable> ungroupedWorkouts) {
-    Map<DateTime, Map<int, LoadedWorkoutModel>> workoutsGroupedByWeek = {};
+  Map<DateTime, Map<int, LoadedWorkoutModel>> groupWorkoutsByWeek(
+      List<WorkoutTable> ungroupedWorkouts) {
+    // Make sure the current week exists
+    DateTime dateTimeNow = DateTime.now();
+    Map<DateTime, Map<int, LoadedWorkoutModel>> workoutsGroupedByWeek = {
+      getWeekBeginningDate(
+          DateTime(dateTimeNow.year, dateTimeNow.month, dateTimeNow.day),
+          dateTimeNow.weekday): {}
+    };
 
     for (var workout in ungroupedWorkouts) {
       DateTime date = DateTime(workout.year, workout.month, workout.day);
@@ -58,7 +67,7 @@ class WorkoutRepository {
   }
 
   getWeekBeginningDate(DateTime date, int weekdayInteger) {
-    int daysFromMonday = weekdayInteger - (weekdayInteger - 1);
+    int daysFromMonday = (weekdayInteger - 1);
 
     DateTime weekBeginningDate = date.subtract(Duration(days: daysFromMonday));
 

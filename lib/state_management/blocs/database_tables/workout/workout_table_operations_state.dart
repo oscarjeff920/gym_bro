@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
-import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
 
 class WorkoutTableOperationsState extends Equatable {
   @override
@@ -18,22 +17,9 @@ class WorkoutTableSuccessfulQueryState extends WorkoutTableQueryState {}
 
 class WorkoutTableSuccessfulQueryAllState
     extends WorkoutTableSuccessfulQueryState {
-  final List<WorkoutTable> allWorkoutsQuery;
+  final Map<DateTime, Map<int, LoadedWorkoutModel>> allWorkoutsQuery;
 
   WorkoutTableSuccessfulQueryAllState({required this.allWorkoutsQuery});
-
-  List<LoadedWorkoutModel> convertWorkoutsForHomePage() {
-    return allWorkoutsQuery
-        .map((workout) => LoadedWorkoutModel(
-            id: workout.id!,
-            day: workout.day,
-            month: workout.month,
-            year: workout.year,
-            workoutStartTime: workout.workoutStartTime,
-            workoutDuration: workout.duration,
-            exercises: []))
-        .toList();
-  }
 }
 
 class WorkoutTableQueryErrorState extends WorkoutTableQueryState {}
