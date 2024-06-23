@@ -11,13 +11,13 @@ import 'workouts_list_sub-widgets/week_toggle_header_widget.dart';
 import 'workouts_list_sub-widgets/weekday_workout_cards_container_widget.dart';
 
 class WorkoutsList extends StatelessWidget {
-  final Map<DateTime, Map<int, LoadedWorkoutModel>> allWorkouts;
+  final Map<DateTime, Map<int, List<LoadedWorkoutModel>>> allWorkouts;
 
   const WorkoutsList({super.key, required this.allWorkouts});
 
   @override
   Widget build(BuildContext context) {
-    final List<MapEntry<DateTime, Map<int, LoadedWorkoutModel>>>
+    final List<MapEntry<DateTime, Map<int, List<LoadedWorkoutModel>>>>
         workoutMapEntries = allWorkouts.entries.toList();
     return BlocBuilder<ToggleWorkoutWeekWidgetCubit,
         ToggleWorkoutWeekWidgetState>(builder: (context, state) {
@@ -60,7 +60,7 @@ class WorkoutWeekBlockContainer extends StatelessWidget {
 
   final int index;
   final DateTime weekStartDate;
-  final Map<int, LoadedWorkoutModel> workoutsOfTheWeek;
+  final Map<int, List<LoadedWorkoutModel>> workoutsOfTheWeek;
 
   @override
   Widget build(BuildContext context) {

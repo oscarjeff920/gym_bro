@@ -26,7 +26,7 @@ class WorkoutTableOperationsBloc
     yield WorkoutTableQueryState();
     try {
       // movementRepository.inspectSchema();
-      Map<DateTime, Map<int, LoadedWorkoutModel>> query =
+      Map<DateTime, Map<int, List<LoadedWorkoutModel>>> query =
           await workoutRepository.retrieveWorkoutsAndGroupByWeek(
               limit: 100, offset: 0);
       yield WorkoutTableSuccessfulQueryAllState(allWorkoutsQuery: query);

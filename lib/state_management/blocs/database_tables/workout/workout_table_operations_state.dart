@@ -17,7 +17,7 @@ class WorkoutTableSuccessfulQueryState extends WorkoutTableQueryState {}
 
 class WorkoutTableSuccessfulQueryAllState
     extends WorkoutTableSuccessfulQueryState {
-  final Map<DateTime, Map<int, LoadedWorkoutModel>> allWorkoutsQuery;
+  final Map<DateTime, Map<int, List<LoadedWorkoutModel>>> allWorkoutsQuery;
 
   WorkoutTableSuccessfulQueryAllState({required this.allWorkoutsQuery});
 }

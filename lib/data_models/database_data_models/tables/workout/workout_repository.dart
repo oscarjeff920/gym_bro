@@ -16,7 +16,7 @@ class WorkoutRepository {
     final db = await databaseHelper.database;
 
     final List<Map<String, dynamic>> workouts = await db.query(workoutTableName,
-        orderBy: 'year DESC, month DESC, day DESC, start_time DESC',
+        orderBy: 'year DESC, month DESC, day DESC, start_time ASC',
         limit: limit,
         offset: offset);
     final List<WorkoutTable> convertedWorkouts =
@@ -25,23 +25,25 @@ class WorkoutRepository {
     return convertedWorkouts;
   }
 
-  Future<Map<DateTime, Map<int, LoadedWorkoutModel>>>
+  Future<Map<DateTime, Map<int, List<LoadedWorkoutModel>>>>
       retrieveWorkoutsAndGroupByWeek(
           {required int limit, required int offset}) async {
     List<WorkoutTable> retrievedWorkouts =
         await getAllWorkouts(limit: limit, offset: offset);
 
-    Map<DateTime, Map<int, LoadedWorkoutModel>> workoutsGroupedByWeek =
+    Map<DateTime, Map<int, List<LoadedWorkoutModel>>> workoutsGroupedByWeek =
         groupWorkoutsByWeek(retrievedWorkouts);
 
     return workoutsGroupedByWeek;
   }
 
-  Map<DateTime, Map<int, LoadedWorkoutModel>> groupWorkoutsByWeek(
+  Map<DateTime, Map<int, List<LoadedWorkoutModel>>> groupWorkoutsByWeek(
       List<WorkoutTable> ungroupedWorkouts) {
     // Make sure the current week exists
     DateTime dateTimeNow = DateTime.now();
-    Map<DateTime, Map<int, LoadedWorkoutModel>> workoutsGroupedByWeek = {
+    // Because two or more workouts can occur on the same day, we need to save
+    // the workouts within a list so the user can select from any
+    Map<DateTime, Map<int, List<LoadedWorkoutModel>>> workoutsGroupedByWeek = {
       getWeekBeginningDate(
           DateTime(dateTimeNow.year, dateTimeNow.month, dateTimeNow.day),
           dateTimeNow.weekday): {}
@@ -55,11 +57,18 @@ class WorkoutRepository {
 
       // weekday integers start at 1 so to match indices we need to -1
       if (workoutsGroupedByWeek.containsKey(weekBeginningDate)) {
-        workoutsGroupedByWeek[weekBeginningDate]![weekdayInteger - 1] =
-            LoadedWorkoutModel.fromTableModel(workout);
+        if (workoutsGroupedByWeek[weekBeginningDate]!
+            .containsKey(weekdayInteger - 1)) {
+          workoutsGroupedByWeek[weekBeginningDate]![weekdayInteger - 1]!
+              .add(LoadedWorkoutModel.fromTableModel(workout));
+        } else {
+          workoutsGroupedByWeek[weekBeginningDate]![weekdayInteger - 1] = [
+            LoadedWorkoutModel.fromTableModel(workout)
+          ];
+        }
       } else {
         workoutsGroupedByWeek[weekBeginningDate] = {
-          weekdayInteger - 1: LoadedWorkoutModel.fromTableModel(workout)
+          weekdayInteger - 1: [LoadedWorkoutModel.fromTableModel(workout)]
         };
       }
     }

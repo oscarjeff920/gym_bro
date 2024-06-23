@@ -5,7 +5,7 @@ import 'package:gym_bro/state_management/cubits/toggle_workout_week_widget_cubit
 class ToggleWorkoutWeekWidgetCubit extends Cubit<ToggleWorkoutWeekWidgetState> {
   ToggleWorkoutWeekWidgetCubit() : super(ToggleWorkoutWeekWidgetInitState());
 
-  loadWorkoutWeeks(List<MapEntry<DateTime, Map<int, LoadedWorkoutModel>>> workoutWeeks) {
+  loadWorkoutWeeks(List<MapEntry<DateTime, Map<int, List<LoadedWorkoutModel>>>> workoutWeeks) {
     List<bool> openedWorkoutWeeks = [true];
     for (int n = 1; n < workoutWeeks.length; n++) {
       openedWorkoutWeeks.add(false);

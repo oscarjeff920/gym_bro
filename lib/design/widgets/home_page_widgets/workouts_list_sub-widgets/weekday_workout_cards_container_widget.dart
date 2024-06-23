@@ -13,7 +13,7 @@ class WeekDayWorkoutCardsAnimatedContainer extends StatelessWidget {
 
   final Map<int, String> weekDayIntegerMap;
   final DateTime weekStartDate;
-  final Map<int, LoadedWorkoutModel> workoutsOfTheWeek;
+  final Map<int, List<LoadedWorkoutModel>> workoutsOfTheWeek;
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +25,11 @@ class WeekDayWorkoutCardsAnimatedContainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               for (int n = 0; n < 4; n++)
-                Column(
-                  children: [
-                    Text(weekDayIntegerMap[n]!),
-                    WorkoutCard(
-                      weekDayIntegerMap: weekDayIntegerMap,
-                      n: n,
-                      weekStartDate: weekStartDate,
-                      workout: workoutsOfTheWeek[n],
-                    ),
-                  ],
-                )
+                WeekDayWorkoutScaffold(
+                    weekDayIntegerMap: weekDayIntegerMap,
+                    n: n,
+                    workoutsOfTheWeek: workoutsOfTheWeek,
+                    weekStartDate: weekStartDate)
             ],
           ),
         ),
@@ -45,18 +39,60 @@ class WeekDayWorkoutCardsAnimatedContainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               for (int n = 4; n < 7; n++)
-                Column(
-                  children: [
-                    Text(weekDayIntegerMap[n]!),
-                    WorkoutCard(
-                      weekDayIntegerMap: weekDayIntegerMap,
-                      n: n,
-                      weekStartDate: weekStartDate,
-                      workout: workoutsOfTheWeek[n],
-                    ),
-                  ],
-                )
+                WeekDayWorkoutScaffold(
+                    weekDayIntegerMap: weekDayIntegerMap,
+                    n: n,
+                    workoutsOfTheWeek: workoutsOfTheWeek,
+                    weekStartDate: weekStartDate)
             ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class WeekDayWorkoutScaffold extends StatelessWidget {
+  const WeekDayWorkoutScaffold({
+    super.key,
+    required this.weekDayIntegerMap,
+    required this.n,
+    required this.workoutsOfTheWeek,
+    required this.weekStartDate,
+  });
+
+  final Map<int, String> weekDayIntegerMap;
+  final int n;
+  final Map<int, List<LoadedWorkoutModel>> workoutsOfTheWeek;
+  final DateTime weekStartDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(weekDayIntegerMap[n]!),
+        SizedBox(
+          width: 90,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: workoutsOfTheWeek[n] != null
+                ? Row(
+                    children: [
+                      for (var workout in workoutsOfTheWeek[n]!)
+                        WorkoutCard(
+                          weekDayIntegerMap: weekDayIntegerMap,
+                          n: n,
+                          weekStartDate: weekStartDate,
+                          workout: workout,
+                        ),
+                    ],
+                  )
+                : WorkoutCard(
+                    weekDayIntegerMap: weekDayIntegerMap,
+                    n: n,
+                    weekStartDate: weekStartDate,
+                    workout: null,
+                  ),
           ),
         ),
       ],
