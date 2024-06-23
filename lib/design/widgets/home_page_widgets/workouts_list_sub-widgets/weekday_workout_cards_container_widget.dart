@@ -25,11 +25,16 @@ class WeekDayWorkoutCardsAnimatedContainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               for (int n = 0; n < 4; n++)
-                WorkoutCard(
-                  weekDayIntegerMap: weekDayIntegerMap,
-                  n: n,
-                  weekStartDate: weekStartDate,
-                  workout: workoutsOfTheWeek[n],
+                Column(
+                  children: [
+                    Text(weekDayIntegerMap[n]!),
+                    WorkoutCard(
+                      weekDayIntegerMap: weekDayIntegerMap,
+                      n: n,
+                      weekStartDate: weekStartDate,
+                      workout: workoutsOfTheWeek[n],
+                    ),
+                  ],
                 )
             ],
           ),
@@ -40,11 +45,16 @@ class WeekDayWorkoutCardsAnimatedContainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               for (int n = 4; n < 7; n++)
-                WorkoutCard(
-                  weekDayIntegerMap: weekDayIntegerMap,
-                  n: n,
-                  weekStartDate: weekStartDate,
-                  workout: workoutsOfTheWeek[n],
+                Column(
+                  children: [
+                    Text(weekDayIntegerMap[n]!),
+                    WorkoutCard(
+                      weekDayIntegerMap: weekDayIntegerMap,
+                      n: n,
+                      weekStartDate: weekStartDate,
+                      workout: workoutsOfTheWeek[n],
+                    ),
+                  ],
                 )
             ],
           ),

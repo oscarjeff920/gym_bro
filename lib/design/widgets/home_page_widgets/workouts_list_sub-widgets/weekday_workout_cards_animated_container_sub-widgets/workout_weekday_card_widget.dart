@@ -27,24 +27,65 @@ class WorkoutCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(0.0), // Square corners
           )),
         ),
-        onPressed: workout != null ? () {
-        } : null,
+        onPressed: workout != null ? () {} : null,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               "${workoutDate.day < 10 ? '0${workoutDate.day}' : workoutDate.day}"
               "/${workoutDate.month < 10 ? '0${workoutDate.month}' : workoutDate.month}",
               softWrap: true,
+              textScaleFactor: 0.70,
             ),
-            Text(weekDayIntegerMap[n]!),
-            workout != null && workout!.workoutStartTime != null
-                ? Text(workout!.workoutStartTime!)
-                : const Icon(Icons.heart_broken_rounded)
+            workout != null
+                ? workout!.workoutStartTime != null
+                    ? Text(workout!.workoutStartTime!)
+                    : const Text("- - - -")
+                : const Icon(Icons.sentiment_dissatisfied_sharp),
+            const SizedBox(
+              height: 8,
+            ),
+            if (workout != null)
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  CardMuscleGroupIcon(muscleGroupIcon: Icons.favorite, showIcon: true,),
+                  CardMuscleGroupIcon(muscleGroupIcon: Icons.emoji_people, showIcon: true),
+                  CardMuscleGroupIcon(muscleGroupIcon: Icons.fitness_center, showIcon: true),
+                  CardMuscleGroupIcon(muscleGroupIcon: Icons.expand, showIcon: true),
+                  CardMuscleGroupIcon(muscleGroupIcon: Icons.rowing, showIcon: true),
+                  CardMuscleGroupIcon(muscleGroupIcon: Icons.sports_martial_arts, showIcon: true),
+                  ],
+              )
           ],
         ),
       ),
     );
+  }
+}
+
+class CardMuscleGroupIcon extends StatelessWidget {
+  const CardMuscleGroupIcon({
+    super.key,
+    required this.muscleGroupIcon,
+    required this.showIcon,
+  });
+
+  final IconData muscleGroupIcon;
+  final bool showIcon;
+
+  @override
+  Widget build(BuildContext context) {
+    double size = 13;
+    return SizedBox(
+        width: size,
+        child: showIcon
+            ? Icon(
+                muscleGroupIcon,
+                size: size,
+              )
+            : null);
   }
 }
