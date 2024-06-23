@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
-import 'package:gym_bro/design/widgets/workout_page_widgets/exercise_count_bar/exercise_count_bar_widget.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
 import 'package:gym_bro/state_management/cubits/toggle_workout_week_widget_cubit/toggle_workout_week_widget_cubit.dart';
 import 'package:gym_bro/state_management/cubits/toggle_workout_week_widget_cubit/toggle_workout_week_widget_state.dart';
 
 import 'workouts_list_sub-widgets/week_toggle_header_widget.dart';
+import 'workouts_list_sub-widgets/weekday_workout_cards_animated_container_sub-widgets/weekly_exercise_count_bar_widget.dart';
 import 'workouts_list_sub-widgets/weekday_workout_cards_container_widget.dart';
 
 class WorkoutsList extends StatelessWidget {
@@ -95,10 +95,6 @@ class WorkoutWeekBlockContainer extends StatelessWidget {
                   weekStartDate: weekStartDate,
                   isCurrentWeek: index == 0,
                   isToggledOn: isToggled),
-              // WeekToggleHeader(
-              //     headerString: headerString,
-              //     index: index,
-              //     weekStartDate: weekStartDate),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 350),
                 height: isToggled ? 223: 0,//183 : 0,
@@ -113,7 +109,7 @@ class WorkoutWeekBlockContainer extends StatelessWidget {
                   ),
                 ),
               ),
-              // ExerciseCountBar()
+              WeeklyExerciseCountBar()
             ],
           );
         },

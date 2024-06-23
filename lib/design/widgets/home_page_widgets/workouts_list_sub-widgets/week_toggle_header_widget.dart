@@ -22,9 +22,8 @@ class WeekToggleHeader extends StatelessWidget {
     String headerString = isCurrentWeek ? "Current Week" : "Week Beginning";
     return ElevatedButton(
       style: ButtonStyle(
-        elevation: MaterialStateProperty.all(8),
-        padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
-        minimumSize: MaterialStateProperty.all(Size(0, 0)),
+        elevation: MaterialStateProperty.all(10),
+        padding: MaterialStateProperty.all(const EdgeInsets.all(12)),
         backgroundColor: MaterialStateProperty.all(
             isCurrentWeek ? Colors.amber : Colors.black),
         foregroundColor: MaterialStateProperty.all(Colors.white),

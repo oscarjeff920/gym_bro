@@ -56,9 +56,7 @@ class WorkoutCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   CardMuscleGroupIcon(
-                    muscleGroupIcon: Icons.favorite,
-                    showIcon: true,
-                  ),
+                      muscleGroupIcon: Icons.favorite, showIcon: true),
                   CardMuscleGroupIcon(
                       muscleGroupIcon: Icons.emoji_people, showIcon: true),
                   CardMuscleGroupIcon(
