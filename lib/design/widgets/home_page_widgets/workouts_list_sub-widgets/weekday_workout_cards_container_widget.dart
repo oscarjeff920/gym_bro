@@ -3,7 +3,6 @@ import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
 
 import 'weekday_workout_cards_animated_container_sub-widgets/workout_weekday_card_widget.dart';
 
-
 class WeekDayWorkoutCardsAnimatedContainer extends StatelessWidget {
   const WeekDayWorkoutCardsAnimatedContainer({
     super.key,
@@ -42,9 +41,11 @@ class WeekDayWorkoutCardsAnimatedContainer extends StatelessWidget {
             children: [
               for (int n = 4; n < 7; n++)
                 WorkoutCard(
-                    weekDayIntegerMap: weekDayIntegerMap,
-                    n: n,
-                    weekStartDate: weekStartDate)
+                  weekDayIntegerMap: weekDayIntegerMap,
+                  n: n,
+                  weekStartDate: weekStartDate,
+                  workout: workoutsOfTheWeek[n],
+                )
             ],
           ),
         ),

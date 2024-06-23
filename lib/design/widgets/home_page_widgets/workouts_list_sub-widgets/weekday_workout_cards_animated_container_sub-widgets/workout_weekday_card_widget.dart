@@ -7,7 +7,7 @@ class WorkoutCard extends StatelessWidget {
       required this.weekDayIntegerMap,
       required this.n,
       required this.weekStartDate,
-      this.workout});
+      required this.workout});
 
   final Map<int, String> weekDayIntegerMap;
   final int n;
@@ -27,18 +27,21 @@ class WorkoutCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(0.0), // Square corners
           )),
         ),
-        onPressed: () {},
+        onPressed: workout != null ? () {
+        } : null,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(weekDayIntegerMap[n]!),
             Text(
               "${workoutDate.day < 10 ? '0${workoutDate.day}' : workoutDate.day}"
               "/${workoutDate.month < 10 ? '0${workoutDate.month}' : workoutDate.month}",
               softWrap: true,
             ),
-            const Icon(Icons.heart_broken_rounded)
+            Text(weekDayIntegerMap[n]!),
+            workout != null && workout!.workoutStartTime != null
+                ? Text(workout!.workoutStartTime!)
+                : const Icon(Icons.heart_broken_rounded)
           ],
         ),
       ),

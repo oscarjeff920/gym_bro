@@ -103,7 +103,7 @@ class WorkoutWeekBlockContainer extends StatelessWidget {
                 duration: const Duration(milliseconds: 350),
                 height: isToggled ? 183 : 0,
                 child: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 1),
+                  duration: const Duration(milliseconds: 500),
                   curve: Curves.easeOutExpo,
                   opacity: isToggled ? 1 : 0,
                   child: WeekDayWorkoutCardsAnimatedContainer(

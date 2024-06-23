@@ -53,12 +53,13 @@ class WorkoutRepository {
 
       DateTime weekBeginningDate = getWeekBeginningDate(date, weekdayInteger);
 
+      // weekday integers start at 1 so to match indices we need to -1
       if (workoutsGroupedByWeek.containsKey(weekBeginningDate)) {
-        workoutsGroupedByWeek[weekBeginningDate]![weekdayInteger] =
+        workoutsGroupedByWeek[weekBeginningDate]![weekdayInteger - 1] =
             LoadedWorkoutModel.fromTableModel(workout);
       } else {
         workoutsGroupedByWeek[weekBeginningDate] = {
-          weekdayInteger: LoadedWorkoutModel.fromTableModel(workout)
+          weekdayInteger - 1: LoadedWorkoutModel.fromTableModel(workout)
         };
       }
     }
