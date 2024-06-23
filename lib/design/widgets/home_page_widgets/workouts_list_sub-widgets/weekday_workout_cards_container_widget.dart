@@ -26,10 +26,11 @@ class WeekDayWorkoutCardsAnimatedContainer extends StatelessWidget {
             children: [
               for (int n = 0; n < 4; n++)
                 WeekDayWorkoutScaffold(
-                    weekDayIntegerMap: weekDayIntegerMap,
-                    n: n,
-                    workoutsOfTheWeek: workoutsOfTheWeek,
-                    weekStartDate: weekStartDate)
+                  weekDayIntegerMap: weekDayIntegerMap,
+                  n: n,
+                  workoutsOfTheWeek: workoutsOfTheWeek,
+                  weekStartDate: weekStartDate,
+                )
             ],
           ),
         ),
@@ -77,16 +78,20 @@ class WeekDayWorkoutScaffold extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             child: workoutsOfTheWeek[n] != null
                 ? Row(
-                    children: [
-                      for (var workout in workoutsOfTheWeek[n]!)
-                        WorkoutCard(
-                          weekDayIntegerMap: weekDayIntegerMap,
-                          n: n,
-                          weekStartDate: weekStartDate,
-                          workout: workout,
-                        ),
-                    ],
-                  )
+                    children: workoutsOfTheWeek[n]!
+                        .asMap()
+                        .entries
+                        .map(
+                          (workout) => WorkoutCard(
+                            weekDayIntegerMap: weekDayIntegerMap,
+                            n: n,
+                            weekStartDate: weekStartDate,
+                            workout: workout.value,
+                            workoutIndex: workout.key,
+                            numberOfWorkouts: workoutsOfTheWeek[n]!.length,
+                          ),
+                        )
+                        .toList())
                 : WorkoutCard(
                     weekDayIntegerMap: weekDayIntegerMap,
                     n: n,

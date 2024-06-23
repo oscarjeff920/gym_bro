@@ -7,12 +7,16 @@ class WorkoutCard extends StatelessWidget {
       required this.weekDayIntegerMap,
       required this.n,
       required this.weekStartDate,
-      required this.workout});
+      required this.workout,
+      this.workoutIndex = 0,
+      this.numberOfWorkouts = 1});
 
   final Map<int, String> weekDayIntegerMap;
   final int n;
   final DateTime weekStartDate;
   final LoadedWorkoutModel? workout;
+  final int numberOfWorkouts;
+  final int workoutIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -51,13 +55,41 @@ class WorkoutCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  CardMuscleGroupIcon(muscleGroupIcon: Icons.favorite, showIcon: true,),
-                  CardMuscleGroupIcon(muscleGroupIcon: Icons.emoji_people, showIcon: true),
-                  CardMuscleGroupIcon(muscleGroupIcon: Icons.fitness_center, showIcon: true),
-                  CardMuscleGroupIcon(muscleGroupIcon: Icons.expand, showIcon: true),
-                  CardMuscleGroupIcon(muscleGroupIcon: Icons.rowing, showIcon: true),
-                  CardMuscleGroupIcon(muscleGroupIcon: Icons.sports_martial_arts, showIcon: true),
-                  ],
+                  CardMuscleGroupIcon(
+                    muscleGroupIcon: Icons.favorite,
+                    showIcon: true,
+                  ),
+                  CardMuscleGroupIcon(
+                      muscleGroupIcon: Icons.emoji_people, showIcon: true),
+                  CardMuscleGroupIcon(
+                      muscleGroupIcon: Icons.fitness_center, showIcon: true),
+                  CardMuscleGroupIcon(
+                      muscleGroupIcon: Icons.expand, showIcon: true),
+                  CardMuscleGroupIcon(
+                      muscleGroupIcon: Icons.rowing, showIcon: true),
+                  CardMuscleGroupIcon(
+                      muscleGroupIcon: Icons.sports_martial_arts,
+                      showIcon: true),
+                ],
+              ),
+            if (workout != null && numberOfWorkouts > 1)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  for (var n = 0; n < numberOfWorkouts; n++)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 2, right: 2, top: 4),
+                      child: Icon(
+                        Icons.circle,
+                        size: 4,
+                        color: n == workoutIndex ? Colors.blue : Colors.grey,
+                      ),
+                    )
+                ],
               )
           ],
         ),
