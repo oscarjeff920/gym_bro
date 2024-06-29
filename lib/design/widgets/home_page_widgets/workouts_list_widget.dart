@@ -30,7 +30,7 @@ class WorkoutsList extends StatelessWidget {
         itemCount: workoutMapEntries.length,
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(
-            height: 12,
+            height: 40,
           );
         },
         itemBuilder: (BuildContext context, int index) {
