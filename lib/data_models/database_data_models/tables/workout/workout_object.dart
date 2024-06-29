@@ -1,3 +1,4 @@
+import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 
 class WorkoutTable {
@@ -62,4 +63,14 @@ class WorkoutTableWithExercisesWorkedMuscleGroups extends WorkoutTable {
         required super.workoutStartTime,
         required super.duration,
         required this.exercises});
+
+
+  int getNumWorkingSetsPerMuscleInWorkout(MuscleGroupType muscleGroup) {
+    int totalSets = 0;
+    for (ExerciseTableWithWorkedMuscleGroups exercise in exercises) {
+      totalSets += exercise.getWorkingSetsPerMuscleGroup(muscleGroup);
+    }
+    return totalSets;
+  }
+
 }

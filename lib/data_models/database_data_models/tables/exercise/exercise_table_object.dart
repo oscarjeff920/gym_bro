@@ -40,7 +40,7 @@ class ExerciseTable {
 }
 
 class ExerciseTableWithWorkedMuscleGroups extends ExerciseTable {
-  final Map<RoleType, List<MuscleGroupType>> workedMuscleGroups;
+  final Map<MuscleGroupType, RoleType> workedMuscleGroups;
 
   ExerciseTableWithWorkedMuscleGroups(
       {super.id,
@@ -49,4 +49,14 @@ class ExerciseTableWithWorkedMuscleGroups extends ExerciseTable {
       required super.exerciseOrder,
       required super.numWorkingSets,
       required this.workedMuscleGroups});
+
+  int getWorkingSetsPerMuscleGroup(MuscleGroupType muscleGroup) {
+    if (workedMuscleGroups.containsKey(muscleGroup)) {
+      if (workedMuscleGroups[muscleGroup] == RoleType.primary) {
+        return numWorkingSets;
+      }
+      return (numWorkingSets/2).floor();
+    }
+    return 0;
+  }
 }

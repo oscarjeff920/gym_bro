@@ -79,7 +79,7 @@ class WorkoutRepository {
       // convert map into ExerciseTable obj
       ExerciseTable convertedExercise = ExerciseTable.fromMap(exercise);
 
-      Map<RoleType, List<MuscleGroupType>> muscleGroupsWorked =
+      Map<MuscleGroupType, RoleType> muscleGroupsWorked =
           await getWorkedMuscleGroupsByMovementId(
               convertedExercise.movementId, db);
 
@@ -109,7 +109,7 @@ class WorkoutRepository {
     return workoutTableWithExercisesWorkedMuscleGroups;
   }
 
-  Future<Map<RoleType, List<MuscleGroupType>>>
+  Future<Map<MuscleGroupType, RoleType>>
       getWorkedMuscleGroupsByMovementId(int movementId, db) async {
     String queryString = """
     SELECT $movementMuscleGroupsTableName.role, $muscleGroupTableName.name FROM $movementMuscleGroupsTableName
@@ -119,16 +119,12 @@ class WorkoutRepository {
 
     List<Map> result = await db.rawQuery(queryString);
 
-    Map<RoleType, List<MuscleGroupType>> musclesWorked = {};
+    Map<MuscleGroupType, RoleType> musclesWorked = {};
     for (var obj in result) {
       RoleType role = RoleType.values.byName(obj['role']);
       MuscleGroupType muscleGroup = MuscleGroupType.values.byName(obj['name']);
 
-      if (musclesWorked.containsKey(role)) {
-        musclesWorked[role]!.add(muscleGroup);
-      } else {
-        musclesWorked[role] = [muscleGroup];
-      }
+      musclesWorked[muscleGroup] = role;
     }
 
     return musclesWorked;
