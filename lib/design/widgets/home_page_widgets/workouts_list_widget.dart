@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
 import 'package:gym_bro/state_management/cubits/toggle_workout_week_widget_cubit/toggle_workout_week_widget_cubit.dart';
@@ -11,13 +12,13 @@ import 'workouts_list_sub-widgets/weekday_workout_cards_animated_container_sub-w
 import 'workouts_list_sub-widgets/weekday_workout_cards_container_widget.dart';
 
 class WorkoutsList extends StatelessWidget {
-  final Map<DateTime, Map<int, List<LoadedWorkoutModel>>> allWorkouts;
+  final Map<DateTime, Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>> allWorkouts;
 
   const WorkoutsList({super.key, required this.allWorkouts});
 
   @override
   Widget build(BuildContext context) {
-    final List<MapEntry<DateTime, Map<int, List<LoadedWorkoutModel>>>>
+    final List<MapEntry<DateTime, Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>>>
         workoutMapEntries = allWorkouts.entries.toList();
     return BlocBuilder<ToggleWorkoutWeekWidgetCubit,
         ToggleWorkoutWeekWidgetState>(builder: (context, state) {
@@ -60,7 +61,7 @@ class WorkoutWeekBlockContainer extends StatelessWidget {
 
   final int index;
   final DateTime weekStartDate;
-  final Map<int, List<LoadedWorkoutModel>> workoutsOfTheWeek;
+  final Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>> workoutsOfTheWeek;
 
   @override
   Widget build(BuildContext context) {

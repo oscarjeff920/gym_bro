@@ -20,24 +20,26 @@ class WorkoutRepository {
         await getAllWorkouts(limit: limit, offset: offset);
 
     // getting all attached exercises by workout
-    List<WorkoutTableWithExercisesWorkedMuscleGroups> allWorkoutsWithExercises = [];
+    List<WorkoutTableWithExercisesWorkedMuscleGroups> allWorkoutsWithExercises =
+        [];
     for (WorkoutTable workout in allWorkouts) {
-      WorkoutTableWithExercisesWorkedMuscleGroups workoutTableWithExercisesWorkedMuscleGroups =
+      WorkoutTableWithExercisesWorkedMuscleGroups
+          workoutTableWithExercisesWorkedMuscleGroups =
           await getExercisesByWorkoutId(workout);
 
       allWorkoutsWithExercises.add(workoutTableWithExercisesWorkedMuscleGroups);
     }
 
-    List<LoadedWorkoutModel> convertedWorkouts = [];
-
+    // List<LoadedWorkoutModel> convertedWorkouts = [];
+    //
     // for (WorkoutTable workout in retrievedWorkouts) {
     //   LoadedWorkoutModel completeLoadedWorkout =
     //       await getExercisesByWorkoutId(workout);
     //   convertedWorkouts.add(completeLoadedWorkout);
     // }
 
-    Map<DateTime, Map<int, List<LoadedWorkoutModel>>> workoutsGroupedByWeek =
-        groupWorkoutsByWeek(convertedWorkouts);
+    Map<DateTime, Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>>
+        workoutsGroupedByWeek = groupWorkoutsByWeek(allWorkoutsWithExercises);
 
     return workoutsGroupedByWeek;
   }
@@ -83,7 +85,7 @@ class WorkoutRepository {
 
       ExerciseTableWithWorkedMuscleGroups convertedExerciseWithMuscleGroups =
           ExerciseTableWithWorkedMuscleGroups(
-            id: convertedExercise.id,
+              id: convertedExercise.id,
               movementId: convertedExercise.movementId,
               workoutId: convertedExercise.workoutId,
               exerciseOrder: convertedExercise.exerciseOrder,
@@ -132,15 +134,15 @@ class WorkoutRepository {
     return musclesWorked;
   }
 
-  groupByExerciseId(List<Map<String, dynamic>> queriedExercises) {}
-
-  Map<DateTime, Map<int, List<LoadedWorkoutModel>>> groupWorkoutsByWeek(
-      List<LoadedWorkoutModel> ungroupedWorkouts) {
+  Map<DateTime, Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>>
+      groupWorkoutsByWeek(
+          List<WorkoutTableWithExercisesWorkedMuscleGroups> ungroupedWorkouts) {
     // Make sure the current week exists
     DateTime dateTimeNow = DateTime.now();
     // Because two or more workouts can occur on the same day, we need to save
     // the workouts within a list so the user can select from any
-    Map<DateTime, Map<int, List<LoadedWorkoutModel>>> workoutsGroupedByWeek = {
+    // Map<DateTime, Map<int, List<LoadedWorkoutModel>>>
+    Map<DateTime, Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>> workoutsGroupedByWeek = {
       getWeekBeginningDate(
           DateTime(dateTimeNow.year, dateTimeNow.month, dateTimeNow.day),
           dateTimeNow.weekday): {}
@@ -169,7 +171,6 @@ class WorkoutRepository {
         };
       }
     }
-
     return workoutsGroupedByWeek;
   }
 

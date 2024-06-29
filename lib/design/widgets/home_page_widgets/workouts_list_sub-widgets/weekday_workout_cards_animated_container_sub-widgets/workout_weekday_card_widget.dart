@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
 
 class WorkoutCard extends StatelessWidget {
   const WorkoutCard(
@@ -14,7 +15,7 @@ class WorkoutCard extends StatelessWidget {
   final Map<int, String> weekDayIntegerMap;
   final int n;
   final DateTime weekStartDate;
-  final LoadedWorkoutModel? workout;
+  final WorkoutTableWithExercisesWorkedMuscleGroups? workout;
   final int numberOfWorkouts;
   final int workoutIndex;
 
