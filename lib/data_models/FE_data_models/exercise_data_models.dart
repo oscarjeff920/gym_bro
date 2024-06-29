@@ -52,7 +52,7 @@ class LoadedExerciseModel {
   });
 
   factory LoadedExerciseModel.fromMap(Map<String, dynamic> map) {
-    return LoadedExerciseModel(
+    LoadedExerciseModel convertedExercise = LoadedExerciseModel(
       id: map['id'],
       exerciseOrder: map['exercise_order'],
       movementName: map['movement_name'],
@@ -64,6 +64,7 @@ class LoadedExerciseModel {
       // secondaryMuscleGroup: secondaryMuscleGroup,
       exerciseSets: [],
     );
+    return convertedExercise;
   }
 
   GeneralExerciseModel transformToGeneralModel() {

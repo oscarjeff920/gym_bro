@@ -1,3 +1,4 @@
+import 'package:gym_bro/constants/enums.dart';
 
 class ExerciseTable {
   final int? id;
@@ -5,24 +6,26 @@ class ExerciseTable {
   final int workoutId;
   final int exerciseOrder;
   final String? duration;
-  final int numbWorkingSets;
+  final int numWorkingSets;
 
-  ExerciseTable({this.id,
-    required this.movementId,
-    required this.workoutId,
-    required this.exerciseOrder,
-    this.duration,
-    required this.numbWorkingSets});
+  ExerciseTable(
+      {this.id,
+      required this.movementId,
+      required this.workoutId,
+      required this.exerciseOrder,
+      this.duration,
+      required this.numWorkingSets});
 
   factory ExerciseTable.fromMap(Map<String, dynamic> map) {
-    return ExerciseTable(
+    ExerciseTable generatedModel = ExerciseTable(
       id: map['id'],
       movementId: map['movement_id'],
       workoutId: map['workout_id'],
       exerciseOrder: map['exercise_order'],
       duration: map['duration'],
-      numbWorkingSets: map['numb_working_sets'],
+      numWorkingSets: map['num_working_sets'],
     );
+    return generatedModel;
   }
 
   Map<String, dynamic> toMap() {
@@ -31,7 +34,19 @@ class ExerciseTable {
       'workout_id': workoutId,
       'exercise_order': exerciseOrder,
       'duration': duration.toString(),
-      'numb_working_sets': numbWorkingSets,
+      'numb_working_sets': numWorkingSets,
     };
   }
+}
+
+class ExerciseTableWithWorkedMuscleGroups extends ExerciseTable {
+  final Map<RoleType, List<MuscleGroupType>> workedMuscleGroups;
+
+  ExerciseTableWithWorkedMuscleGroups(
+      {super.id,
+      required super.movementId,
+      required super.workoutId,
+      required super.exerciseOrder,
+      required super.numWorkingSets,
+      required this.workedMuscleGroups});
 }

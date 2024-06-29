@@ -1,5 +1,7 @@
+import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
 import 'package:gym_bro/database/database_connector.dart';
@@ -10,6 +12,35 @@ class WorkoutRepository {
   WorkoutRepository(this.databaseHelper);
 
   // Methods to list workouts on home page:
+  // Future<Map<DateTime, Map<int, List<LoadedWorkoutModel>>>>
+  retrieveWorkoutsAndGroupByWeek(
+      {required int limit, required int offset}) async {
+    // getting all workouts in db by limit and offset
+    List<WorkoutTable> allWorkouts =
+        await getAllWorkouts(limit: limit, offset: offset);
+
+    // getting all attached exercises by workout
+    List<WorkoutTableWithExercisesWorkedMuscleGroups> allWorkoutsWithExercises = [];
+    for (WorkoutTable workout in allWorkouts) {
+      WorkoutTableWithExercisesWorkedMuscleGroups workoutTableWithExercisesWorkedMuscleGroups =
+          await getExercisesByWorkoutId(workout);
+
+      allWorkoutsWithExercises.add(workoutTableWithExercisesWorkedMuscleGroups);
+    }
+
+    List<LoadedWorkoutModel> convertedWorkouts = [];
+
+    // for (WorkoutTable workout in retrievedWorkouts) {
+    //   LoadedWorkoutModel completeLoadedWorkout =
+    //       await getExercisesByWorkoutId(workout);
+    //   convertedWorkouts.add(completeLoadedWorkout);
+    // }
+
+    Map<DateTime, Map<int, List<LoadedWorkoutModel>>> workoutsGroupedByWeek =
+        groupWorkoutsByWeek(convertedWorkouts);
+
+    return workoutsGroupedByWeek;
+  }
 
   Future<List<WorkoutTable>> getAllWorkouts(
       {required int limit, required int offset}) async {
@@ -25,20 +56,86 @@ class WorkoutRepository {
     return convertedWorkouts;
   }
 
-  Future<Map<DateTime, Map<int, List<LoadedWorkoutModel>>>>
-      retrieveWorkoutsAndGroupByWeek(
-          {required int limit, required int offset}) async {
-    List<WorkoutTable> retrievedWorkouts =
-        await getAllWorkouts(limit: limit, offset: offset);
+  // Future<WorkoutTableWithExercises>
+  getExercisesByWorkoutId(WorkoutTable workout) async {
+    final db = await databaseHelper.database;
 
-    Map<DateTime, Map<int, List<LoadedWorkoutModel>>> workoutsGroupedByWeek =
-        groupWorkoutsByWeek(retrievedWorkouts);
+    String getExercisesByWorkoutIdQueryString = """
+    SELECT 
+      $exerciseTableName.*
+    FROM 
+      $exerciseTableName
+    WHERE $exerciseTableName.workout_id = ${workout.id}
+    ORDER BY $exerciseTableName.exercise_order;
+    """;
 
-    return workoutsGroupedByWeek;
+    final List<Map<String, dynamic>> mapExercises =
+        await db.rawQuery(getExercisesByWorkoutIdQueryString);
+
+    final List<ExerciseTableWithWorkedMuscleGroups> exercises = [];
+    for (Map<String, dynamic> exercise in mapExercises) {
+      // convert map into ExerciseTable obj
+      ExerciseTable convertedExercise = ExerciseTable.fromMap(exercise);
+
+      Map<RoleType, List<MuscleGroupType>> muscleGroupsWorked =
+          await getWorkedMuscleGroupsByMovementId(
+              convertedExercise.movementId, db);
+
+      ExerciseTableWithWorkedMuscleGroups convertedExerciseWithMuscleGroups =
+          ExerciseTableWithWorkedMuscleGroups(
+            id: convertedExercise.id,
+              movementId: convertedExercise.movementId,
+              workoutId: convertedExercise.workoutId,
+              exerciseOrder: convertedExercise.exerciseOrder,
+              numWorkingSets: convertedExercise.numWorkingSets,
+              workedMuscleGroups: muscleGroupsWorked);
+
+      exercises.add(convertedExerciseWithMuscleGroups);
+    }
+
+    WorkoutTableWithExercisesWorkedMuscleGroups
+        workoutTableWithExercisesWorkedMuscleGroups =
+        WorkoutTableWithExercisesWorkedMuscleGroups(
+            id: workout.id,
+            year: workout.year,
+            month: workout.month,
+            day: workout.day,
+            workoutStartTime: workout.workoutStartTime,
+            duration: workout.duration,
+            exercises: exercises);
+
+    return workoutTableWithExercisesWorkedMuscleGroups;
   }
 
+  Future<Map<RoleType, List<MuscleGroupType>>>
+      getWorkedMuscleGroupsByMovementId(int movementId, db) async {
+    String queryString = """
+    SELECT $movementMuscleGroupsTableName.role, $muscleGroupTableName.name FROM $movementMuscleGroupsTableName
+    JOIN $muscleGroupTableName ON $movementMuscleGroupsTableName.muscle_group_id = $muscleGroupTableName.id
+    WHERE $movementMuscleGroupsTableName.movement_id = $movementId;
+    """;
+
+    List<Map> result = await db.rawQuery(queryString);
+
+    Map<RoleType, List<MuscleGroupType>> musclesWorked = {};
+    for (var obj in result) {
+      RoleType role = RoleType.values.byName(obj['role']);
+      MuscleGroupType muscleGroup = MuscleGroupType.values.byName(obj['name']);
+
+      if (musclesWorked.containsKey(role)) {
+        musclesWorked[role]!.add(muscleGroup);
+      } else {
+        musclesWorked[role] = [muscleGroup];
+      }
+    }
+
+    return musclesWorked;
+  }
+
+  groupByExerciseId(List<Map<String, dynamic>> queriedExercises) {}
+
   Map<DateTime, Map<int, List<LoadedWorkoutModel>>> groupWorkoutsByWeek(
-      List<WorkoutTable> ungroupedWorkouts) {
+      List<LoadedWorkoutModel> ungroupedWorkouts) {
     // Make sure the current week exists
     DateTime dateTimeNow = DateTime.now();
     // Because two or more workouts can occur on the same day, we need to save
@@ -60,15 +157,15 @@ class WorkoutRepository {
         if (workoutsGroupedByWeek[weekBeginningDate]!
             .containsKey(weekdayInteger - 1)) {
           workoutsGroupedByWeek[weekBeginningDate]![weekdayInteger - 1]!
-              .add(LoadedWorkoutModel.fromTableModel(workout));
+              .add(workout);
         } else {
           workoutsGroupedByWeek[weekBeginningDate]![weekdayInteger - 1] = [
-            LoadedWorkoutModel.fromTableModel(workout)
+            workout
           ];
         }
       } else {
         workoutsGroupedByWeek[weekBeginningDate] = {
-          weekdayInteger - 1: [LoadedWorkoutModel.fromTableModel(workout)]
+          weekdayInteger - 1: [workout]
         };
       }
     }
@@ -84,7 +181,7 @@ class WorkoutRepository {
     return weekBeginningDate;
   }
 
-  // Insert New Movement method
+// Insert New Movement method
 
   insertNewMovement(NewExerciseModel newMovementExercise, txn) async {
     String lowerCaseMovementName =

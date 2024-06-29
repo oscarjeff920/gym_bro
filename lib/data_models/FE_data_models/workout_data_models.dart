@@ -33,7 +33,8 @@ class LoadedWorkoutModel extends GeneralWorkoutModel {
       required super.workoutDuration,
       required this.exercises});
 
-  factory LoadedWorkoutModel.fromTableModel(WorkoutTable tableObj) {
+  factory LoadedWorkoutModel.fromTableModel(WorkoutTable tableObj,
+      {List<LoadedExerciseModel> exercises = const []}) {
     LoadedWorkoutModel generatedModel = LoadedWorkoutModel(
         id: tableObj.id!,
         day: tableObj.day,
@@ -41,7 +42,7 @@ class LoadedWorkoutModel extends GeneralWorkoutModel {
         year: tableObj.year,
         workoutStartTime: tableObj.workoutStartTime,
         workoutDuration: tableObj.duration ?? "- - - -",
-        exercises: []);
+        exercises: exercises);
     return generatedModel;
   }
 }
