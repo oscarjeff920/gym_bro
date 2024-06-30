@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
+import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
 
 class WorkoutCard extends StatelessWidget {
@@ -52,23 +52,23 @@ class WorkoutCard extends StatelessWidget {
               height: 8,
             ),
             if (workout != null)
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   CardMuscleGroupIcon(
-                      muscleGroupIcon: Icons.favorite, showIcon: true),
+                      muscleGroup: MuscleGroupType.chest, workout: workout!),
                   CardMuscleGroupIcon(
-                      muscleGroupIcon: Icons.emoji_people, showIcon: true),
+                      muscleGroup: MuscleGroupType.shoulders,
+                      workout: workout!),
                   CardMuscleGroupIcon(
-                      muscleGroupIcon: Icons.fitness_center, showIcon: true),
+                      muscleGroup: MuscleGroupType.biceps, workout: workout!),
                   CardMuscleGroupIcon(
-                      muscleGroupIcon: Icons.expand, showIcon: true),
+                      muscleGroup: MuscleGroupType.triceps, workout: workout!),
                   CardMuscleGroupIcon(
-                      muscleGroupIcon: Icons.rowing, showIcon: true),
+                      muscleGroup: MuscleGroupType.back, workout: workout!),
                   CardMuscleGroupIcon(
-                      muscleGroupIcon: Icons.sports_martial_arts,
-                      showIcon: true),
+                      muscleGroup: MuscleGroupType.legs, workout: workout!),
                 ],
               ),
             if (workout != null && numberOfWorkouts > 1)
@@ -98,23 +98,24 @@ class WorkoutCard extends StatelessWidget {
 }
 
 class CardMuscleGroupIcon extends StatelessWidget {
-  const CardMuscleGroupIcon({
-    super.key,
-    required this.muscleGroupIcon,
-    required this.showIcon,
-  });
+  const CardMuscleGroupIcon(
+      {super.key, required this.muscleGroup, required this.workout});
 
-  final IconData muscleGroupIcon;
-  final bool showIcon;
+  final MuscleGroupType muscleGroup;
+  final WorkoutTableWithExercisesWorkedMuscleGroups workout;
 
   @override
   Widget build(BuildContext context) {
+    bool showIcon = false;
+    if (workout.getNumWorkingSetsPerMuscleInWorkout(muscleGroup) > 0) {
+      showIcon = true;
+    }
     double size = 13;
     return SizedBox(
         width: size,
         child: showIcon
             ? Icon(
-                muscleGroupIcon,
+                assignIcon(muscleGroup),
                 size: size,
               )
             : null);
