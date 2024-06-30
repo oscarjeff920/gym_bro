@@ -55,7 +55,7 @@ class ExerciseTableWithWorkedMuscleGroups extends ExerciseTable {
       if (workedMuscleGroups[muscleGroup] == RoleType.primary) {
         return numWorkingSets;
       }
-      return (numWorkingSets/2).floor();
+      return (numWorkingSets/4).floor();
     }
     return 0;
   }
