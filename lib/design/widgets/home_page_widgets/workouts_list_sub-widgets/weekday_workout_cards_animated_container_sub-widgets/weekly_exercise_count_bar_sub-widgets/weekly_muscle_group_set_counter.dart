@@ -1,23 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/constants/enums.dart';
-import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
-import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
-import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
-import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
-import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
 
 class WeeklyMuscleGroupSetCounter extends StatelessWidget {
   final MuscleGroupType muscleGroup;
-  final Map<int,
-      List<WorkoutTableWithExercisesWorkedMuscleGroups>> workoutsOfTheWeek;
+  final Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>
+      workoutsOfTheWeek;
 
-  const WeeklyMuscleGroupSetCounter({
-    super.key,
-    required this.muscleGroup,
-    required this.workoutsOfTheWeek
-  });
+  const WeeklyMuscleGroupSetCounter(
+      {super.key, required this.muscleGroup, required this.workoutsOfTheWeek});
 
   @override
   Widget build(BuildContext context) {
@@ -76,21 +67,18 @@ class MuscleSetsText extends StatelessWidget {
     Color textColour;
     if (sets == 0) {
       textColour = Colors.grey;
-    }
-    else if (sets < 20) {
+    } else if (sets < 10) {
       textColour = Colors.black;
-    }
-    else {
+    } else if (sets < 20) {
+      textColour = muscleGroupColours[muscleGroup]!;
+    } else {
       textColour = Colors.white;
     }
     return Text(
       "$sets",
       textAlign: TextAlign.end,
       textScaleFactor: textScaleFactor,
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
-        color: textColour
-      ),
+      style: TextStyle(fontWeight: FontWeight.bold, color: textColour),
     );
   }
 }
@@ -112,14 +100,11 @@ class MuscleIcon extends StatelessWidget {
     Color iconColour;
     if (totalWorkingSets == 0) {
       iconColour = Colors.grey;
-    }
-    else if (totalWorkingSets < 10) {
+    } else if (totalWorkingSets < 10) {
       iconColour = Colors.black;
-    }
-    else if (totalWorkingSets < 20) {
+    } else if (totalWorkingSets < 20) {
       iconColour = muscleGroupColours[muscleGroup]!;
-    }
-    else {
+    } else {
       iconColour = Colors.white;
     }
 
