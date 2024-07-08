@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 
@@ -8,7 +9,7 @@ import 'exercise_tile_base_widget.dart';
 
 class CompletedExerciseTile extends StatelessWidget {
   final Color primaryMuscleGroupColour;
-  final GeneralExerciseModel exercise;
+  final WorkoutPageExerciseModel exercise;
   final int tileIndex;
 
   final double tileSpacingValue;
@@ -32,7 +33,7 @@ class CompletedExerciseTile extends StatelessWidget {
           children: [
             Expanded(
                 flex: 2,
-                child: Text(capitalizeString(exercise.movementName),
+                child: Text(capitalizeString(exercise.movementName ?? ""),
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

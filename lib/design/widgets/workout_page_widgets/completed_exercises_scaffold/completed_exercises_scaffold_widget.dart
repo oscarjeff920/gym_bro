@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
 
@@ -11,7 +12,7 @@ import 'finish_workout_button_widget.dart';
 
 class CompletedExercisesScaffold extends StatelessWidget {
   final double tileSpacingValue;
-  final List<GeneralExerciseModel> exercises;
+  final List<WorkoutPageExerciseModel> exercises;
   final bool isCurrentWorkout;
 
   const CompletedExercisesScaffold({
@@ -42,7 +43,8 @@ class CompletedExercisesScaffold extends StatelessWidget {
                       tileIndex: index,
                       primaryMuscleGroupColour: muscleGroupColours[
                           exercises[isCurrentWorkout ? index - 1 : index]
-                              .primaryMuscleGroup]!,
+                              .returnPrimaryMuscleGroup()
+                              .first]!,
                       tileSpacingValue: tileSpacingValue,
                       exercise: exercises[isCurrentWorkout ? index - 1 : index],
                     );

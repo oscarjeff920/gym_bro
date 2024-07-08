@@ -15,9 +15,9 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
             numWorkingSets: 0,
             setsDone: []));
 
-  addCompletedExercise(GeneralExerciseModel completedExercise) {
+  addCompletedExercise(WorkoutPageExerciseModel completedExercise) {
     AddExerciseState newState = AddExerciseState(
-        selectedMuscleGroup: completedExercise.primaryMuscleGroup,
+        selectedMuscleGroup: completedExercise.returnPrimaryMuscleGroup().first,
         selectedMovement: completedExercise.movementName,
         selectedMovementId: completedExercise.movementId,
         setsDone: completedExercise.exerciseSets
@@ -28,7 +28,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
                   extraReps: exerciseSet.extraReps,
                 ))
             .toList(),
-        numWorkingSets: completedExercise.numWorkingSets!);
+        numWorkingSets: completedExercise.numWorkingSets);
 
     emit(newState);
   }

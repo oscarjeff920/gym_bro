@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_event.dart';
+import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 
 class WorkoutCard extends StatelessWidget {
   const WorkoutCard(
@@ -32,7 +37,16 @@ class WorkoutCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(0.0), // Square corners
           )),
         ),
-        onPressed: workout != null ? () {} : null,
+        onPressed: workout == null
+            ? null
+            : () {
+                BlocProvider.of<ActiveWorkoutCubit>(context)
+                    .loadWorkoutToState(workout!);
+                Navigator.of(context).pushNamed("/workout-page");
+                // BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
+                //     QueryAllExerciseSetsByExerciseEvent(
+                //         selectedWorkout: workout!));
+              },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,

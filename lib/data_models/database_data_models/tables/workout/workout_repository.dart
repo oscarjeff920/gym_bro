@@ -30,14 +30,6 @@ class WorkoutRepository {
       allWorkoutsWithExercises.add(workoutTableWithExercisesWorkedMuscleGroups);
     }
 
-    // List<LoadedWorkoutModel> convertedWorkouts = [];
-    //
-    // for (WorkoutTable workout in retrievedWorkouts) {
-    //   LoadedWorkoutModel completeLoadedWorkout =
-    //       await getExercisesByWorkoutId(workout);
-    //   convertedWorkouts.add(completeLoadedWorkout);
-    // }
-
     Map<DateTime, Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>>
         workoutsGroupedByWeek = groupWorkoutsByWeek(allWorkoutsWithExercises);
 
@@ -178,8 +170,7 @@ class WorkoutRepository {
     return weekBeginningDate;
   }
 
-// Insert New Movement method
-
+  // Insert New Movement method
   insertNewMovement(NewExerciseModel newMovementExercise, txn) async {
     String lowerCaseMovementName =
         newMovementExercise.movementName.toLowerCase();

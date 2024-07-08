@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_object.dart';
 
 class ExerciseSetTableOperationsState extends Equatable {
   @override
@@ -12,13 +13,13 @@ class ExerciseSetTableQueryState extends ExerciseSetTableOperationsState {}
 
 class ExerciseSetTableSuccessfulQueryAllByExerciseIdState
     extends ExerciseSetTableQueryState {
-  final LoadedWorkoutModel completeWorkout;
+  final Map<int, List<ExerciseSetTable>> exerciseSetsExerciseIndex;
 
   ExerciseSetTableSuccessfulQueryAllByExerciseIdState(
-      {required this.completeWorkout});
+      {required this.exerciseSetsExerciseIndex});
 
   @override
-  List<Object> get props => [completeWorkout];
+  List<Object> get props => [exerciseSetsExerciseIndex];
 }
 
 class ExerciseSetTableQueryErrorState extends ExerciseSetTableQueryState {
