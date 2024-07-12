@@ -8,9 +8,6 @@ import 'package:gym_bro/design/widgets/the_app_bar_widget.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise/exercise_table_operations_state.dart';
-import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_bloc.dart';
-import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_event.dart';
-import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_state.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_state.dart';
@@ -72,7 +69,7 @@ class HomePage extends StatelessWidget {
         // FOR DEBUG
         floatingActionButton: false
             ? const LoadErroredWorkoutButton()
-            : false
+            : true
                 ? const DebugStateChecker()
                 : null,
       ),

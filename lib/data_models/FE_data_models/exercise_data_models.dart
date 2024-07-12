@@ -10,7 +10,7 @@ class WorkoutPageExerciseModel {
   final int movementId;
   final String? exerciseDuration;
   final int numWorkingSets;
-  final Map<MuscleGroupType, RoleType> workedMuscleGroups;
+  final MovementWorkedMuscleGroupsType workedMuscleGroups;
   final List<ExerciseSetTable> exerciseSets;
 
   WorkoutPageExerciseModel({
@@ -32,7 +32,7 @@ class WorkoutPageExerciseModel {
       'movementId': movementId,
       'exerciseDuration': exerciseDuration,
       'numWorkingSets': numWorkingSets,
-      'primaryMuscleGroup': returnPrimaryMuscleGroup().first.name,
+      'primaryMuscleGroup': workedMuscleGroups.returnPrimaryMuscleGroups().first.name,
       'exerciseSets':
       exerciseSets.map((exerciseSet) => exerciseSet.toMap()).toList()
     };
@@ -61,7 +61,7 @@ class WorkoutPageExerciseModel {
     int? movementId,
     String? exerciseDuration,
     int? numWorkingSets,
-    Map<MuscleGroupType, RoleType>? workedMuscleGroups,
+    MovementWorkedMuscleGroupsType? workedMuscleGroups,
     List<ExerciseSetTable>? exerciseSets,
   }) {
     WorkoutPageExerciseModel generatedState = WorkoutPageExerciseModel(
@@ -78,33 +78,7 @@ class WorkoutPageExerciseModel {
   }
 
   int getWorkingSetsPerMuscleGroup(MuscleGroupType muscleGroup) {
-    if (workedMuscleGroups.containsKey(muscleGroup)) {
-      if (workedMuscleGroups[muscleGroup] == RoleType.primary) {
-        return numWorkingSets;
-      }
-      return (numWorkingSets / 4).floor();
-    }
-    return 0;
-  }
-
-  List<MuscleGroupType> returnPrimaryMuscleGroup() {
-    List<MuscleGroupType> primaryMuscleGroups = [];
-    for (var muscleGroup in workedMuscleGroups.entries) {
-      if (muscleGroup.value == RoleType.primary) {
-        primaryMuscleGroups.add(muscleGroup.key);
-      }
-    }
-    return primaryMuscleGroups;
-  }
-
-  List<MuscleGroupType> returnSecondaryMuscleGroups() {
-    List<MuscleGroupType> secondaryMuscleGroups = [];
-    for (var muscleGroup in workedMuscleGroups.entries) {
-      if (muscleGroup.value == RoleType.secondary) {
-        secondaryMuscleGroups.add(muscleGroup.key);
-      }
-    }
-    return secondaryMuscleGroups;
+    return workedMuscleGroups.getWorkingSetsPerMuscleGroup(muscleGroup, numWorkingSets);
   }
 }
 

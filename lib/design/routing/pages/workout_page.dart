@@ -4,10 +4,8 @@ import 'package:flutter_bloc/src/bloc_listener.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/design/routing/debug_state_checker_widget.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_bloc.dart';
-import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_state.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_name_by_id/movement_get_name_by_id_bloc.dart';
-import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_name_by_id/movement_get_name_by_id_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_name_by_id/movement_get_name_by_id_state.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_state.dart';
@@ -23,7 +21,6 @@ import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/a
 import 'package:gym_bro/design/widgets/workout_page_widgets/completed_exercises_scaffold/completed_exercises_scaffold_widget.dart';
 import 'package:gym_bro/design/widgets/workout_page_widgets/exercise_count_bar/exercise_count_bar_widget.dart';
 import 'package:gym_bro/design/widgets/workout_page_widgets/workout_date_timer_widget.dart';
-import 'package:path/path.dart';
 
 class WorkoutOverviewPage extends StatelessWidget {
   const WorkoutOverviewPage({super.key});
@@ -114,7 +111,7 @@ class WorkoutOverviewPage extends StatelessWidget {
         ),
 
         // FOR DEBUG
-        floatingActionButton: false ? const DebugStateChecker() : null,
+        floatingActionButton: true ? const DebugStateChecker() : null,
       ),
     );
   }
@@ -160,25 +157,25 @@ class WorkoutOverviewPage extends StatelessWidget {
           case NewActiveWorkoutState():
             BlocProvider.of<BackupCurrentWorkoutCubit>(context)
                 .writeCurrentWorkoutState(state.newWorkoutToMap());
-          case LoadedActiveWorkoutState():
-            // TODO: Im not sure this will fire when desired...
-            if (state.exercises.isNotEmpty) {
-              if (state.exercises.first.movementName == null) {
-                // fetching movement names to display
-                BlocProvider.of<MovementGetNameByIdBloc>(context).add(
-                    QueryMovementNameByIdEvent(
-                        namelessExercises: state.exercises));
-              }
-              if (state.exercises.first.exerciseSets.isEmpty) {
-                // fetching exerciseSets to display when exercise card is clicked
-                BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
-                    QueryAllExerciseSetsByExerciseEvent(
-                        setlessExercises: state.exercises));
-              }
-            } 
-            else {
-              print("Loaded active workout has 0 exercises.. $state");
-            }
+          // case LoadedActiveWorkoutState():
+          //   // TODO: Im not sure this will fire when desired...
+          //   if (state.exercises.isNotEmpty) {
+          //     if (state.exercises.first.movementName == null) {
+          //       // fetching movement names to display
+          //       BlocProvider.of<MovementGetNameByIdBloc>(context).add(
+          //           QueryMovementNameByIdEvent(
+          //               namelessExercises: state.exercises));
+          //     }
+          //     if (state.exercises.first.exerciseSets.isEmpty) {
+          //       // fetching exerciseSets to display when exercise card is clicked
+          //       BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
+          //           QueryAllExerciseSetsByExerciseEvent(
+          //               setlessExercises: state.exercises));
+          //     }
+          //   }
+          //   else {
+          //     print("Loaded active workout has 0 exercises.. $state");
+          //   }
         }
       }),
       BlocListener<MovementGetNameByIdBloc, MovementGetNameByIdState>(

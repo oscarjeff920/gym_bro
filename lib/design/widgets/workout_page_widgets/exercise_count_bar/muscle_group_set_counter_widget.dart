@@ -28,10 +28,10 @@ class MuscleGroupSetCounter extends StatelessWidget {
           List<WorkoutPageExerciseModel> savedExercises = state.exercises;
 
           for (var exercise in savedExercises) {
-            if (exercise.returnPrimaryMuscleGroup().contains(muscleGroup)) {
+            if (exercise.workedMuscleGroups.returnPrimaryMuscleGroups().contains(muscleGroup)) {
               primaryMuscleSets +=
                   exercise.getWorkingSetsPerMuscleGroup(muscleGroup);
-            } else if (exercise
+            } else if (exercise.workedMuscleGroups
                 .returnSecondaryMuscleGroups()
                 .contains(muscleGroup)) {
               secondaryMuscleSets +=

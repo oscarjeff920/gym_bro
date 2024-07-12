@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 
 class MovementGetNameByIdEvent extends Equatable {
   @override
@@ -7,7 +7,7 @@ class MovementGetNameByIdEvent extends Equatable {
 }
 
 class QueryMovementNameByIdEvent extends MovementGetNameByIdEvent {
-  final List<WorkoutPageExerciseModel> namelessExercises;
+  final List<ExerciseTableWithWorkedMuscleGroups> namelessExercises;
 
   QueryMovementNameByIdEvent({required this.namelessExercises});
 

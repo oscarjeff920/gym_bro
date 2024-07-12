@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
-import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_object.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
@@ -121,9 +120,11 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
         year: savedJsonWorkoutState['year'],
         workoutStartTime: savedJsonWorkoutState['workoutStartTime'],
         workoutDuration: savedJsonWorkoutState['workoutDuration'],
-        exercises: (savedJsonWorkoutState['exercises'] as List<dynamic>)
-            .map((exercise) => NewExerciseModel.fromJson(exercise))
-            .toList());
+        exercises: []
+    );
+    // (savedJsonWorkoutState['exercises'] as List<dynamic>)
+    //         .map((exercise) => NewExerciseModel.fromJson(exercise))
+    //         .toList());
 
     emit(loadedState);
   }
@@ -172,7 +173,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
       for (WorkoutPageExerciseModel exercise in currentState.exercises) {
         exercisesWithNames.add(exercise.copyWith(
             currentModel: exercise,
-            movementName: exerciseMovementNameIndex[exercise.id!]));
+            movementName: exerciseMovementNameIndex[exercise.movementId]));
       }
 
       LoadedActiveWorkoutState stateWithExerciseNames =
@@ -194,7 +195,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
       for (WorkoutPageExerciseModel exercise in currentState.exercises) {
         exercisesWithExerciseSets.add(exercise.copyWith(
             currentModel: exercise,
-            exerciseSets: exercisesWithExerciseSets[exercise.id!].exerciseSets));
+            exerciseSets: exerciseSetExerciseIndex[exercise.id!]));
       }
 
       LoadedActiveWorkoutState stateWithExerciseNames =

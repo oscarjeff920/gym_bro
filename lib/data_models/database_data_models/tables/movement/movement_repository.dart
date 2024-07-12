@@ -1,6 +1,6 @@
 import 'package:gym_bro/constants/enums.dart';
-import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/joined_tables/movement_muscle_group_join_object.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:gym_bro/database/database_connector.dart';
 import 'package:sqflite/sqflite.dart';
@@ -46,13 +46,13 @@ class MovementRepository {
 
     if (movementName == null) throw Error();
 
-    return movementName[0];
+    return movementName['name'];
   }
 
-  fetchAndIndexMovementNameById(List<WorkoutPageExerciseModel> namelessExercises) async {
+  fetchAndIndexMovementNameById(List<ExerciseTableWithWorkedMuscleGroups> namelessExercises) async {
     Map<int, String> exerciseNameIndex = {};
 
-    for (WorkoutPageExerciseModel exercise in namelessExercises) {
+    for (ExerciseTableWithWorkedMuscleGroups exercise in namelessExercises) {
       String movementName = await getMovementNameById(exercise.movementId);
 
       exerciseNameIndex[exercise.movementId] = movementName;

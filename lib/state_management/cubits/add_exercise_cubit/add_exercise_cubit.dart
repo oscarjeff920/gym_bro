@@ -17,7 +17,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
 
   addCompletedExercise(WorkoutPageExerciseModel completedExercise) {
     AddExerciseState newState = AddExerciseState(
-        selectedMuscleGroup: completedExercise.returnPrimaryMuscleGroup().first,
+        selectedMuscleGroup: completedExercise.workedMuscleGroups.returnPrimaryMuscleGroups().first,
         selectedMovement: completedExercise.movementName,
         selectedMovementId: completedExercise.movementId,
         setsDone: completedExercise.exerciseSets

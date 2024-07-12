@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/constants/enums.dart';
-import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_event.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_name_by_id/movement_get_name_by_id_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_name_by_id/movement_get_name_by_id_event.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 
 class WorkoutCard extends StatelessWidget {
@@ -42,6 +43,14 @@ class WorkoutCard extends StatelessWidget {
             : () {
                 BlocProvider.of<ActiveWorkoutCubit>(context)
                     .loadWorkoutToState(workout!);
+                  // fetching movement names to display
+                  BlocProvider.of<MovementGetNameByIdBloc>(context).add(
+                      QueryMovementNameByIdEvent(
+                          namelessExercises: workout!.exercises));
+                  // fetching exerciseSets to display when exercise card is clicked
+                  BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
+                      QueryAllExerciseSetsByExerciseEvent(
+                          setlessExercises: workout!.exercises));
                 Navigator.of(context).pushNamed("/workout-page");
                 // BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
                 //     QueryAllExerciseSetsByExerciseEvent(

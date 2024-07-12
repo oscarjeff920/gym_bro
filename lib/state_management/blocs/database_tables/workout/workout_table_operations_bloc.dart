@@ -39,7 +39,8 @@ class WorkoutTableOperationsBloc
   Stream<WorkoutTableOperationsState> _mapInsertContextsToState(event) async* {
     yield WorkoutTableInsertState();
     try {
-      await workoutRepository.insertNewFullWorkout(event.newWorkout);
+      // TODO: ENABLE
+      // await workoutRepository.insertNewFullWorkout(event.newWorkout);
       yield WorkoutTableSuccessfulNewWorkoutInsertState();
     } catch (e) {
       print("Whoops.. we've got reached a WorkoutTableInsertErrorState\n$e");

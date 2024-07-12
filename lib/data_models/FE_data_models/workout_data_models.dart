@@ -48,7 +48,7 @@ class LoadedWorkoutModel extends GeneralWorkoutModel {
 }
 
 class NewWorkoutModel extends GeneralWorkoutModel {
-  final List<NewExerciseModel> exercises;
+  final List<WorkoutPageExerciseModel> exercises;
 
   NewWorkoutModel(
       {required super.day,

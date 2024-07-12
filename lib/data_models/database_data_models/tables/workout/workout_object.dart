@@ -74,3 +74,4 @@ class WorkoutTableWithExercisesWorkedMuscleGroups extends WorkoutTable {
   }
 
 }
+

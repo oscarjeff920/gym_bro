@@ -15,7 +15,7 @@ class FinishWorkoutButton extends StatelessWidget {
   final int month;
   final int year;
   final String? workoutStartTime;
-  final List<NewExerciseModel> exercises;
+  final List<WorkoutPageExerciseModel> exercises;
 
   const FinishWorkoutButton({
     super.key,
