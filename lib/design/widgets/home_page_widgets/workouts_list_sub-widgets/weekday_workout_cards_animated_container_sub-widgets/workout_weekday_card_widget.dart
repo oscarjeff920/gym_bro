@@ -43,18 +43,15 @@ class WorkoutCard extends StatelessWidget {
             : () {
                 BlocProvider.of<ActiveWorkoutCubit>(context)
                     .loadWorkoutToState(workout!);
-                  // fetching movement names to display
-                  BlocProvider.of<MovementGetNameByIdBloc>(context).add(
-                      QueryMovementNameByIdEvent(
-                          namelessExercises: workout!.exercises));
+                // fetching movement names to display
+                BlocProvider.of<MovementGetNameByIdBloc>(context).add(
+                    QueryMovementNameByIdEvent(
+                        namelessExercises: workout!.exercises));
                   // fetching exerciseSets to display when exercise card is clicked
-                  BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
-                      QueryAllExerciseSetsByExerciseEvent(
-                          setlessExercises: workout!.exercises));
+                BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
+                    QueryAllExerciseSetsByExerciseEvent(
+                        setlessExercises: workout!.exercises));
                 Navigator.of(context).pushNamed("/workout-page");
-                // BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
-                //     QueryAllExerciseSetsByExerciseEvent(
-                //         selectedWorkout: workout!));
               },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

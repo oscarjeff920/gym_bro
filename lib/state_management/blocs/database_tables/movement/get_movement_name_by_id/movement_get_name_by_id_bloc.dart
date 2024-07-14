@@ -17,6 +17,8 @@ class MovementGetNameByIdBloc
     switch (event) {
       case QueryMovementNameByIdEvent():
         yield* _mapLoadContextsToState(event);
+      case ResetMovementGetNameByIdEvent():
+        yield MovementGetNameByIdNotQueriedState();
     }
   }
 

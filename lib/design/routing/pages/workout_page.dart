@@ -4,8 +4,10 @@ import 'package:flutter_bloc/src/bloc_listener.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/design/routing/debug_state_checker_widget.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_state.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_name_by_id/movement_get_name_by_id_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_name_by_id/movement_get_name_by_id_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_name_by_id/movement_get_name_by_id_state.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_state.dart';
@@ -47,6 +49,7 @@ class WorkoutOverviewPage extends StatelessWidget {
                 month = state.month;
                 day = state.day;
                 workoutDuration = state.workoutDuration;
+                exercises = state.exercises;
               // switch (state) {
               //   case NewActiveWorkoutState():
               //     exercises = state.exercises
@@ -184,6 +187,9 @@ class WorkoutOverviewPage extends StatelessWidget {
           case MovementGetNameByIdSuccessfulQueryState():
             BlocProvider.of<ActiveWorkoutCubit>(context)
                 .loadExerciseNamesToState(state.exerciseMovementNameIndex);
+            BlocProvider.of<MovementGetNameByIdBloc>(context).add(
+                ResetMovementGetNameByIdEvent()
+            );
         }
       }),
       BlocListener<ExerciseSetTableOperationsBloc,
@@ -192,6 +198,9 @@ class WorkoutOverviewPage extends StatelessWidget {
           case ExerciseSetTableSuccessfulQueryAllByExerciseIdState():
             BlocProvider.of<ActiveWorkoutCubit>(context)
                 .loadExerciseSetsToState(state.exerciseSetsExerciseIndex);
+            BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
+                ResetExerciseSetQueryEvent()
+            );
         }
       }),
     ];

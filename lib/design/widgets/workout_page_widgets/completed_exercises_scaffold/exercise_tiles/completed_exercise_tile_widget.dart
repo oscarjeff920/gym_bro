@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
-import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 
@@ -61,10 +60,12 @@ class CompletedExerciseTile extends StatelessWidget {
 
 String capitalizeString(String string) {
   String capitalizedString = "";
+  if (string == "") return "";
   List<String> stringSplit = string.trim().split(" ");
 
   for (var string_ in stringSplit) {
-    capitalizedString += "${string_[0].toUpperCase()}${string_.substring(1)} ";
+    capitalizedString +=
+        "${string_[0].toUpperCase()}${string_.substring(1)} ";
   }
 
   return capitalizedString;
