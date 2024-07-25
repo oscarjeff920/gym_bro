@@ -40,7 +40,7 @@ class WorkoutTableOperationsBloc
     yield WorkoutTableInsertState();
     try {
       // TODO: ENABLE
-      // await workoutRepository.insertNewFullWorkout(event.newWorkout);
+      await workoutRepository.insertNewFullWorkout(event.newWorkout);
       yield WorkoutTableSuccessfulNewWorkoutInsertState();
     } catch (e) {
       print("Whoops.. we've got reached a WorkoutTableInsertErrorState\n$e");

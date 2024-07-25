@@ -21,7 +21,7 @@ CREATE TABLE $movementTableName (
   """
 CREATE TABLE $muscleGroupTableName (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL
+    name TEXT UNIQUE NOT NULL
 );
 """,
   """

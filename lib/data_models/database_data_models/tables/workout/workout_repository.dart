@@ -1,4 +1,6 @@
 import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
+import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
@@ -169,93 +171,102 @@ class WorkoutRepository {
   }
 
   // Insert New Movement method TODO: ENABLE
-  // insertNewMovement(NewExerciseModel newMovementExercise, txn) async {
-  //   String lowerCaseMovementName =
-  //       newMovementExercise.movementName.toLowerCase();
-  //   // first we check to see if the movement does exist in the db
-  //   String queryString = """
-  //   SELECT id FROM $movementTableName
-  //   WHERE name = '$lowerCaseMovementName';
-  //   """;
-  //   final List<Map<String, dynamic>> existingMovementId =
-  //       await txn.rawQuery(queryString);
-  //   if (existingMovementId.isNotEmpty) return existingMovementId.first['id'];
-  //
-  //   // if the movement doesn't exist we need to insert it
-  //   String insertNewMovementString = """
-  //   INSERT INTO $movementTableName (name) VALUES
-  //     ('$lowerCaseMovementName');
-  //   """;
-  //   final newMovementId = await txn.rawInsert(insertNewMovementString);
-  //
-  //   // to make the association between movement and muscle group
-  //   // we need to get the id of the muscle group in the db
-  //   String queryMuscleGroupsString = """
-  //   SELECT id FROM $muscleGroupTableName
-  //   WHERE name = '${newMovementExercise.primaryMuscleGroup.toString().split(".").last}';
-  //   """;
-  //   final List<Map<String, dynamic>> primaryMuscleGroupId =
-  //       await txn.rawQuery(queryMuscleGroupsString);
-  //
-  //   // next we insert the association data
-  //   String insertNewMovementMuscleGroupsString = """
-  //   INSERT INTO $movementMuscleGroupsTableName VALUES
-  //     ($newMovementId, ${primaryMuscleGroupId.first['id']}, 'primary');
-  //   """;
-  //
-  //   await txn.rawInsert(insertNewMovementMuscleGroupsString);
-  //
-  //   return newMovementId;
-  // }
+  insertNewMovement(GeneralWorkoutPageExerciseModel newMovementExercise, txn) async {
+    String lowerCaseMovementName =
+        newMovementExercise.movementName.toLowerCase();
 
-  // TODO: ENABLE
-  // insertNewFullWorkout(NewWorkoutModel newWorkout) async {
-  //   final db = await databaseHelper.database;
-  //
-  //   await db.transaction((txn) async {
-  //     String? startTime = newWorkout.workoutStartTime == null
-  //         ? null
-  //         : "'${newWorkout.workoutStartTime}'";
-  //     String? workoutDuration = newWorkout.workoutDuration == null
-  //         ? null
-  //         : "'${newWorkout.workoutDuration}'";
-  //
-  //     String insertWorkoutQueryString = """
-  //     INSERT INTO $workoutTableName (day, month, year, start_time, duration) VALUES
-  //         (${newWorkout.day}, ${newWorkout.month}, ${newWorkout.year}, $startTime, $workoutDuration);
-  //     """;
-  //     final newWorkoutId = await txn.rawInsert(insertWorkoutQueryString);
-  //
-  //     int exerciseOrder = 1;
-  //     for (var exercise in newWorkout.exercises) {
-  //       final int movementId;
-  //       if (exercise.movementId == null) {
-  //         // if the movement is new, it needs to be added to the DB to get the id
-  //         movementId = await insertNewMovement(exercise, txn);
-  //       } else {
-  //         movementId = exercise.movementId!;
-  //       }
-  //
-  //       String insertExerciseString = """
-  //       INSERT INTO $exerciseTableName
-  //           (movement_id, workout_id, exercise_order, duration, num_working_sets) VALUES
-  //           ($movementId, $newWorkoutId, $exerciseOrder, '${exercise.exerciseDuration}', ${exercise.numWorkingSets});
-  //       """;
-  //       final newExerciseId = await txn.rawInsert(insertExerciseString);
-  //       exerciseOrder += 1;
-  //
-  //       int exerciseSetOrder = 1;
-  //       for (var exerciseSet in exercise.exerciseSets) {
-  //         String insertExerciseSetString = """
-  //         INSERT INTO $exerciseSetTableName
-  //         (exercise_id, set_order, is_warm_up, weight, reps, extra_reps, duration, notes) VALUES
-  //         ($newExerciseId, $exerciseSetOrder, ${exerciseSet.isWarmUp}, ${exerciseSet.weight},
-  //          ${exerciseSet.reps}, ${exerciseSet.extraReps}, '${exerciseSet.setDuration}', '${exerciseSet.notes}');
-  //         """;
-  //         await txn.rawInsert(insertExerciseSetString);
-  //         exerciseSetOrder += 1;
-  //       }
-  //     }
-  //   });
-  // }
+    // first we check to see if the movement does exist in the db
+    String queryString = """
+    SELECT id FROM $movementTableName
+    WHERE name = '$lowerCaseMovementName';
+    """;
+    final List<Map<String, dynamic>> existingMovementId =
+        await txn.rawQuery(queryString);
+    if (existingMovementId.isNotEmpty) return existingMovementId.first['id'];
+
+    // if the movement doesn't exist we need to insert it
+    String insertNewMovementString = """
+    INSERT INTO $movementTableName (name) VALUES
+      ('$lowerCaseMovementName');
+    """;
+    final newMovementId = await txn.rawInsert(insertNewMovementString);
+
+    // TODO: My brain no good, check this over
+    // As each movement can utilise a number of muscle groups
+    // the id for each muscle group within workedMuscleGroups must be fetched
+    for (var entry in newMovementExercise.workedMuscleGroups.workedMuscleGroupsMap.entries) {
+      String queryMuscleGroupsString = """
+        SELECT id FROM $muscleGroupTableName
+        WHERE name = '${entry.key.name}';
+      """;
+
+      final List<Map<String, dynamic>> primaryMuscleGroupId =
+        await txn.rawQuery(queryMuscleGroupsString);
+
+      // next we insert the association data
+      String insertNewMovementMuscleGroupsString = """
+        INSERT INTO $movementMuscleGroupsTableName VALUES
+        ($newMovementId, ${primaryMuscleGroupId.first['id']}, '${entry.value.name}');
+      """;
+
+      await txn.rawInsert(insertNewMovementMuscleGroupsString);
+    }
+
+    return newMovementId;
+  }
+
+
+  insertNewFullWorkout(NewWorkoutModel newWorkout) async {
+    final db = await databaseHelper.database;
+
+    await db.transaction((txn) async {
+      String? startTime = newWorkout.workoutStartTime == null
+          ? null
+          : "'${newWorkout.workoutStartTime}'";
+
+      String? workoutDuration = newWorkout.workoutDuration == null
+          ? null
+          : "'${newWorkout.workoutDuration}'";
+
+
+      // Inserting the Workout into the database
+      String insertWorkoutQueryString = """
+      INSERT INTO $workoutTableName (day, month, year, start_time, duration) VALUES
+          (${newWorkout.day}, ${newWorkout.month}, ${newWorkout.year}, $startTime, $workoutDuration);
+      """;
+      final newWorkoutId = await txn.rawInsert(insertWorkoutQueryString);
+
+      // Getting Movement Id to enter into the exercise row
+      int exerciseOrder = 0;
+      for (var exercise in newWorkout.exercises) {
+        final int movementId;
+        if (exercise.movementId == null) {
+          // if movementId is null the movement is new
+          // it needs to be added to the DB to get the id.
+          movementId = await insertNewMovement(exercise, txn);
+        } else {
+          movementId = exercise.movementId!;
+        }
+
+        // Inserting Exercise into the database
+        String insertExerciseString = """
+        INSERT INTO $exerciseTableName
+            (movement_id, workout_id, exercise_order, duration, num_working_sets) VALUES
+            ($movementId, $newWorkoutId, $exerciseOrder, '${exercise.exerciseDuration}', ${exercise.numWorkingSets});
+        """;
+        final newExerciseId = await txn.rawInsert(insertExerciseString);
+        exerciseOrder += 1;
+
+        for (var exerciseSet in exercise.exerciseSets) {
+          String insertExerciseSetString = """
+          INSERT INTO $exerciseSetTableName
+          (exercise_id, set_order, is_warm_up, weight, reps, extra_reps, duration, notes) VALUES
+          ($newExerciseId, ${exerciseSet.exerciseSetOrder}, ${exerciseSet.isWarmUp}, ${exerciseSet.weight},
+           ${exerciseSet.reps}, ${exerciseSet.extraReps}, '${exerciseSet.setDuration}', '${exerciseSet.notes}');
+          """;
+          await txn.rawInsert(insertExerciseSetString);
+        }
+      }
+    });
+  }
 }
