@@ -5,7 +5,7 @@ import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercis
 
 class AddExerciseState extends Equatable {
   final MuscleGroupType? selectedMuscleGroup;
-  final MovementWorkedMuscleGroupsType? movementMuscleGroups;
+  final MovementWorkedMuscleGroupsType? workedMuscleGroups;
   final String? selectedMovement;
   final int? selectedMovementId;
   final CurrentSet? currentSet;
@@ -16,7 +16,7 @@ class AddExerciseState extends Equatable {
       {required this.selectedMuscleGroup,
       required this.selectedMovement,
       required this.selectedMovementId,
-      required this.movementMuscleGroups,
+      required this.workedMuscleGroups,
       this.currentSet,
       required this.setsDone,
       required this.numWorkingSets});
@@ -60,7 +60,7 @@ class AddExerciseState extends Equatable {
       currentSet: currentSet,
       setsDone: setsDone,
       numWorkingSets: workingSets ?? numWorkingSets,
-      movementMuscleGroups: movementWorkedMuscleGroups ?? movementMuscleGroups,
+      workedMuscleGroups: movementWorkedMuscleGroups ?? workedMuscleGroups,
     );
   }
 

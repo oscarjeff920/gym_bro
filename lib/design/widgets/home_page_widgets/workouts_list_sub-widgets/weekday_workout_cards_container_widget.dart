@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
 
 import 'weekday_workout_cards_animated_container_sub-widgets/workout_weekday_card_widget.dart';

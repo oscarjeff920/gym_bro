@@ -1,5 +1,4 @@
 // Model to track 1-to-1 to database table
-import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 
 class ExerciseSetTable {
   final int id;

@@ -51,62 +51,73 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
     }
   }
 
-  // saveFinishedExerciseToWorkoutState(AddExerciseState newExercise) {
-  //   if (state is NewActiveWorkoutState) {
-  //     NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
-  //
-  //     int index = 0;
-  //
-  //     GeneralWorkoutPageExerciseModel updatedExercise = GeneralWorkoutPageExerciseModel(
-  //         movementId: newExercise.movementId,
-  //         exerciseOrder: exerciseOrder,
-  //         numWorkingSets: numWorkingSets,
-  //         workedMuscleGroups: workedMuscleGroups,
-  //         movementName: movementName)
-  //
-  //     GeneralWorkoutPageExerciseModel updatedExercise = GeneralWorkoutPageExerciseModel(
-  //         exerciseOrder: currentState.exercises.length + 1,
-  //         movementName: newExercise.selectedMovement,
-  //         movementId: newExercise.selectedMovementId,
-  //         exerciseDuration: null,
-  //         numWorkingSets: newExercise.numWorkingSets,
-  //         workedMuscleGroups: newExercise.movementMuscleGroups!,
-  //         exerciseSets: newExercise.setsDone.map((_set) {
-  //           NewExerciseSetModel convertedSetModel = NewExerciseSetModel(
-  //               exerciseSetOrder: index,
-  //               exerciseId: newExercise.id,
-  //               setOrder: setOrder,
-  //               isWarmUp: isWarmUp,
-  //               weight: weight,
-  //               reps: reps);
-  //           index += 1;
-  //           return convertedSetModel;
-  //         }).toList());
-  //     // WorkoutPageExerciseModel updatedExercise = WorkoutPageExerciseModel(
-  //     //     exerciseOrder: currentState.exercises.length + 1,
-  //     //     movementName: newExercise.selectedMovement!,
-  //     //     movementId: newExercise.selectedMovementId,
-  //     //     primaryMuscleGroup: newExercise.selectedMuscleGroup!,
-  //     //     numWorkingSets: newExercise.numWorkingSets,
-  //     //     exerciseSets: newExercise.setsDone
-  //     //         .map((set_) => NewExerciseSetModel(
-  //     //             exerciseSetOrder: 0,
-  //     //             isWarmUp: set_.isWarmUp,
-  //     //             weight: set_.weight.toDouble(),
-  //     //             reps: set_.reps,
-  //     //             extraReps: set_.extraReps,
-  //     //             setDuration: set_.setDuration.toString(),
-  //     //             notes: set_.notes))
-  //     //         .toList(), workedMuscleGroups: null);
-  //
-  //     NewActiveWorkoutState generatedState =
-  //     currentState.copyWith(newExercises: [updatedExercise]);
-  //
-  //     emit(generatedState);
-  //   } else {
-  //     StateError("Cannot update state: $state != NewActiveWorkoutState");
-  //   }
-  // }
+  saveFinishedExerciseToWorkoutState(AddExerciseState newExercise) {
+    if (state is NewActiveWorkoutState) {
+      NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
+
+      int index = 0;
+
+      NewExerciseModel2 updatedExercise = NewExerciseModel2(
+          movementId: newExercise.selectedMovementId,
+          exerciseOrder: currentState.exercises.length,
+          exerciseDuration: null,
+          // TODO: add exercise duration
+          numWorkingSets: newExercise.numWorkingSets,
+          workedMuscleGroups: newExercise.workedMuscleGroups!,
+          movementName: newExercise.selectedMovement!,
+          exerciseSets: newExercise.setsDone.map((set_) {
+            GeneralExerciseSetModel convertedModel =
+                GeneralExerciseSetModel.fromSetsObject(
+                    exerciseSet: set_, setOrder: index);
+            index += 1;
+
+            return convertedModel;
+          }).toList());
+
+      // GeneralWorkoutPageExerciseModel updatedExercise = GeneralWorkoutPageExerciseModel(
+      //     exerciseOrder: currentState.exercises.length + 1,
+      //     movementName: newExercise.selectedMovement,
+      //     movementId: newExercise.selectedMovementId,
+      //     exerciseDuration: null,
+      //     numWorkingSets: newExercise.numWorkingSets,
+      //     workedMuscleGroups: newExercise.workedMuscleGroups!,
+      //     exerciseSets: newExercise.setsDone.map((_set) {
+      //       NewExerciseSetModel convertedSetModel = NewExerciseSetModel(
+      //           exerciseSetOrder: index,
+      //           exerciseId: newExercise.id,
+      //           setOrder: setOrder,
+      //           isWarmUp: isWarmUp,
+      //           weight: weight,
+      //           reps: reps);
+      //       index += 1;
+      //       return convertedSetModel;
+      //     }).toList());
+      // WorkoutPageExerciseModel updatedExercise = WorkoutPageExerciseModel(
+      //     exerciseOrder: currentState.exercises.length + 1,
+      //     movementName: newExercise.selectedMovement!,
+      //     movementId: newExercise.selectedMovementId,
+      //     primaryMuscleGroup: newExercise.selectedMuscleGroup!,
+      //     numWorkingSets: newExercise.numWorkingSets,
+      //     exerciseSets: newExercise.setsDone
+      //         .map((set_) => NewExerciseSetModel(
+      //             exerciseSetOrder: 0,
+      //             isWarmUp: set_.isWarmUp,
+      //             weight: set_.weight.toDouble(),
+      //             reps: set_.reps,
+      //             extraReps: set_.extraReps,
+      //             setDuration: set_.setDuration.toString(),
+      //             notes: set_.notes))
+      //         .toList(), workedMuscleGroups: null);
+
+      NewActiveWorkoutState generatedState = NewActiveWorkoutState.copyWith(
+          currentState: currentState, newExercises: [updatedExercise]
+      );
+
+      emit(generatedState);
+    } else {
+      StateError("Cannot update state: $state != NewActiveWorkoutState");
+    }
+  }
 
   finishWorkout(String workoutDuration) {
     // this saves the final workout duration to the state.
@@ -198,7 +209,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
         for (SelectedWorkoutIntermittentExerciseModel exercise
             in currentState.exercises) {
           SelectedWorkoutIntermittentExerciseModel updatedExercise =
-          SelectedWorkoutIntermittentExerciseModel.copyWith(
+              SelectedWorkoutIntermittentExerciseModel.copyWith(
                   currentModel: exercise,
                   movementName: exerciseMovementNameIndex[exercise.movementId]);
 
@@ -226,7 +237,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
         for (SelectedWorkoutIntermittentExerciseModel exercise
             in currentState.exercises) {
           SelectedWorkoutIntermittentExerciseModel updatedExercise =
-          SelectedWorkoutIntermittentExerciseModel.copyWith(
+              SelectedWorkoutIntermittentExerciseModel.copyWith(
                   currentModel: exercise,
                   movementName: exerciseMovementNameIndex[exercise.movementId]);
 
@@ -265,7 +276,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
             in currentState.exercises) {
           // we update the current exercise with the fetched exerciseSets
           SelectedWorkoutIntermittentExerciseModel updatedExercise =
-          SelectedWorkoutIntermittentExerciseModel.copyWith(
+              SelectedWorkoutIntermittentExerciseModel.copyWith(
                   currentModel: exercise,
                   exerciseSets: exerciseSetExerciseIndex[exercise.id]!
                       .map((set_) =>
@@ -297,7 +308,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
             in currentState.exercises) {
           // we update the current exercise with the fetched exerciseSets
           SelectedWorkoutIntermittentExerciseModel updatedExercise =
-          SelectedWorkoutIntermittentExerciseModel.copyWith(
+              SelectedWorkoutIntermittentExerciseModel.copyWith(
                   currentModel: exercise,
                   exerciseSets: exerciseSetExerciseIndex[exercise.id]!
                       .map((set_) =>

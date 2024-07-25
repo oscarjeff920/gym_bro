@@ -1,8 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
-import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
-import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
-import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_object.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_repository.dart';
 
@@ -34,9 +30,9 @@ class ExerciseSetTableOperationsBloc extends Bloc<
 
       for (var exercise in event.setlessExercises) {
         List<ExerciseSetTable> query = await exerciseSetRepository
-            .getAllExerciseSetsByExerciseId(exercise.id!);
+            .getAllExerciseSetsByExerciseId(exercise.id);
 
-        exerciseSetsExerciseIndex[exercise.id!] = query;
+        exerciseSetsExerciseIndex[exercise.id] = query;
         //
         // LoadedExerciseModel newExercise = LoadedExerciseModel(
         //     id: exercise.id,

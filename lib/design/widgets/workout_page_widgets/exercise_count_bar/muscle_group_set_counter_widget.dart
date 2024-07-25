@@ -5,8 +5,8 @@ import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
 
-import '../../../../state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
-import '../../../../state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
+import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
+import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
 
 class MuscleGroupSetCounter extends StatelessWidget {
   final MuscleGroupType muscleGroup;
@@ -34,15 +34,13 @@ class MuscleGroupSetCounter extends StatelessWidget {
             savedExercises = state.exercises;
           }
 
-          for (var exercise in savedExercises) {
+          for (GeneralWorkoutPageExerciseModel exercise in savedExercises) {
             if (exercise.workedMuscleGroups.returnPrimaryMuscleGroups().contains(muscleGroup)) {
-              primaryMuscleSets +=
-                  int.parse(exercise.getWorkingSetsPerMuscleGroup(muscleGroup));
+              primaryMuscleSets += exercise.getWorkingSetsPerMuscleGroup(muscleGroup);
             } else if (exercise.workedMuscleGroups
                 .returnSecondaryMuscleGroups()
                 .contains(muscleGroup)) {
-              secondaryMuscleSets +=
-                  int.parse(exercise.getWorkingSetsPerMuscleGroup(muscleGroup));
+              secondaryMuscleSets += exercise.getWorkingSetsPerMuscleGroup(muscleGroup);
             }
           }
       }

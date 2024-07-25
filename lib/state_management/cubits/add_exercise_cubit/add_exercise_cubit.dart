@@ -15,7 +15,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
             selectedMovementId: null,
             numWorkingSets: 0,
             setsDone: [],
-            movementMuscleGroups: null));
+            workedMuscleGroups: null));
 
   addCompletedExercise(GeneralWorkoutPageExerciseModel completedExercise) {
     AddExerciseState newState = AddExerciseState(
@@ -33,7 +33,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
                 ))
             .toList(),
         numWorkingSets: completedExercise.numWorkingSets,
-        movementMuscleGroups: completedExercise.workedMuscleGroups);
+        workedMuscleGroups: completedExercise.workedMuscleGroups);
 
     emit(newState);
   }
@@ -45,7 +45,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         selectedMovementId: null,
         numWorkingSets: 0,
         setsDone: [],
-        movementMuscleGroups: null));
+        workedMuscleGroups: null));
   }
 
   selectMuscleGroup(MuscleGroupType muscleGroup) {
@@ -55,7 +55,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         selectedMovementId: null,
         setsDone: const [],
         numWorkingSets: 0,
-        movementMuscleGroups: MovementWorkedMuscleGroupsType(
+        workedMuscleGroups: MovementWorkedMuscleGroupsType(
             workedMuscleGroupsMap: {muscleGroup: RoleType.primary})));
   }
 
@@ -66,7 +66,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         selectedMuscleGroup: generatedState.selectedMuscleGroup,
         selectedMovement: movementMuscleGroupJoin.movementName,
         selectedMovementId: movementMuscleGroupJoin.movementId,
-        movementMuscleGroups: generatedState.movementMuscleGroups,
+        workedMuscleGroups: generatedState.workedMuscleGroups,
         currentSet: const CurrentSet(),
         setsDone: const [],
         numWorkingSets: 0));
@@ -82,7 +82,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         currentSet: const CurrentSet(),
         setsDone: const [],
         numWorkingSets: 0,
-        movementMuscleGroups: generatedState.movementMuscleGroups));
+        workedMuscleGroups: generatedState.workedMuscleGroups));
   }
 
   updateCurrentSet(CurrentSet set) {
@@ -107,7 +107,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         currentSet: updatedState,
         setsDone: generatedState.setsDone,
         numWorkingSets: generatedState.numWorkingSets,
-        movementMuscleGroups: generatedState.movementMuscleGroups));
+        workedMuscleGroups: generatedState.workedMuscleGroups));
   }
 
   saveCompletedSet() {
@@ -139,6 +139,6 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         numWorkingSets: completedSet.isWarmUp
             ? generatedState.numWorkingSets
             : generatedState.numWorkingSets + 1,
-        movementMuscleGroups: generatedState.movementMuscleGroups));
+        workedMuscleGroups: generatedState.workedMuscleGroups));
   }
 }
