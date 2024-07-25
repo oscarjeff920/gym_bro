@@ -21,6 +21,7 @@ import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_work
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
 import 'package:gym_bro/state_management/cubits/backup_current_workout_cubit/backup_current_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/backup_current_workout_cubit/backup_current_workout_state.dart';
+import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 
 import '../../widgets/home_page_widgets/new_workout_button_widget.dart';
 import '../../widgets/home_page_widgets/workouts_list_widget.dart';
@@ -34,6 +35,8 @@ class HomePage extends StatelessWidget {
     // displaying any changes that may've been made / new completed workouts, instead of just when the app started up
     BlocProvider.of<WorkoutTableOperationsBloc>(context)
         .add(QueryAllWorkoutTableEvent());
+    // TODO: this doesnt work for some reason
+    BlocProvider.of<OpenExerciseModalCubit>(context).closeExerciseModal();
     return MultiBlocListener(
       listeners: homePageStateListeners(context),
       child: Scaffold(
@@ -76,7 +79,7 @@ class HomePage extends StatelessWidget {
         // FOR DEBUG
         floatingActionButton: false
             ? const LoadErroredWorkoutButton()
-            : true
+            : false
                 ? const DebugStateChecker()
                 : null,
       ),

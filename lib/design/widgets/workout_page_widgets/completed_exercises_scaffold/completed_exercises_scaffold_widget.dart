@@ -11,7 +11,7 @@ import 'finish_workout_button_widget.dart';
 
 class CompletedExercisesScaffold extends StatelessWidget {
   final double tileSpacingValue;
-  final List<WorkoutPageExerciseModel> exercises;
+  final List<GeneralWorkoutPageExerciseModel> exercises;
   final bool isCurrentWorkout;
 
   const CompletedExercisesScaffold({

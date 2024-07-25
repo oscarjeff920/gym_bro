@@ -30,7 +30,7 @@ class CloseModalButton extends StatelessWidget {
               onPressed: () {
                 if (state.setsDone.isNotEmpty && isFinished) {
                   BlocProvider.of<ActiveWorkoutCubit>(context)
-                      .addNewExerciseToWorkoutState(state);
+                      .saveFinishedExerciseToWorkoutState(state);
                 }
 
                 BlocProvider.of<MovementByMuscleGroupBloc>(context).add(ResetMovementByMuscleGroupEvent());

@@ -10,7 +10,7 @@ class ExerciseTableOperationsEvent extends Equatable {
 class ResetExerciseQueryEvent extends ExerciseTableOperationsEvent{}
 
 class QueryExercisesMovementNameEvent extends ExerciseTableOperationsEvent{
-  final WorkoutPageExerciseModel namelessExercises;
+  final GeneralWorkoutPageExerciseModel namelessExercises;
 
   QueryExercisesMovementNameEvent({required this.namelessExercises});
 }

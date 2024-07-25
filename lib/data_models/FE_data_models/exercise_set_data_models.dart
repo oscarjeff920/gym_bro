@@ -1,5 +1,9 @@
+import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_object.dart';
+
 class GeneralExerciseSetModel {
   final int? id;
+  final int? exerciseId;
   final int exerciseSetOrder;
   final bool isWarmUp;
   final double weight;
@@ -10,13 +14,29 @@ class GeneralExerciseSetModel {
 
   GeneralExerciseSetModel(
       {this.id,
+      this.exerciseId,
       required this.exerciseSetOrder,
       required this.isWarmUp,
       required this.weight,
       required this.reps,
-      this.extraReps,
-      this.setDuration,
+      required this.extraReps,
+      required this.setDuration,
       this.notes});
+
+  factory GeneralExerciseSetModel.fromExerciseSetTable(ExerciseSetTable exerciseSet) {
+    GeneralExerciseSetModel convertedModel = GeneralExerciseSetModel(
+        id: exerciseSet.id,
+        exerciseId: exerciseSet.exerciseId,
+        exerciseSetOrder: exerciseSet.setOrder,
+        isWarmUp: exerciseSet.isWarmUp,
+        weight: exerciseSet.weight,
+        reps: exerciseSet.reps,
+        extraReps: exerciseSet.extraReps,
+        setDuration: exerciseSet.duration,
+        notes: exerciseSet.notes);
+
+    return convertedModel;
+  }
 }
 
 // ===================================

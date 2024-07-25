@@ -61,7 +61,7 @@ class MovementRepository {
     return exerciseNameIndex;
   }
 
-  Future<List<MovementMuscleGroupJoin>> getAllMovementsByMuscleGroup(
+  Future<List<MovementMuscleGroupJoin>> getAllMovementsByPrimaryMuscleGroup(
       MuscleGroupType selectedMuscleGroup) async {
     final db = await databaseHelper.database;
 

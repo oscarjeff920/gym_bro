@@ -25,7 +25,7 @@ class MuscleGroupSetCounter extends StatelessWidget {
 
       switch (state) {
         case ActiveWorkoutOnState():
-          List<WorkoutPageExerciseModel> savedExercises = state.exercises;
+          List<GeneralWorkoutPageExerciseModel> savedExercises = state.exercises;
 
           for (var exercise in savedExercises) {
             if (exercise.workedMuscleGroups.returnPrimaryMuscleGroups().contains(muscleGroup)) {

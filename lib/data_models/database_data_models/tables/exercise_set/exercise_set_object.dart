@@ -1,5 +1,8 @@
+// Model to track 1-to-1 to database table
+import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
+
 class ExerciseSetTable {
-  final int? id;
+  final int id;
   final int exerciseId;
   final int setOrder;
   final bool isWarmUp;
@@ -20,7 +23,7 @@ class ExerciseSetTable {
       this.duration,
       this.notes});
 
-  Duration stringToDuration (String stringDuration) {
+  Duration stringToDuration(String stringDuration) {
     // TODO: work this one out punk
     return const Duration();
   }
@@ -39,7 +42,7 @@ class ExerciseSetTable {
     );
   }
 
-  String durationToString (Duration duration_) {
+  String durationToString(Duration duration_) {
     return duration_.toString();
   }
 

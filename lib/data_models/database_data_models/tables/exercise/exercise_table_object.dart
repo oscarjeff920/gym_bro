@@ -1,17 +1,20 @@
 import 'package:gym_bro/constants/enums.dart';
 
+// Model to track 1-to-1 to database table
 class ExerciseTable {
-  final int? id;
-  final int movementId;
+  final int id;
   final int workoutId;
+  final int movementId;
   final int exerciseOrder;
+
+  // duration is nullable because there are workouts without this column
   final String? duration;
   final int numWorkingSets;
 
   ExerciseTable(
-      {this.id,
-      required this.movementId,
+      {required this.id,
       required this.workoutId,
+      required this.movementId,
       required this.exerciseOrder,
       this.duration,
       required this.numWorkingSets});
@@ -39,14 +42,18 @@ class ExerciseTable {
   }
 }
 
+// ====================================================================
+// ====================================================================
+
 class ExerciseTableWithWorkedMuscleGroups extends ExerciseTable {
   final MovementWorkedMuscleGroupsType workedMuscleGroups;
 
   ExerciseTableWithWorkedMuscleGroups(
-      {super.id,
-      required super.movementId,
+      {required super.id,
       required super.workoutId,
+      required super.movementId,
       required super.exerciseOrder,
+      super.duration,
       required super.numWorkingSets,
       required this.workedMuscleGroups});
 

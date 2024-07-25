@@ -42,7 +42,7 @@ class WorkoutCard extends StatelessWidget {
             ? null
             : () {
                 BlocProvider.of<ActiveWorkoutCubit>(context)
-                    .loadWorkoutToState(workout!);
+                    .loadHomePageWorkoutToState(workout!);
                 // fetching movement names to display
                 BlocProvider.of<MovementGetNameByIdBloc>(context).add(
                     QueryMovementNameByIdEvent(
@@ -127,6 +127,8 @@ class CardMuscleGroupIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool showIcon = false;
+    // TODO: different colour if muscle group is not primary
+    bool isPrimary = true;
     if (workout.getNumWorkingSetsPerMuscleInWorkout(muscleGroup) > 0) {
       showIcon = true;
     }

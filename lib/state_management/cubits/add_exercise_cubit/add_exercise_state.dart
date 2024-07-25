@@ -1,9 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 
 class AddExerciseState extends Equatable {
   final MuscleGroupType? selectedMuscleGroup;
+  final MovementWorkedMuscleGroupsType? movementMuscleGroups;
   final String? selectedMovement;
   final int? selectedMovementId;
   final CurrentSet? currentSet;
@@ -14,14 +16,14 @@ class AddExerciseState extends Equatable {
       {required this.selectedMuscleGroup,
       required this.selectedMovement,
       required this.selectedMovementId,
+      required this.movementMuscleGroups,
       this.currentSet,
       required this.setsDone,
       required this.numWorkingSets});
 
   @override
   toString() {
-    String defaultMessage =
-        "\nselected muscleGroup: $selectedMuscleGroup"
+    String defaultMessage = "\nselected muscleGroup: $selectedMuscleGroup"
         "\nselected movement: $selectedMovement"
         "\nselected movementId: $selectedMovementId"
         "\nsets done: $setsDone"
@@ -46,7 +48,11 @@ class AddExerciseState extends Equatable {
   }
 
   AddExerciseState copyWith(
-      {MuscleGroupType? muscleGroup, String? movementName, int? movementId, int? workingSets}) {
+      {MuscleGroupType? muscleGroup,
+      String? movementName,
+      int? movementId,
+      int? workingSets,
+      MovementWorkedMuscleGroupsType? movementWorkedMuscleGroups}) {
     return AddExerciseState(
       selectedMuscleGroup: muscleGroup ?? selectedMuscleGroup,
       selectedMovement: movementName ?? selectedMovement,
@@ -54,6 +60,7 @@ class AddExerciseState extends Equatable {
       currentSet: currentSet,
       setsDone: setsDone,
       numWorkingSets: workingSets ?? numWorkingSets,
+      movementMuscleGroups: movementWorkedMuscleGroups ?? movementMuscleGroups,
     );
   }
 
@@ -69,6 +76,11 @@ class AddExerciseState extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [selectedMuscleGroup, selectedMovement, selectedMovementId, currentSet, setsDone];
+  List<Object?> get props => [
+        selectedMuscleGroup,
+        selectedMovement,
+        selectedMovementId,
+        currentSet,
+        setsDone
+      ];
 }

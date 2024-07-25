@@ -8,7 +8,7 @@ import 'exercise_tile_base_widget.dart';
 
 class CompletedExerciseTile extends StatelessWidget {
   final Color primaryMuscleGroupColour;
-  final WorkoutPageExerciseModel exercise;
+  final GeneralWorkoutPageExerciseModel exercise;
   final int tileIndex;
 
   final double tileSpacingValue;

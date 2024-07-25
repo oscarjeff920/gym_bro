@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
+import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_object.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
@@ -50,37 +51,55 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
     }
   }
 
-  addNewExerciseToWorkoutState(AddExerciseState newExercise) {
-    // TODO: here
-    return;
-    // if (state is NewActiveWorkoutState) {
-    //   NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
-    //
-    //   NewExerciseModel updatedExercise = NewExerciseModel(
-    //       exerciseOrder: currentState.exercises.length + 1,
-    //       movementName: newExercise.selectedMovement!,
-    //       movementId: newExercise.selectedMovementId,
-    //       primaryMuscleGroup: newExercise.selectedMuscleGroup!,
-    //       numWorkingSets: newExercise.numWorkingSets,
-    //       exerciseSets: newExercise.setsDone
-    //           .map((set_) => NewExerciseSetModel(
-    //               exerciseSetOrder: 0,
-    //               isWarmUp: set_.isWarmUp,
-    //               weight: set_.weight.toDouble(),
-    //               reps: set_.reps,
-    //               extraReps: set_.extraReps,
-    //               setDuration: set_.setDuration.toString(),
-    //               notes: set_.notes))
-    //           .toList());
-    //
-    //   NewActiveWorkoutState generatedState =
-    //       currentState.copyWith(newExercises: [updatedExercise]);
-    //
-    //   emit(generatedState);
-    // } else {
-    //   StateError("Cannot update state: $state != NewActiveWorkoutState");
-    // }
-  }
+  // saveFinishedExerciseToWorkoutState(AddExerciseState newExercise) {
+  //   if (state is NewActiveWorkoutState) {
+  //     NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
+  //
+  //     int index = 0;
+  //
+  //     WorkoutPageExerciseModel updatedExercise = WorkoutPageExerciseModel(
+  //         exerciseOrder: currentState.exercises.length + 1,
+  //         movementName: newExercise.selectedMovement,
+  //         movementId: newExercise.selectedMovementId,
+  //         exerciseDuration: null,
+  //         numWorkingSets: newExercise.numWorkingSets,
+  //         workedMuscleGroups: newExercise.movementMuscleGroups!,
+  //         exerciseSets: newExercise.setsDone.map((_set) {
+  //           NewExerciseSetModel convertedSetModel = NewExerciseSetModel(
+  //             exerciseSetOrder: index,
+  //               exerciseId: newExercise.id,
+  //               setOrder: setOrder,
+  //               isWarmUp: isWarmUp,
+  //               weight: weight,
+  //               reps: reps);
+  //           index += 1;
+  //           return convertedSetModel;
+  //         }).toList());
+  //     // WorkoutPageExerciseModel updatedExercise = WorkoutPageExerciseModel(
+  //     //     exerciseOrder: currentState.exercises.length + 1,
+  //     //     movementName: newExercise.selectedMovement!,
+  //     //     movementId: newExercise.selectedMovementId,
+  //     //     primaryMuscleGroup: newExercise.selectedMuscleGroup!,
+  //     //     numWorkingSets: newExercise.numWorkingSets,
+  //     //     exerciseSets: newExercise.setsDone
+  //     //         .map((set_) => NewExerciseSetModel(
+  //     //             exerciseSetOrder: 0,
+  //     //             isWarmUp: set_.isWarmUp,
+  //     //             weight: set_.weight.toDouble(),
+  //     //             reps: set_.reps,
+  //     //             extraReps: set_.extraReps,
+  //     //             setDuration: set_.setDuration.toString(),
+  //     //             notes: set_.notes))
+  //     //         .toList(), workedMuscleGroups: null);
+  //
+  //     NewActiveWorkoutState generatedState =
+  //     currentState.copyWith(newExercises: [updatedExercise]);
+  //
+  //     emit(generatedState);
+  //   } else {
+  //     StateError("Cannot update state: $state != NewActiveWorkoutState");
+  //   }
+  // }
 
   finishWorkout(String workoutDuration) {
     if (state is NewActiveWorkoutState &&
@@ -98,7 +117,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
 
   loadCompleteWorkoutToState(LoadedWorkoutModel completeWorkout) {
     // TODO: this
-    return ;
+    return;
     // // print("we loading complete workout ${completeWorkout.id} to state");
     // LoadedActiveWorkoutState completeLoadedWorkoutState =
     //     LoadedActiveWorkoutState(
@@ -120,8 +139,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
         year: savedJsonWorkoutState['year'],
         workoutStartTime: savedJsonWorkoutState['workoutStartTime'],
         workoutDuration: savedJsonWorkoutState['workoutDuration'],
-        exercises: []
-    );
+        exercises: []);
     // (savedJsonWorkoutState['exercises'] as List<dynamic>)
     //         .map((exercise) => NewExerciseModel.fromJson(exercise))
     //         .toList());
@@ -129,79 +147,170 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
     emit(loadedState);
   }
 
-  loadWorkoutToState(
+  // ================================================================================
+
+  // TODO: Done!
+  loadHomePageWorkoutToState(
       WorkoutTableWithExercisesWorkedMuscleGroups loadedWorkout) {
-  // This is the intermediate stage to allow the display the workout on the WorkoutPage
-  // The HomePage workout model (ExerciseTableWithWorkedMuscleGroups)
-  // is graphed directly onto the state which will be amended following queries
-  // to the movement and exercise set tables
-    LoadedActiveWorkoutState loadedWorkoutState = LoadedActiveWorkoutState(
-        id: loadedWorkout.id!,
+
+    // When a workout has been selected from the home page, an intermediate state is emitted
+    // LoadingActiveWorkoutState
+
+    // This is because both the movement name and exercise sets need to be fetched
+    // via loadExerciseNamesToState and loadExerciseSetsToState
+
+    LoadingActiveWorkoutState loadingWorkoutState = LoadingActiveWorkoutState(
+        id: loadedWorkout.id,
         day: loadedWorkout.day,
         month: loadedWorkout.month,
         year: loadedWorkout.year,
         workoutStartTime: loadedWorkout.workoutStartTime,
         workoutDuration: loadedWorkout.duration,
         exercises: loadedWorkout.exercises.map((exercise) {
-          WorkoutPageExerciseModel generatedExercise =
-              WorkoutPageExerciseModel.fromExerciseTableWithWorkedMuscleGroups(
-                  exercise);
+          SelectedWorkoutIntermittentExerciseModel generatedExercise =
+              SelectedWorkoutIntermittentExerciseModel
+                  .fromExerciseTableWithWorkedMuscleGroups(exercise);
           return generatedExercise;
         }).toList());
 
-    emit(loadedWorkoutState);
+    emit(loadingWorkoutState);
   }
 
-  // loadExercisesToState(LoadedWorkoutModel loadedWorkout) {
-  //   if (state is LoadedActiveWorkoutState) {
-  //     LoadedActiveWorkoutState currentState = state as LoadedActiveWorkoutState;
-  //     LoadedActiveWorkoutState generatedState =
-  //         currentState.copyWith(loadedExercises: loadedWorkout.exercises);
-  //
-  //     emit(generatedState);
-  //   } else {
-  //     StateError("Cannot load exercises to state: $state");
-  //   }
-  // }
-
+  // TODO: refactor
   loadExerciseNamesToState(Map<int, String> exerciseMovementNameIndex) {
-    if (state is LoadedActiveWorkoutState) {
-      LoadedActiveWorkoutState currentState = state as LoadedActiveWorkoutState;
+    if (state is LoadingActiveWorkoutState) {
+      LoadingActiveWorkoutState currentState =
+          state as LoadingActiveWorkoutState;
 
-      List<WorkoutPageExerciseModel> exercisesWithNames = [];
+      // if we've already fetched and loaded in the exercise sets
+      // the LoadedActiveWorkoutState can be emitted
+      if (currentState.exercises[0].exerciseSets.isNotEmpty) {
+        // LoadedActiveWorkoutState uses GeneralWorkoutPageExerciseModel
+        List<GeneralWorkoutPageExerciseModel> exercisesWithNames = [];
 
-      for (WorkoutPageExerciseModel exercise in currentState.exercises) {
-        exercisesWithNames.add(exercise.copyWith(
-            currentModel: exercise,
-            movementName: exerciseMovementNameIndex[exercise.movementId]));
+        for (SelectedWorkoutIntermittentExerciseModel exercise
+            in currentState.exercises) {
+          SelectedWorkoutIntermittentExerciseModel updatedExercise =
+              exercise.copyWith(
+                  currentModel: exercise,
+                  movementName: exerciseMovementNameIndex[exercise.movementId]);
+
+          exercisesWithNames.add(GeneralWorkoutPageExerciseModel
+              .fromSelectedWorkoutIntermittentExerciseModel(updatedExercise));
+        }
+
+        LoadedActiveWorkoutState stateToEmit = LoadedActiveWorkoutState(
+            id: currentState.id,
+            day: currentState.day,
+            month: currentState.month,
+            year: currentState.year,
+            workoutStartTime: currentState.workoutStartTime,
+            workoutDuration: currentState.workoutDuration,
+            exercises: exercisesWithNames);
+
+        emit(stateToEmit);
       }
 
-      LoadedActiveWorkoutState stateWithExerciseNames =
-          currentState.copyWith(loadedExercises: exercisesWithNames);
+      // if the exercise sets haven't been loaded yet, we emit
+      // LoadingActiveWorkoutState
+      else {
+        List<SelectedWorkoutIntermittentExerciseModel> exercisesWithNames = [];
 
-      emit(stateWithExerciseNames);
+        for (SelectedWorkoutIntermittentExerciseModel exercise
+            in currentState.exercises) {
+          SelectedWorkoutIntermittentExerciseModel updatedExercise =
+              exercise.copyWith(
+                  currentModel: exercise,
+                  movementName: exerciseMovementNameIndex[exercise.movementId]);
+
+          exercisesWithNames.add(updatedExercise);
+        }
+
+        LoadingActiveWorkoutState stateToEmit = LoadingActiveWorkoutState(
+            id: currentState.id,
+            day: currentState.day,
+            month: currentState.month,
+            year: currentState.year,
+            workoutStartTime: currentState.workoutStartTime,
+            workoutDuration: currentState.workoutDuration,
+            exercises: exercisesWithNames);
+
+        emit(stateToEmit);
+      }
     } else {
       StateError("Cannot load exercise names to state: $state");
     }
   }
 
+  // TODO: refactor
   loadExerciseSetsToState(
       Map<int, List<ExerciseSetTable>> exerciseSetExerciseIndex) {
-    if (state is LoadedActiveWorkoutState) {
-      LoadedActiveWorkoutState currentState = state as LoadedActiveWorkoutState;
+    if (state is LoadingActiveWorkoutState) {
+      LoadingActiveWorkoutState currentState =
+          state as LoadingActiveWorkoutState;
 
-      List<WorkoutPageExerciseModel> exercisesWithExerciseSets = [];
+      // if we've already fetched and loaded in the movement names
+      // the LoadedActiveWorkoutState can be emitted
+      if (currentState.exercises[0].movementName != null) {
+        List<GeneralWorkoutPageExerciseModel> exercisesWithExerciseSets = [];
 
-      for (WorkoutPageExerciseModel exercise in currentState.exercises) {
-        exercisesWithExerciseSets.add(exercise.copyWith(
-            currentModel: exercise,
-            exerciseSets: exerciseSetExerciseIndex[exercise.id!]));
+        for (SelectedWorkoutIntermittentExerciseModel exercise
+            in currentState.exercises) {
+          // we update the current exercise with the fetched exerciseSets
+          SelectedWorkoutIntermittentExerciseModel updatedExercise =
+              exercise.copyWith(
+                  currentModel: exercise,
+                  exerciseSets: exerciseSetExerciseIndex[exercise.id]!
+                      .map((set_) =>
+                          GeneralExerciseSetModel.fromExerciseSetTable(set_))
+                      .toList());
+
+          exercisesWithExerciseSets.add(GeneralWorkoutPageExerciseModel
+              .fromSelectedWorkoutIntermittentExerciseModel(updatedExercise));
+        }
+
+        LoadedActiveWorkoutState stateToEmit = LoadedActiveWorkoutState(
+            id: currentState.id,
+            day: currentState.day,
+            month: currentState.month,
+            year: currentState.year,
+            workoutStartTime: currentState.workoutStartTime,
+            workoutDuration: currentState.workoutDuration,
+            exercises: exercisesWithExerciseSets);
+
+        emit(stateToEmit);
       }
 
-      LoadedActiveWorkoutState stateWithExerciseNames =
-          currentState.copyWith(loadedExercises: exercisesWithExerciseSets);
+      // if the movement names haven't been loaded yet, we emit LoadingActiveWorkoutState
+      else {
+        List<SelectedWorkoutIntermittentExerciseModel>
+            exercisesWithExerciseSets = [];
 
-      emit(stateWithExerciseNames);
+        for (SelectedWorkoutIntermittentExerciseModel exercise
+            in currentState.exercises) {
+          // we update the current exercise with the fetched exerciseSets
+          SelectedWorkoutIntermittentExerciseModel updatedExercise =
+              exercise.copyWith(
+                  currentModel: exercise,
+                  exerciseSets: exerciseSetExerciseIndex[exercise.id]!
+                      .map((set_) =>
+                          GeneralExerciseSetModel.fromExerciseSetTable(set_))
+                      .toList());
+
+          exercisesWithExerciseSets.add(updatedExercise);
+        }
+
+        LoadingActiveWorkoutState stateToEmit = LoadingActiveWorkoutState(
+            id: currentState.id,
+            day: currentState.day,
+            month: currentState.month,
+            year: currentState.year,
+            workoutStartTime: currentState.workoutStartTime,
+            workoutDuration: currentState.workoutDuration,
+            exercises: exercisesWithExerciseSets);
+
+        emit(stateToEmit);
+      }
     } else {
       StateError("Cannot load exercise sets to state: $state");
     }

@@ -38,18 +38,76 @@ class WorkoutOverviewPage extends StatelessWidget {
         appBar: const TheAppBar(),
         body: BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
           builder: (context, state) {
+            switch (state) {
+              case ActiveWorkoutOnState():
+                return Column(children: [
+                        Material(
+                        elevation: 2,
+                        child: WorkoutDateTimer(
+                          year: state.year,
+                          month: state.month,
+                          day: state.day,
+                          isLoadedWorkout: state is LoadedActiveWorkoutState,
+                          workoutDuration: state.workoutDuration,
+                        )),
+                    Expanded(
+                      child: Stack(children: [
+                        Positioned.fill(
+                            child: CompletedExercisesScaffold(
+                              tileSpacingValue: tileSpacingValue,
+                              exercises: state.exercises,
+                              isCurrentWorkout:
+                              state is NewActiveWorkoutState ? true : false,
+                            )),
+                        BlocBuilder<OpenExerciseModalCubit, OpenExerciseModalState>(
+                          builder: (context, state) {
+                            double fadedValue;
+                            switch (state) {
+                              case ExerciseModalOpenedState():
+                                fadedValue = 0.8;
+                              default:
+                                fadedValue = 0;
+                            }
+                            return IgnorePointer(
+                              child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 200),
+                                  color: Colors.black.withOpacity(fadedValue)),
+                            );
+                          },
+                        ),
+                        BlocBuilder<OpenExerciseModalCubit, OpenExerciseModalState>(
+                            builder: (context, state) {
+                              return IgnorePointer(
+                                ignoring: !state.isOpen,
+                                child: AnimatedOpacity(
+                                    opacity: state.isOpen ? 1 : 0,
+                                    duration: const Duration(milliseconds: 200),
+                                    child: const AddExerciseModal()),
+                              );
+                            }),
+                      ]),
+                    ),
+                    const ExerciseCountBar()
+                );
+              default:
+                throw StateError("Incorrect state for workout page: $state");
+            }
+
+
+
+
             int year = 0;
             int month = 0;
             int day = 0;
             String? workoutDuration;
-            List<WorkoutPageExerciseModel> exercises = [];
+            List<GeneralWorkoutPageExerciseModel> exercises = [];
             switch (state) {
               case ActiveWorkoutOnState():
                 year = state.year;
                 month = state.month;
                 day = state.day;
                 workoutDuration = state.workoutDuration;
-                exercises = state.exercises;
+                if (state is NewActiveWorkoutState) exercises = state.exercises;
               // switch (state) {
               //   case NewActiveWorkoutState():
               //     exercises = state.exercises
@@ -114,7 +172,7 @@ class WorkoutOverviewPage extends StatelessWidget {
         ),
 
         // FOR DEBUG
-        floatingActionButton: true ? const DebugStateChecker() : null,
+        floatingActionButton: false ? const DebugStateChecker() : null,
       ),
     );
   }

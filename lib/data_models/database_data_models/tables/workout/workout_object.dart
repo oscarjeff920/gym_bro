@@ -1,8 +1,9 @@
 import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 
+// Model to track 1-to-1 to database table
 class WorkoutTable {
-  final int? id;
+  final int id;
   final int year;
   final int month;
   final int day;
@@ -51,6 +52,8 @@ class WorkoutTableWithExercises extends WorkoutTable {
       required super.duration,
       required this.exercises});
 }
+
+// ======================================================
 
 class WorkoutTableWithExercisesWorkedMuscleGroups extends WorkoutTable {
   final List<ExerciseTableWithWorkedMuscleGroups> exercises;

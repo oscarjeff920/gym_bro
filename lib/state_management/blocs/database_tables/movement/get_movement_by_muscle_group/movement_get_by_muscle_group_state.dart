@@ -13,9 +13,9 @@ class MovementGetByMuscleGroupQueryState extends MovementGetByMuscleGroupState {
 }
 
 class MovementGetByMuscleGroupSuccessfulQueryState extends MovementGetByMuscleGroupState{
-  final List<MovementMuscleGroupJoin> queryResponse;
+  final List<MovementMuscleGroupJoin> fetchedMovementsList;
 
-  MovementGetByMuscleGroupSuccessfulQueryState({required this.queryResponse});
+  MovementGetByMuscleGroupSuccessfulQueryState({required this.fetchedMovementsList});
 }
 
 class MovementGetByMuscleGroupQueryErrorState extends MovementGetByMuscleGroupState{
