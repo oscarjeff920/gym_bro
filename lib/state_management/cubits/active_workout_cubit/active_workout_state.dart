@@ -28,7 +28,7 @@ class ActiveWorkoutOnState extends ActiveWorkoutState {
 }
 
 class NewActiveWorkoutState extends ActiveWorkoutOnState {
-  final List<NewExerciseModel> exercises;
+  final List<NewExerciseModel2> exercises;
 
   NewActiveWorkoutState(
       {required super.day,
@@ -38,10 +38,12 @@ class NewActiveWorkoutState extends ActiveWorkoutOnState {
       super.workoutDuration,
       required this.exercises});
 
-  NewActiveWorkoutState copyWith(
-      {String? workoutDuration, List<NewExerciseModel>? newExercises}) {
-    List<NewExerciseModel> savedExercises = [];
-    for (var exercise in exercises) {
+  factory NewActiveWorkoutState.copyWith(
+      {required NewActiveWorkoutState currentState,
+      String? workoutDuration,
+      List<NewExerciseModel2>? newExercises}) {
+    List<NewExerciseModel2> savedExercises = [];
+    for (var exercise in currentState.exercises) {
       savedExercises.add(exercise);
     }
     if (newExercises != null) {
@@ -50,11 +52,11 @@ class NewActiveWorkoutState extends ActiveWorkoutOnState {
       }
     }
     return NewActiveWorkoutState(
-        day: day,
-        month: month,
-        year: year,
-        workoutStartTime: workoutStartTime,
-        workoutDuration: workoutDuration ?? this.workoutDuration,
+        day: currentState.day,
+        month: currentState.month,
+        year: currentState.year,
+        workoutStartTime: currentState.workoutStartTime,
+        workoutDuration: workoutDuration ?? currentState.workoutDuration,
         exercises: savedExercises);
   }
 
@@ -77,27 +79,27 @@ class NewActiveWorkoutState extends ActiveWorkoutOnState {
 
 // this state is emitted while the exercise names and sets are fetched
 // between the home and workout page
-class LoadingActiveWorkoutState extends ActiveWorkoutOnState{
+class LoadingActiveWorkoutState extends ActiveWorkoutOnState {
   final int id;
   final List<SelectedWorkoutIntermittentExerciseModel> exercises;
 
   LoadingActiveWorkoutState(
       {required this.id,
-        required super.day,
-        required super.month,
-        required super.year,
-        required super.workoutStartTime,
-        required super.workoutDuration,
-        required this.exercises});
+      required super.day,
+      required super.month,
+      required super.year,
+      required super.workoutStartTime,
+      required super.workoutDuration,
+      required this.exercises});
 
   LoadingActiveWorkoutState copyWith(
       {int? newId,
-        int? newDay,
-        int? newMonth,
-        int? newYear,
-        String? newWorkoutStartTime,
-        String? newWorkoutDuration,
-        List<SelectedWorkoutIntermittentExerciseModel>? loadedExercises}) {
+      int? newDay,
+      int? newMonth,
+      int? newYear,
+      String? newWorkoutStartTime,
+      String? newWorkoutDuration,
+      List<SelectedWorkoutIntermittentExerciseModel>? loadedExercises}) {
     return LoadingActiveWorkoutState(
         id: newId ?? id,
         day: newDay ?? day,

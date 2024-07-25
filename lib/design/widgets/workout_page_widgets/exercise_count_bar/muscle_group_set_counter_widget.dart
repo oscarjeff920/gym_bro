@@ -25,27 +25,25 @@ class MuscleGroupSetCounter extends StatelessWidget {
 
       switch (state) {
         case ActiveWorkoutOnState():
-          List<GeneralWorkoutPageExerciseModel> savedExercises = state.exercises;
+          dynamic savedExercises = [];
+          if (state is LoadingActiveWorkoutState) {
+            savedExercises = state.exercises;
+          } else if (state is LoadedActiveWorkoutState) {
+            savedExercises = state.exercises;
+          } else if (state is NewActiveWorkoutState) {
+            savedExercises = state.exercises;
+          }
 
           for (var exercise in savedExercises) {
             if (exercise.workedMuscleGroups.returnPrimaryMuscleGroups().contains(muscleGroup)) {
               primaryMuscleSets +=
-                  exercise.getWorkingSetsPerMuscleGroup(muscleGroup);
+                  int.parse(exercise.getWorkingSetsPerMuscleGroup(muscleGroup));
             } else if (exercise.workedMuscleGroups
                 .returnSecondaryMuscleGroups()
                 .contains(muscleGroup)) {
               secondaryMuscleSets +=
-                  exercise.getWorkingSetsPerMuscleGroup(muscleGroup);
+                  int.parse(exercise.getWorkingSetsPerMuscleGroup(muscleGroup));
             }
-            //   }
-            // case NewActiveWorkoutState():
-            //   List<NewExerciseModel> savedExercises = state.exercises;
-            //
-            //   for (var exercise in savedExercises) {
-            //     if (exercise.primaryMuscleGroup == muscleGroup) {
-            //       primaryMuscleSets += exercise.numWorkingSets!;
-            //     }
-            //   }
           }
       }
 

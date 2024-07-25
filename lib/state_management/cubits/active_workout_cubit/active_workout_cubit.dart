@@ -57,7 +57,14 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
   //
   //     int index = 0;
   //
-  //     WorkoutPageExerciseModel updatedExercise = WorkoutPageExerciseModel(
+  //     GeneralWorkoutPageExerciseModel updatedExercise = GeneralWorkoutPageExerciseModel(
+  //         movementId: newExercise.movementId,
+  //         exerciseOrder: exerciseOrder,
+  //         numWorkingSets: numWorkingSets,
+  //         workedMuscleGroups: workedMuscleGroups,
+  //         movementName: movementName)
+  //
+  //     GeneralWorkoutPageExerciseModel updatedExercise = GeneralWorkoutPageExerciseModel(
   //         exerciseOrder: currentState.exercises.length + 1,
   //         movementName: newExercise.selectedMovement,
   //         movementId: newExercise.selectedMovementId,
@@ -66,7 +73,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
   //         workedMuscleGroups: newExercise.movementMuscleGroups!,
   //         exerciseSets: newExercise.setsDone.map((_set) {
   //           NewExerciseSetModel convertedSetModel = NewExerciseSetModel(
-  //             exerciseSetOrder: index,
+  //               exerciseSetOrder: index,
   //               exerciseId: newExercise.id,
   //               setOrder: setOrder,
   //               isWarmUp: isWarmUp,
@@ -102,12 +109,13 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
   // }
 
   finishWorkout(String workoutDuration) {
+    // this saves the final workout duration to the state.
     if (state is NewActiveWorkoutState &&
         (state as NewActiveWorkoutState).exercises.isNotEmpty) {
       NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
 
-      NewActiveWorkoutState generatedState =
-          currentState.copyWith(workoutDuration: workoutDuration);
+      NewActiveWorkoutState generatedState = NewActiveWorkoutState.copyWith(
+          currentState: currentState, workoutDuration: workoutDuration);
 
       emit(generatedState);
     } else {
@@ -152,7 +160,6 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
   // TODO: Done!
   loadHomePageWorkoutToState(
       WorkoutTableWithExercisesWorkedMuscleGroups loadedWorkout) {
-
     // When a workout has been selected from the home page, an intermediate state is emitted
     // LoadingActiveWorkoutState
 
@@ -191,7 +198,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
         for (SelectedWorkoutIntermittentExerciseModel exercise
             in currentState.exercises) {
           SelectedWorkoutIntermittentExerciseModel updatedExercise =
-              exercise.copyWith(
+          SelectedWorkoutIntermittentExerciseModel.copyWith(
                   currentModel: exercise,
                   movementName: exerciseMovementNameIndex[exercise.movementId]);
 
@@ -219,7 +226,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
         for (SelectedWorkoutIntermittentExerciseModel exercise
             in currentState.exercises) {
           SelectedWorkoutIntermittentExerciseModel updatedExercise =
-              exercise.copyWith(
+          SelectedWorkoutIntermittentExerciseModel.copyWith(
                   currentModel: exercise,
                   movementName: exerciseMovementNameIndex[exercise.movementId]);
 
@@ -258,7 +265,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
             in currentState.exercises) {
           // we update the current exercise with the fetched exerciseSets
           SelectedWorkoutIntermittentExerciseModel updatedExercise =
-              exercise.copyWith(
+          SelectedWorkoutIntermittentExerciseModel.copyWith(
                   currentModel: exercise,
                   exerciseSets: exerciseSetExerciseIndex[exercise.id]!
                       .map((set_) =>
@@ -290,7 +297,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
             in currentState.exercises) {
           // we update the current exercise with the fetched exerciseSets
           SelectedWorkoutIntermittentExerciseModel updatedExercise =
-              exercise.copyWith(
+          SelectedWorkoutIntermittentExerciseModel.copyWith(
                   currentModel: exercise,
                   exerciseSets: exerciseSetExerciseIndex[exercise.id]!
                       .map((set_) =>
