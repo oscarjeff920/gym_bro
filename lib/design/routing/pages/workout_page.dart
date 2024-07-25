@@ -39,62 +39,64 @@ class WorkoutOverviewPage extends StatelessWidget {
         body: BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
           builder: (context, state) {
             switch (state) {
+              // this checks that there is a workout attached to the ActiveWorkoutState
               case ActiveWorkoutOnState():
+                dynamic exercises = [];
+                if (state is LoadingActiveWorkoutState) {
+                  exercises = state.exercises;
+                } else if (state is LoadedActiveWorkoutState) {
+                  exercises = state.exercises;
+                } else if (state is NewActiveWorkoutState) {
+                  exercises = state.exercises;
+                }
+
                 return Column(children: [
-                        Material(
-                        elevation: 2,
-                        child: WorkoutDateTimer(
-                          year: state.year,
-                          month: state.month,
-                          day: state.day,
-                          isLoadedWorkout: state is LoadedActiveWorkoutState,
-                          workoutDuration: state.workoutDuration,
-                        )),
-                    Expanded(
-                      child: Stack(children: [
-                        Positioned.fill(
-                            child: CompletedExercisesScaffold(
-                              tileSpacingValue: tileSpacingValue,
-                              exercises: state.exercises,
-                              isCurrentWorkout:
-                              state is NewActiveWorkoutState ? true : false,
-                            )),
-                        BlocBuilder<OpenExerciseModalCubit, OpenExerciseModalState>(
-                          builder: (context, state) {
-                            double fadedValue;
-                            switch (state) {
-                              case ExerciseModalOpenedState():
-                                fadedValue = 0.8;
-                              default:
-                                fadedValue = 0;
-                            }
-                            return IgnorePointer(
-                              child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 200),
-                                  color: Colors.black.withOpacity(fadedValue)),
-                            );
-                          },
-                        ),
-                        BlocBuilder<OpenExerciseModalCubit, OpenExerciseModalState>(
-                            builder: (context, state) {
-                              return IgnorePointer(
-                                ignoring: !state.isOpen,
-                                child: AnimatedOpacity(
-                                    opacity: state.isOpen ? 1 : 0,
-                                    duration: const Duration(milliseconds: 200),
-                                    child: const AddExerciseModal()),
-                              );
-                            }),
-                      ]),
-                    ),
-                    const ExerciseCountBar()
-                );
+                  Material(
+                      elevation: 2,
+                      child: WorkoutDateTimer(
+                        year: state.year,
+                        month: state.month,
+                        day: state.day,
+                        isLoadedWorkout: state is LoadedActiveWorkoutState,
+                        workoutDuration: state.workoutDuration,
+                      )),
+                  Expanded(
+                    child: Stack(children: [
+                      Positioned.fill(
+                          child: CompletedExercisesScaffold(
+                        tileSpacingValue: tileSpacingValue,
+                        exercises: exercises,
+                        isCurrentWorkout:
+                            state is NewActiveWorkoutState ? true : false,
+                      )),
+                      BlocBuilder<OpenExerciseModalCubit,
+                          OpenExerciseModalState>(
+                        builder: (context, state) {
+                          double fadedValue;
+                          switch (state) {
+                            case ExerciseModalOpenedState():
+                              fadedValue = 0.8;
+                            default:
+                              fadedValue = 0;
+                          }
+                          return IgnorePointer(
+                            child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 200),
+                                color: Colors.black.withOpacity(fadedValue)),
+                          );
+                        },
+                      ),
+                      BlocBuilder<OpenExerciseModalCubit,
+                          OpenExerciseModalState>(builder: (context, state) {
+                        return AddExerciseModal(isOpen: state.isOpen);
+                      }),
+                    ]),
+                  ),
+                  const ExerciseCountBar()
+                ]);
               default:
                 throw StateError("Incorrect state for workout page: $state");
             }
-
-
-
 
             int year = 0;
             int month = 0;
@@ -218,25 +220,6 @@ class WorkoutOverviewPage extends StatelessWidget {
           case NewActiveWorkoutState():
             BlocProvider.of<BackupCurrentWorkoutCubit>(context)
                 .writeCurrentWorkoutState(state.newWorkoutToMap());
-          // case LoadedActiveWorkoutState():
-          //   // TODO: Im not sure this will fire when desired...
-          //   if (state.exercises.isNotEmpty) {
-          //     if (state.exercises.first.movementName == null) {
-          //       // fetching movement names to display
-          //       BlocProvider.of<MovementGetNameByIdBloc>(context).add(
-          //           QueryMovementNameByIdEvent(
-          //               namelessExercises: state.exercises));
-          //     }
-          //     if (state.exercises.first.exerciseSets.isEmpty) {
-          //       // fetching exerciseSets to display when exercise card is clicked
-          //       BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
-          //           QueryAllExerciseSetsByExerciseEvent(
-          //               setlessExercises: state.exercises));
-          //     }
-          //   }
-          //   else {
-          //     print("Loaded active workout has 0 exercises.. $state");
-          //   }
         }
       }),
       BlocListener<MovementGetNameByIdBloc, MovementGetNameByIdState>(
@@ -245,9 +228,8 @@ class WorkoutOverviewPage extends StatelessWidget {
           case MovementGetNameByIdSuccessfulQueryState():
             BlocProvider.of<ActiveWorkoutCubit>(context)
                 .loadExerciseNamesToState(state.exerciseMovementNameIndex);
-            BlocProvider.of<MovementGetNameByIdBloc>(context).add(
-                ResetMovementGetNameByIdEvent()
-            );
+            BlocProvider.of<MovementGetNameByIdBloc>(context)
+                .add(ResetMovementGetNameByIdEvent());
         }
       }),
       BlocListener<ExerciseSetTableOperationsBloc,
@@ -256,9 +238,8 @@ class WorkoutOverviewPage extends StatelessWidget {
           case ExerciseSetTableSuccessfulQueryAllByExerciseIdState():
             BlocProvider.of<ActiveWorkoutCubit>(context)
                 .loadExerciseSetsToState(state.exerciseSetsExerciseIndex);
-            BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
-                ResetExerciseSetQueryEvent()
-            );
+            BlocProvider.of<ExerciseSetTableOperationsBloc>(context)
+                .add(ResetExerciseSetQueryEvent());
         }
       }),
     ];
