@@ -27,7 +27,7 @@ class ActiveWorkoutOnState extends ActiveWorkoutState {
 }
 
 class NewActiveWorkoutState extends ActiveWorkoutOnState {
-  final List<NewExerciseModel2> exercises;
+  final List<NewExerciseModel> exercises;
 
   NewActiveWorkoutState(
       {required super.day,
@@ -40,8 +40,8 @@ class NewActiveWorkoutState extends ActiveWorkoutOnState {
   factory NewActiveWorkoutState.copyWith(
       {required NewActiveWorkoutState currentState,
       String? workoutDuration,
-      List<NewExerciseModel2>? newExercises}) {
-    List<NewExerciseModel2> savedExercises = [];
+      List<NewExerciseModel>? newExercises}) {
+    List<NewExerciseModel> savedExercises = [];
     for (var exercise in currentState.exercises) {
       savedExercises.add(exercise);
     }

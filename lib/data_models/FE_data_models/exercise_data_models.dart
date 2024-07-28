@@ -63,20 +63,6 @@ class GeneralWorkoutPageExerciseModel {
     return modelAsMap;
   }
 
-  //
-  // factory GeneralWorkoutPageExerciseModel.fromExerciseTableWithWorkedMuscleGroups(
-  //     ExerciseTableWithWorkedMuscleGroups model) {
-  //   GeneralWorkoutPageExerciseModel generatedModel = GeneralWorkoutPageExerciseModel(
-  //     id: model.id,
-  //     exerciseOrder: model.exerciseOrder,
-  //     movementId: model.movementId,
-  //     exerciseDuration: model.duration,
-  //     numWorkingSets: model.numWorkingSets,
-  //     workedMuscleGroups: model.workedMuscleGroups,
-  //   );
-  //   return generatedModel;
-  // }
-
   GeneralWorkoutPageExerciseModel copyWith({
     required GeneralWorkoutPageExerciseModel currentModel,
     int? workoutId,
@@ -149,35 +135,6 @@ class SelectedWorkoutIntermittentExerciseModel
     return convertedModel;
   }
 
-  // Map<String, dynamic> toMap() {
-  //   Map<String, dynamic> modelAsMap = {
-  //     'id': id,
-  //     'exerciseOrder': exerciseOrder,
-  //     'movementName': movementName,
-  //     'movementId': movementId,
-  //     'exerciseDuration': exerciseDuration,
-  //     'numWorkingSets': numWorkingSets,
-  //     'primaryMuscleGroup': workedMuscleGroups.returnPrimaryMuscleGroups().first.name,
-  //     'exerciseSets':
-  //     exerciseSets.map((exerciseSet) => exerciseSet.toMap()).toList()
-  //   };
-  //
-  //   return modelAsMap;
-  // }
-  //
-  // factory GeneralWorkoutPageExerciseModel.fromExerciseTableWithWorkedMuscleGroups(
-  //     ExerciseTableWithWorkedMuscleGroups model) {
-  //   GeneralWorkoutPageExerciseModel generatedModel = GeneralWorkoutPageExerciseModel(
-  //     id: model.id,
-  //     exerciseOrder: model.exerciseOrder,
-  //     movementId: model.movementId,
-  //     exerciseDuration: model.duration,
-  //     numWorkingSets: model.numWorkingSets,
-  //     workedMuscleGroups: model.workedMuscleGroups,
-  //   );
-  //   return generatedModel;
-  // }
-
   factory SelectedWorkoutIntermittentExerciseModel.copyWith({
     required SelectedWorkoutIntermittentExerciseModel currentModel,
     int? id,
@@ -205,30 +162,6 @@ class SelectedWorkoutIntermittentExerciseModel
     return generatedState;
   }
 }
-
-// class GeneralExerciseModel {
-//   final int? id;
-//   final int? exerciseOrder;
-//   final String movementName;
-//   final int? movementId;
-//   final String? exerciseDuration;
-//   final int? numWorkingSets;
-//   final Map<MuscleGroupType, RoleType> workedMuscleGroups;
-//
-//   // final MuscleGroupType secondaryMuscleGroup;
-//   final List<GeneralExerciseSetModel> exerciseSets;
-//
-//   GeneralExerciseModel(
-//       {this.id,
-//       this.exerciseOrder,
-//       required this.movementName,
-//       required this.movementId,
-//       this.exerciseDuration,
-//       this.numWorkingSets,
-//       required this.workedMuscleGroups,
-//       // required this.secondaryMuscleGroup,
-//       required this.exerciseSets});
-// }
 
 // ===================================
 
@@ -269,26 +202,10 @@ class LoadedExerciseModel extends GeneralWorkoutPageExerciseModel {
     );
     return convertedExercise;
   }
-
-// GeneralExerciseModel transformToGeneralModel() {
-//   GeneralExerciseModel convertedModel = GeneralExerciseModel(
-//       id: id,
-//       exerciseOrder: exerciseOrder,
-//       movementName: movementName,
-//       movementId: movementId,
-//       exerciseDuration: exerciseDuration,
-//       numWorkingSets: numWorkingSets,
-//       workedMuscleGroups: workedMuscleGroups,
-//       exerciseSets: exerciseSets
-//           .map((exerciseSets) => exerciseSets.transformToGeneralModel())
-//           .toList());
-//
-//   return convertedModel;
-// }
 }
 
-class NewExerciseModel2 extends GeneralWorkoutPageExerciseModel {
-  NewExerciseModel2(
+class NewExerciseModel extends GeneralWorkoutPageExerciseModel {
+  NewExerciseModel(
       {movementId,
       required exerciseOrder,
       exerciseDuration,
@@ -305,8 +222,8 @@ class NewExerciseModel2 extends GeneralWorkoutPageExerciseModel {
             movementName: movementName,
             exerciseSets: exerciseSets);
 
-  factory NewExerciseModel2.copyWith(
-      {required NewExerciseModel2 currentModel,
+  factory NewExerciseModel.copyWith(
+      {required NewExerciseModel currentModel,
       int? movementId,
       int? exerciseOrder,
       String? exerciseDuration,
@@ -314,7 +231,7 @@ class NewExerciseModel2 extends GeneralWorkoutPageExerciseModel {
       String? movementName,
       MovementWorkedMuscleGroupsType? workedMuscleGroups,
       List<GeneralExerciseSetModel>? exerciseSets}) {
-    NewExerciseModel2 generatedModel = NewExerciseModel2(
+    NewExerciseModel generatedModel = NewExerciseModel(
         movementId: movementId ?? currentModel.movementId,
         exerciseOrder: exerciseOrder ?? currentModel.exerciseOrder,
         exerciseDuration: exerciseDuration ?? currentModel.exerciseDuration,
@@ -327,8 +244,8 @@ class NewExerciseModel2 extends GeneralWorkoutPageExerciseModel {
     return generatedModel;
   }
 
-  factory NewExerciseModel2.fromMap({required Map<String, dynamic> map}) {
-    NewExerciseModel2 regeneratedModel = NewExerciseModel2(
+  factory NewExerciseModel.fromMap({required Map<String, dynamic> map}) {
+    NewExerciseModel regeneratedModel = NewExerciseModel(
       movementId: map['movementId'],
         exerciseOrder: map['exerciseOrder'],
         numWorkingSets: map['numWorkingSets'],
@@ -342,68 +259,3 @@ class NewExerciseModel2 extends GeneralWorkoutPageExerciseModel {
     return regeneratedModel;
   }
 }
-
-// to be made redundant
-// class NewExerciseModel {
-//   final int? exerciseOrder;
-//   final String movementName;
-//   final int? movementId; // nullable as if movement is new, no id exists
-//   final String?
-//       exerciseDuration; // null as we don't know how long the exercise will take before end
-//   final int? numWorkingSets; // could be init = 0 and incrementally increase..
-//   final MovementWorkedMuscleGroupsType workedMuscleGroups;
-//   final List<NewExerciseSetModel> exerciseSets;
-//
-//   NewExerciseModel(
-//       {this.exerciseOrder,
-//       required this.movementName,
-//       this.movementId,
-//       this.exerciseDuration,
-//       this.numWorkingSets,
-//       required this.workedMuscleGroups,
-//       // required this.secondaryMuscleGroup,
-//       required this.exerciseSets});
-//
-//   GeneralExerciseModel transformToGeneralModel() {
-//     GeneralExerciseModel convertedModel = GeneralExerciseModel(
-//         exerciseOrder: exerciseOrder,
-//         movementName: movementName,
-//         movementId: movementId,
-//         numWorkingSets: numWorkingSets,
-//         workedMuscleGroups: workedMuscleGroups,
-//         exerciseSets: exerciseSets
-//             .map((exerciseSets) => exerciseSets.transformToGeneralModel())
-//             .toList());
-//
-//     return convertedModel;
-//   }
-//
-//   Map<String, dynamic> toMap() {
-//     Map<String, dynamic> modelAsMap = {
-//       'exerciseOrder': exerciseOrder,
-//       'movementName': movementName,
-//       'movementId': movementId,
-//       'exerciseDuration': exerciseDuration,
-//       'numWorkingSets': numWorkingSets,
-//       'primaryMuscleGroup': workedMuscleGroups.toString().split(".").last,
-//       'exerciseSets':
-//           exerciseSets.map((exerciseSet) => exerciseSet.toMap()).toList()
-//     };
-//
-//     return modelAsMap;
-//   }
-//
-//   factory NewExerciseModel.fromJson(Map<String, dynamic> json) {
-//     return NewExerciseModel(
-//       exerciseOrder: json['exerciseOrder'],
-//       movementName: json['movementName'],
-//       movementId: json['movementId'],
-//       exerciseDuration: json['exerciseDuration'],
-//       numWorkingSets: json['numWorkingSets'],
-//       workedMuscleGroups: {},
-//       exerciseSets: (json['exerciseSets'] as List)
-//           .map((setJson) => NewExerciseSetModel.fromJson(setJson))
-//           .toList(),
-//     );
-//   }
-// }

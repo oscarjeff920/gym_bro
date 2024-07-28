@@ -170,7 +170,9 @@ class WorkoutRepository {
     return weekBeginningDate;
   }
 
-  // Insert New Movement method TODO: ENABLE
+  // ================================================================================
+
+  // Insert New Movement method
   insertNewMovement(GeneralWorkoutPageExerciseModel newMovementExercise, txn) async {
     String lowerCaseMovementName =
         newMovementExercise.movementName.toLowerCase();
@@ -191,7 +193,6 @@ class WorkoutRepository {
     """;
     final newMovementId = await txn.rawInsert(insertNewMovementString);
 
-    // TODO: My brain no good, check this over
     // As each movement can utilise a number of muscle groups
     // the id for each muscle group within workedMuscleGroups must be fetched
     for (var entry in newMovementExercise.workedMuscleGroups.workedMuscleGroupsMap.entries) {

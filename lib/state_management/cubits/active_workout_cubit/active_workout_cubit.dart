@@ -57,7 +57,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
 
       int index = 0;
 
-      NewExerciseModel2 updatedExercise = NewExerciseModel2(
+      NewExerciseModel updatedExercise = NewExerciseModel(
           movementId: newExercise.selectedMovementId,
           exerciseOrder: currentState.exercises.length,
           exerciseDuration: null,
@@ -158,8 +158,8 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
         workoutStartTime: savedJsonWorkoutState['workoutStartTime'],
         workoutDuration: savedJsonWorkoutState['workoutDuration'],
         exercises: savedJsonWorkoutState['exercises']
-            .map<NewExerciseModel2>((exerciseMap) {
-          return NewExerciseModel2.fromMap(map: exerciseMap);
+            .map<NewExerciseModel>((exerciseMap) {
+          return NewExerciseModel.fromMap(map: exerciseMap);
         }).toList()
     );
 
