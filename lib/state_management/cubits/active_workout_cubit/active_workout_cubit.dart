@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
-import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_object.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
@@ -74,41 +73,6 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
             return convertedModel;
           }).toList());
 
-      // GeneralWorkoutPageExerciseModel updatedExercise = GeneralWorkoutPageExerciseModel(
-      //     exerciseOrder: currentState.exercises.length + 1,
-      //     movementName: newExercise.selectedMovement,
-      //     movementId: newExercise.selectedMovementId,
-      //     exerciseDuration: null,
-      //     numWorkingSets: newExercise.numWorkingSets,
-      //     workedMuscleGroups: newExercise.workedMuscleGroups!,
-      //     exerciseSets: newExercise.setsDone.map((_set) {
-      //       NewExerciseSetModel convertedSetModel = NewExerciseSetModel(
-      //           exerciseSetOrder: index,
-      //           exerciseId: newExercise.id,
-      //           setOrder: setOrder,
-      //           isWarmUp: isWarmUp,
-      //           weight: weight,
-      //           reps: reps);
-      //       index += 1;
-      //       return convertedSetModel;
-      //     }).toList());
-      // WorkoutPageExerciseModel updatedExercise = WorkoutPageExerciseModel(
-      //     exerciseOrder: currentState.exercises.length + 1,
-      //     movementName: newExercise.selectedMovement!,
-      //     movementId: newExercise.selectedMovementId,
-      //     primaryMuscleGroup: newExercise.selectedMuscleGroup!,
-      //     numWorkingSets: newExercise.numWorkingSets,
-      //     exerciseSets: newExercise.setsDone
-      //         .map((set_) => NewExerciseSetModel(
-      //             exerciseSetOrder: 0,
-      //             isWarmUp: set_.isWarmUp,
-      //             weight: set_.weight.toDouble(),
-      //             reps: set_.reps,
-      //             extraReps: set_.extraReps,
-      //             setDuration: set_.setDuration.toString(),
-      //             notes: set_.notes))
-      //         .toList(), workedMuscleGroups: null);
-
       NewActiveWorkoutState generatedState = NewActiveWorkoutState.copyWith(
           currentState: currentState, newExercises: [updatedExercise]);
 
@@ -133,23 +97,6 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
     }
   }
 
-  loadCompleteWorkoutToState(LoadedWorkoutModel completeWorkout) {
-    // TODO: this
-    return;
-    // // print("we loading complete workout ${completeWorkout.id} to state");
-    // LoadedActiveWorkoutState completeLoadedWorkoutState =
-    //     LoadedActiveWorkoutState(
-    //         id: completeWorkout.id,
-    //         day: completeWorkout.day,
-    //         month: completeWorkout.month,
-    //         year: completeWorkout.year,
-    //         workoutStartTime: completeWorkout.workoutStartTime,
-    //         workoutDuration: completeWorkout.workoutDuration,
-    //         exercises: completeWorkout.exercises);
-    //
-    // emit(completeLoadedWorkoutState);
-  }
-
   loadSavedJsonWorkoutToState(Map<String, dynamic> savedJsonWorkoutState) {
     NewActiveWorkoutState loadedState = NewActiveWorkoutState(
         day: savedJsonWorkoutState['day'],
@@ -168,7 +115,6 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
 
   // ================================================================================
 
-  // TODO: Done!
   loadHomePageWorkoutToState(
       WorkoutTableWithExercisesWorkedMuscleGroups loadedWorkout) {
     // When a workout has been selected from the home page, an intermediate state is emitted
