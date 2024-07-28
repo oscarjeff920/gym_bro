@@ -68,6 +68,29 @@ class MovementWorkedMuscleGroupsType {
 
   MovementWorkedMuscleGroupsType({required this.workedMuscleGroupsMap});
 
+  // convert the object into a map, used mostly for saving state as json
+  Map<String, String> toMap() {
+    Map<String, String> typeAsMap = {};
+
+    for (var entry in workedMuscleGroupsMap.entries) {
+      typeAsMap[entry.key.name] = entry.value.name;
+    }
+
+    return typeAsMap;
+  }
+
+  // convert the object back from a map, used mostly for restoring state from json
+  factory MovementWorkedMuscleGroupsType.fromMap({required Map<String, dynamic> map}) {
+    Map<MuscleGroupType, RoleType> workedMuscleGroupsMap = {};
+
+    for (var entry in map.entries) {
+      workedMuscleGroupsMap[MuscleGroupType.values.byName(entry.key)] =
+          RoleType.values.byName(entry.value);
+    }
+
+    return MovementWorkedMuscleGroupsType(workedMuscleGroupsMap: workedMuscleGroupsMap);
+  }
+
   List<MuscleGroupType> returnPrimaryMuscleGroups() {
     List<MuscleGroupType> primaryMuscleGroups = [];
     for (var muscleGroup in workedMuscleGroupsMap.entries) {

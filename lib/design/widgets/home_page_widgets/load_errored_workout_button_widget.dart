@@ -16,7 +16,7 @@ class LoadErroredWorkoutButton extends StatelessWidget {
         return FloatingActionButton(
           onPressed: () {
             if (state.errorStateData.isEmpty) {
-              BlocProvider.of<SaveErrorStateCubit>(context).loadErrorState();
+              BlocProvider.of<SaveErrorStateCubit>(context).loadErroredWorkoutToState();
             } else {
               BlocProvider.of<ActiveWorkoutCubit>(context)
                   .loadSavedJsonWorkoutToState(state.errorStateData);

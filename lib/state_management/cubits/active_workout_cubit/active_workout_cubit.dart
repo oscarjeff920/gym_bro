@@ -110,8 +110,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
       //         .toList(), workedMuscleGroups: null);
 
       NewActiveWorkoutState generatedState = NewActiveWorkoutState.copyWith(
-          currentState: currentState, newExercises: [updatedExercise]
-      );
+          currentState: currentState, newExercises: [updatedExercise]);
 
       emit(generatedState);
     } else {
@@ -158,10 +157,11 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
         year: savedJsonWorkoutState['year'],
         workoutStartTime: savedJsonWorkoutState['workoutStartTime'],
         workoutDuration: savedJsonWorkoutState['workoutDuration'],
-        exercises: []);
-    // (savedJsonWorkoutState['exercises'] as List<dynamic>)
-    //         .map((exercise) => NewExerciseModel.fromJson(exercise))
-    //         .toList());
+        exercises: savedJsonWorkoutState['exercises']
+            .map<NewExerciseModel2>((exerciseMap) {
+          return NewExerciseModel2.fromMap(map: exerciseMap);
+        }).toList()
+    );
 
     emit(loadedState);
   }
@@ -269,7 +269,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
 
       // if we've already fetched and loaded in the movement names
       // the LoadedActiveWorkoutState can be emitted
-      if (currentState.exercises[0].movementName != null) {
+      if (currentState.exercises[0].movementName != '') {
         List<GeneralWorkoutPageExerciseModel> exercisesWithExerciseSets = [];
 
         for (SelectedWorkoutIntermittentExerciseModel exercise

@@ -26,7 +26,7 @@ class SaveErrorStateCubit extends Cubit<SaveErrorStateState> {
     print('saved at ${errorStateFile.path}');
   }
 
-  loadErrorState() async {
+  loadErroredWorkoutToState() async {
     Directory rootDirectory = await getApplicationDocumentsDirectory();
 
     Directory errorStateDirectory =

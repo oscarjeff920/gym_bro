@@ -54,9 +54,8 @@ class GeneralWorkoutPageExerciseModel {
       'exerciseOrder': exerciseOrder,
       'exerciseDuration': exerciseDuration,
       'numWorkingSets': numWorkingSets,
+      'workedMuscleGroups': workedMuscleGroups.toMap(),
       'movementName': movementName,
-      'primaryMuscleGroup':
-          workedMuscleGroups.returnPrimaryMuscleGroups().first.name,
       'exerciseSets':
           exerciseSets.map((exerciseSet) => exerciseSet.toMap()).toList()
     };
@@ -113,21 +112,6 @@ class GeneralWorkoutPageExerciseModel {
 // to GeneralWorkoutPageExerciseModel
 class SelectedWorkoutIntermittentExerciseModel
     extends GeneralWorkoutPageExerciseModel {
-  // // db table fields
-  // final int id;
-  // final int workoutId;
-  // final int movementId;
-  // final int exerciseOrder;
-  // final String? exerciseDuration; // nullable as we're not enforcing recording
-  // final int numWorkingSets;
-  //
-  // // fetched fields
-  // final MovementWorkedMuscleGroupsType workedMuscleGroups;
-  //
-  // // additional fields
-  // final String? movementName;
-  // final List<GeneralExerciseSetModel> exerciseSets;
-
   SelectedWorkoutIntermittentExerciseModel({
     required int id,
     required int workoutId,
@@ -341,6 +325,21 @@ class NewExerciseModel2 extends GeneralWorkoutPageExerciseModel {
         exerciseSets: exerciseSets ?? currentModel.exerciseSets);
 
     return generatedModel;
+  }
+
+  factory NewExerciseModel2.fromMap({required Map<String, dynamic> map}) {
+    NewExerciseModel2 regeneratedModel = NewExerciseModel2(
+      movementId: map['movementId'],
+        exerciseOrder: map['exerciseOrder'],
+        numWorkingSets: map['numWorkingSets'],
+        workedMuscleGroups: MovementWorkedMuscleGroupsType.fromMap(map: map['workedMuscleGroups']),
+        movementName: map['movementName'],
+        exerciseSets: map['exerciseSets'].map<GeneralExerciseSetModel>((exerciseSetMap) {
+          return GeneralExerciseSetModel.fromMap(map: exerciseSetMap);
+        }).toList()
+    );
+
+    return regeneratedModel;
   }
 }
 

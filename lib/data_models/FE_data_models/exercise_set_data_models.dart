@@ -12,15 +12,16 @@ class GeneralExerciseSetModel {
   final String? setDuration;
   final String? notes;
 
-  GeneralExerciseSetModel({this.id,
-    this.exerciseId,
-    required this.exerciseSetOrder,
-    required this.isWarmUp,
-    required this.weight,
-    required this.reps,
-    required this.extraReps,
-    required this.setDuration,
-    this.notes});
+  GeneralExerciseSetModel(
+      {this.id,
+      this.exerciseId,
+      required this.exerciseSetOrder,
+      required this.isWarmUp,
+      required this.weight,
+      required this.reps,
+      required this.extraReps,
+      required this.setDuration,
+      this.notes});
 
   factory GeneralExerciseSetModel.fromExerciseSetTable(
       ExerciseSetTable exerciseSet) {
@@ -38,9 +39,25 @@ class GeneralExerciseSetModel {
     return convertedModel;
   }
 
-  factory GeneralExerciseSetModel.fromSetsObject({required Sets exerciseSet, required int setOrder}) {
+  factory GeneralExerciseSetModel.fromMap({required Map<String, dynamic> map}) {
+    GeneralExerciseSetModel regeneratedModel = GeneralExerciseSetModel(
+        id: map['id'],
+        exerciseId: map['exerciseId'],
+        exerciseSetOrder: map['exerciseSetOrder'],
+        isWarmUp: map['isWarmUp'],
+        weight: map['weight'],
+        reps: map['reps'],
+        extraReps: map['extraReps'],
+        setDuration: map['setDuration'],
+        notes: map['notes']);
+
+    return regeneratedModel;
+  }
+
+  factory GeneralExerciseSetModel.fromSetsObject(
+      {required Sets exerciseSet, required int setOrder}) {
     GeneralExerciseSetModel convertedModel = GeneralExerciseSetModel(
-      id: null,
+        id: null,
         exerciseId: null,
         exerciseSetOrder: setOrder,
         isWarmUp: exerciseSet.isWarmUp,
@@ -48,8 +65,7 @@ class GeneralExerciseSetModel {
         reps: exerciseSet.reps,
         extraReps: exerciseSet.extraReps,
         setDuration: exerciseSet.setDuration.toString(),
-      notes: exerciseSet.notes
-    );
+        notes: exerciseSet.notes);
 
     return convertedModel;
   }
@@ -83,14 +99,15 @@ class LoadedExerciseSetModel {
   final String? setDuration;
   final String? notes;
 
-  LoadedExerciseSetModel({required this.id,
-    required this.exerciseSetOrder,
-    required this.isWarmUp,
-    required this.weight,
-    required this.reps,
-    required this.extraReps,
-    required this.setDuration,
-    required this.notes});
+  LoadedExerciseSetModel(
+      {required this.id,
+      required this.exerciseSetOrder,
+      required this.isWarmUp,
+      required this.weight,
+      required this.reps,
+      required this.extraReps,
+      required this.setDuration,
+      required this.notes});
 
   factory LoadedExerciseSetModel.fromMap(Map<String, dynamic> map) {
     return LoadedExerciseSetModel(
@@ -128,13 +145,14 @@ class NewExerciseSetModel {
   final String? setDuration;
   final String? notes;
 
-  NewExerciseSetModel({required this.exerciseSetOrder,
-    required this.isWarmUp,
-    required this.weight,
-    required this.reps,
-    required this.extraReps,
-    required this.setDuration,
-    required this.notes});
+  NewExerciseSetModel(
+      {required this.exerciseSetOrder,
+      required this.isWarmUp,
+      required this.weight,
+      required this.reps,
+      required this.extraReps,
+      required this.setDuration,
+      required this.notes});
 
   GeneralExerciseSetModel transformToGeneralModel() {
     GeneralExerciseSetModel convertedModel = GeneralExerciseSetModel(
