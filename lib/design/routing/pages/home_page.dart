@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
     // displaying any changes that may've been made / new completed workouts, instead of just when the app started up
     BlocProvider.of<WorkoutTableOperationsBloc>(context)
         .add(QueryAllWorkoutTableEvent());
-    // TODO: this doesnt work for some reason
+    // TODO: this doesn't work for some reason
     BlocProvider.of<OpenExerciseModalCubit>(context).closeExerciseModal();
     return MultiBlocListener(
       listeners: homePageStateListeners(context),
@@ -118,18 +118,6 @@ class HomePage extends StatelessWidget {
         },
         listenWhen: (previousState, state) => previousState != state,
       ),
-      // BlocListener<ExerciseSetTableOperationsBloc,
-      //     ExerciseSetTableOperationsState>(
-      //   listener: (context, state) {
-      //     switch (state) {
-      //       // once the exerciseSets have been queried for an exercise
-      //       // the exerciseSets are attached to each exercise and attached to the workout
-      //       case ExerciseSetTableSuccessfulQueryAllByExerciseIdState():
-      //         BlocProvider.of<ActiveWorkoutCubit>(context)
-      //             .loadCompleteWorkoutToState(state.completeWorkout);
-      //     }
-      //   },
-      // ),
       BlocListener<BackupCurrentWorkoutCubit, BackupCurrentWorkoutState>(
           listener: (context, state) {
         if (state.backupWorkoutData.isNotEmpty) {
