@@ -13,31 +13,36 @@ class ActiveWorkoutOnState extends ActiveWorkoutState {
   final String? workoutStartTime;
   final String? workoutDuration;
 
-  ActiveWorkoutOnState(
-      {required this.day, required this.month, required this.year, this.workoutStartTime, this.workoutDuration});
+  ActiveWorkoutOnState({
+    required this.day,
+    required this.month,
+    required this.year,
+    this.workoutStartTime,
+    this.workoutDuration,
+  });
 
   @override
-  List<Object?> get props => [day, month, year, workoutStartTime, workoutDuration];
+  List<Object?> get props =>
+      [day, month, year, workoutStartTime, workoutDuration];
 }
 
 class NewActiveWorkoutState extends ActiveWorkoutOnState {
   final List<NewExerciseModel> exercises;
 
-  NewActiveWorkoutState({
-    required super.day,
-    required super.month,
-    required super.year,
-    super.workoutStartTime,
-    super.workoutDuration,
-    required this.exercises
-  });
+  NewActiveWorkoutState(
+      {required super.day,
+      required super.month,
+      required super.year,
+      super.workoutStartTime,
+      super.workoutDuration,
+      required this.exercises});
 
-  NewActiveWorkoutState copyWith({
-    String? workoutDuration,
-    List<NewExerciseModel>? newExercises
-  }) {
+  factory NewActiveWorkoutState.copyWith(
+      {required NewActiveWorkoutState currentState,
+      String? workoutDuration,
+      List<NewExerciseModel>? newExercises}) {
     List<NewExerciseModel> savedExercises = [];
-    for (var exercise in exercises) {
+    for (var exercise in currentState.exercises) {
       savedExercises.add(exercise);
     }
     if (newExercises != null) {
@@ -46,58 +51,97 @@ class NewActiveWorkoutState extends ActiveWorkoutOnState {
       }
     }
     return NewActiveWorkoutState(
-        day: day,
-        month: month,
-        year: year,
-        workoutStartTime: workoutStartTime,
-        workoutDuration: workoutDuration ?? this.workoutDuration,
-        exercises: savedExercises
-    );
+        day: currentState.day,
+        month: currentState.month,
+        year: currentState.year,
+        workoutStartTime: currentState.workoutStartTime,
+        workoutDuration: workoutDuration ?? currentState.workoutDuration,
+        exercises: savedExercises);
   }
 
   newWorkoutToMap() {
-      Map<String, dynamic> modelAsMap = {
-        'day': day,
-        'month': month,
-        'year': year,
-        'workoutStartTime': workoutStartTime,
-        'workoutDuration': workoutDuration,
-        'exercises': exercises.map((exercise) => exercise.toMap()).toList()
-      };
+    Map<String, dynamic> modelAsMap = {
+      'day': day,
+      'month': month,
+      'year': year,
+      'workoutStartTime': workoutStartTime,
+      'workoutDuration': workoutDuration,
+      'exercises': exercises.map((exercise) => exercise.toMap()).toList()
+    };
 
-      return modelAsMap;
-    }
+    return modelAsMap;
+  }
 
   @override
   List<Object?> get props => [...super.props, workoutDuration, exercises];
 }
 
+// this state is emitted while the exercise names and sets are fetched
+// between the home and workout page
+class LoadingActiveWorkoutState extends ActiveWorkoutOnState {
+  final int id;
+  final List<SelectedWorkoutIntermittentExerciseModel> exercises;
+
+  LoadingActiveWorkoutState(
+      {required this.id,
+      required super.day,
+      required super.month,
+      required super.year,
+      required super.workoutStartTime,
+      required super.workoutDuration,
+      required this.exercises});
+
+  LoadingActiveWorkoutState copyWith(
+      {int? newId,
+      int? newDay,
+      int? newMonth,
+      int? newYear,
+      String? newWorkoutStartTime,
+      String? newWorkoutDuration,
+      List<SelectedWorkoutIntermittentExerciseModel>? loadedExercises}) {
+    return LoadingActiveWorkoutState(
+        id: newId ?? id,
+        day: newDay ?? day,
+        month: newMonth ?? month,
+        year: newYear ?? year,
+        workoutStartTime: newWorkoutStartTime ?? workoutStartTime,
+        workoutDuration: newWorkoutDuration ?? workoutDuration,
+        exercises: loadedExercises ?? exercises);
+  }
+
+  @override
+  List<Object?> get props => [id, ...super.props, workoutDuration, exercises];
+}
+
 class LoadedActiveWorkoutState extends ActiveWorkoutOnState {
   final int id;
-  final List<LoadedExerciseModel> exercises;
+  final List<GeneralWorkoutPageExerciseModel> exercises;
 
-  LoadedActiveWorkoutState({
-    required this.id,
-    required super.day,
-    required super.month,
-    required super.year,
-    required super.workoutStartTime,
-    required super.workoutDuration,
-    required this.exercises
-  });
+  LoadedActiveWorkoutState(
+      {required this.id,
+      required super.day,
+      required super.month,
+      required super.year,
+      required super.workoutStartTime,
+      required super.workoutDuration,
+      required this.exercises});
 
-  LoadedActiveWorkoutState copyWith({
-    List<LoadedExerciseModel>? loadedExercises
-  }) {
+  LoadedActiveWorkoutState copyWith(
+      {int? newId,
+      int? newDay,
+      int? newMonth,
+      int? newYear,
+      String? newWorkoutStartTime,
+      String? newWorkoutDuration,
+      List<GeneralWorkoutPageExerciseModel>? loadedExercises}) {
     return LoadedActiveWorkoutState(
-        id: id,
-        day: day,
-        month: month,
-        year: year,
-        workoutStartTime: workoutStartTime,
-        workoutDuration: workoutDuration,
-        exercises: loadedExercises ?? exercises
-    );
+        id: newId ?? id,
+        day: newDay ?? day,
+        month: newMonth ?? month,
+        year: newYear ?? year,
+        workoutStartTime: newWorkoutStartTime ?? workoutStartTime,
+        workoutDuration: newWorkoutDuration ?? workoutDuration,
+        exercises: loadedExercises ?? exercises);
   }
 
   @override

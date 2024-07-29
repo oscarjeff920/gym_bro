@@ -41,7 +41,7 @@ class ExerciseSelectorContainer extends StatelessWidget {
               List<MovementMuscleGroupJoin> dropdownList = [];
               switch (state) {
                 case MovementGetByMuscleGroupSuccessfulQueryState():
-                  dropdownList = state.queryResponse;
+                  dropdownList = state.fetchedMovementsList;
               }
               return AnimatedOpacity(
                 duration: const Duration(milliseconds: 500),

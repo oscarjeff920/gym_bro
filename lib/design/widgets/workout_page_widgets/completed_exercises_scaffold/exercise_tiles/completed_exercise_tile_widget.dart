@@ -8,7 +8,7 @@ import 'exercise_tile_base_widget.dart';
 
 class CompletedExerciseTile extends StatelessWidget {
   final Color primaryMuscleGroupColour;
-  final GeneralExerciseModel exercise;
+  final GeneralWorkoutPageExerciseModel exercise;
   final int tileIndex;
 
   final double tileSpacingValue;
@@ -32,7 +32,7 @@ class CompletedExerciseTile extends StatelessWidget {
           children: [
             Expanded(
                 flex: 2,
-                child: Text(capitalizeString(exercise.movementName),
+                child: Text(capitalizeString(exercise.movementName ?? ""),
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -60,10 +60,12 @@ class CompletedExerciseTile extends StatelessWidget {
 
 String capitalizeString(String string) {
   String capitalizedString = "";
+  if (string == "") return "";
   List<String> stringSplit = string.trim().split(" ");
 
   for (var string_ in stringSplit) {
-    capitalizedString += "${string_[0].toUpperCase()}${string_.substring(1)} ";
+    capitalizedString +=
+        "${string_[0].toUpperCase()}${string_.substring(1)} ";
   }
 
   return capitalizedString;

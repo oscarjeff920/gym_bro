@@ -19,8 +19,10 @@ import 'data_models/database_data_models/tables/exercise/exercise_repository.dar
 import 'data_models/database_data_models/tables/workout/workout_repository.dart';
 import 'state_management/blocs/database_tables/exercise/exercise_table_operations_bloc.dart';
 import 'state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_bloc.dart';
+import 'state_management/blocs/database_tables/movement/get_movement_name_by_id/movement_get_name_by_id_bloc.dart';
 import 'state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
 import 'state_management/cubits/backup_current_workout_cubit/backup_current_workout_cubit.dart';
+import 'state_management/cubits/toggle_workout_week_widget_cubit/toggle_workout_week_widget_cubit.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,28 +43,34 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        // Workout Table Blocs
+        // Workout Table BLoCs
         BlocProvider(
             create: (context) => WorkoutTableOperationsBloc(
                 workoutRepository: WorkoutRepository(databaseHelper))),
-        // Muscle Group Table Blocs
+        // Muscle Group Table BLoCs
         BlocProvider(
             create: (context) => MovementByMuscleGroupBloc(
                 movementRepository: MovementRepository(databaseHelper))),
-        // Exercise Table Blocs
+        // Exercise Table BLoCs
         BlocProvider(
             create: (context) => ExerciseTableOperationsBloc(
                 exerciseRepository: ExerciseRepository(databaseHelper))),
-        // Exercise Set Table Blocs
+        // Exercise Set Table BLoCs
         BlocProvider(
             create: (context) => ExerciseSetTableOperationsBloc(
                 exerciseSetRepository: ExerciseSetRepository(databaseHelper))),
         BlocProvider(
             create: (context) => GetLastExerciseSetsByMovementBloc(
                 exerciseSetRepository: ExerciseSetRepository(databaseHelper))),
+        // Movement Table BLoCs
+        BlocProvider(
+            create: (context) => MovementGetNameByIdBloc(
+                movementRepository: MovementRepository(databaseHelper))),
+
         BlocProvider(create: (context) => ActiveWorkoutCubit()),
         BlocProvider(create: (context) => OpenExerciseModalCubit()),
         BlocProvider(create: (context) => AddExerciseCubit()),
+        BlocProvider(create: (context) => ToggleWorkoutWeekWidgetCubit()),
         BlocProvider(create: (context) => SetTimerCubit()),
         BlocProvider(create: (context) => WorkoutTimerCubit()),
         BlocProvider(create: (context) => DisplayPrCubit()),

@@ -60,10 +60,15 @@ class ExerciseDropdownMenu extends StatelessWidget {
 
                 if (value == addMovementValue) {
                   movementId = null;
+                  // TODO: is this necessary?
                   BlocProvider.of<AddExerciseCubit>(context)
                       .selectMuscleGroup(selectedMuscleGroup!);
+
+                  // TODO: this also confuses me...
                   BlocProvider.of<GetLastExerciseSetsByMovementBloc>(context)
                       .add(ResetGetLastExerciseSetsByMovementEvent());
+
+
                   BlocProvider.of<AddNewMovementCubit>(context)
                       .openAddNewMovementExpansionPanel();
                 } else {

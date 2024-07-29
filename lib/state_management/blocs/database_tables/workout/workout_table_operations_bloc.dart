@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_repository.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_state.dart';
@@ -25,7 +26,9 @@ class WorkoutTableOperationsBloc
     yield WorkoutTableQueryState();
     try {
       // movementRepository.inspectSchema();
-      var query = await workoutRepository.getAllWorkouts();
+      Map<DateTime, Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>> query =
+          await workoutRepository.retrieveWorkoutsAndGroupByWeek(
+              limit: 100, offset: 0);
       yield WorkoutTableSuccessfulQueryAllState(allWorkoutsQuery: query);
     } catch (e) {
       print("Whoops.. we've got reached a WorkoutTableQueryErrorState\n$e");
@@ -36,6 +39,7 @@ class WorkoutTableOperationsBloc
   Stream<WorkoutTableOperationsState> _mapInsertContextsToState(event) async* {
     yield WorkoutTableInsertState();
     try {
+      // TODO: ENABLE
       await workoutRepository.insertNewFullWorkout(event.newWorkout);
       yield WorkoutTableSuccessfulNewWorkoutInsertState();
     } catch (e) {

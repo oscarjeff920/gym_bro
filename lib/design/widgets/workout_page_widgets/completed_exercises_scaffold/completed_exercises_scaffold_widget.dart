@@ -11,7 +11,7 @@ import 'finish_workout_button_widget.dart';
 
 class CompletedExercisesScaffold extends StatelessWidget {
   final double tileSpacingValue;
-  final List<GeneralExerciseModel> exercises;
+  final List<GeneralWorkoutPageExerciseModel> exercises;
   final bool isCurrentWorkout;
 
   const CompletedExercisesScaffold({
@@ -38,13 +38,20 @@ class CompletedExercisesScaffold extends StatelessWidget {
                     return AddNewExerciseTile(
                         tileSpacingValue: tileSpacingValue);
                   } else {
-                    return CompletedExerciseTile(
-                      tileIndex: index,
-                      primaryMuscleGroupColour: muscleGroupColours[
-                          exercises[isCurrentWorkout ? index - 1 : index]
-                              .primaryMuscleGroup]!,
-                      tileSpacingValue: tileSpacingValue,
-                      exercise: exercises[isCurrentWorkout ? index - 1 : index],
+                    return AnimatedContainer(
+                      width: exercises.isEmpty ? 1 : null,
+                      height: exercises.isEmpty ? 0 : null,
+                      duration: const Duration(seconds: 1),
+                      child: CompletedExerciseTile(
+                        tileIndex: index,
+                        primaryMuscleGroupColour: muscleGroupColours[
+                            exercises[isCurrentWorkout ? index - 1 : index]
+                                .workedMuscleGroups
+                                .returnPrimaryMuscleGroups()
+                                .first]!,
+                        tileSpacingValue: tileSpacingValue,
+                        exercise: exercises[isCurrentWorkout ? index - 1 : index],
+                      ),
                     );
                   }
                 },

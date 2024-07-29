@@ -27,10 +27,10 @@ class ExerciseTableOperationsBloc
     try {
       // movementRepository.inspectSchema();
       var query = await exerciseRepository
-          .getAllExercisesByWorkoutId(event.selectedWorkout.id!);
+          .getAllExercisesByWorkoutId(event.selectedWorkout.id);
       yield ExerciseTableSuccessfulQueryAllByWorkoutIdState(
           selectedWorkout: LoadedWorkoutModel(
-              id: event.selectedWorkout.id!,
+              id: event.selectedWorkout.id,
               day: event.selectedWorkout.day,
               month: event.selectedWorkout.month,
               year: event.selectedWorkout.year,

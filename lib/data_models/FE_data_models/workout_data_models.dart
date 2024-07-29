@@ -1,3 +1,5 @@
+import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
+
 import 'exercise_data_models.dart';
 
 class GeneralWorkoutModel {
@@ -30,10 +32,23 @@ class LoadedWorkoutModel extends GeneralWorkoutModel {
       required super.workoutStartTime,
       required super.workoutDuration,
       required this.exercises});
+
+  factory LoadedWorkoutModel.fromTableModel(WorkoutTable tableObj,
+      {List<LoadedExerciseModel> exercises = const []}) {
+    LoadedWorkoutModel generatedModel = LoadedWorkoutModel(
+        id: tableObj.id!,
+        day: tableObj.day,
+        month: tableObj.month,
+        year: tableObj.year,
+        workoutStartTime: tableObj.workoutStartTime,
+        workoutDuration: tableObj.duration ?? "- - - -",
+        exercises: exercises);
+    return generatedModel;
+  }
 }
 
 class NewWorkoutModel extends GeneralWorkoutModel {
-  final List<NewExerciseModel> exercises;
+  final List<GeneralWorkoutPageExerciseModel> exercises;
 
   NewWorkoutModel(
       {required super.day,

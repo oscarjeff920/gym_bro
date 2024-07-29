@@ -1,5 +1,9 @@
+import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
+
+// Model to track 1-to-1 to database table
 class WorkoutTable {
-  final int? id;
+  final int id;
   final int year;
   final int month;
   final int day;
@@ -26,6 +30,51 @@ class WorkoutTable {
   }
 
   Map<String, dynamic> toMap() {
-    return {'year': year, 'month': month, 'day': day, 'workout_start_time': workoutStartTime, 'duration': duration};
+    return {
+      'year': year,
+      'month': month,
+      'day': day,
+      'workout_start_time': workoutStartTime,
+      'duration': duration
+    };
   }
 }
+
+class WorkoutTableWithExercises extends WorkoutTable {
+  final List<ExerciseTable> exercises;
+
+  WorkoutTableWithExercises(
+      {required super.id,
+      required super.year,
+      required super.month,
+      required super.day,
+      required super.workoutStartTime,
+      required super.duration,
+      required this.exercises});
+}
+
+// ======================================================
+
+class WorkoutTableWithExercisesWorkedMuscleGroups extends WorkoutTable {
+  final List<ExerciseTableWithWorkedMuscleGroups> exercises;
+
+  WorkoutTableWithExercisesWorkedMuscleGroups(
+      {required super.id,
+        required super.year,
+        required super.month,
+        required super.day,
+        required super.workoutStartTime,
+        required super.duration,
+        required this.exercises});
+
+
+  int getNumWorkingSetsPerMuscleInWorkout(MuscleGroupType muscleGroup) {
+    int totalSets = 0;
+    for (ExerciseTableWithWorkedMuscleGroups exercise in exercises) {
+      totalSets += exercise.getWorkingSetsPerMuscleGroup(muscleGroup);
+    }
+    return totalSets;
+  }
+
+}
+

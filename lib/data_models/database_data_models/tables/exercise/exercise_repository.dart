@@ -15,6 +15,7 @@ class ExerciseRepository {
     String dbQuery = """
     SELECT
       $exerciseTableName.id AS id,
+      $exerciseTableName.workout_id as workout_id,
       $exerciseTableName.exercise_order AS exercise_order,
       $movementTableName.name AS movement_name,
       $exerciseTableName.movement_id AS movement_id,
@@ -32,7 +33,7 @@ class ExerciseRepository {
     final List<Map<String, dynamic>> allExercises = await db.rawQuery(dbQuery);
 
     return allExercises
-        .map((exercise) => LoadedExerciseModel.fromMap(exercise))
+        .map((exercise) => LoadedExerciseModel.fromDbQueryMap(exercise))
         .toList();
   }
 

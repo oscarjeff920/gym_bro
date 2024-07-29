@@ -1,5 +1,6 @@
 import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/database_data_models/joined_tables/movement_muscle_group_join_object.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:gym_bro/database/database_connector.dart';
 import 'package:sqflite/sqflite.dart';
@@ -29,7 +30,38 @@ class MovementRepository {
     }
   }
 
-  Future<List<MovementMuscleGroupJoin>> getAllMovementsByMuscleGroup(
+  getMovementNameById(int movementId) async {
+    final db = await databaseHelper.database;
+
+    String queryMovementNameByIdString = """
+    SELECT name FROM $movementTableName
+    WHERE id = $movementId;
+    """;
+
+    final List<Map<String, dynamic>> movementNames = await db.rawQuery(
+        queryMovementNameByIdString
+    );
+
+    Map<String, dynamic>? movementName = movementNames.singleOrNull;
+
+    if (movementName == null) throw Error();
+
+    return movementName['name'];
+  }
+
+  fetchAndIndexMovementNameById(List<ExerciseTableWithWorkedMuscleGroups> namelessExercises) async {
+    Map<int, String> exerciseNameIndex = {};
+
+    for (ExerciseTableWithWorkedMuscleGroups exercise in namelessExercises) {
+      String movementName = await getMovementNameById(exercise.movementId);
+
+      exerciseNameIndex[exercise.movementId] = movementName;
+    }
+
+    return exerciseNameIndex;
+  }
+
+  Future<List<MovementMuscleGroupJoin>> getAllMovementsByPrimaryMuscleGroup(
       MuscleGroupType selectedMuscleGroup) async {
     final db = await databaseHelper.database;
 

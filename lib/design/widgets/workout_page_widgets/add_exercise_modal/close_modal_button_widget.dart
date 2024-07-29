@@ -29,8 +29,9 @@ class CloseModalButton extends StatelessWidget {
           return IconButton(
               onPressed: () {
                 if (state.setsDone.isNotEmpty && isFinished) {
+                  print("yoop");
                   BlocProvider.of<ActiveWorkoutCubit>(context)
-                      .addNewExerciseToWorkoutState(state);
+                      .saveFinishedExerciseToWorkoutState(state);
                 }
 
                 BlocProvider.of<MovementByMuscleGroupBloc>(context).add(ResetMovementByMuscleGroupEvent());

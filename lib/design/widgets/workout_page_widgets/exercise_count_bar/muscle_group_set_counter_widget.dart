@@ -5,8 +5,8 @@ import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
 
-import '../../../../state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
-import '../../../../state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
+import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
+import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
 
 class MuscleGroupSetCounter extends StatelessWidget {
   final MuscleGroupType muscleGroup;
@@ -19,95 +19,96 @@ class MuscleGroupSetCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
-      builder: (context, state) {
-        int primaryMuscleSets = 0;
-        int secondaryMuscleSets = 0;
+        builder: (context, state) {
+      int primaryMuscleSets = 0;
+      int secondaryMuscleSets = 0;
 
-        switch (state) {
-          case LoadedActiveWorkoutState():
-            List<LoadedExerciseModel> savedExercises = state.exercises;
+      switch (state) {
+        case ActiveWorkoutOnState():
+          dynamic savedExercises = [];
+          if (state is LoadingActiveWorkoutState) {
+            savedExercises = state.exercises;
+          } else if (state is LoadedActiveWorkoutState) {
+            savedExercises = state.exercises;
+          } else if (state is NewActiveWorkoutState) {
+            savedExercises = state.exercises;
+          }
 
-            for (var exercise in savedExercises) {
-              if (exercise.primaryMuscleGroup == muscleGroup) {
-                primaryMuscleSets += exercise.numWorkingSets;
-              }
+          for (GeneralWorkoutPageExerciseModel exercise in savedExercises) {
+            if (exercise.workedMuscleGroups.returnPrimaryMuscleGroups().contains(muscleGroup)) {
+              primaryMuscleSets += exercise.getWorkingSetsPerMuscleGroup(muscleGroup);
+            } else if (exercise.workedMuscleGroups
+                .returnSecondaryMuscleGroups()
+                .contains(muscleGroup)) {
+              secondaryMuscleSets += exercise.getWorkingSetsPerMuscleGroup(muscleGroup);
             }
-          case NewActiveWorkoutState():
-            List<NewExerciseModel> savedExercises = state.exercises;
+          }
+      }
 
-            for (var exercise in savedExercises) {
-              if (exercise.primaryMuscleGroup == muscleGroup) {
-                primaryMuscleSets += exercise.numWorkingSets!;
-              }
-            }
-        }
+      double totalWidth = 60;
 
-        double totalWidth = 60;
-
-        return BlocBuilder<AddExerciseCubit, AddExerciseState>(
-          builder: (context, state) {
-            return SizedBox(
-              height: 65,
-              width: totalWidth,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                    child: MuscleIcon(
-                      muscleGroup: muscleGroup,
-                      selectedMuscleGroup: state.selectedMuscleGroup,
-                      iconSize: 34,
-                    ),
+      return BlocBuilder<AddExerciseCubit, AddExerciseState>(
+        builder: (context, state) {
+          return SizedBox(
+            height: 65,
+            width: totalWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: MuscleIcon(
+                    muscleGroup: muscleGroup,
+                    selectedMuscleGroup: state.selectedMuscleGroup,
+                    iconSize: 34,
                   ),
-                  // ),
-                  SizedBox(
-                    height: 30,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: (totalWidth / 2) - 3,
-                          child: PrimaryMuscleSetsText(
-                              textScaleFactor: 1.5,
-                              primaryMuscleSets: primaryMuscleSets,
-                              selectedMuscleGroup: state.selectedMuscleGroup,
-                              muscleGroup: muscleGroup),
-                        ),
-                        SizedBox(
-                          width: 5,
-                          child: Text(
-                            "|",
+                ),
+                // ),
+                SizedBox(
+                  height: 30,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: (totalWidth / 2) - 3,
+                        child: PrimaryMuscleSetsText(
                             textScaleFactor: 1.5,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: state.selectedMuscleGroup == null ||
-                                      state.selectedMuscleGroup ==
-                                          muscleGroup
-                                  ? Colors.black
-                                  : Colors.grey,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: (totalWidth / 2) - 3,
-                          child: SecondaryMuscleSetsText(
-                            textScaleFactor: 1.0,
-                            secondaryMuscleSets: secondaryMuscleSets,
-                            muscleGroup: muscleGroup,
+                            primaryMuscleSets: primaryMuscleSets,
                             selectedMuscleGroup: state.selectedMuscleGroup,
+                            muscleGroup: muscleGroup),
+                      ),
+                      SizedBox(
+                        width: 5,
+                        child: Text(
+                          "|",
+                          textScaleFactor: 1.5,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: state.selectedMuscleGroup == null ||
+                                    state.selectedMuscleGroup == muscleGroup
+                                ? Colors.black
+                                : Colors.grey,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        width: (totalWidth / 2) - 3,
+                        child: SecondaryMuscleSetsText(
+                          textScaleFactor: 1.0,
+                          secondaryMuscleSets: secondaryMuscleSets,
+                          muscleGroup: muscleGroup,
+                          selectedMuscleGroup: state.selectedMuscleGroup,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    });
   }
 }
 

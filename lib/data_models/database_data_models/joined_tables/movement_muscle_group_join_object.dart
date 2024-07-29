@@ -1,5 +1,6 @@
 import 'package:gym_bro/constants/enums.dart';
 
+// TODO: add all worked muscle groups.
 class MovementMuscleGroupJoin {
   final int? movementId;
   final String movementName;

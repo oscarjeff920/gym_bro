@@ -27,9 +27,9 @@ class MovementByMuscleGroupBloc
     yield MovementGetByMuscleGroupQueryState();
     try {
       // movementRepository.inspectSchema();
-      var query = await movementRepository.getAllMovementsByMuscleGroup(
+      var query = await movementRepository.getAllMovementsByPrimaryMuscleGroup(
           event.selectedMuscleGroup);
-      yield MovementGetByMuscleGroupSuccessfulQueryState(queryResponse: query);
+      yield MovementGetByMuscleGroupSuccessfulQueryState(fetchedMovementsList: query);
     }
     catch (e) {
       print("error in MovementGetByMuscleGroupBloc: $e");

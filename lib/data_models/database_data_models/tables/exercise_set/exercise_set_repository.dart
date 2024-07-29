@@ -10,6 +10,7 @@ class ExerciseSetRepository {
 
   ExerciseSetRepository(this.databaseHelper);
 
+  // to display the sets from the most recent exercise of this movement
   Future<Map> getLatestExerciseSetsByMovement(int movementId) async {
     final db = await databaseHelper.database;
 

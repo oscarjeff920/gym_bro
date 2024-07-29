@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
+import 'package:flutter_bloc/src/bloc_listener.dart';
 import 'package:gym_bro/design/routing/debug_state_checker_widget.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_event.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_state.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_name_by_id/movement_get_name_by_id_bloc.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_name_by_id/movement_get_name_by_id_event.dart';
+import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_name_by_id/movement_get_name_by_id_state.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_state.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
@@ -25,125 +31,75 @@ class WorkoutOverviewPage extends StatelessWidget {
     // TODO: CHANGE!!!
     double tileSpacingValue = 12;
     return MultiBlocListener(
-      listeners: [
-        BlocListener<WorkoutTableOperationsBloc, WorkoutTableOperationsState>(
-          listener: (context, state) {
-            switch (state) {
-              case WorkoutTableSuccessfulInsertState():
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Center(
-                      child: Text(
-                        'Successfully Saved Workout!',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    backgroundColor: Colors.green,
-                  ),
-                );
-                BlocProvider.of<WorkoutTimerCubit>(context).resetTimer();
-                BlocProvider.of<ActiveWorkoutCubit>(context).resetState();
-                BlocProvider.of<BackupCurrentWorkoutCubit>(context)
-                    .clearBackedUpWorkout();
-                Navigator.of(context).pushNamed("/");
-              case WorkoutTableInsertErrorState():
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                        'An error occurred while adding workout to database:\n${state.error}'),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-                BlocProvider.of<SaveErrorStateCubit>(context)
-                    .writeErrorState(state.insertWorkout.toMap());
-            }
-          },
-        ),
-        BlocListener<ActiveWorkoutCubit, ActiveWorkoutState>(
-          listener: (context, state) {
-            if (state is NewActiveWorkoutState) {
-              BlocProvider.of<BackupCurrentWorkoutCubit>(context)
-                  .writeCurrentWorkoutState(state.newWorkoutToMap());
-            }
-          },
-        ),
-      ],
+      listeners: workoutPageStateListeners(),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: const TheAppBar(),
         body: BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
           builder: (context, state) {
-            int year = 0;
-            int month = 0;
-            int day = 0;
-            String? workoutDuration;
-            List<GeneralExerciseModel> exercises = [];
             switch (state) {
+              // this checks that there is a workout attached to the ActiveWorkoutState
               case ActiveWorkoutOnState():
-                year = state.year;
-                month = state.month;
-                day = state.day;
-                workoutDuration = state.workoutDuration;
-                switch (state) {
-                  case NewActiveWorkoutState():
-                    exercises = state.exercises
-                        .map((exercise) => exercise.transformToGeneralModel())
-                        .toList();
-                  case LoadedActiveWorkoutState():
-                    exercises = state.exercises
-                        .map((exercise) => exercise.transformToGeneralModel())
-                        .toList();
+                dynamic exercises = [];
+                if (state is LoadingActiveWorkoutState) {
+                  exercises = state.exercises;
+                } else if (state is LoadedActiveWorkoutState) {
+                  exercises = state.exercises;
+                } else if (state is NewActiveWorkoutState) {
+                  exercises = state.exercises;
                 }
-            }
-            return Column(children: [
-              Material(
-                  elevation: 2,
-                  child: WorkoutDateTimer(
-                    year: year,
-                    month: month,
-                    day: day,
-                    isLoadedWorkout: state is LoadedActiveWorkoutState,
-                    workoutDuration: workoutDuration,
-                  )),
-              Expanded(
-                child: Stack(children: [
-                  Positioned.fill(
-                      child: CompletedExercisesScaffold(
-                    tileSpacingValue: tileSpacingValue,
-                    exercises: exercises,
-                    isCurrentWorkout:
-                        state is NewActiveWorkoutState ? true : false,
-                  )),
-                  BlocBuilder<OpenExerciseModalCubit, OpenExerciseModalState>(
-                    builder: (context, state) {
-                      double fadedValue;
-                      switch (state) {
-                        case ExerciseModalOpenedState():
-                          fadedValue = 0.8;
-                        default:
-                          fadedValue = 0;
-                      }
-                      return IgnorePointer(
-                        child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 200),
-                            color: Colors.black.withOpacity(fadedValue)),
-                      );
-                    },
+
+                return Column(children: [
+                  Material(
+                      elevation: 2,
+                      child: WorkoutDateTimer(
+                        year: state.year,
+                        month: state.month,
+                        day: state.day,
+                        isLoadedWorkout: state is LoadedActiveWorkoutState,
+                        workoutDuration: state.workoutDuration,
+                      )),
+                  Expanded(
+                    child: Stack(children: [
+                      Positioned.fill(
+                          child: CompletedExercisesScaffold(
+                        tileSpacingValue: tileSpacingValue,
+                        exercises: exercises,
+                        isCurrentWorkout:
+                            state is NewActiveWorkoutState ? true : false,
+                      )),
+
+                      // This fades out the area around the add exercise modal
+                      // when its opened, to prevent other clicks
+                      BlocBuilder<OpenExerciseModalCubit,
+                          OpenExerciseModalState>(
+                        builder: (context, state) {
+                          double fadedValue;
+                          switch (state) {
+                            case ExerciseModalOpenedState():
+                              fadedValue = 0.8;
+                            default:
+                              fadedValue = 0;
+                          }
+                          return IgnorePointer(
+                            child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 200),
+                                color: Colors.black.withOpacity(fadedValue)),
+                          );
+                        },
+                      ),
+                      BlocBuilder<OpenExerciseModalCubit,
+                          OpenExerciseModalState>(builder: (context, state) {
+                        return AddExerciseModal(isOpen: state.isOpen);
+                      }),
+                    ]),
                   ),
-                  BlocBuilder<OpenExerciseModalCubit, OpenExerciseModalState>(
-                      builder: (context, state) {
-                    return IgnorePointer(
-                      ignoring: !state.isOpen,
-                      child: AnimatedOpacity(
-                          opacity: state.isOpen ? 1 : 0,
-                          duration: const Duration(milliseconds: 200),
-                          child: const AddExerciseModal()),
-                    );
-                  }),
-                ]),
-              ),
-              const ExerciseCountBar()
-            ]);
+                  const ExerciseCountBar()
+                ]);
+              default:
+                print("Redirecting to home page as state: $state does not match workout page.");
+                return const CircularProgressIndicator();
+            }
           },
         ),
 
@@ -151,5 +107,71 @@ class WorkoutOverviewPage extends StatelessWidget {
         floatingActionButton: false ? const DebugStateChecker() : null,
       ),
     );
+  }
+
+  List<BlocListenerSingleChildWidget> workoutPageStateListeners() {
+    return [
+      BlocListener<WorkoutTableOperationsBloc, WorkoutTableOperationsState>(
+        listener: (context, state) {
+          switch (state) {
+            case WorkoutTableSuccessfulInsertState():
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Center(
+                    child: Text(
+                      'Successfully Saved Workout!',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  backgroundColor: Colors.green,
+                ),
+              );
+              Navigator.of(context).pushNamed("/");
+              BlocProvider.of<WorkoutTimerCubit>(context).resetTimer();
+              BlocProvider.of<ActiveWorkoutCubit>(context).resetState();
+              BlocProvider.of<BackupCurrentWorkoutCubit>(context)
+                  .clearBackedUpWorkout();
+            case WorkoutTableInsertErrorState():
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                      'An error occurred while adding workout to database:\n${state.error}'),
+                  backgroundColor: Colors.red,
+                ),
+              );
+              BlocProvider.of<SaveErrorStateCubit>(context)
+                  .writeErrorState(state.insertWorkout.toMap());
+          }
+        },
+      ),
+      BlocListener<ActiveWorkoutCubit, ActiveWorkoutState>(
+          listener: (context, state) {
+        switch (state) {
+          case NewActiveWorkoutState():
+            BlocProvider.of<BackupCurrentWorkoutCubit>(context)
+                .writeCurrentWorkoutState(state.newWorkoutToMap());
+        }
+      }),
+      BlocListener<MovementGetNameByIdBloc, MovementGetNameByIdState>(
+          listener: (context, state) {
+        switch (state) {
+          case MovementGetNameByIdSuccessfulQueryState():
+            BlocProvider.of<ActiveWorkoutCubit>(context)
+                .loadExerciseNamesToState(state.exerciseMovementNameIndex);
+            BlocProvider.of<MovementGetNameByIdBloc>(context)
+                .add(ResetMovementGetNameByIdEvent());
+        }
+      }),
+      BlocListener<ExerciseSetTableOperationsBloc,
+          ExerciseSetTableOperationsState>(listener: (context, state) {
+        switch (state) {
+          case ExerciseSetTableSuccessfulQueryAllByExerciseIdState():
+            BlocProvider.of<ActiveWorkoutCubit>(context)
+                .loadExerciseSetsToState(state.exerciseSetsExerciseIndex);
+            BlocProvider.of<ExerciseSetTableOperationsBloc>(context)
+                .add(ResetExerciseSetQueryEvent());
+        }
+      }),
+    ];
   }
 }
