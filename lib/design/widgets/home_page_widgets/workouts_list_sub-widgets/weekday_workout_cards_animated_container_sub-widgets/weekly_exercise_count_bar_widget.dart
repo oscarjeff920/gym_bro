@@ -13,6 +13,7 @@ class WeeklyExerciseCountBar extends StatelessWidget {
   Widget build(BuildContext context) {
     double spacerWidth = 5;
     double spacerHeight = 25; //68;
+    Color dividerColour = Colors.black.withOpacity(0.4);
 
     return Material(
       elevation: 5,
@@ -26,85 +27,62 @@ class WeeklyExerciseCountBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
             WeeklyMuscleGroupSetCounter(
               muscleGroup: MuscleGroupType.chest,
               workoutsOfTheWeek: workoutsOfTheWeek,
             ),
-            SizedBox(
-              width: spacerWidth,
-              child: Center(
-                child: Container(
-                  width: 2,
-                  height: spacerHeight,
-                  color: Colors.black12,
-                ),
-              ),
-            ),
+            MuscleGroupDivider(spacerWidth: spacerWidth, spacerHeight: spacerHeight, dividerColour: dividerColour),
             WeeklyMuscleGroupSetCounter(
               muscleGroup: MuscleGroupType.shoulders,
               workoutsOfTheWeek: workoutsOfTheWeek,
             ),
-            SizedBox(
-              width: spacerWidth,
-              child: Center(
-                child: Container(
-                  width: 2,
-                  height: spacerHeight,
-                  color: Colors.black12,
-                ),
-              ),
-            ),
+            MuscleGroupDivider(spacerWidth: spacerWidth, spacerHeight: spacerHeight, dividerColour: dividerColour),
             WeeklyMuscleGroupSetCounter(
               muscleGroup: MuscleGroupType.biceps,
               workoutsOfTheWeek: workoutsOfTheWeek,
             ),
-            SizedBox(
-              width: spacerWidth,
-              child: Center(
-                child: Container(
-                  width: 2,
-                  height: spacerHeight,
-                  color: Colors.black12,
-                ),
-              ),
-            ),
+            MuscleGroupDivider(spacerWidth: spacerWidth, spacerHeight: spacerHeight, dividerColour: dividerColour),
             WeeklyMuscleGroupSetCounter(
               muscleGroup: MuscleGroupType.triceps,
               workoutsOfTheWeek: workoutsOfTheWeek,
             ),
-            SizedBox(
-              width: spacerWidth,
-              child: Center(
-                child: Container(
-                  width: 2,
-                  height: spacerHeight,
-                  color: Colors.black12,
-                ),
-              ),
-            ),
+            MuscleGroupDivider(spacerWidth: spacerWidth, spacerHeight: spacerHeight, dividerColour: dividerColour),
             WeeklyMuscleGroupSetCounter(
               muscleGroup: MuscleGroupType.back,
               workoutsOfTheWeek: workoutsOfTheWeek,
             ),
-            SizedBox(
-              width: spacerWidth,
-              child: Center(
-                child: Container(
-                  width: 2,
-                  height: spacerHeight,
-                  color: Colors.black12,
-                ),
-              ),
-            ),
+            MuscleGroupDivider(spacerWidth: spacerWidth, spacerHeight: spacerHeight, dividerColour: dividerColour),
             WeeklyMuscleGroupSetCounter(
               muscleGroup: MuscleGroupType.legs,
               workoutsOfTheWeek: workoutsOfTheWeek,
             ),
-            // SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
           ],
         ),
       ),
+    );
+  }
+}
+
+class MuscleGroupDivider extends StatelessWidget {
+  const MuscleGroupDivider({
+    super.key,
+    required this.spacerWidth,
+    required this.spacerHeight,
+    required this.dividerColour,
+  });
+
+  final double spacerWidth;
+  final double spacerHeight;
+  final Color dividerColour;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Container(
+          width: 2,
+          height: spacerHeight,
+          color: dividerColour,
+        ),
     );
   }
 }
