@@ -19,11 +19,20 @@ class WeeklyMuscleGroupSetCounter extends StatelessWidget {
             workout.getNumWorkingSetsPerMuscleInWorkout(muscleGroup);
       }
     }
+    Color containerColour;
+    if (muscleGroupWorkingSets < 10) {
+      containerColour = Colors.grey.withOpacity(0);
+    } else if (muscleGroupWorkingSets < 20) {
+      containerColour = muscleGroupColours[muscleGroup]!;
+    } else {
+      containerColour = Colors.white;
+    }
 
-    double totalWidth = 60;
-    return SizedBox(
+    double totalWidth = 63.3;
+    return Container(
       height: 25,
       width: totalWidth,
+      color: containerColour,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -64,15 +73,12 @@ class MuscleSetsText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color textColour;
+    Color textColour ;
     if (sets == 0) {
       textColour = Colors.grey;
-    } else if (sets < 10) {
+    }
+    else {
       textColour = Colors.black;
-    } else if (sets < 20) {
-      textColour = muscleGroupColours[muscleGroup]!;
-    } else {
-      textColour = Colors.white;
     }
     return Text(
       "$sets",
@@ -100,12 +106,9 @@ class MuscleIcon extends StatelessWidget {
     Color iconColour;
     if (totalWorkingSets == 0) {
       iconColour = Colors.grey;
-    } else if (totalWorkingSets < 10) {
+    }
+    else {
       iconColour = Colors.black;
-    } else if (totalWorkingSets < 20) {
-      iconColour = muscleGroupColours[muscleGroup]!;
-    } else {
-      iconColour = Colors.white;
     }
 
     return Icon(
