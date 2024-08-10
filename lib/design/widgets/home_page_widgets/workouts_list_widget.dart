@@ -11,13 +11,18 @@ import 'workouts_list_sub-widgets/weekday_workout_cards_animated_container_sub-w
 import 'workouts_list_sub-widgets/weekday_workout_cards_container_widget.dart';
 
 class WorkoutsList extends StatelessWidget {
-  final Map<DateTime, Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>> allWorkouts;
+  final Map<DateTime,
+      Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>> allWorkouts;
 
   const WorkoutsList({super.key, required this.allWorkouts});
 
+  static int initWeekBlockNumber = 8;
+
   @override
   Widget build(BuildContext context) {
-    final List<MapEntry<DateTime, Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>>>
+    final List<
+            MapEntry<DateTime,
+                Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>>>
         workoutMapEntries = allWorkouts.entries.toList();
     return BlocBuilder<ToggleWorkoutWeekWidgetCubit,
         ToggleWorkoutWeekWidgetState>(builder: (context, state) {
@@ -27,7 +32,9 @@ class WorkoutsList extends StatelessWidget {
       }
       return ListView.separated(
         padding: const EdgeInsets.all(10),
-        itemCount: workoutMapEntries.length,
+        itemCount: workoutMapEntries.length > initWeekBlockNumber
+            ? initWeekBlockNumber
+            : workoutMapEntries.length,
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(
             height: 40,
@@ -40,9 +47,7 @@ class WorkoutsList extends StatelessWidget {
                 index: index,
                 workoutsOfTheWeek: workoutMapEntries[index].value,
                 weekStartDate: workoutMapEntries[index].key,
-                // weekStartDate: allWorkouts[index].keys.first
               );
-              // return ClickableWorkoutListTile(allWorkouts: allWorkouts);
             },
           );
         },
@@ -60,7 +65,8 @@ class WorkoutWeekBlockContainer extends StatelessWidget {
 
   final int index;
   final DateTime weekStartDate;
-  final Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>> workoutsOfTheWeek;
+  final Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>
+      workoutsOfTheWeek;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +103,7 @@ class WorkoutWeekBlockContainer extends StatelessWidget {
                   isToggledOn: isToggled),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 350),
-                height: isToggled ? 223: 0,//183 : 0,
+                height: isToggled ? 223 : 0, //183 : 0,
                 child: AnimatedOpacity(
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.easeOutExpo,
@@ -109,7 +115,9 @@ class WorkoutWeekBlockContainer extends StatelessWidget {
                   ),
                 ),
               ),
-              WeeklyExerciseCountBar(workoutsOfTheWeek: workoutsOfTheWeek,)
+              WeeklyExerciseCountBar(
+                workoutsOfTheWeek: workoutsOfTheWeek,
+              )
             ],
           );
         },
@@ -117,44 +125,3 @@ class WorkoutWeekBlockContainer extends StatelessWidget {
     );
   }
 }
-
-// class ClickableWorkoutListTile extends StatelessWidget {
-//   const ClickableWorkoutListTile({
-//     super.key,
-//     required this.allWorkouts,
-//   });
-//
-//   final Map<DateTime, Map<int, LoadedWorkoutModel>> allWorkouts;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListTile(
-//       title: Center(
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//           children: [
-//             Text(
-//                 "${allWorkouts[index].day}/${allWorkouts[index].month}/${allWorkouts[index].year}"),
-//             Text(allWorkouts[index].workoutStartTime ?? "- - -")
-//           ],
-//         ),
-//       ),
-//       tileColor: Colors.white,
-//       onTap: () {
-//         // if the selected workout has already been loaded to state
-//         // we can just move onto the workout page, no need to re-query
-//         if (state is LoadedActiveWorkoutState &&
-//             state.id == allWorkouts[index].id) {
-//           Navigator.of(context).pushNamed("/workout-page");
-//         } else {
-//           // query selected workout and load it to ActiveWorkoutState
-//           BlocProvider.of<ExerciseTableOperationsBloc>(context).add(
-//               QueryAllExerciseByWorkoutEvent(
-//                   selectedWorkout: allWorkouts[index]));
-//           BlocProvider.of<ActiveWorkoutCubit>(context)
-//               .loadWorkoutToState(allWorkouts[index]);
-//         }
-//       },
-//     );
-//   }
-// }
