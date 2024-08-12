@@ -61,6 +61,11 @@ class ExerciseTableWithWorkedMuscleGroups extends ExerciseTable {
     return workedMuscleGroups.getWorkingSetsPerMuscleGroup(
         muscleGroup, numWorkingSets);
   }
+
+  int calculateWorkingSetsPerMuscleGroup(MuscleGroupType muscleGroup) {
+    return workedMuscleGroups.calculateWorkingSetsPerMuscleGroup(
+        muscleGroup, numWorkingSets);
+  }
 }
 
 class MovementWorkedMuscleGroupsType {
@@ -91,6 +96,7 @@ class MovementWorkedMuscleGroupsType {
     return MovementWorkedMuscleGroupsType(workedMuscleGroupsMap: workedMuscleGroupsMap);
   }
 
+  // For a movement this method returns all the primary muscle groups involved
   List<MuscleGroupType> returnPrimaryMuscleGroups() {
     List<MuscleGroupType> primaryMuscleGroups = [];
     for (var muscleGroup in workedMuscleGroupsMap.entries) {
@@ -101,6 +107,7 @@ class MovementWorkedMuscleGroupsType {
     return primaryMuscleGroups;
   }
 
+  // For a movement this method returns all the secondary muscle groups involved
   List<MuscleGroupType> returnSecondaryMuscleGroups() {
     List<MuscleGroupType> primaryMuscleGroups = [];
     for (var muscleGroup in workedMuscleGroupsMap.entries) {
@@ -112,6 +119,16 @@ class MovementWorkedMuscleGroupsType {
   }
 
   int getWorkingSetsPerMuscleGroup(
+      MuscleGroupType muscleGroup, int workingSets) {
+    if (workedMuscleGroupsMap.containsKey(muscleGroup)) {
+        return workingSets;
+    }
+    return 0;
+  }
+
+  // When tallying the number of working sets per muscle group per week
+  // we want to convert all the secondary muscle groups sets into
+  int calculateWorkingSetsPerMuscleGroup(
       MuscleGroupType muscleGroup, int workingSets) {
     if (workedMuscleGroupsMap.containsKey(muscleGroup)) {
       if (workedMuscleGroupsMap[muscleGroup] == RoleType.primary) {

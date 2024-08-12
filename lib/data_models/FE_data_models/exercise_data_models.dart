@@ -92,6 +92,11 @@ class GeneralWorkoutPageExerciseModel {
     return workedMuscleGroups.getWorkingSetsPerMuscleGroup(
         muscleGroup, numWorkingSets);
   }
+
+  int calculateWorkingSetsPerMuscleGroup(MuscleGroupType muscleGroup) {
+    return workedMuscleGroups.calculateWorkingSetsPerMuscleGroup(
+        muscleGroup, numWorkingSets);
+  }
 }
 
 // This model is used to convert between a homepage exercise model
@@ -246,15 +251,16 @@ class NewExerciseModel extends GeneralWorkoutPageExerciseModel {
 
   factory NewExerciseModel.fromMap({required Map<String, dynamic> map}) {
     NewExerciseModel regeneratedModel = NewExerciseModel(
-      movementId: map['movementId'],
+        movementId: map['movementId'],
         exerciseOrder: map['exerciseOrder'],
         numWorkingSets: map['numWorkingSets'],
-        workedMuscleGroups: MovementWorkedMuscleGroupsType.fromMap(map: map['workedMuscleGroups']),
+        workedMuscleGroups: MovementWorkedMuscleGroupsType.fromMap(
+            map: map['workedMuscleGroups']),
         movementName: map['movementName'],
-        exerciseSets: map['exerciseSets'].map<GeneralExerciseSetModel>((exerciseSetMap) {
+        exerciseSets:
+            map['exerciseSets'].map<GeneralExerciseSetModel>((exerciseSetMap) {
           return GeneralExerciseSetModel.fromMap(map: exerciseSetMap);
-        }).toList()
-    );
+        }).toList());
 
     return regeneratedModel;
   }
