@@ -2,8 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
+import 'package:gym_bro/data_models/database_data_models/joined_tables/movement-muscle_group/movement-muscle_group_methods.dart';
 import 'package:gym_bro/data_models/database_data_models/joined_tables/movement_muscle_group_join_object.dart';
-import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 
 import 'add_exercise_state.dart';
 
@@ -66,7 +66,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         selectedMuscleGroup: generatedState.selectedMuscleGroup,
         selectedMovement: movementMuscleGroupJoin.movementName,
         selectedMovementId: movementMuscleGroupJoin.movementId,
-        workedMuscleGroups: generatedState.workedMuscleGroups,
+        workedMuscleGroups: movementMuscleGroupJoin.workedMuscleGroups,
         currentSet: const CurrentSet(),
         setsDone: const [],
         numWorkingSets: 0));

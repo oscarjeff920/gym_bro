@@ -1,4 +1,5 @@
 import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/data_models/database_data_models/joined_tables/movement-muscle_group/movement-muscle_group_methods.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 import 'exercise_set_data_models.dart';
 
@@ -254,7 +255,7 @@ class NewExerciseModel extends GeneralWorkoutPageExerciseModel {
         movementId: map['movementId'],
         exerciseOrder: map['exerciseOrder'],
         numWorkingSets: map['numWorkingSets'],
-        workedMuscleGroups: MovementWorkedMuscleGroupsType.fromMap(
+        workedMuscleGroups: MovementWorkedMuscleGroupsType.fromJsonMap(
             map: map['workedMuscleGroups']),
         movementName: map['movementName'],
         exerciseSets:
