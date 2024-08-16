@@ -1,27 +1,21 @@
-import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/data_models/database_data_models/joined_tables/movement-muscle_group/movement-muscle_group_methods.dart';
 
-// TODO: add all worked muscle groups.
 class MovementMuscleGroupJoin {
   final int? movementId;
   final String movementName;
-  final RoleType muscleRole;
-  final int? muscleGroupId;
-  final MuscleGroupType muscleGroupName;
+  final MovementWorkedMuscleGroupsType workedMuscleGroups;
 
-  factory MovementMuscleGroupJoin.fromMap(Map<String, dynamic> map) {
+  factory MovementMuscleGroupJoin.fromMapWithWorkedMuscleGroups(
+      Map<String, dynamic> map,
+      MovementWorkedMuscleGroupsType workedMuscleGroups) {
     return MovementMuscleGroupJoin(
-      movementId: map['movement_id'],
-      movementName: map['movement_name'],
-      muscleRole: RoleType.values.byName(map['role']),
-      muscleGroupId: map['muscle_group_id'],
-      muscleGroupName: MuscleGroupType.values.byName(map['muscle_group_name']),
-    );
+        movementId: map['movement_id'],
+        movementName: map['movement_name'],
+        workedMuscleGroups: workedMuscleGroups);
   }
 
   MovementMuscleGroupJoin(
       {required this.movementId,
       required this.movementName,
-      required this.muscleRole,
-      required this.muscleGroupId,
-      required this.muscleGroupName});
+      required this.workedMuscleGroups});
 }

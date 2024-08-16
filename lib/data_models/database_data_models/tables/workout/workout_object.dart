@@ -71,10 +71,8 @@ class WorkoutTableWithExercisesWorkedMuscleGroups extends WorkoutTable {
   int getNumWorkingSetsPerMuscleInWorkout(MuscleGroupType muscleGroup) {
     int totalSets = 0;
     for (ExerciseTableWithWorkedMuscleGroups exercise in exercises) {
-      totalSets += exercise.getWorkingSetsPerMuscleGroup(muscleGroup);
+      totalSets += exercise.calculateWorkingSetsPerMuscleGroup(muscleGroup);
     }
     return totalSets;
   }
-
 }
-

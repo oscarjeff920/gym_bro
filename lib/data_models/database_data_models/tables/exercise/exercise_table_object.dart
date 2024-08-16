@@ -1,4 +1,5 @@
 import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/data_models/database_data_models/joined_tables/movement-muscle_group/movement-muscle_group_methods.dart';
 
 // Model to track 1-to-1 to database table
 class ExerciseTable {
@@ -61,64 +62,9 @@ class ExerciseTableWithWorkedMuscleGroups extends ExerciseTable {
     return workedMuscleGroups.getWorkingSetsPerMuscleGroup(
         muscleGroup, numWorkingSets);
   }
-}
 
-class MovementWorkedMuscleGroupsType {
-  final Map<MuscleGroupType, RoleType> workedMuscleGroupsMap;
-
-  MovementWorkedMuscleGroupsType({required this.workedMuscleGroupsMap});
-
-  // convert the object into a map, used mostly for saving state as json
-  Map<String, String> toMap() {
-    Map<String, String> typeAsMap = {};
-
-    for (var entry in workedMuscleGroupsMap.entries) {
-      typeAsMap[entry.key.name] = entry.value.name;
-    }
-
-    return typeAsMap;
-  }
-
-  // convert the object back from a map, used mostly for restoring state from json
-  factory MovementWorkedMuscleGroupsType.fromMap({required Map<String, dynamic> map}) {
-    Map<MuscleGroupType, RoleType> workedMuscleGroupsMap = {};
-
-    for (var entry in map.entries) {
-      workedMuscleGroupsMap[MuscleGroupType.values.byName(entry.key)] =
-          RoleType.values.byName(entry.value);
-    }
-
-    return MovementWorkedMuscleGroupsType(workedMuscleGroupsMap: workedMuscleGroupsMap);
-  }
-
-  List<MuscleGroupType> returnPrimaryMuscleGroups() {
-    List<MuscleGroupType> primaryMuscleGroups = [];
-    for (var muscleGroup in workedMuscleGroupsMap.entries) {
-      if (muscleGroup.value == RoleType.primary) {
-        primaryMuscleGroups.add(muscleGroup.key);
-      }
-    }
-    return primaryMuscleGroups;
-  }
-
-  List<MuscleGroupType> returnSecondaryMuscleGroups() {
-    List<MuscleGroupType> primaryMuscleGroups = [];
-    for (var muscleGroup in workedMuscleGroupsMap.entries) {
-      if (muscleGroup.value == RoleType.secondary) {
-        primaryMuscleGroups.add(muscleGroup.key);
-      }
-    }
-    return primaryMuscleGroups;
-  }
-
-  int getWorkingSetsPerMuscleGroup(
-      MuscleGroupType muscleGroup, int workingSets) {
-    if (workedMuscleGroupsMap.containsKey(muscleGroup)) {
-      if (workedMuscleGroupsMap[muscleGroup] == RoleType.primary) {
-        return workingSets;
-      }
-      return (workingSets / 4).floor();
-    }
-    return 0;
+  int calculateWorkingSetsPerMuscleGroup(MuscleGroupType muscleGroup) {
+    return workedMuscleGroups.calculateWorkingSetsPerMuscleGroup(
+        muscleGroup, numWorkingSets);
   }
 }
