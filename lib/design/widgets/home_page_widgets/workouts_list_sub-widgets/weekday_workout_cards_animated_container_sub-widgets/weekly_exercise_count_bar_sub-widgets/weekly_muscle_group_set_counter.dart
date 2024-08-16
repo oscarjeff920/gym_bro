@@ -28,10 +28,8 @@ class WeeklyMuscleGroupSetCounter extends StatelessWidget {
       containerColour = Colors.white;
     }
 
-    double totalWidth = 63.3;
     return Container(
       height: 25,
-      width: totalWidth,
       color: containerColour,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -44,9 +42,10 @@ class WeeklyMuscleGroupSetCounter extends StatelessWidget {
               iconSize: 20,
             ),
           ),
+          // little spacer between icon and number
+          const SizedBox(width: 10),
           Center(
             child: SizedBox(
-              width: (totalWidth / 2) - 3,
               child: MuscleSetsText(
                   textScaleFactor: 1,
                   sets: muscleGroupWorkingSets,
