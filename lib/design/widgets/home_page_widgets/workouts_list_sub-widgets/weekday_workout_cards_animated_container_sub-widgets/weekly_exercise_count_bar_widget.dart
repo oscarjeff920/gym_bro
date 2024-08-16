@@ -11,8 +11,6 @@ class WeeklyExerciseCountBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double spacerWidth = 5;
-    double spacerHeight = 25; //68;
     Color dividerColour = Colors.black.withOpacity(0.4);
 
     return Material(
@@ -27,34 +25,58 @@ class WeeklyExerciseCountBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            WeeklyMuscleGroupSetCounter(
-              muscleGroup: MuscleGroupType.chest,
-              workoutsOfTheWeek: workoutsOfTheWeek,
+            Expanded(
+              child: SetCounterBorder(
+                  setCounterWidget: WeeklyMuscleGroupSetCounter(
+                    muscleGroup: MuscleGroupType.chest,
+                    workoutsOfTheWeek: workoutsOfTheWeek,
+                  ),
+                  first: true, dividerColour: dividerColour,),
             ),
-            MuscleGroupDivider(spacerWidth: spacerWidth, spacerHeight: spacerHeight, dividerColour: dividerColour),
-            WeeklyMuscleGroupSetCounter(
-              muscleGroup: MuscleGroupType.shoulders,
-              workoutsOfTheWeek: workoutsOfTheWeek,
+            Expanded(
+              child: SetCounterBorder(
+                setCounterWidget: WeeklyMuscleGroupSetCounter(
+                  muscleGroup: MuscleGroupType.shoulders,
+                  workoutsOfTheWeek: workoutsOfTheWeek,
+                ),
+                dividerColour: dividerColour,
+              ),
             ),
-            MuscleGroupDivider(spacerWidth: spacerWidth, spacerHeight: spacerHeight, dividerColour: dividerColour),
-            WeeklyMuscleGroupSetCounter(
-              muscleGroup: MuscleGroupType.biceps,
-              workoutsOfTheWeek: workoutsOfTheWeek,
+            Expanded(
+              child: SetCounterBorder(
+                setCounterWidget: WeeklyMuscleGroupSetCounter(
+                  muscleGroup: MuscleGroupType.biceps,
+                  workoutsOfTheWeek: workoutsOfTheWeek,
+                ),
+                dividerColour: dividerColour,
+              ),
             ),
-            MuscleGroupDivider(spacerWidth: spacerWidth, spacerHeight: spacerHeight, dividerColour: dividerColour),
-            WeeklyMuscleGroupSetCounter(
-              muscleGroup: MuscleGroupType.triceps,
-              workoutsOfTheWeek: workoutsOfTheWeek,
+            Expanded(
+              child: SetCounterBorder(
+                setCounterWidget: WeeklyMuscleGroupSetCounter(
+                  muscleGroup: MuscleGroupType.triceps,
+                  workoutsOfTheWeek: workoutsOfTheWeek,
+                ),
+                dividerColour: dividerColour,
+              ),
             ),
-            MuscleGroupDivider(spacerWidth: spacerWidth, spacerHeight: spacerHeight, dividerColour: dividerColour),
-            WeeklyMuscleGroupSetCounter(
-              muscleGroup: MuscleGroupType.back,
-              workoutsOfTheWeek: workoutsOfTheWeek,
+            Expanded(
+              child: SetCounterBorder(
+                setCounterWidget: WeeklyMuscleGroupSetCounter(
+                  muscleGroup: MuscleGroupType.back,
+                  workoutsOfTheWeek: workoutsOfTheWeek,
+                ),
+                dividerColour: dividerColour,
+              ),
             ),
-            MuscleGroupDivider(spacerWidth: spacerWidth, spacerHeight: spacerHeight, dividerColour: dividerColour),
-            WeeklyMuscleGroupSetCounter(
-              muscleGroup: MuscleGroupType.legs,
-              workoutsOfTheWeek: workoutsOfTheWeek,
+            Expanded(
+              child: SetCounterBorder(
+                setCounterWidget: WeeklyMuscleGroupSetCounter(
+                  muscleGroup: MuscleGroupType.legs,
+                  workoutsOfTheWeek: workoutsOfTheWeek,
+                ),
+                dividerColour: dividerColour,
+              ),
             ),
           ],
         ),
@@ -63,26 +85,25 @@ class WeeklyExerciseCountBar extends StatelessWidget {
   }
 }
 
-class MuscleGroupDivider extends StatelessWidget {
-  const MuscleGroupDivider({
-    super.key,
-    required this.spacerWidth,
-    required this.spacerHeight,
-    required this.dividerColour,
-  });
-
-  final double spacerWidth;
-  final double spacerHeight;
+class SetCounterBorder extends StatelessWidget {
+  final Widget setCounterWidget;
   final Color dividerColour;
+  final bool first;
+
+  const SetCounterBorder(
+      {super.key, required this.setCounterWidget, this.first = false, required this.dividerColour});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Container(
-          width: 2,
-          height: spacerHeight,
-          color: dividerColour,
+    return Container(
+        decoration: first ? null :BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              color: dividerColour, // Border color
+              width: 3.0, // Border thickness
+            ),
+          ),
         ),
-    );
+        child: setCounterWidget);
   }
 }
