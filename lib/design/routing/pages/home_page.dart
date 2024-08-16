@@ -48,12 +48,35 @@ class HomePage extends StatelessWidget {
               case WorkoutTableSuccessfulQueryAllState():
                 return WorkoutsList(allWorkouts: state.allWorkoutsQuery);
               case WorkoutTableQueryErrorState():
-                return const Center(
-                    child: Text(
-                        "There was an error querying the Workout table.."));
+                return Center(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "There was an error querying the Workout table..",
+                      textScaleFactor: 1.25,
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          BlocProvider.of<WorkoutTableOperationsBloc>(context)
+                              .add(QueryAllWorkoutTableEvent());
+                        },
+                        child: const Text("Re-fetch the workouts"))
+                  ],
+                ));
               default:
                 return const Center(
-                    child: Text("Ooops.. something has gone ary"));
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Fetching workouts..",
+                        textScaleFactor: 1.25,
+                      ),
+                      CircularProgressIndicator()
+                    ],
+                  ),
+                );
             }
           }),
           BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
@@ -61,12 +84,11 @@ class HomePage extends StatelessWidget {
             return Align(
               alignment: const Alignment(0, 0.6),
               child: AnimatedOpacity(
-                opacity: state is NewActiveWorkoutState ? 1 : 0,
-                duration: const Duration(seconds: 5),
-                child: state is NewActiveWorkoutState
-                    ? const ContinueWorkoutButton()
-                    : const SizedBox()
-              ),
+                  opacity: state is NewActiveWorkoutState ? 1 : 0,
+                  duration: const Duration(seconds: 5),
+                  child: state is NewActiveWorkoutState
+                      ? const ContinueWorkoutButton()
+                      : const SizedBox()),
             );
           }),
           Container(
