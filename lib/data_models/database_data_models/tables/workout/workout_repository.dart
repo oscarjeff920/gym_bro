@@ -1,6 +1,7 @@
 import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/FE_data_models/workout_data_models.dart';
+import 'package:gym_bro/data_models/database_data_models/joined_tables/movement-muscle_group/movement-muscle_group_methods.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
@@ -71,9 +72,10 @@ class WorkoutRepository {
       // convert map into ExerciseTable obj
       ExerciseTable convertedExercise = ExerciseTable.fromMap(exercise);
 
-      Map<MuscleGroupType, RoleType> muscleGroupsWorked =
-          await getWorkedMuscleGroupsByMovementId(
-              convertedExercise.movementId, db);
+      MovementWorkedMuscleGroupsType muscleGroupsWorked =
+          await MovementWorkedMuscleGroupsType
+              .getWorkedMuscleGroupsByMovementId(
+                  convertedExercise.movementId, db);
 
       ExerciseTableWithWorkedMuscleGroups convertedExerciseWithMuscleGroups =
           ExerciseTableWithWorkedMuscleGroups(
@@ -82,7 +84,7 @@ class WorkoutRepository {
               workoutId: convertedExercise.workoutId,
               exerciseOrder: convertedExercise.exerciseOrder,
               numWorkingSets: convertedExercise.numWorkingSets,
-              workedMuscleGroups: MovementWorkedMuscleGroupsType(workedMuscleGroupsMap: muscleGroupsWorked));
+              workedMuscleGroups: muscleGroupsWorked);
 
       exercises.add(convertedExerciseWithMuscleGroups);
     }
@@ -101,12 +103,20 @@ class WorkoutRepository {
     return workoutTableWithExercisesWorkedMuscleGroups;
   }
 
-  Future<Map<MuscleGroupType, RoleType>>
-      getWorkedMuscleGroupsByMovementId(int movementId, db) async {
+  Future<Map<MuscleGroupType, RoleType>> getWorkedMuscleGroupsByMovementId(
+      int movementId, db) async {
     String queryString = """
-    SELECT $movementMuscleGroupsTableName.role, $muscleGroupTableName.name FROM $movementMuscleGroupsTableName
-    JOIN $muscleGroupTableName ON $movementMuscleGroupsTableName.muscle_group_id = $muscleGroupTableName.id
-    WHERE $movementMuscleGroupsTableName.movement_id = $movementId;
+      SELECT 
+        $movementMuscleGroupsTableName.role as role,
+        $muscleGroupTableName.name as name
+      FROM 
+        $movementMuscleGroupsTableName
+        
+      JOIN $muscleGroupTableName
+        ON $movementMuscleGroupsTableName.muscle_group_id = $muscleGroupTableName.id
+        
+      WHERE
+        $movementMuscleGroupsTableName.movement_id = $movementId
     """;
 
     List<Map> result = await db.rawQuery(queryString);
@@ -130,7 +140,8 @@ class WorkoutRepository {
     // Because two or more workouts can occur on the same day, we need to save
     // the workouts within a list so the user can select from any
     // Map<DateTime, Map<int, List<LoadedWorkoutModel>>>
-    Map<DateTime, Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>> workoutsGroupedByWeek = {
+    Map<DateTime, Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>>
+        workoutsGroupedByWeek = {
       getWeekBeginningDate(
           DateTime(dateTimeNow.year, dateTimeNow.month, dateTimeNow.day),
           dateTimeNow.weekday): {}
@@ -173,7 +184,8 @@ class WorkoutRepository {
   // ================================================================================
 
   // Insert New Movement method
-  insertNewMovement(GeneralWorkoutPageExerciseModel newMovementExercise, txn) async {
+  insertNewMovement(
+      GeneralWorkoutPageExerciseModel newMovementExercise, txn) async {
     String lowerCaseMovementName =
         newMovementExercise.movementName.toLowerCase();
 
@@ -195,14 +207,15 @@ class WorkoutRepository {
 
     // As each movement can utilise a number of muscle groups
     // the id for each muscle group within workedMuscleGroups must be fetched
-    for (var entry in newMovementExercise.workedMuscleGroups.workedMuscleGroupsMap.entries) {
+    for (var entry in newMovementExercise
+        .workedMuscleGroups.workedMuscleGroupsMap.entries) {
       String queryMuscleGroupsString = """
         SELECT id FROM $muscleGroupTableName
         WHERE name = '${entry.key.name}';
       """;
 
       final List<Map<String, dynamic>> primaryMuscleGroupId =
-        await txn.rawQuery(queryMuscleGroupsString);
+          await txn.rawQuery(queryMuscleGroupsString);
 
       // next we insert the association data
       String insertNewMovementMuscleGroupsString = """
@@ -216,7 +229,6 @@ class WorkoutRepository {
     return newMovementId;
   }
 
-
   insertNewFullWorkout(NewWorkoutModel newWorkout) async {
     final db = await databaseHelper.database;
 
@@ -228,7 +240,6 @@ class WorkoutRepository {
       String? workoutDuration = newWorkout.workoutDuration == null
           ? null
           : "'${newWorkout.workoutDuration}'";
-
 
       // Inserting the Workout into the database
       String insertWorkoutQueryString = """
