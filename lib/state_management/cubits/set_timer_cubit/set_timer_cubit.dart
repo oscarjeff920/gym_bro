@@ -8,6 +8,10 @@ class SetTimerCubit extends Cubit<SetTimerState> {
 
   Timer? _timer;
 
+  returnTimed() {
+    return Duration(seconds: state.elapsed);
+  }
+
   startTimer(){
     emit( const SetTimerStarted(0));
 

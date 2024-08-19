@@ -115,6 +115,11 @@ class CurrentSetCard extends StatelessWidget {
                         currentSet!.reps != null &&
                         currentSet!.isWarmUp != null
                     ? () {
+                        BlocProvider.of<SetTimerCubit>(context).stopTimer();
+                        BlocProvider.of<AddExerciseCubit>(context).updateCurrentSet(
+                            CurrentSet(
+                                setDuration:
+                                BlocProvider.of<SetTimerCubit>(context).returnTimed()));
                         BlocProvider.of<AddExerciseCubit>(context)
                             .saveCompletedSet();
                         BlocProvider.of<SetTimerCubit>(context).resetTimer();

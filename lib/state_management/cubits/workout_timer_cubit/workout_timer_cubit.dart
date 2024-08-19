@@ -22,6 +22,10 @@ class WorkoutTimerCubit extends Cubit<WorkoutTimerState> {
     }
   }
 
+  returnTimed() {
+    return Duration(seconds: state.elapsed);
+  }
+
   startTimer([int? time]) {
     if (state.elapsed == 0) {
       if (time != null) {
