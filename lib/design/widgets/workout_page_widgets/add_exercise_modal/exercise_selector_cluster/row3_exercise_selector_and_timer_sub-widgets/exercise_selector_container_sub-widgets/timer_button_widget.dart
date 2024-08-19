@@ -4,7 +4,6 @@ import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_cubit.dart';
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_state.dart';
-import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_cubit.dart';
 
 class TimerButton extends StatelessWidget {
   final bool isExerciseSelected;
