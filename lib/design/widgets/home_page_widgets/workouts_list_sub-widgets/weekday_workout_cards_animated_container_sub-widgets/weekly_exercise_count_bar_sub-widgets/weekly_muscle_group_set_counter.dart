@@ -19,6 +19,7 @@ class WeeklyMuscleGroupSetCounter extends StatelessWidget {
             workout.getNumWorkingSetsPerMuscleInWorkout(muscleGroup);
       }
     }
+    muscleGroupWorkingSets=10;
     Color containerColour;
     if (muscleGroupWorkingSets < 10) {
       containerColour = Colors.grey.withOpacity(0);
@@ -72,7 +73,7 @@ class MuscleSetsText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color textColour ;
+    Color textColour;
     if (sets == 0) {
       textColour = Colors.grey;
     }
