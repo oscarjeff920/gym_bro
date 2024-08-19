@@ -25,59 +25,17 @@ class WeeklyExerciseCountBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              child: SetCounterBorder(
+            for (int i = 0; i < MuscleGroupType.values.length; i++)
+              Expanded(
+                child: WeeklySetCounterBorder(
                   setCounterWidget: WeeklyMuscleGroupSetCounter(
-                    muscleGroup: MuscleGroupType.chest,
+                    muscleGroup: MuscleGroupType.values[i],
                     workoutsOfTheWeek: workoutsOfTheWeek,
                   ),
-                  first: true, dividerColour: dividerColour,),
-            ),
-            Expanded(
-              child: SetCounterBorder(
-                setCounterWidget: WeeklyMuscleGroupSetCounter(
-                  muscleGroup: MuscleGroupType.shoulders,
-                  workoutsOfTheWeek: workoutsOfTheWeek,
+                  dividerColour: dividerColour,
+                  first: i == 0,
                 ),
-                dividerColour: dividerColour,
               ),
-            ),
-            Expanded(
-              child: SetCounterBorder(
-                setCounterWidget: WeeklyMuscleGroupSetCounter(
-                  muscleGroup: MuscleGroupType.biceps,
-                  workoutsOfTheWeek: workoutsOfTheWeek,
-                ),
-                dividerColour: dividerColour,
-              ),
-            ),
-            Expanded(
-              child: SetCounterBorder(
-                setCounterWidget: WeeklyMuscleGroupSetCounter(
-                  muscleGroup: MuscleGroupType.triceps,
-                  workoutsOfTheWeek: workoutsOfTheWeek,
-                ),
-                dividerColour: dividerColour,
-              ),
-            ),
-            Expanded(
-              child: SetCounterBorder(
-                setCounterWidget: WeeklyMuscleGroupSetCounter(
-                  muscleGroup: MuscleGroupType.back,
-                  workoutsOfTheWeek: workoutsOfTheWeek,
-                ),
-                dividerColour: dividerColour,
-              ),
-            ),
-            Expanded(
-              child: SetCounterBorder(
-                setCounterWidget: WeeklyMuscleGroupSetCounter(
-                  muscleGroup: MuscleGroupType.legs,
-                  workoutsOfTheWeek: workoutsOfTheWeek,
-                ),
-                dividerColour: dividerColour,
-              ),
-            ),
           ],
         ),
       ),
@@ -85,25 +43,30 @@ class WeeklyExerciseCountBar extends StatelessWidget {
   }
 }
 
-class SetCounterBorder extends StatelessWidget {
+class WeeklySetCounterBorder extends StatelessWidget {
   final Widget setCounterWidget;
   final Color dividerColour;
   final bool first;
 
-  const SetCounterBorder(
-      {super.key, required this.setCounterWidget, this.first = false, required this.dividerColour});
+  const WeeklySetCounterBorder(
+      {super.key,
+      required this.setCounterWidget,
+      this.first = false,
+      required this.dividerColour});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: first ? null :BoxDecoration(
-          border: Border(
-            left: BorderSide(
-              color: dividerColour, // Border color
-              width: 3.0, // Border thickness
-            ),
-          ),
-        ),
+        decoration: first
+            ? null
+            : BoxDecoration(
+                border: Border(
+                  left: BorderSide(
+                    color: dividerColour, // Border color
+                    width: 3.0, // Border thickness
+                  ),
+                ),
+              ),
         child: setCounterWidget);
   }
 }

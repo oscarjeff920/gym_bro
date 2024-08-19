@@ -29,31 +29,14 @@ class ExerciseCountBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
-                    const MuscleGroupSetCounter(
-                      muscleGroup: MuscleGroupType.chest,
+                    for (int i = 0; i < MuscleGroupType.values.length; i++)
+                      WorkoutSetCounterBorder(
+                      setCounterWidget: MuscleGroupSetCounter(
+                        muscleGroup: MuscleGroupType.values[i],
+                      ),
+                        dividerColour: Colors.black12,
+                        first: i == 0,
                     ),
-                    SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
-                    const MuscleGroupSetCounter(
-                      muscleGroup: MuscleGroupType.shoulders,
-                    ),
-                    SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
-                    const MuscleGroupSetCounter(
-                      muscleGroup: MuscleGroupType.biceps,
-                    ),
-                    SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
-                    const MuscleGroupSetCounter(
-                      muscleGroup: MuscleGroupType.triceps,
-                    ),
-                    SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
-                    const MuscleGroupSetCounter(
-                      muscleGroup: MuscleGroupType.back,
-                    ),
-                    SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
-                    const MuscleGroupSetCounter(
-                      muscleGroup: MuscleGroupType.legs,
-                    ),
-                    // SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
                   ],
                 ),
               ),
@@ -62,5 +45,33 @@ class ExerciseCountBar extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class WorkoutSetCounterBorder extends StatelessWidget {
+  final Widget setCounterWidget;
+  final Color dividerColour;
+  final bool first;
+
+  const WorkoutSetCounterBorder(
+      {super.key,
+        required this.setCounterWidget,
+        this.first = false,
+        required this.dividerColour});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        decoration: first
+            ? null
+            : BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              color: dividerColour, // Border color
+              width: 3.0, // Border thickness
+            ),
+          ),
+        ),
+        child: setCounterWidget);
   }
 }
