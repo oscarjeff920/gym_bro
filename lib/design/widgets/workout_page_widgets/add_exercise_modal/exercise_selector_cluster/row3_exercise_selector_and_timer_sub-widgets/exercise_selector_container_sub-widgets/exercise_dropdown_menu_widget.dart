@@ -6,6 +6,7 @@ import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
 import 'package:gym_bro/state_management/cubits/add_new_movement_cubit/add_new_movement_cubit.dart';
+import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_cubit.dart';
 
 class ExerciseDropdownMenu extends StatelessWidget {
   final List matchingExercises;
@@ -57,6 +58,8 @@ class ExerciseDropdownMenu extends StatelessWidget {
               dropdownMenuEntries: exerciseEntries,
               onSelected: (value) {
                 final int? movementId;
+                // we start the workout timer when the first exercise is selected
+                BlocProvider.of<WorkoutTimerCubit>(context).beginTimer();
 
                 if (value == addMovementValue) {
                   movementId = null;

@@ -24,7 +24,6 @@ class TimerButton extends StatelessWidget {
         case SetTimerReset():
           buttonPressFunction = () {
             BlocProvider.of<SetTimerCubit>(context).startTimer();
-            BlocProvider.of<WorkoutTimerCubit>(context).startTimer();
           };
           buttonText = "Time the Set";
         case SetTimerStarted():
