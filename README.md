@@ -5,13 +5,24 @@ A lightweight app to track training and strength gains/progress
 ## Details
 
 ### To add
-- inheritance between Sets and the other exercise sets models?
+## High Prio:
 - Super Sets
-- fix confusing set number (displays the current set number but on the previous workout bar)
+- Update movements (muscle groups worked etc) - would require a listing of movements
+- complete new movements after workout finished - bell icon for new movements that haven't been finished
+- Back up data(base)
 - add total time worked out per week
+- Add completed workout to database (workout done at another time, set date/time/duration etc)
+- edit attributes of completed sets (if weight is wrong can be corrected without loosing the whole exercise)
+- TESTS
+- Dual colour exercises based on muscle groups worked
+- fix confusing set number (displays the current set number but on the previous workout bar)
+
+
+- inheritance between Sets and the other exercise sets models?
 - analysis of movements over time ∂(movement)/∂t
 - query workouts by movement
-- log weight, body fat % etc 
+- log weight, body fat % etc & plot
+- PR tags
 
 #### RUBBER DUCK!
 working on the workout page, I need both models NewWorkout and LoadedWorkout to function, aka similar classes
