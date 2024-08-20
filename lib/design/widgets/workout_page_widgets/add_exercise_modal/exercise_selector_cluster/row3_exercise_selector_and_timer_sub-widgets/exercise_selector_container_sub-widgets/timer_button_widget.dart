@@ -4,7 +4,6 @@ import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_cubit.dart';
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_state.dart';
-import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_cubit.dart';
 
 class TimerButton extends StatelessWidget {
   final bool isExerciseSelected;
@@ -24,14 +23,15 @@ class TimerButton extends StatelessWidget {
         case SetTimerReset():
           buttonPressFunction = () {
             BlocProvider.of<SetTimerCubit>(context).startTimer();
-            BlocProvider.of<WorkoutTimerCubit>(context).startTimer();
           };
           buttonText = "Time the Set";
         case SetTimerStarted():
           buttonPressFunction = () {
             BlocProvider.of<SetTimerCubit>(context).stopTimer();
             BlocProvider.of<AddExerciseCubit>(context).updateCurrentSet(
-                CurrentSet(setDuration: Duration(seconds: state.elapsed)));
+                CurrentSet(
+                    setDuration:
+                        BlocProvider.of<SetTimerCubit>(context).returnTimed()));
           };
           buttonText = "Stop Timer";
           timerColour = const Color.fromRGBO(255, 0, 0, 1);
@@ -41,7 +41,8 @@ class TimerButton extends StatelessWidget {
       }
       return TextButton(
           style: ButtonStyle(
-            side: MaterialStateProperty.all(const BorderSide(color: Colors.black, width: 1.5)),
+            side: MaterialStateProperty.all(
+                const BorderSide(color: Colors.black, width: 1.5)),
             backgroundColor: MaterialStatePropertyAll<Color>(
                 timerColour.withOpacity(isExerciseSelected ? 1 : 0.3)),
           ),
@@ -54,16 +55,14 @@ class TimerButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Icon(
-                    Icons.timer_outlined,
+                  Icons.timer_outlined,
                   color: Color.fromRGBO(230, 230, 150, 1),
                 ),
                 Text(
                   buttonText,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      fontSize: 12,
-                      color: Color.fromRGBO(230, 230, 150, 1)
-                  ),
+                      fontSize: 12, color: Color.fromRGBO(230, 230, 150, 1)),
                 ),
               ]));
     });

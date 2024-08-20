@@ -8,15 +8,21 @@ class SetTimerCubit extends Cubit<SetTimerState> {
 
   Timer? _timer;
 
-  startTimer(){
-    emit( const SetTimerStarted(0));
+  returnTimed() {
+    return Duration(seconds: state.elapsed);
+  }
+
+  startTimer() {
+    emit(const SetTimerStarted(0));
 
     _timer = Timer.periodic(const Duration(seconds: 1), onTick);
   }
 
   stopTimer() {
-    _timer!.cancel();
-    emit(SetTimerStopped(state.elapsed));
+    if (_timer != null) {
+      _timer!.cancel();
+      emit(SetTimerStopped(state.elapsed));
+    }
   }
 
   resetTimer() {
@@ -34,5 +40,4 @@ class SetTimerCubit extends Cubit<SetTimerState> {
         emit(SetTimerStarted(state.elapsed + 1));
     }
   }
-
 }

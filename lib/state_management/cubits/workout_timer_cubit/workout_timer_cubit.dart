@@ -8,6 +8,24 @@ class WorkoutTimerCubit extends Cubit<WorkoutTimerState> {
 
   Timer? _timer;
 
+  beginTimer([int? time]) {
+    switch (state) {
+      case WorkoutTimerReset():
+        if (time != null) {
+          emit(WorkoutTimerStarted(time));
+        } else {
+          emit(const WorkoutTimerStarted(0));
+        }
+        _timer = Timer.periodic(const Duration(seconds: 1), onTick);
+      default:
+        // timer already running
+    }
+  }
+
+  returnTimed() {
+    return Duration(seconds: state.elapsed);
+  }
+
   startTimer([int? time]) {
     if (state.elapsed == 0) {
       if (time != null) {
