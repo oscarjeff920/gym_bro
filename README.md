@@ -16,7 +16,7 @@ A lightweight app to track training and strength gains/progress
 - TESTS
 - Dual colour exercises based on muscle groups worked
 - fix confusing set number (displays the current set number but on the previous workout bar)
-
+- expand previous exercise sets for movement
 
 - inheritance between Sets and the other exercise sets models?
 - analysis of movements over time ∂(movement)/∂t
