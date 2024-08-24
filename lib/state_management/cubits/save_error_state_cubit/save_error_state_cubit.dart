@@ -12,21 +12,32 @@ class SaveErrorStateCubit extends Cubit<SaveErrorStateState> {
     emit(SaveErrorStateState(errorStateData: erroredWorkoutMap));
   }
 
-  writeErrorState(Map<String, dynamic> erroredWorkoutMap) async {
-    Directory rootDirectory = await getApplicationDocumentsDirectory();
-    File errorStateFile =
-        File('${rootDirectory.path}/error_state/saved_error_state.json');
+  writeErrorState(
+      {required Map<String, dynamic> erroredWorkoutMap,
+      required String error,
+      bool isDebug = false}) async {
+    String filePath;
+    if (isDebug) {
+      filePath = '/.debug-error-workouts';
+    } else {
+      Directory rootDirectory = await getApplicationDocumentsDirectory();
+      filePath = '${rootDirectory.path}/error_state';
+    }
+    File errorStateFile = File('$filePath/saved_error_state.json');
+
     Map<String, dynamic> stateData = erroredWorkoutMap;
 
-    await Directory('${rootDirectory.path}/error_state')
-        .create(recursive: true);
+    // TODO: saving error in state so that it can be viewed on reload
+    erroredWorkoutMap['error'] = error;
+
+    await Directory(filePath).create(recursive: true);
 
     await errorStateFile.writeAsString(json.encode(stateData));
 
     print('saved at ${errorStateFile.path}');
   }
 
-  loadErroredWorkoutToState() async {
+  loadErroredWorkoutToState({bool isDebug = false}) async {
     Directory rootDirectory = await getApplicationDocumentsDirectory();
 
     Directory errorStateDirectory =
@@ -41,7 +52,12 @@ class SaveErrorStateCubit extends Cubit<SaveErrorStateState> {
 
         Map<String, dynamic> jsonAsMap = jsonDecode(jsonString);
 
-        emit(SaveErrorStateState(errorStateData: jsonAsMap));
+        String? errorMessageString = jsonAsMap.remove('error');
+
+        SaveErrorStateState errorStateState = SaveErrorStateState(
+            errorStateData: jsonAsMap, errorMessageString: errorMessageString);
+
+        emit(errorStateState);
       } catch (err) {
         print("there was an error retrieving the saved data state: $err");
       }

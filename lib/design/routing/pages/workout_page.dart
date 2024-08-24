@@ -97,7 +97,8 @@ class WorkoutOverviewPage extends StatelessWidget {
                   const ExerciseCountBar()
                 ]);
               default:
-                print("Redirecting to home page as state: $state does not match workout page.");
+                print(
+                    "Redirecting to home page as state: $state does not match workout page.");
                 return const CircularProgressIndicator();
             }
           },
@@ -139,8 +140,9 @@ class WorkoutOverviewPage extends StatelessWidget {
                   backgroundColor: Colors.red,
                 ),
               );
-              BlocProvider.of<SaveErrorStateCubit>(context)
-                  .writeErrorState(state.insertWorkout.toMap());
+              BlocProvider.of<SaveErrorStateCubit>(context).writeErrorState(
+                  erroredWorkoutMap: state.insertWorkout.toMap(),
+                  error: state.error.toString());
           }
         },
       ),
