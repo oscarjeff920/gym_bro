@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc/src/bloc_listener.dart';
-import 'package:gym_bro/design/routing/debug_state_checker_widget.dart';
+import 'package:gym_bro/design/debugging_widgets/debug_state_checker_button_widget.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_state.dart';
@@ -97,7 +97,8 @@ class WorkoutOverviewPage extends StatelessWidget {
                   const ExerciseCountBar()
                 ]);
               default:
-                print("Redirecting to home page as state: $state does not match workout page.");
+                print(
+                    "Redirecting to home page as state: $state does not match workout page.");
                 return const CircularProgressIndicator();
             }
           },
@@ -139,8 +140,9 @@ class WorkoutOverviewPage extends StatelessWidget {
                   backgroundColor: Colors.red,
                 ),
               );
-              BlocProvider.of<SaveErrorStateCubit>(context)
-                  .writeErrorState(state.insertWorkout.toMap());
+              BlocProvider.of<SaveErrorStateCubit>(context).writeErrorState(
+                  erroredWorkoutMap: state.insertWorkout.toMap(),
+                  error: state.error.toString());
           }
         },
       ),

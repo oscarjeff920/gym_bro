@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc/src/bloc_listener.dart';
-import 'package:gym_bro/design/routing/debug_state_checker_widget.dart';
+import 'package:gym_bro/design/debugging_widgets/debug_state_checker_button_widget.dart';
 import 'package:gym_bro/design/widgets/home_page_widgets/continue_workout_button_widget.dart';
-import 'package:gym_bro/design/widgets/home_page_widgets/load_errored_workout_button_widget.dart';
+import 'package:gym_bro/design/debugging_widgets/load_errored_workout_button_widget.dart';
 import 'package:gym_bro/design/widgets/the_app_bar_widget.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_event.dart';
@@ -97,7 +97,7 @@ class HomePage extends StatelessWidget {
         ]),
         // FOR DEBUG
         floatingActionButton: false
-            ? const LoadErroredWorkoutButton()
+            ? const LoadErroredWorkoutButton(loadFromAssetDebug: true,)
             : false
                 ? const DebugStateChecker()
                 : null,

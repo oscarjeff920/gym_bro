@@ -5,9 +5,9 @@ import 'package:gym_bro/state_management/cubits/save_error_state_cubit/save_erro
 import 'package:gym_bro/state_management/cubits/save_error_state_cubit/save_error_state_state.dart';
 
 class LoadErroredWorkoutButton extends StatelessWidget {
-  const LoadErroredWorkoutButton({
-    super.key,
-  });
+  final bool loadFromAssetDebug;
+
+  const LoadErroredWorkoutButton({super.key, required this.loadFromAssetDebug});
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +16,18 @@ class LoadErroredWorkoutButton extends StatelessWidget {
         return FloatingActionButton(
           onPressed: () {
             if (state.errorStateData.isEmpty) {
-              BlocProvider.of<SaveErrorStateCubit>(context).loadErroredWorkoutToState();
+              BlocProvider.of<SaveErrorStateCubit>(context)
+                  .loadErroredWorkoutToState(isDebug: loadFromAssetDebug);
             } else {
               BlocProvider.of<ActiveWorkoutCubit>(context)
                   .loadSavedJsonWorkoutToState(state.errorStateData);
             }
           },
-          backgroundColor: state.errorStateData.isNotEmpty ? Colors.red : null,
+          backgroundColor: loadFromAssetDebug
+              ? Colors.green
+              : state.errorStateData.isNotEmpty
+                  ? Colors.red
+                  : null,
           child: state.errorStateData.isNotEmpty
               ? const Icon(Icons.file_download_sharp)
               : const Icon(Icons.add),
