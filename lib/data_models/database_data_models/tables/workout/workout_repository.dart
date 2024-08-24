@@ -244,7 +244,7 @@ class WorkoutRepository {
       // Inserting the Workout into the database
       String insertWorkoutQueryString = '''
       INSERT INTO $workoutTableName (day, month, year, start_time, duration) VALUES
-          (${newWorkout.day}, ${newWorkout.month}, ${newWorkout.year}, $startTime, $workoutDuration);
+          (${newWorkout.day}, ${newWorkout.month}, ${newWorkout.year}, "$startTime", "$workoutDuration");
       ''';
       final newWorkoutId = await txn.rawInsert(insertWorkoutQueryString);
 
