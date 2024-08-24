@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/state_management/cubits/save_error_state_cubit/save_error_state_state.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,15 +15,10 @@ class SaveErrorStateCubit extends Cubit<SaveErrorStateState> {
 
   writeErrorState(
       {required Map<String, dynamic> erroredWorkoutMap,
-      required String error,
-      bool isDebug = false}) async {
-    String filePath;
-    if (isDebug) {
-      filePath = '/.debug-error-workouts';
-    } else {
-      Directory rootDirectory = await getApplicationDocumentsDirectory();
-      filePath = '${rootDirectory.path}/error_state';
-    }
+      required String? error}) async {
+    Directory rootDirectory = await getApplicationDocumentsDirectory();
+    String filePath = '${rootDirectory.path}/error_state';
+
     File errorStateFile = File('$filePath/saved_error_state.json');
 
     Map<String, dynamic> stateData = erroredWorkoutMap;
@@ -48,8 +44,13 @@ class SaveErrorStateCubit extends Cubit<SaveErrorStateState> {
 
     if (await errorStateDirectory.exists() && await errorStateFile.exists()) {
       try {
-        String jsonString = await errorStateFile.readAsString();
-
+        String jsonString;
+        if (isDebug) {
+          jsonString = await rootBundle
+              .loadString('assets/debug/saved_error_state.json');
+        } else {
+          jsonString = await errorStateFile.readAsString();
+        }
         Map<String, dynamic> jsonAsMap = jsonDecode(jsonString);
 
         String? errorMessageString = jsonAsMap.remove('error');
