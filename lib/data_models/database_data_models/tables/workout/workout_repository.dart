@@ -264,7 +264,7 @@ class WorkoutRepository {
         String insertExerciseString = '''
         INSERT INTO $exerciseTableName
             (movement_id, workout_id, exercise_order, duration, num_working_sets) VALUES
-            ($movementId, $newWorkoutId, $exerciseOrder, "${exercise.exerciseDuration}", ${exercise.numWorkingSets});
+            ($movementId, $newWorkoutId, $exerciseOrder, '"${exercise.exerciseDuration}"', ${exercise.numWorkingSets});
         ''';
         final newExerciseId = await txn.rawInsert(insertExerciseString);
         exerciseOrder += 1;
@@ -274,7 +274,7 @@ class WorkoutRepository {
           INSERT INTO $exerciseSetTableName
           (exercise_id, set_order, is_warm_up, weight, reps, extra_reps, duration, notes) VALUES
           ($newExerciseId, ${exerciseSet.exerciseSetOrder}, ${exerciseSet.isWarmUp}, ${exerciseSet.weight},
-           ${exerciseSet.reps}, ${exerciseSet.extraReps}, "${exerciseSet.setDuration}", "${exerciseSet.notes}");
+           ${exerciseSet.reps}, ${exerciseSet.extraReps}, '"${exerciseSet.setDuration}"', "${exerciseSet.notes}");
           ''';
           await txn.rawInsert(insertExerciseSetString);
         }
