@@ -51,8 +51,7 @@ class CurrentSetCard extends StatelessWidget {
                           ? null
                           : comparisonSet!.weight == currentSet!.weight!
                               ? null
-                              : comparisonSet!.weight <
-                                  currentSet!.weight!,
+                              : comparisonSet!.weight < currentSet!.weight!,
             ),
             CurrentSetFields(
               fieldName: "Reps",
@@ -72,8 +71,7 @@ class CurrentSetCard extends StatelessWidget {
                               ? null
                               : comparisonSet!.reps == currentSet!.reps!
                                   ? null
-                                  : comparisonSet!.reps <
-                                      currentSet!.reps!,
+                                  : comparisonSet!.reps < currentSet!.reps!,
             ),
             CurrentSetFields(
               fieldName: "Extra Reps",
@@ -104,8 +102,9 @@ class CurrentSetCard extends StatelessWidget {
             CurrentSetFields(
               fieldName: "Notes",
               updateSetFunction: (value) {
-                BlocProvider.of<AddExerciseCubit>(context)
-                    .updateCurrentSet(CurrentSet(notes: value));
+                BlocProvider.of<AddExerciseCubit>(context).updateCurrentSet(
+                    CurrentSet(
+                        notes: (value as String).replaceAll("\"", "\'")));
               },
               controller_: fieldText,
             ),
@@ -116,10 +115,11 @@ class CurrentSetCard extends StatelessWidget {
                         currentSet!.isWarmUp != null
                     ? () {
                         BlocProvider.of<SetTimerCubit>(context).stopTimer();
-                        BlocProvider.of<AddExerciseCubit>(context).updateCurrentSet(
-                            CurrentSet(
+                        BlocProvider.of<AddExerciseCubit>(context)
+                            .updateCurrentSet(CurrentSet(
                                 setDuration:
-                                BlocProvider.of<SetTimerCubit>(context).returnTimed()));
+                                    BlocProvider.of<SetTimerCubit>(context)
+                                        .returnTimed()));
                         BlocProvider.of<AddExerciseCubit>(context)
                             .saveCompletedSet();
                         BlocProvider.of<SetTimerCubit>(context).resetTimer();
