@@ -110,7 +110,7 @@ class WorkoutOverviewPage extends StatelessWidget {
     );
   }
 
-  List<BlocListenerSingleChildWidget> workoutPageStateListeners() {
+  List<BlocListener> workoutPageStateListeners() {
     return [
       BlocListener<WorkoutTableOperationsBloc, WorkoutTableOperationsState>(
         listener: (context, state) {
