@@ -105,7 +105,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  List<BlocListenerSingleChildWidget> homePageStateListeners(
+  List<BlocListener> homePageStateListeners(
       BuildContext context) {
     return [
       BlocListener<BackupCurrentWorkoutCubit, BackupCurrentWorkoutState>(
