@@ -49,6 +49,13 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
   @override
   List<Object?> get props => [lastExerciseSetsData, movementPRData];
 
+  getNumberOfWarmUpSets() {
+    List<Sets> warmupSets = lastExerciseSetsData['data']
+        .where((exerciseSet) => exerciseSet.isWarmUp == true)
+        .toList();
+    return warmupSets.length;
+  }
+
   getPreviousWorkingSets() {
     List<Sets> workingSets = lastExerciseSetsData['data']
         .where((exerciseSet) => exerciseSet.isWarmUp == false)
