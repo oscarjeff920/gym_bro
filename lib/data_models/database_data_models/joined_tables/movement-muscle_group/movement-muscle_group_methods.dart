@@ -120,7 +120,7 @@ class MovementWorkedMuscleGroupsType {
       if (workedMuscleGroupsMap[muscleGroup] == RoleType.primary) {
         return workingSets;
       }
-      return (workingSets / 4).floor();
+      return (workingSets / 2).floor();
     }
     return 0;
   }
