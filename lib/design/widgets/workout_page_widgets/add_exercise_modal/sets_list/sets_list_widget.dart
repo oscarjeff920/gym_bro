@@ -46,10 +46,9 @@ class SetsList extends StatelessWidget {
                     } else {
                       displayDate = state.lastExerciseSetsData['dateString'];
                       displaySet = currentPreviousSet['value'];
-                      currentSetNumber = doneSets.length >
-                              state.lastExerciseSetsData['data'].length
-                          ? state.lastExerciseSetsData['data'].length
-                          : doneSets.length + 1;
+                      currentSetNumber = displaySet.isWarmUp ? null :
+                          state.lastExerciseSetsData['data'].exerciseSetOrder -
+                              state.getNumberOfWarmUpSets();
                       totalWorkingSetsCount =
                           state.getPreviousWorkingSets().length;
                     }
@@ -59,14 +58,11 @@ class SetsList extends StatelessWidget {
                         PreviousSetCardHeaders(
                             isPr: prState_.displayedPR,
                             date: displayDate,
-                            workingSetsCount: totalWorkingSetsCount
-                        ),
+                            workingSetsCount: totalWorkingSetsCount),
                         PreviousSetCard(
-                            set: displaySet,
-                            setNumber: currentSetNumber),
+                            set: displaySet, setNumber: currentSetNumber),
                         CurrentSetCard(
-                            currentSet: currentSet,
-                            comparisonSet: displaySet)
+                            currentSet: currentSet, comparisonSet: displaySet)
                       ],
                     );
                   },
