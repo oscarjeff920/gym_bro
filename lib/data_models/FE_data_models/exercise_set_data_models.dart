@@ -1,4 +1,3 @@
-import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_object.dart';
 
 class GeneralExerciseSetModel {
@@ -19,8 +18,8 @@ class GeneralExerciseSetModel {
       required this.isWarmUp,
       required this.weight,
       required this.reps,
-      required this.extraReps,
-      required this.setDuration,
+      this.extraReps,
+      this.setDuration,
       this.notes});
 
   factory GeneralExerciseSetModel.fromExerciseSetTable(
@@ -54,7 +53,8 @@ class GeneralExerciseSetModel {
     return regeneratedModel;
   }
 
-  factory GeneralExerciseSetModel.fromDbMap({required Map<String, dynamic> map}) {
+  factory GeneralExerciseSetModel.fromDbMap(
+      {required Map<String, dynamic> map}) {
     GeneralExerciseSetModel regeneratedModel = GeneralExerciseSetModel(
         id: map['id'],
         exerciseId: map['exercise_id'],
@@ -70,7 +70,7 @@ class GeneralExerciseSetModel {
   }
 
   factory GeneralExerciseSetModel.fromSetsObject(
-      {required Sets exerciseSet, required int setOrder}) {
+      {required GeneralExerciseSetModel exerciseSet, required int setOrder}) {
     GeneralExerciseSetModel convertedModel = GeneralExerciseSetModel(
         id: null,
         exerciseId: null,

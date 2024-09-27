@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
+import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 
 class PreviousSetCard extends StatelessWidget {
-  final Sets set;
-  final int setNumber;
+  final GeneralExerciseSetModel set;
+  final int? setNumber;
 
   const PreviousSetCard(
       {super.key, required this.set, required this.setNumber});
@@ -43,7 +43,7 @@ class PreviousSetCard extends StatelessWidget {
           PreviousSetColumns(title: "Extra Reps", value: set.extraReps),
           PreviousSetColumns(title: "Set Duration", value: set.setDuration),
           PreviousSetColumns(title: "Notes", value: set.notes),
-          PreviousSetColumns(title: "Set Number", value: setNumber)
+          PreviousSetColumns(title: "Set Number", value: setNumber ?? '-')
         ],
       ),
     );

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 
 import 'completed_set_fields_widget.dart';
 
 class CompletedSetCard extends StatelessWidget {
-  final Sets set;
+  final GeneralExerciseSetModel set;
 
   const CompletedSetCard({
     super.key,

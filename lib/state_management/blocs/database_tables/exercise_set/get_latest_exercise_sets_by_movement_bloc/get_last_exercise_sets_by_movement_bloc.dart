@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
-import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_repository.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_state.dart';
@@ -34,15 +33,15 @@ class GetLastExerciseSetsByMovementBloc extends Bloc<
       try {
         Map previousSetsObj = await exerciseSetRepository
             .getLatestExerciseSetsByMovement(event.movementId!);
-        List<Map> retrievedPreviousSets = previousSetsObj['data'];
+        List<Map<String, dynamic>> retrievedPreviousSets = previousSetsObj['data'];
         if (retrievedPreviousSets.isEmpty) {
           yield SuccessfulGetLastExerciseSetsByMovementQueryState(
               lastExerciseSetsData: previousSetsObj, movementPRData: const {});
           return;
         }
 
-        List<Sets> previousExerciseSets = retrievedPreviousSets
-            .map((exerciseSet) => Sets.fromMap(exerciseSet))
+        List<GeneralExerciseSetModel> previousExerciseSets = retrievedPreviousSets
+            .map((exerciseSet) => GeneralExerciseSetModel.fromDbMap(map: exerciseSet))
             .toList();
 
         Map<String, dynamic> returnPreviousExerciseSetsObj = {
