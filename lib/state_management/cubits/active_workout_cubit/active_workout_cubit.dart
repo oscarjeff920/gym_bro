@@ -54,8 +54,6 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
     if (state is NewActiveWorkoutState) {
       NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
 
-      int index = 0;
-
       NewExerciseModel updatedExercise = NewExerciseModel(
           movementId: newExercise.selectedMovementId,
           exerciseOrder: currentState.exercises.length,

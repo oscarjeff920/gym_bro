@@ -35,7 +35,7 @@ class PreviousSetCard extends StatelessWidget {
                   onChanged: null,
                   checkColor: Colors.white,
                   fillColor:
-                      const MaterialStatePropertyAll<Color>(Colors.black),
+                      const WidgetStatePropertyAll<Color>(Colors.black),
                 ),
               ])),
           PreviousSetColumns(title: "Weight", value: set.weight),
