@@ -31,6 +31,7 @@ class CurrentSetCard extends StatelessWidget {
             CurrentSetFields(
               fieldName: "Warm Up",
               isCheckBox: true,
+              currentValue: currentSet!.isWarmUp,
               updateSetFunction: (value) {
                 BlocProvider.of<AddExerciseCubit>(context)
                     .updateCurrentSet(CurrentSet(isWarmUp: value));
@@ -39,6 +40,7 @@ class CurrentSetCard extends StatelessWidget {
             ),
             CurrentSetFields(
               fieldName: "Weight",
+                currentValue: currentSet!.weight,
               updateSetFunction: (value) {
                 BlocProvider.of<AddExerciseCubit>(context)
                     .updateCurrentSet(CurrentSet(weight: value));
@@ -56,6 +58,7 @@ class CurrentSetCard extends StatelessWidget {
             ),
             CurrentSetFields(
               fieldName: "Reps",
+                currentValue: currentSet!.reps,
               updateSetFunction: (value) {
                 BlocProvider.of<AddExerciseCubit>(context)
                     .updateCurrentSet(CurrentSet(reps: value));
@@ -76,6 +79,7 @@ class CurrentSetCard extends StatelessWidget {
             ),
             CurrentSetFields(
               fieldName: "Extra Reps",
+                currentValue: currentSet!.extraReps,
               updateSetFunction: (value) {
                 BlocProvider.of<AddExerciseCubit>(context)
                     .updateCurrentSet(CurrentSet(extraReps: value));
@@ -102,6 +106,7 @@ class CurrentSetCard extends StatelessWidget {
             const TimerSetField(),
             CurrentSetFields(
               fieldName: "Notes",
+                currentValue: currentSet!.notes,
               updateSetFunction: (value) {
                 BlocProvider.of<AddExerciseCubit>(context).updateCurrentSet(
                     CurrentSet(

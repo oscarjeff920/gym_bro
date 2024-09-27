@@ -7,18 +7,19 @@ import '../../../../../../../state_management/cubits/set_timer_cubit/set_timer_s
 class CurrentSetFields extends StatelessWidget {
   final String fieldName;
   final bool isCheckBox;
+  final dynamic currentValue;
   final Function(dynamic) updateSetFunction;
   final TextEditingController controller_;
   final bool? isBetter;
 
-  const CurrentSetFields({
-    super.key,
-    required this.fieldName,
-    required this.updateSetFunction,
-    this.isCheckBox = false,
-    required this.controller_,
-    this.isBetter
-  });
+  const CurrentSetFields(
+      {super.key,
+      required this.fieldName,
+      this.isCheckBox = false,
+      required this.currentValue,
+      required this.updateSetFunction,
+      required this.controller_,
+      this.isBetter});
 
   @override
   Widget build(BuildContext context) {
@@ -37,27 +38,31 @@ class CurrentSetFields extends StatelessWidget {
           ),
           !isCheckBox
               ? TextField(
+                  controller: TextEditingController()
+                    ..text = currentValue == null ? "" : currentValue.toString(),
                   textInputAction: TextInputAction.next,
                   keyboardType: textInput,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: isBetter == null ? Colors.white :
-                          isBetter! ? Colors.green : Colors.red
-                  ),
+                      color: isBetter == null
+                          ? Colors.white
+                          : isBetter!
+                              ? Colors.green
+                              : Colors.red),
                   cursorColor: Colors.white,
                   // controller: _controller,
-                  onChanged: (inputtedValue) {
+                  onSubmitted: (inputtedValue) {
                     print("--------> cha inputtedValue: $inputtedValue");
                     if (inputtedValue != "") {
-                        updateSetFunction(textInput == TextInputType.text
-                            ? inputtedValue
-                            : fieldName.toLowerCase() == "weight"
-                                ? double.parse(inputtedValue)
-                                : int.parse(inputtedValue));
+                      updateSetFunction(textInput == TextInputType.text
+                          ? inputtedValue
+                          : fieldName.toLowerCase() == "weight"
+                              ? double.parse(inputtedValue)
+                              : int.parse(inputtedValue));
                     }
                   },
                 )
-              : IsWarmupCheckbox(updateSetFunction: updateSetFunction),
+              : IsWarmupCheckbox(updateSetFunction: updateSetFunction, isBoxChecked: currentValue,),
         ],
       ),
     );
@@ -83,8 +88,7 @@ class TimerSetField extends StatelessWidget {
             builder: (context, state) {
               return TextField(
                 readOnly: true,
-                style: const TextStyle(
-                    color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 controller: TextEditingController()..text = state.toString(),
                 textAlign: TextAlign.center,
               );
@@ -98,10 +102,12 @@ class TimerSetField extends StatelessWidget {
 
 class IsWarmupCheckbox extends StatefulWidget {
   final Function(dynamic) updateSetFunction;
+  final bool isBoxChecked;
 
   const IsWarmupCheckbox({
     super.key,
     required this.updateSetFunction,
+    required this.isBoxChecked
   });
 
   @override
@@ -109,18 +115,16 @@ class IsWarmupCheckbox extends StatefulWidget {
 }
 
 class _IsWarmupCheckboxState extends State<IsWarmupCheckbox> {
-  bool isBoxChecked = false;
 
   @override
   Widget build(BuildContext context) {
     return Checkbox(
-        value: isBoxChecked,
+        value: widget.isBoxChecked,
         checkColor: Colors.white,
-        fillColor: MaterialStatePropertyAll<Color>(Colors.black.withOpacity(0)),
+        fillColor: WidgetStatePropertyAll<Color>(Colors.black.withOpacity(0)),
         onChanged: (bool? value) {
           setState(() {
-            print("setstate: value: $value, isBoxChecked: $isBoxChecked");
-            isBoxChecked = value!;
+            print("setstate: value: $value, isBoxChecked: ${widget.isBoxChecked}");
             widget.updateSetFunction(value);
           });
         });

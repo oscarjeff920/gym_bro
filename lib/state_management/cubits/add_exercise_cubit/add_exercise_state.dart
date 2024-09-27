@@ -9,16 +9,16 @@ class AddExerciseState extends Equatable {
   final MovementWorkedMuscleGroupsType? workedMuscleGroups;
   final String? selectedMovement;
   final int? selectedMovementId;
-  final CurrentSet currentSet;
+  final CurrentSet? currentSet;
   final List<GeneralExerciseSetModel> setsDone;
   final int numWorkingSets;
 
   const AddExerciseState(
       {required this.selectedMuscleGroup,
+        required this.workedMuscleGroups,
       required this.selectedMovement,
       required this.selectedMovementId,
-      required this.workedMuscleGroups,
-      this.currentSet = const CurrentSet(),
+      this.currentSet,
       required this.setsDone,
       required this.numWorkingSets});
 
@@ -30,15 +30,21 @@ class AddExerciseState extends Equatable {
         "\nsets done: $setsDone"
         "\nnumb working sets: $numWorkingSets"
         "\n    ";
+    if (currentSet == null) {
+      return """
+      $defaultMessage
+      There is no current set.
+      """;
+    }
     return """
     $defaultMessage
     Current Set:\n
-    isWarmUp: ${currentSet.isWarmUp}\n
-    weight: ${currentSet.weight}\n
-    reps: ${currentSet.reps}\n
-    extraReps: ${currentSet.extraReps}\n,
-    setDuration: ${currentSet.setDuration}\n
-    notes: ${currentSet.notes}
+    isWarmUp: ${currentSet!.isWarmUp}\n
+    weight: ${currentSet!.weight}\n
+    reps: ${currentSet!.reps}\n
+    extraReps: ${currentSet!.extraReps}\n,
+    setDuration: ${currentSet!.setDuration}\n
+    notes: ${currentSet!.notes}
     """;
   }
 

@@ -89,7 +89,7 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
     int currentWorkingSetIndex = currentSetIndex - numbOfCompletedWarmUpSets;
 
     int comparisonSetIndex;
-    if (currentSet.isWarmUp) {
+    if (currentSet.isWarmUp!) {
       // If the user has done more sets than last time, the final set will stay displayed
       comparisonSetIndex = getEquivalentWarmupSetIndex(
         currentSetIndex: currentSetIndex,

@@ -61,7 +61,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         selectedMovement: movementMuscleGroupJoin.movementName,
         selectedMovementId: movementMuscleGroupJoin.movementId,
         workedMuscleGroups: movementMuscleGroupJoin.workedMuscleGroups,
-        currentSet: const CurrentSet(),
+        currentSet: const CurrentSet(isWarmUp: true),
         setsDone: const [],
         numWorkingSets: 0));
   }
@@ -86,12 +86,12 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
     // TODO: need to work out what this is about
     if (generatedState.currentSet != null) {
       updatedState = CurrentSet(
-        isWarmUp: set.isWarmUp,
-        weight: set.weight ?? generatedState.currentSet.weight,
-        reps: set.reps ?? generatedState.currentSet.reps,
-        extraReps: set.extraReps ?? generatedState.currentSet.extraReps,
-        setDuration: set.setDuration ?? generatedState.currentSet.setDuration,
-        notes: set.notes ?? generatedState.currentSet.notes,
+        isWarmUp: set.isWarmUp ?? generatedState.currentSet!.isWarmUp,
+        weight: set.weight ?? generatedState.currentSet!.weight,
+        reps: set.reps ?? generatedState.currentSet!.reps,
+        extraReps: set.extraReps ?? generatedState.currentSet!.extraReps,
+        setDuration: set.setDuration ?? generatedState.currentSet!.setDuration,
+        notes: set.notes ?? generatedState.currentSet!.notes,
       );
     }
 
@@ -117,20 +117,21 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
 
     // converting the completed set from CurrentSet to Sets
     GeneralExerciseSetModel completedSet = GeneralExerciseSetModel(
-        isWarmUp: generatedState.currentSet.isWarmUp,
-        weight: generatedState.currentSet.weight!,
-        reps: generatedState.currentSet.reps!,
-        extraReps: generatedState.currentSet.extraReps,
-        setDuration: generatedState.currentSet.setDuration.toString(),
+        isWarmUp: generatedState.currentSet!.isWarmUp!,
+        weight: generatedState.currentSet!.weight!,
+        reps: generatedState.currentSet!.reps!,
+        extraReps: generatedState.currentSet!.extraReps,
+        setDuration: generatedState.currentSet!.setDuration.toString(),
         exerciseSetOrder: setsDone.length + 1,
-        notes: generatedState.currentSet.notes);
+        notes: generatedState.currentSet!.notes);
     setsDone.add(completedSet);
 
     emit(AddExerciseState(
         selectedMuscleGroup: generatedState.selectedMuscleGroup,
         selectedMovement: generatedState.selectedMovement,
         selectedMovementId: generatedState.selectedMovementId,
-        currentSet: const CurrentSet(),
+        currentSet: CurrentSet(
+            isWarmUp: completedSet.isWarmUp, weight: completedSet.weight),
         setsDone: setsDone,
         numWorkingSets: completedSet.isWarmUp
             ? generatedState.numWorkingSets

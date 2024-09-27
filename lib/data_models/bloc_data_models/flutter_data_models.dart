@@ -15,7 +15,7 @@ class Workout {
 
 class CurrentSet {
   final int? id;
-  final bool isWarmUp;
+  final bool? isWarmUp;
   final double? weight;
   final int? reps;
   final int? extraReps;
@@ -24,7 +24,7 @@ class CurrentSet {
 
   const CurrentSet({
     this.id,
-    this.isWarmUp = false,
+    this.isWarmUp,
     this.weight,
     this.reps,
     this.extraReps,
