@@ -51,9 +51,13 @@ class AddExerciseModal extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 10.0),
-                                    child: SetsList(
-                                        currentSet: state.currentSet,
-                                        doneSets: state.setsDone),
+                                    child: AnimatedOpacity(
+                                      duration: const Duration(milliseconds: 500),
+                                      opacity: state.selectedMovement == null ? 0 : 1,
+                                      child: SetsListContainer(
+                                          currentSet: state.currentSet,
+                                          completedSets: state.setsDone),
+                                    ),
                                   ),
                                 ),
                               ],
