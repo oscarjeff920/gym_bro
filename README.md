@@ -18,7 +18,6 @@ A lightweight app to track training and strength gains/progress
 - fix confusing set number (displays the current set number but on the previous workout bar)
 - expand previous exercise sets for movement
 
-- inheritance between Sets and the other exercise sets models?
 - analysis of movements over time ∂(movement)/∂t
 - query workouts by movement
 - log weight, body fat % etc & plot

@@ -19,7 +19,7 @@ class CompletedSetCard extends StatelessWidget {
         children: [
           CompletedSetFields(
               fieldName: "Warm Up",
-              isCheckBox: true, isWarmup: set.isWarmUp, value:0 // This is dumb
+              isCheckBox: true, isWarmup: set.isWarmUp, value:0 // TODO: This is dumb
           ),
           CompletedSetFields(fieldName: "Weight", value: set.weight,),
           CompletedSetFields(fieldName: "Reps", value: set.reps),
