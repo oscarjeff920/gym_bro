@@ -33,12 +33,12 @@ class AddExerciseState extends Equatable {
     return """
     $defaultMessage
     Current Set:\n
-    isWarmUp: ${currentSet!.isWarmUp}\n
-    weight: ${currentSet!.weight}\n
-    reps: ${currentSet!.reps}\n
-    extraReps: ${currentSet!.extraReps}\n,
-    setDuration: ${currentSet!.setDuration}\n
-    notes: ${currentSet!.notes}
+    isWarmUp: ${currentSet.isWarmUp}\n
+    weight: ${currentSet.weight}\n
+    reps: ${currentSet.reps}\n
+    extraReps: ${currentSet.extraReps}\n,
+    setDuration: ${currentSet.setDuration}\n
+    notes: ${currentSet.notes}
     """;
   }
 
