@@ -41,10 +41,6 @@ class ExerciseSetTable {
     );
   }
 
-  String durationToString(Duration duration_) {
-    return duration_.toString();
-  }
-
   Map<String, dynamic> toMap() {
     return {
       'exercise_id': exerciseId,
