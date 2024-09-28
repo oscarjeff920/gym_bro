@@ -41,7 +41,7 @@ class FinishWorkoutButton extends StatelessWidget {
             builder: (timerContext, timerState) {
               return BlocBuilder<ActiveWorkoutCubit, ActiveWorkoutState>(
                 builder: (workoutContext, workoutState) {
-                  return TextButton(
+                  return IconButton(
                       onPressed: exercises.isEmpty
                           ? null
                           : () {
@@ -65,7 +65,7 @@ class FinishWorkoutButton extends StatelessWidget {
                                 ),
                               );
                             },
-                      child: const Icon(
+                      icon: const Icon(
                         Icons.check_box,
                         size: 50,
                       ));
