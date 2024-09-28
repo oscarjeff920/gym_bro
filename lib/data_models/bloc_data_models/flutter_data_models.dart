@@ -31,4 +31,14 @@ class CurrentSet {
     this.setDuration,
     this.notes,
   });
+
+  setDurationToString() {
+    if (setDuration == null) return null;
+    String minutes =
+        setDuration!.inMinutes.remainder(60).toString().padLeft(2, '0');
+    String seconds =
+        setDuration!.inSeconds.remainder(60).toString().padLeft(2, '0');
+
+    return "$minutes:$seconds";
+  }
 }

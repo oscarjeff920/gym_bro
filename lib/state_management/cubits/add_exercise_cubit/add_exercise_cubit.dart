@@ -121,7 +121,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         weight: generatedState.currentSet!.weight!,
         reps: generatedState.currentSet!.reps!,
         extraReps: generatedState.currentSet!.extraReps,
-        setDuration: generatedState.currentSet!.setDuration.toString(),
+        setDuration: generatedState.currentSet!.setDurationToString(),
         exerciseSetOrder: setsDone.length + 1,
         notes: generatedState.currentSet!.notes);
     setsDone.add(completedSet);
