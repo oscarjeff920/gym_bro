@@ -69,22 +69,6 @@ class GeneralExerciseSetModel {
     return regeneratedModel;
   }
 
-  factory GeneralExerciseSetModel.fromSetsObject(
-      {required GeneralExerciseSetModel exerciseSet, required int setOrder}) {
-    GeneralExerciseSetModel convertedModel = GeneralExerciseSetModel(
-        id: null,
-        exerciseId: null,
-        exerciseSetOrder: setOrder,
-        isWarmUp: exerciseSet.isWarmUp,
-        weight: exerciseSet.weight,
-        reps: exerciseSet.reps,
-        extraReps: exerciseSet.extraReps,
-        setDuration: exerciseSet.setDuration.toString(),
-        notes: exerciseSet.notes);
-
-    return convertedModel;
-  }
-
   Map<String, dynamic> toMap() {
     Map<String, dynamic> modelAsMap = {
       'id': id,
