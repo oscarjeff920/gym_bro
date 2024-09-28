@@ -274,7 +274,7 @@ class WorkoutRepository {
           INSERT INTO $exerciseSetTableName
           (exercise_id, set_order, is_warm_up, weight, reps, extra_reps, duration, notes) VALUES
           ($newExerciseId, ${exerciseSet.exerciseSetOrder}, ${exerciseSet.isWarmUp}, ${exerciseSet.weight},
-           ${exerciseSet.reps}, ${exerciseSet.extraReps}, '"${exerciseSet.setDuration}"', "${exerciseSet.notes}");
+           ${exerciseSet.reps}, ${exerciseSet.extraReps}, "${exerciseSet.setDuration}", "${exerciseSet.notes}");
           ''';
           await txn.rawInsert(insertExerciseSetString);
         }
