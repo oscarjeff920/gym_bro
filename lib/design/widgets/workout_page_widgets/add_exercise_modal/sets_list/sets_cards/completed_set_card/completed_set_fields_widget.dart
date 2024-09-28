@@ -19,11 +19,6 @@ class CompletedSetFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     dynamic usedValue = value;
-    if (value is Duration) {
-      String hhmmss = value.toString().split('.').first;
-      usedValue =
-          "${hhmmss.split(":").elementAt(1)}:${hhmmss.split(":").elementAt(2)}";
-    }
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -46,7 +41,7 @@ class CompletedSetFields extends StatelessWidget {
                   value: isWarmup,
                   onChanged: null,
                   checkColor: previous? Colors.white : Colors.black,
-                  fillColor: MaterialStatePropertyAll<Color>(
+                  fillColor: WidgetStatePropertyAll<Color>(
                       previous ? Colors.black: Colors.black.withOpacity(0)),
                 )
         ],
