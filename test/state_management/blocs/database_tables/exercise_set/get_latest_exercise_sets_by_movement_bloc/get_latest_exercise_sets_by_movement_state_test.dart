@@ -59,6 +59,142 @@ void main() {
 
       expect(resultIndex, expectedIndex);
     });
+    test('3rd set is warm up for current but 4th is for comparison set', () {
+      int resultIndex = mockState.getEquivalentWarmupSetIndex(
+          currentSetIndex: 2,
+          comparisonExerciseSets: [
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 1, isWarmUp: false, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 2, isWarmUp: false, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 3, isWarmUp: false, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 4, isWarmUp: true, weight: 0, reps: 1),
+          ]);
+
+      int expectedIndex = 2;
+
+      expect(resultIndex, expectedIndex);
+    });
+    test('4th set is warm up for current and 4th is for comparison set', () {
+      int resultIndex = mockState.getEquivalentWarmupSetIndex(
+          currentSetIndex: 3,
+          comparisonExerciseSets: [
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 1, isWarmUp: false, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 2, isWarmUp: false, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 3, isWarmUp: false, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 4, isWarmUp: true, weight: 0, reps: 1),
+          ]);
+
+      int expectedIndex = 3;
+
+      expect(resultIndex, expectedIndex);
+    });
+    test('4th set is warm up for current and 4th is for comparison set', () {
+      int resultIndex = mockState.getEquivalentWarmupSetIndex(
+          currentSetIndex: 4,
+          comparisonExerciseSets: [
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 1, isWarmUp: false, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 2, isWarmUp: false, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 3, isWarmUp: false, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 4, isWarmUp: true, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 5, isWarmUp: false, weight: 0, reps: 1),
+          ]);
+
+      int expectedIndex = 3;
+
+      expect(resultIndex, expectedIndex);
+    });
+    test('All comparison sets are warmup, 1st set', () {
+      int resultIndex = mockState.getEquivalentWarmupSetIndex(
+          currentSetIndex: 0,
+          comparisonExerciseSets: [
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 1, isWarmUp: true, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 2, isWarmUp: true, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 3, isWarmUp: true, weight: 0, reps: 1),
+          ]);
+
+      int expectedIndex = 0;
+
+      expect(resultIndex, expectedIndex);
+    });
+    test('All comparison sets are warmup, 2nd set', () {
+      int resultIndex = mockState.getEquivalentWarmupSetIndex(
+          currentSetIndex: 1,
+          comparisonExerciseSets: [
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 1, isWarmUp: true, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 2, isWarmUp: true, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 3, isWarmUp: true, weight: 0, reps: 1),
+          ]);
+
+      int expectedIndex = 1;
+
+      expect(resultIndex, expectedIndex);
+    });
+    test('All comparison sets are warmup, 3rd set', () {
+      int resultIndex = mockState.getEquivalentWarmupSetIndex(
+          currentSetIndex: 2,
+          comparisonExerciseSets: [
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 1, isWarmUp: true, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 2, isWarmUp: true, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 3, isWarmUp: true, weight: 0, reps: 1),
+          ]);
+
+      int expectedIndex = 2;
+
+      expect(resultIndex, expectedIndex);
+    });
+    test('All comparison sets are warmup, 4th set', () {
+      int resultIndex = mockState.getEquivalentWarmupSetIndex(
+          currentSetIndex: 3,
+          comparisonExerciseSets: [
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 1, isWarmUp: true, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 2, isWarmUp: true, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 3, isWarmUp: true, weight: 0, reps: 1),
+          ]);
+
+      int expectedIndex = 2;
+
+      expect(resultIndex, expectedIndex);
+    });
+    test('There are no warmup comparison sets, 1st set', () {
+      int resultIndex = mockState.getEquivalentWarmupSetIndex(
+          currentSetIndex: 0,
+          comparisonExerciseSets: [
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 1, isWarmUp: false, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 2, isWarmUp: false, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 3, isWarmUp: false, weight: 0, reps: 1),
+          ]);
+
+      int expectedIndex = 0;
+
+      expect(resultIndex, expectedIndex);
+    });
   });
   group('getEquivalentWorkingSetIndex', () {
     final mockState = SuccessfulGetLastExerciseSetsByMovementQueryState(
@@ -120,6 +256,50 @@ void main() {
           ]);
 
       int expectedIndex = 4;
+
+      expect(resultIndex, expectedIndex);
+    });
+    test('2nd working set with 2 warm ups and one drop comparison sets', () {
+      int resultIndex = mockState.getEquivalentWorkingSetIndex(
+          currentWorkingSetIndex: 1,
+          comparisonExerciseSets: [
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 1, isWarmUp: true, weight: 10, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 2, isWarmUp: true, weight: 11, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 3, isWarmUp: false, weight: 100, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 4, isWarmUp: true, weight: 101, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 5, isWarmUp: true, weight: 102, reps: 1),
+          ]);
+
+      int expectedIndex = 2;
+
+      expect(resultIndex, expectedIndex);
+    });
+    test('2nd working set with 2 warm ups and one drop comparison sets', () {
+      int resultIndex = mockState.getEquivalentWorkingSetIndex(
+          currentWorkingSetIndex: 1,
+          comparisonExerciseSets: [
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 1, isWarmUp: true, weight: 10, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 2, isWarmUp: true, weight: 11, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 3, isWarmUp: false, weight: 100, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 4, isWarmUp: true, weight: 101, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 5, isWarmUp: true, weight: 102, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 6, isWarmUp: true, weight: 102, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 7, isWarmUp: false, weight: 102, reps: 1),
+          ]);
+
+      int expectedIndex = 6;
 
       expect(resultIndex, expectedIndex);
     });
@@ -251,6 +431,66 @@ void main() {
                 exerciseSetOrder: 1, isWarmUp: true, weight: 0, reps: 1),
             GeneralExerciseSetModel(
                 exerciseSetOrder: 2, isWarmUp: false, weight: 0, reps: 0)
+          ]);
+
+      int expectedIndex = 1;
+
+      expect(resultIndex, expectedIndex);
+    });
+    test('No warm up comparison sets, 1st set = warmup', () {
+      int resultIndex = mockState.provideMatchingPreviousSetIndex(
+          currentSet: const CurrentSet(isWarmUp: true),
+          completedSets: [],
+          comparisonExerciseSets: [
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 1, isWarmUp: false, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 2, isWarmUp: false, weight: 0, reps: 0)
+          ]);
+
+      int expectedIndex = 0;
+
+      expect(resultIndex, expectedIndex);
+    });
+    test('No warm up comparison sets, 1st & 2nd set = warmup', () {
+      int resultIndex = mockState.provideMatchingPreviousSetIndex(
+          currentSet: const CurrentSet(isWarmUp: true),
+          completedSets: [GeneralExerciseSetModel(isWarmUp: true, exerciseSetOrder: 1, weight: 10, reps: 1),],
+          comparisonExerciseSets: [
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 1, isWarmUp: false, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 2, isWarmUp: false, weight: 0, reps: 0)
+          ]);
+
+      int expectedIndex = 1;
+
+      expect(resultIndex, expectedIndex);
+    });
+    test('only warm up comparison sets, 1st set != warmup', () {
+      int resultIndex = mockState.provideMatchingPreviousSetIndex(
+          currentSet: const CurrentSet(isWarmUp: false),
+          completedSets: [],
+          comparisonExerciseSets: [
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 1, isWarmUp: true, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 2, isWarmUp: true, weight: 0, reps: 0)
+          ]);
+
+      int expectedIndex = 0;
+
+      expect(resultIndex, expectedIndex);
+    });
+    test('only warm up comparison sets, 1st & 2nd set != warmup', () {
+      int resultIndex = mockState.provideMatchingPreviousSetIndex(
+          currentSet: const CurrentSet(isWarmUp: false),
+          completedSets: [GeneralExerciseSetModel(isWarmUp: false, exerciseSetOrder: 1, weight: 10, reps: 1),],
+          comparisonExerciseSets: [
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 1, isWarmUp: true, weight: 0, reps: 1),
+            GeneralExerciseSetModel(
+                exerciseSetOrder: 2, isWarmUp: true, weight: 0, reps: 0)
           ]);
 
       int expectedIndex = 1;

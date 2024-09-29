@@ -88,13 +88,18 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
     int currentSetIndex = completedSets.length;
     int currentWorkingSetIndex = currentSetIndex - numbOfCompletedWarmUpSets;
 
+    if (getNumberOfWarmUpSets(sets: comparisonExerciseSets) == 0 ||
+        getNumberOfWarmUpSets(sets: comparisonExerciseSets) ==
+            comparisonExerciseSets.length) {
+      return currentSetIndex;
+    }
+
     int comparisonSetIndex;
     if (currentSet.isWarmUp!) {
       // If the user has done more sets than last time, the final set will stay displayed
       comparisonSetIndex = getEquivalentWarmupSetIndex(
-        currentSetIndex: currentSetIndex,
-        comparisonExerciseSets: comparisonExerciseSets
-      );
+          currentSetIndex: currentSetIndex,
+          comparisonExerciseSets: comparisonExerciseSets);
     } else {
       comparisonSetIndex = getEquivalentWorkingSetIndex(
           currentWorkingSetIndex: currentWorkingSetIndex,
@@ -104,43 +109,66 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
     return comparisonSetIndex;
   }
 
-  int getEquivalentWarmupSetIndex({
-    required int currentSetIndex,
-    required List<GeneralExerciseSetModel> comparisonExerciseSets
-}) {
-    // gets the warm up set that matches the current set index most closely
+  int getEquivalentWarmupSetIndex(
+      {required int currentSetIndex,
+      required List<GeneralExerciseSetModel> comparisonExerciseSets}) {
+    /// gets the warm up set that matches the current set index most closely
+
+    // if the current set index is greater than the final index of the comparisonExerciseSets
+    // we'll take the final set of the comparisonExerciseSets as the comparison
     int comparisonSetIndex = currentSetIndex >= comparisonExerciseSets.length
         ? comparisonExerciseSets.length - 1
         : currentSetIndex;
+
+    // if the comparison set is not a warm up, we loop down until we find one,
+    // if none is found we return the comparison set index
     if (!comparisonExerciseSets[comparisonSetIndex].isWarmUp) {
-      for (int index = currentSetIndex -1; index > 0; index--) {
+      for (int index = currentSetIndex - 1; index >= 0; index--) {
         if (comparisonExerciseSets[index].isWarmUp) return index;
       }
-      return 0;
+      // This could cause strange behaviour is
     }
     return comparisonSetIndex;
-}
+  }
 
   int getEquivalentWorkingSetIndex({
     required int currentWorkingSetIndex,
     required List<GeneralExerciseSetModel> comparisonExerciseSets,
   }) {
-    // gets the working set that matches the current set index most closely
+    /// gets the working set that matches the current set index most closely
     for (int index = 0; index < comparisonExerciseSets.length; index++) {
       GeneralExerciseSetModel comparisonSet = comparisonExerciseSets[index];
+      // getting the warm-up sets out of the way
       if (comparisonSet.isWarmUp) continue;
-      int equivalentWorkingSetIndex = index + currentWorkingSetIndex;
 
+      int equivalentWorkingSetIndex = index + currentWorkingSetIndex;
       if (equivalentWorkingSetIndex >= comparisonExerciseSets.length) {
+        // if the equivalent set index is greater than the final index
+        // we loop back and select the last working set.
         for (int i = comparisonExerciseSets.length - 1; i >= 0; i--) {
-          if (comparisonExerciseSets[i].isWarmUp) {
-            continue;
-          }
+          if (comparisonExerciseSets[i].isWarmUp) continue;
           return i;
+          // the case that all sets are warmup is caught outside of this method
         }
       }
-      if (comparisonExerciseSets[equivalentWorkingSetIndex].isWarmUp) {
-        continue;
+      // this is the working set index/element after the initial warmup sets are skipped
+      GeneralExerciseSetModel equivalentComparisonExerciseSet =
+          comparisonExerciseSets[equivalentWorkingSetIndex];
+      if (equivalentComparisonExerciseSet.isWarmUp) {
+        // if the equivalent comparison set is a warm up, we'll return the next working set index
+        for (int index_ = equivalentWorkingSetIndex + 1;
+            index_ < comparisonExerciseSets.length;
+            index_++) {
+          GeneralExerciseSetModel followingComparisonExerciseSet =
+              comparisonExerciseSets[index_];
+          if (followingComparisonExerciseSet.isWarmUp) continue;
+          return index_;
+        }
+        // if there are no more working sets, then the last working set index is returned
+        for (int i = comparisonExerciseSets.length - 1; i >= 0; i--) {
+          if (comparisonExerciseSets[i].isWarmUp) continue;
+          return i;
+        }
       } else {
         return equivalentWorkingSetIndex;
       }
