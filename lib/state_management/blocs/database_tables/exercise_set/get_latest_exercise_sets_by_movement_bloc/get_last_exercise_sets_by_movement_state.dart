@@ -126,7 +126,6 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
       for (int index = currentSetIndex - 1; index >= 0; index--) {
         if (comparisonExerciseSets[index].isWarmUp) return index;
       }
-      // This could cause strange behaviour is
     }
     return comparisonSetIndex;
   }
