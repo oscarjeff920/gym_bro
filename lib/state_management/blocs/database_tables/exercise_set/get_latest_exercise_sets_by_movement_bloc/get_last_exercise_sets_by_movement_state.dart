@@ -88,10 +88,13 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
     int currentSetIndex = completedSets.length;
     int currentWorkingSetIndex = currentSetIndex - numbOfCompletedWarmUpSets;
 
+    // if either there are no warm-up or no working sets, the current set index will be returned
     if (getNumberOfWarmUpSets(sets: comparisonExerciseSets) == 0 ||
         getNumberOfWarmUpSets(sets: comparisonExerciseSets) ==
             comparisonExerciseSets.length) {
-      return currentSetIndex;
+      return currentSetIndex >= comparisonExerciseSets.length
+          ? comparisonExerciseSets.length - 1
+          : currentSetIndex;
     }
 
     int comparisonSetIndex;
@@ -113,7 +116,7 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
       {required int currentSetIndex,
       required List<GeneralExerciseSetModel> comparisonExerciseSets}) {
     /// gets the warm up set that matches the current set index most closely
-
+    if (comparisonExerciseSets.isEmpty) throw ArgumentError('comparisonExerciseSets cannot be empty');
     // if the current set index is greater than the final index of the comparisonExerciseSets
     // we'll take the final set of the comparisonExerciseSets as the comparison
     int comparisonSetIndex = currentSetIndex >= comparisonExerciseSets.length
@@ -172,7 +175,7 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
         return equivalentWorkingSetIndex;
       }
     }
-    throw IndexError.withLength(0, comparisonExerciseSets.length);
+    throw ArgumentError('comparisonExerciseSets cannot be empty');
   }
 }
 
