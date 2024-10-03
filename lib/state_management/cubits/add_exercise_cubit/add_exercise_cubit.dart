@@ -73,7 +73,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         selectedMuscleGroup: generatedState.selectedMuscleGroup,
         selectedMovement: newMovementName,
         selectedMovementId: null,
-        currentSet: const CurrentSet(),
+        currentSet: const CurrentSet(isWarmUp: true),
         setsDone: const [],
         numWorkingSets: 0,
         workedMuscleGroups: generatedState.workedMuscleGroups));
