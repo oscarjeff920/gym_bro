@@ -39,16 +39,15 @@ class CurrentSetFields extends StatelessWidget {
           !isCheckBox
               ? TextField(
                   controller: TextEditingController()
-                    ..text = currentValue == null ? "" : currentValue.toString(),
+                    ..text =
+                        currentValue == null ? "" : currentValue.toString(),
                   textInputAction: TextInputAction.next,
                   keyboardType: textInput,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: isBetter == null
-                          ? Colors.white
-                          : isBetter!
-                              ? Colors.green
-                              : Colors.red),
+                      color: isBetter != null && isBetter!
+                          ? Colors.green
+                          : Colors.white),
                   cursorColor: Colors.white,
                   // controller: _controller,
                   onSubmitted: (inputtedValue) {
@@ -62,7 +61,10 @@ class CurrentSetFields extends StatelessWidget {
                     }
                   },
                 )
-              : IsWarmupCheckbox(updateSetFunction: updateSetFunction, isBoxChecked: currentValue,),
+              : IsWarmupCheckbox(
+                  updateSetFunction: updateSetFunction,
+                  isBoxChecked: currentValue,
+                ),
         ],
       ),
     );
@@ -104,18 +106,14 @@ class IsWarmupCheckbox extends StatefulWidget {
   final Function(dynamic) updateSetFunction;
   final bool isBoxChecked;
 
-  const IsWarmupCheckbox({
-    super.key,
-    required this.updateSetFunction,
-    required this.isBoxChecked
-  });
+  const IsWarmupCheckbox(
+      {super.key, required this.updateSetFunction, required this.isBoxChecked});
 
   @override
   State<IsWarmupCheckbox> createState() => _IsWarmupCheckboxState();
 }
 
 class _IsWarmupCheckboxState extends State<IsWarmupCheckbox> {
-
   @override
   Widget build(BuildContext context) {
     return Checkbox(
@@ -124,7 +122,8 @@ class _IsWarmupCheckboxState extends State<IsWarmupCheckbox> {
         fillColor: WidgetStatePropertyAll<Color>(Colors.black.withOpacity(0)),
         onChanged: (bool? value) {
           setState(() {
-            print("setstate: value: $value, isBoxChecked: ${widget.isBoxChecked}");
+            print(
+                "setstate: value: $value, isBoxChecked: ${widget.isBoxChecked}");
             widget.updateSetFunction(value);
           });
         });
