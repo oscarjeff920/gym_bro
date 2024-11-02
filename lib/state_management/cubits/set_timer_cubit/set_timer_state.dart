@@ -18,14 +18,14 @@ class SetTimerState extends Equatable {
 }
 
 class SetTimerStarted extends SetTimerState {
-  const SetTimerStarted(int elapsed) : super(elapsed);
+  const SetTimerStarted(super.elapsed);
 
   @override
   List<Object?> get props => [elapsed];
 }
 
 class SetTimerStopped extends SetTimerState {
-  const SetTimerStopped(int elapsed) : super(elapsed);
+  const SetTimerStopped(super.elapsed);
 }
 
 class SetTimerReset extends SetTimerState {

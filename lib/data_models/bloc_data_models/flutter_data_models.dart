@@ -41,4 +41,16 @@ class CurrentSet {
 
     return "$minutes:$seconds";
   }
+
+  // factory CurrentSet.fromGeneralExerciseSetModel(GeneralExerciseSetModel exerciseSet) {
+  //   CurrentSet convertedModel = CurrentSet(
+  //     id: exerciseSet.id,
+  //     isWarmUp: exerciseSet.isWarmUp,
+  //     weight: exerciseSet.weight,
+  //     reps: exerciseSet.reps,
+  //     extraReps: exerciseSet.extraReps,
+  //     setDuration: exerciseSet.setDuration,
+  //
+  //   )
+  // }
 }

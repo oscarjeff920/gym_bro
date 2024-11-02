@@ -9,6 +9,7 @@ class SetTimerCubit extends Cubit<SetTimerState> {
   Timer? _timer;
 
   returnTimed() {
+    if (state.elapsed == 0) return null;
     return Duration(seconds: state.elapsed);
   }
 

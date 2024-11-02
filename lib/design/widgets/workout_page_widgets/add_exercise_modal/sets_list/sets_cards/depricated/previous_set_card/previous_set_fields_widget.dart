@@ -46,7 +46,7 @@ class CompletedSetFields extends StatelessWidget {
                   value: isWarmup,
                   onChanged: null,
                   checkColor: previous? Colors.white : Colors.black,
-                  fillColor: MaterialStatePropertyAll<Color>(
+                  fillColor: WidgetStatePropertyAll<Color>(
                       previous ? Colors.black: Colors.black.withOpacity(0)),
                 )
         ],

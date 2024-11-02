@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_cubit.dart';
+import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_state.dart';
 
-import '../../../../../../../state_management/cubits/set_timer_cubit/set_timer_state.dart';
 
 class CurrentSetFields extends StatelessWidget {
   final String fieldName;
@@ -38,7 +38,7 @@ class CurrentSetFields extends StatelessWidget {
           ),
           !isCheckBox
               ? TextField(
-                  controller: TextEditingController()
+                  controller: _controller
                     ..text =
                         currentValue == null ? "" : currentValue.toString(),
                   textInputAction: TextInputAction.next,
@@ -50,7 +50,7 @@ class CurrentSetFields extends StatelessWidget {
                           : Colors.white),
                   cursorColor: Colors.white,
                   // controller: _controller,
-                  onSubmitted: (inputtedValue) {
+                  onChanged: (inputtedValue) {
                     print("--------> cha inputtedValue: $inputtedValue");
                     if (inputtedValue != "") {
                       updateSetFunction(textInput == TextInputType.text
@@ -60,6 +60,16 @@ class CurrentSetFields extends StatelessWidget {
                               : int.parse(inputtedValue));
                     }
                   },
+                  // onChanged: (inputtedValue) {
+                  //   print("--------> cha inputtedValue: $inputtedValue");
+                  //   if (inputtedValue != "") {
+                  //     updateSetFunction(textInput == TextInputType.text
+                  //         ? inputtedValue
+                  //         : fieldName.toLowerCase() == "weight"
+                  //             ? double.parse(inputtedValue)
+                  //             : int.parse(inputtedValue));
+                  //   }
+                  // },
                 )
               : IsWarmupCheckbox(
                   updateSetFunction: updateSetFunction,
@@ -105,9 +115,10 @@ class TimerSetField extends StatelessWidget {
 class IsWarmupCheckbox extends StatefulWidget {
   final Function(dynamic) updateSetFunction;
   final bool isBoxChecked;
+  final bool isCompleted;
 
   const IsWarmupCheckbox(
-      {super.key, required this.updateSetFunction, required this.isBoxChecked});
+      {super.key, required this.updateSetFunction, required this.isBoxChecked, this.isCompleted = false});
 
   @override
   State<IsWarmupCheckbox> createState() => _IsWarmupCheckboxState();
@@ -118,12 +129,10 @@ class _IsWarmupCheckboxState extends State<IsWarmupCheckbox> {
   Widget build(BuildContext context) {
     return Checkbox(
         value: widget.isBoxChecked,
-        checkColor: Colors.white,
-        fillColor: WidgetStatePropertyAll<Color>(Colors.black.withOpacity(0)),
+        checkColor: widget.isCompleted ? Colors.white : Colors.black,
+        fillColor: WidgetStatePropertyAll<Color>(widget.isCompleted ? Colors.white : Colors.black.withOpacity(0)),
         onChanged: (bool? value) {
           setState(() {
-            print(
-                "setstate: value: $value, isBoxChecked: ${widget.isBoxChecked}");
             widget.updateSetFunction(value);
           });
         });

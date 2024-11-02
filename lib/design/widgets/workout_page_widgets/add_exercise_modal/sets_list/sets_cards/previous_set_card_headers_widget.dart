@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/state_management/cubits/display_pr_cubit/display_pr_cubit.dart';
 
-class PreviousSetCardHeaders extends StatelessWidget {
-  const PreviousSetCardHeaders(
+class ComparisonSetCardHeaders extends StatelessWidget {
+  const ComparisonSetCardHeaders(
       {super.key,
       required this.date,
       required this.workingSetsCount,
@@ -31,7 +31,7 @@ class PreviousSetCardHeaders extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: TextButton(
                   style: ButtonStyle(
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                         EdgeInsets.zero),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
@@ -48,7 +48,7 @@ class PreviousSetCardHeaders extends StatelessWidget {
             // color: Colors.black12,
             child: Text(
               date,
-              textScaleFactor: 1,
+              textScaler: const TextScaler.linear(1),
             ),
           ),
           SizedBox(

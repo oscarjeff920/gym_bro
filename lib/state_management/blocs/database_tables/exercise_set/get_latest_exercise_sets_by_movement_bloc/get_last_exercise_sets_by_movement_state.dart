@@ -31,26 +31,8 @@ class GetLastExerciseSetsByMovementState extends Equatable {
 
     return "$dayString/$monthString/$yearString";
   }
-}
 
-class GetLastExerciseSetNotQueriedState
-    extends GetLastExerciseSetsByMovementState {}
-
-class GetLastExerciseSetQueryingState
-    extends GetLastExerciseSetsByMovementState {}
-
-class SuccessfulGetLastExerciseSetsByMovementQueryState
-    extends GetLastExerciseSetsByMovementState {
-  final Map lastExerciseSetsData;
-  final Map movementPRData;
-
-  SuccessfulGetLastExerciseSetsByMovementQueryState(
-      {required this.lastExerciseSetsData, required this.movementPRData});
-
-  @override
-  List<Object?> get props => [lastExerciseSetsData, movementPRData];
-
-  getNumberOfWarmUpSets({required sets}) {
+  int getNumberOfWarmUpSets({required sets}) {
     List<GeneralExerciseSetModel> warmupSets =
         sets.where((exerciseSet) => exerciseSet.isWarmUp == true).toList();
     return warmupSets.length;
@@ -112,11 +94,15 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
     return comparisonSetIndex;
   }
 
-  int getEquivalentWarmupSetIndex(
-      {required int currentSetIndex,
-      required List<GeneralExerciseSetModel> comparisonExerciseSets}) {
+  int getEquivalentWarmupSetIndex({
+    required int currentSetIndex,
+    required List<GeneralExerciseSetModel> comparisonExerciseSets,
+  }) {
     /// gets the warm up set that matches the current set index most closely
-    if (comparisonExerciseSets.isEmpty) throw ArgumentError('comparisonExerciseSets cannot be empty');
+    if (comparisonExerciseSets.isEmpty) {
+      throw ArgumentError('comparisonExerciseSets cannot be empty');
+    }
+
     // if the current set index is greater than the final index of the comparisonExerciseSets
     // we'll take the final set of the comparisonExerciseSets as the comparison
     int comparisonSetIndex = currentSetIndex >= comparisonExerciseSets.length
@@ -126,7 +112,7 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
     // if the comparison set is not a warm up, we loop down until we find one,
     // if none is found we return the comparison set index
     if (!comparisonExerciseSets[comparisonSetIndex].isWarmUp) {
-      for (int index = currentSetIndex - 1; index >= 0; index--) {
+      for (int index = comparisonSetIndex - 1; index >= 0; index--) {
         if (comparisonExerciseSets[index].isWarmUp) return index;
       }
     }
@@ -177,6 +163,24 @@ class SuccessfulGetLastExerciseSetsByMovementQueryState
     }
     throw ArgumentError('comparisonExerciseSets cannot be empty');
   }
+}
+
+class GetLastExerciseSetNotQueriedState
+    extends GetLastExerciseSetsByMovementState {}
+
+class GetLastExerciseSetQueryingState
+    extends GetLastExerciseSetsByMovementState {}
+
+class SuccessfulGetLastExerciseSetsByMovementQueryState
+    extends GetLastExerciseSetsByMovementState {
+  final Map lastExerciseSetsData;
+  final Map movementPRData;
+
+  SuccessfulGetLastExerciseSetsByMovementQueryState(
+      {required this.lastExerciseSetsData, required this.movementPRData});
+
+  @override
+  List<Object?> get props => [lastExerciseSetsData, movementPRData];
 }
 
 class GetLastExerciseSetsQueryErrorState

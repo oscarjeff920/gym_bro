@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
-import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/sets_list/sets_cards/completed_set_card/completed_set_card_widget.dart';
-import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/sets_list/sets_cards/current_set_card/current_set_card_widget.dart';
-import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/sets_list/sets_cards/previous_set_card/previous_set_card_headers_widget.dart';
-import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/sets_list/sets_cards/previous_set_card/previous_set_card_widget.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_state.dart';
 import 'package:gym_bro/state_management/cubits/display_pr_cubit/display_pr_cubit.dart';
 import 'package:gym_bro/state_management/cubits/display_pr_cubit/display_pr_state.dart';
+
+import 'sets_cards/comparison_set_container_widget.dart';
+import 'sets_cards/completed_set_container_widget.dart';
+import 'sets_cards/current_set_container_widget.dart';
+import 'sets_cards/previous_set_card_headers_widget.dart';
+import 'sets_cards/set_container_widget.dart';
 
 class SetsListContainer extends StatelessWidget {
   final CurrentSet? currentSet;
@@ -81,27 +83,54 @@ class SetsListContainer extends StatelessWidget {
 
                     return Column(
                       children: [
-                        PreviousSetCardHeaders(
+                        ComparisonSetCardHeaders(
                             isPr: prState_.displayedPR,
                             date: comparisonExerciseDate,
                             workingSetsCount:
                                 comparisonExerciseTotalWorkingSets),
-                        PreviousSetCard(
-                            set: comparisonSet,
+                        // PreviousSetCard(
+                        //     set: comparisonSet,
+                        //     setNumber: comparisonExerciseWorkingSetNumber),
+                        ComparisonSetContainer(
+                            // isPrevious: true,
+                            comparisonSet: comparisonSet,
                             setNumber: comparisonExerciseWorkingSetNumber),
-                        CurrentSetCard(
-                            currentSet: currentSet,
-                            comparisonSet: comparisonSet)
+                        CurrentSetContainer(
+                          currentSet: currentSet!,
+                          setNumber: currentSet!.isWarmUp!
+                              ? null
+                              : completedSets.length -
+                                  state.getNumberOfWarmUpSets(
+                                      sets: completedSets),
+                          comparisonSet: comparisonSet,
+                        ),
+                        // CurrentSetCard(
+                        //     currentSet: currentSet,
+                        //     comparisonSet: comparisonSet)
                       ],
                     );
                   },
                 );
               }
               // If theres no previous exercise data for this movement:
-              return CurrentSetCard(currentSet: currentSet);
+              return currentSet != null ? CurrentSetContainer(
+                currentSet: currentSet!,
+                setNumber: currentSet!.isWarmUp!
+                    ? null
+                    : completedSets.length -
+                        state.getNumberOfWarmUpSets(sets: completedSets),
+              ) : Container();
+              return SetContainer(
+                currentSet: currentSet,
+                setNumber: currentSet!.isWarmUp!
+                    ? null
+                    : completedSets.length -
+                        state.getNumberOfWarmUpSets(sets: completedSets),
+              );
             },
           ),
-        for (var set in completedSets) CompletedSetCard(set: set)
+        const SizedBox(height: 15,),
+        for (var set in completedSets) CompletedSetContainer(completedSet: set)
       ],
     );
   }
