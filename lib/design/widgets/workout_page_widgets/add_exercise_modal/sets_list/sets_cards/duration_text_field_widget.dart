@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 
+import 'general_set_container_widget.dart';
+
 class DurationTextFieldWidget extends StatelessWidget {
   final String? displayDuration;
-  final TextStyle textStyle;
+  final SetType setType;
 
-  const DurationTextFieldWidget({super.key, this.displayDuration, this.textStyle = const TextStyle(color: Colors.white)});
+  const DurationTextFieldWidget(
+      {super.key, required this.displayDuration, required this.setType});
+
+  Color get activeColour =>
+      setType == SetType.completed ? Colors.black : Colors.white;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       readOnly: true,
-      style: textStyle,
+      decoration: const InputDecoration(border: InputBorder.none),
+      style: TextStyle(color: activeColour),
       controller: TextEditingController()..text = displayDuration ?? "- - -",
       textAlign: TextAlign.center,
     );
   }
 }
-
-

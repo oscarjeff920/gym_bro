@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
-class SetTextFieldsWidget extends StatefulWidget {
+import 'general_set_container_widget.dart';
 
-  const SetTextFieldsWidget({super.key});
+class SetTextField extends StatefulWidget {
+  final SetType setType;
+
+  const SetTextField({super.key, required this.setType});
+
+  Color get activeColour =>
+      setType == SetType.completed ? Colors.black : Colors.white;
 
   @override
-  State<SetTextFieldsWidget> createState() => _SetTextFieldsWidgetState();
+  State<SetTextField> createState() => _SetTextFieldState();
 }
 
-class _SetTextFieldsWidgetState extends State<SetTextFieldsWidget> {
+class _SetTextFieldState extends State<SetTextField> {
   // bool isReadOnly = widget.isReadOnly;
 
   // _makeEditable() {

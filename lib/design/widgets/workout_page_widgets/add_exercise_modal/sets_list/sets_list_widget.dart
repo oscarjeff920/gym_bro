@@ -7,11 +7,8 @@ import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_
 import 'package:gym_bro/state_management/cubits/display_pr_cubit/display_pr_cubit.dart';
 import 'package:gym_bro/state_management/cubits/display_pr_cubit/display_pr_state.dart';
 
-import 'sets_cards/comparison_set_container_widget.dart';
-import 'sets_cards/completed_set_container_widget.dart';
-import 'sets_cards/current_set_container_widget.dart';
 import 'sets_cards/previous_set_card_headers_widget.dart';
-import 'sets_cards/set_container_widget.dart';
+import 'sets_cards/general_set_container_widget.dart';
 
 class SetsListContainer extends StatelessWidget {
   final CurrentSet? currentSet;
@@ -91,11 +88,11 @@ class SetsListContainer extends StatelessWidget {
                         // PreviousSetCard(
                         //     set: comparisonSet,
                         //     setNumber: comparisonExerciseWorkingSetNumber),
-                        ComparisonSetContainer(
+                        GeneralSetContainer(
                             // isPrevious: true,
                             comparisonSet: comparisonSet,
                             setNumber: comparisonExerciseWorkingSetNumber),
-                        CurrentSetContainer(
+                        GeneralSetContainer(
                           currentSet: currentSet!,
                           setNumber: currentSet!.isWarmUp!
                               ? null
@@ -113,14 +110,14 @@ class SetsListContainer extends StatelessWidget {
                 );
               }
               // If theres no previous exercise data for this movement:
-              return currentSet != null ? CurrentSetContainer(
+              return currentSet != null ? GeneralSetContainer(
                 currentSet: currentSet!,
                 setNumber: currentSet!.isWarmUp!
                     ? null
                     : completedSets.length -
                         state.getNumberOfWarmUpSets(sets: completedSets),
               ) : Container();
-              return SetContainer(
+              return GeneralSetContainer(
                 currentSet: currentSet,
                 setNumber: currentSet!.isWarmUp!
                     ? null
@@ -130,7 +127,7 @@ class SetsListContainer extends StatelessWidget {
             },
           ),
         const SizedBox(height: 15,),
-        for (var set in completedSets) CompletedSetContainer(completedSet: set)
+        for (var set in completedSets) GeneralSetContainer(completedSet: set)
       ],
     );
   }

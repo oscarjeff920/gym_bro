@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/sets_list/sets_cards/general_set_container_widget.dart';
 
-class SetNumericalFields extends StatefulWidget {
+class SetNumericalField extends StatefulWidget {
   final dynamic value;
   final Function(dynamic)? updateSetFunction;
-  final TextStyle textStyle;
+  final SetType setType;
+  final TextInputType inputType;
 
+  const SetNumericalField(
+      {super.key,
+      required this.value,
+      this.updateSetFunction,
+      required this.setType,
+      required this.inputType});
 
-  const SetNumericalFields({super.key, required this.value, this.updateSetFunction, this.textStyle = const TextStyle(color: Colors.white)});
+  Color get activeColour =>
+      setType == SetType.completed ? Colors.black : Colors.white;
 
   @override
-  State<SetNumericalFields> createState() =>
-      _SetNumericalFieldsState();
+  State<SetNumericalField> createState() => _SetNumericalFieldState();
 }
 
-class _SetNumericalFieldsState extends State<SetNumericalFields> {
-  // bool isReadOnly = widget.isReadOnly;
+class _SetNumericalFieldState extends State<SetNumericalField> {
+  late bool isReadOnly = widget.setType == SetType.current ? false : true;
 
   // _makeEditable() {
   //   isReadOnly = true;
@@ -23,14 +31,18 @@ class _SetNumericalFieldsState extends State<SetNumericalFields> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      style: widget.textStyle,
+      style: TextStyle(color: widget.activeColour),
+      decoration: const InputDecoration(border: InputBorder.none),
       controller: TextEditingController()
         ..text = widget.value == null ? "" : widget.value.toString(),
-      keyboardType: TextInputType.number,
+      keyboardType: widget.inputType,
       textAlign: TextAlign.center,
       onChanged: (String inputtedValue) {
-        if (widget.updateSetFunction != null) widget.updateSetFunction!(inputtedValue);
+        if (widget.updateSetFunction != null) {
+          widget.updateSetFunction!(inputtedValue);
+        }
       },
+      readOnly: isReadOnly,
     );
   }
 }

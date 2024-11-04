@@ -7,8 +7,8 @@ import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_cubit.dart';
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_state.dart';
 
-import 'duration_text_field_widget.dart';
-import 'warm_up_check_box.dart';
+import '../duration_text_field_widget.dart';
+import '../warm_up_check_box.dart';
 
 class CurrentSetContainer extends StatelessWidget {
   // final bool isPrevious;
@@ -116,98 +116,98 @@ class CurrentSetContainer extends StatelessWidget {
                 ],
               ),
             ),
-          Row(
-            children: [
-              const Expanded(
-                child: Column(
-                  children: [
-                    SetFieldHeader(header: "Rest Time:"),
-                    DurationTextFieldWidget()
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    const SetFieldHeader(header: "Warm Up:"),
-                    WarmupCheckbox(
-                      isBoxChecked: currentSet.isWarmUp!,
-                      updateSetFunction: (value) {
-                        BlocProvider.of<AddExerciseCubit>(context)
-                            .updateCurrentSet(CurrentSet(isWarmUp: value));
-                      },
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    const SetFieldHeader(header: "Weight:"),
-                    SetNumericalFields(
-                      value: currentSet.weight,
-                      updateSetFunction: (value) {
-                        double typedValue = double.parse(value);
-                        BlocProvider.of<AddExerciseCubit>(context)
-                            .updateCurrentSet(CurrentSet(weight: typedValue));
-                      },
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    const SetFieldHeader(header: "Reps:"),
-                    SetNumericalFields(
-                      value: currentSet.reps,
-                      updateSetFunction: (value) {
-                        int typedValue = int.parse(value);
-                        BlocProvider.of<AddExerciseCubit>(context)
-                            .updateCurrentSet(CurrentSet(reps: typedValue));
-                      },
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    const SetFieldHeader(header: "+ Reps:"),
-                    SetNumericalFields(
-                      value: currentSet.extraReps,
-                      updateSetFunction: (value) {
-                        int typedValue = int.parse(value);
-                        BlocProvider.of<AddExerciseCubit>(context)
-                            .updateCurrentSet(
-                                CurrentSet(extraReps: typedValue));
-                      },
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    const SetFieldHeader(header: "Duration:"),
-                    BlocBuilder<SetTimerCubit, SetTimerState>(
-                        builder: (context, state) {
-                      return DurationTextFieldWidget(
-                          displayDuration: state.toString());
-                    })
-                  ],
-                ),
-              ),
-              const Expanded(
-                child: Column(
-                  children: [
-                    SetFieldHeader(header: "Effort:"),
-                    TextField(readOnly: true)
-                  ],
-                ),
-              ),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     const Expanded(
+          //       child: Column(
+          //         children: [
+          //           SetFieldHeader(header: "Rest Time:"),
+          //           DurationTextFieldWidget()
+          //         ],
+          //       ),
+          //     ),
+          //     Expanded(
+          //       child: Column(
+          //         children: [
+          //           const SetFieldHeader(header: "Warm Up:"),
+          //           WarmupCheckbox(
+          //             isBoxChecked: currentSet.isWarmUp!,
+          //             updateSetFunction: (value) {
+          //               BlocProvider.of<AddExerciseCubit>(context)
+          //                   .updateCurrentSet(CurrentSet(isWarmUp: value));
+          //             },
+          //           )
+          //         ],
+          //       ),
+          //     ),
+          //     Expanded(
+          //       child: Column(
+          //         children: [
+          //           const SetFieldHeader(header: "Weight:"),
+          //           SetNumericalFields(
+          //             value: currentSet.weight,
+          //             updateSetFunction: (value) {
+          //               double typedValue = double.parse(value);
+          //               BlocProvider.of<AddExerciseCubit>(context)
+          //                   .updateCurrentSet(CurrentSet(weight: typedValue));
+          //             },
+          //           )
+          //         ],
+          //       ),
+          //     ),
+          //     Expanded(
+          //       child: Column(
+          //         children: [
+          //           const SetFieldHeader(header: "Reps:"),
+          //           SetNumericalFields(
+          //             value: currentSet.reps,
+          //             updateSetFunction: (value) {
+          //               int typedValue = int.parse(value);
+          //               BlocProvider.of<AddExerciseCubit>(context)
+          //                   .updateCurrentSet(CurrentSet(reps: typedValue));
+          //             },
+          //           )
+          //         ],
+          //       ),
+          //     ),
+          //     Expanded(
+          //       child: Column(
+          //         children: [
+          //           const SetFieldHeader(header: "+ Reps:"),
+          //           SetNumericalFields(
+          //             value: currentSet.extraReps,
+          //             updateSetFunction: (value) {
+          //               int typedValue = int.parse(value);
+          //               BlocProvider.of<AddExerciseCubit>(context)
+          //                   .updateCurrentSet(
+          //                       CurrentSet(extraReps: typedValue));
+          //             },
+          //           )
+          //         ],
+          //       ),
+          //     ),
+          //     Expanded(
+          //       child: Column(
+          //         children: [
+          //           const SetFieldHeader(header: "Duration:"),
+          //           BlocBuilder<SetTimerCubit, SetTimerState>(
+          //               builder: (context, state) {
+          //             return DurationTextFieldWidget(
+          //                 displayDuration: state.toString());
+          //           })
+          //         ],
+          //       ),
+          //     ),
+          //     const Expanded(
+          //       child: Column(
+          //         children: [
+          //           SetFieldHeader(header: "Effort:"),
+          //           TextField(readOnly: true)
+          //         ],
+          //       ),
+          //     ),
+          //   ],
+          // ),
           AnimatedContainer(
             duration: const Duration(seconds: 1),
             child: Column(
