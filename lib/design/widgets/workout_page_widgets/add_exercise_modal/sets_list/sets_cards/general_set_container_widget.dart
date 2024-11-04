@@ -146,7 +146,7 @@ class GeneralSetContainer extends StatelessWidget {
             ),
           Row(
             children: [
-              Expanded(
+              if (false) Expanded(
                   child: _buildField(
                 label: "Rest Time",
                 value: null,
@@ -211,7 +211,7 @@ class GeneralSetContainer extends StatelessWidget {
                           value: set.setDuration,
                           setType: setType,
                         )),
-              Expanded(
+              if (false) Expanded(
                   child: _buildField(
                 label: "Effort",
                 value: null,
