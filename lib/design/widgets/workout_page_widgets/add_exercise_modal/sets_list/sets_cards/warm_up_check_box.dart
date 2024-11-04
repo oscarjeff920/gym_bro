@@ -34,12 +34,12 @@ class _WarmupCheckboxState extends State<WarmupCheckbox> {
         checkColor: widget.checkColour,
         fillColor: WidgetStatePropertyAll<Color>(
             widget.isCompleted ? Colors.white : Colors.black.withOpacity(0)),
-        onChanged: widget.isReadOnly
-            ? null
-            : (bool? value) {
+        onChanged: widget.setType == SetType.current
+            ? (bool? value) {
                 setState(() {
                   widget.updateSetFunction!(value);
                 });
-              });
+              }
+            : null);
   }
 }
