@@ -85,11 +85,7 @@ class SetsListContainer extends StatelessWidget {
                             date: comparisonExerciseDate,
                             workingSetsCount:
                                 comparisonExerciseTotalWorkingSets),
-                        // PreviousSetCard(
-                        //     set: comparisonSet,
-                        //     setNumber: comparisonExerciseWorkingSetNumber),
                         GeneralSetContainer(
-                            // isPrevious: true,
                             comparisonSet: comparisonSet,
                             setNumber: comparisonExerciseWorkingSetNumber),
                         GeneralSetContainer(
@@ -101,9 +97,6 @@ class SetsListContainer extends StatelessWidget {
                                       sets: completedSets),
                           comparisonSet: comparisonSet,
                         ),
-                        // CurrentSetCard(
-                        //     currentSet: currentSet,
-                        //     comparisonSet: comparisonSet)
                       ],
                     );
                   },
@@ -117,13 +110,6 @@ class SetsListContainer extends StatelessWidget {
                     : completedSets.length -
                         state.getNumberOfWarmUpSets(sets: completedSets),
               ) : Container();
-              return GeneralSetContainer(
-                currentSet: currentSet,
-                setNumber: currentSet!.isWarmUp!
-                    ? null
-                    : completedSets.length -
-                        state.getNumberOfWarmUpSets(sets: completedSets),
-              );
             },
           ),
         const SizedBox(height: 15,),
