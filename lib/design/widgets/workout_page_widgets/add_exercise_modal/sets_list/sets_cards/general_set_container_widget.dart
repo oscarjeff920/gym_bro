@@ -78,7 +78,7 @@ class GeneralSetContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.black.withOpacity(0.3), width: 1),
+          border: Border.all(color: Colors.black.withOpacity(0.3), width: 1.5),
           color: setColour),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -219,40 +219,10 @@ class GeneralSetContainer extends StatelessWidget {
                 )),
             ],
           ),
-          AnimatedContainer(
-            duration: const Duration(seconds: 1),
-            decoration: BoxDecoration(
-                border: Border.fromBorderSide(BorderSide(
-                    width: 1, color: Colors.black.withOpacity(0.1)))),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 24,
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text("Notes..", style: headerTextStyle),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: IconButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.arrow_right,
-                            color: setType == SetType.completed
-                                ? Colors.black
-                                : Colors.white,
-                            size: 15,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          ExpandableNotesTextField(
+            headerTextStyle: headerTextStyle,
+            setType: setType,
+            notes: set.notes,
           ),
         ],
       ),
@@ -297,6 +267,91 @@ class GeneralSetContainer extends StatelessWidget {
                 : TextInputType.text,
             updateSetFunction: updateSetFunction,
           )
+      ],
+    );
+  }
+}
+
+class ExpandableNotesTextField extends StatefulWidget {
+  final TextStyle headerTextStyle;
+  final SetType setType;
+  final String? notes;
+
+  const ExpandableNotesTextField({
+    super.key,
+    required this.headerTextStyle,
+    required this.setType,
+    required this.notes,
+  });
+
+  @override
+  State<ExpandableNotesTextField> createState() =>
+      _ExpandableNotesTextFieldState();
+}
+
+class _ExpandableNotesTextFieldState extends State<ExpandableNotesTextField> {
+  bool _isExpanded = false;
+
+  void _toggleExpanded() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+    });
+  }
+
+  bool showIcon() => widget.setType == SetType.current || widget.notes != null;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+              border: Border(
+                  top: BorderSide(
+                      width: 1, color: Colors.black.withOpacity(0.1)))),
+          height: 24,
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Text("Notes..", style: widget.headerTextStyle),
+              ),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: showIcon()
+                      ? IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: _toggleExpanded,
+                          icon: Icon(
+                            _isExpanded
+                                ? Icons.arrow_drop_down
+                                : Icons.arrow_right,
+                            color: widget.setType == SetType.completed
+                                ? Colors.black
+                                : Colors.white,
+                            size: 15,
+                          ),
+                        )
+                      : Container()),
+            ],
+          ),
+        ),
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 50),
+          height: _isExpanded ? 50 : 0,
+          // Adjust height for expanded/collapsed states
+          child: _isExpanded
+              ? SetNumericalField(
+                  value: widget.notes,
+                  setType: widget.setType,
+                  inputType: TextInputType.text,
+                  updateSetFunction: (notes) {
+                    BlocProvider.of<AddExerciseCubit>(context)
+                        .updateCurrentSet(CurrentSet(notes: notes));
+                  },
+                )
+              : null,
+        ),
       ],
     );
   }
