@@ -105,7 +105,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         workedMuscleGroups: generatedState.workedMuscleGroups));
   }
 
-  saveCompletedSet() {
+  void saveCompletedSet() {
     AddExerciseState generatedState = state.copyWith();
 
     // storing all previous sets in a new array 'setsDone'
@@ -126,6 +126,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         notes: generatedState.currentSet!.notes);
     setsDone.add(completedSet);
 
+    // preparing for proceeding set
     emit(AddExerciseState(
         selectedMuscleGroup: generatedState.selectedMuscleGroup,
         selectedMovement: generatedState.selectedMovement,

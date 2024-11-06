@@ -235,16 +235,16 @@ class WorkoutRepository {
     await db.transaction((txn) async {
       String? startTime = newWorkout.workoutStartTime == null
           ? null
-          : '${newWorkout.workoutStartTime}';
+          : "'${newWorkout.workoutStartTime}'";
 
       String? workoutDuration = newWorkout.workoutDuration == null
           ? null
-          : '${newWorkout.workoutDuration}';
+          : "'${newWorkout.workoutDuration}'";
 
       // Inserting the Workout into the database
       String insertWorkoutQueryString = '''
       INSERT INTO $workoutTableName (day, month, year, start_time, duration) VALUES
-          (${newWorkout.day}, ${newWorkout.month}, ${newWorkout.year}, "$startTime", "$workoutDuration");
+          (${newWorkout.day}, ${newWorkout.month}, ${newWorkout.year}, $startTime, $workoutDuration);
       ''';
       final newWorkoutId = await txn.rawInsert(insertWorkoutQueryString);
 
@@ -260,21 +260,29 @@ class WorkoutRepository {
           movementId = exercise.movementId!;
         }
 
+        String? exerciseDuration = exercise.exerciseDuration == null
+            ? null
+            : "'${exercise.exerciseDuration}'";
         // Inserting Exercise into the database
         String insertExerciseString = '''
         INSERT INTO $exerciseTableName
             (movement_id, workout_id, exercise_order, duration, num_working_sets) VALUES
-            ($movementId, $newWorkoutId, $exerciseOrder, '"${exercise.exerciseDuration}"', ${exercise.numWorkingSets});
+            ($movementId, $newWorkoutId, $exerciseOrder, $exerciseDuration, ${exercise.numWorkingSets});
         ''';
         final newExerciseId = await txn.rawInsert(insertExerciseString);
         exerciseOrder += 1;
 
         for (var exerciseSet in exercise.exerciseSets) {
+          String? setDuration = exerciseSet.setDuration == null
+              ? null
+              : '"${exerciseSet.setDuration}"';
+          String? notes =
+              exerciseSet.notes == null ? null : '"${exerciseSet.notes}"';
           String insertExerciseSetString = '''
           INSERT INTO $exerciseSetTableName
           (exercise_id, set_order, is_warm_up, weight, reps, extra_reps, duration, notes) VALUES
           ($newExerciseId, ${exerciseSet.exerciseSetOrder}, ${exerciseSet.isWarmUp}, ${exerciseSet.weight},
-           ${exerciseSet.reps}, ${exerciseSet.extraReps}, "${exerciseSet.setDuration}", "${exerciseSet.notes}");
+           ${exerciseSet.reps}, ${exerciseSet.extraReps}, $setDuration, $notes);
           ''';
           await txn.rawInsert(insertExerciseSetString);
         }

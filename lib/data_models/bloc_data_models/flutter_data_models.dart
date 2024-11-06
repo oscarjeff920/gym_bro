@@ -32,7 +32,7 @@ class CurrentSet {
     this.notes,
   });
 
-  setDurationToString() {
+  String? setDurationToString() {
     if (setDuration == null) return null;
     String minutes =
         setDuration!.inMinutes.remainder(60).toString().padLeft(2, '0');
