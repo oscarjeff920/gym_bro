@@ -94,7 +94,8 @@ class SetsListContainer extends StatelessWidget {
                               ? null
                               : completedSets.length -
                                   state.getNumberOfWarmUpSets(
-                                      sets: completedSets),
+                                      sets: completedSets) +
+                                  1,
                           comparisonSet: comparisonSet,
                         ),
                       ],
@@ -103,16 +104,20 @@ class SetsListContainer extends StatelessWidget {
                 );
               }
               // If theres no previous exercise data for this movement:
-              return currentSet != null ? GeneralSetContainer(
-                currentSet: currentSet!,
-                setNumber: currentSet!.isWarmUp!
-                    ? null
-                    : completedSets.length -
-                        state.getNumberOfWarmUpSets(sets: completedSets),
-              ) : Container();
+              return currentSet != null
+                  ? GeneralSetContainer(
+                      currentSet: currentSet!,
+                      setNumber: currentSet!.isWarmUp!
+                          ? null
+                          : completedSets.length -
+                              state.getNumberOfWarmUpSets(sets: completedSets),
+                    )
+                  : Container();
             },
           ),
-        const SizedBox(height: 15,),
+        const SizedBox(
+          height: 15,
+        ),
         for (var set in completedSets) GeneralSetContainer(completedSet: set)
       ],
     );
