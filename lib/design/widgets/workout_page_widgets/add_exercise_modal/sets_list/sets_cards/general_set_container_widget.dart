@@ -80,8 +80,6 @@ class GeneralSetContainer extends StatelessWidget {
       decoration: BoxDecoration(
           border: Border.all(color: Colors.black.withOpacity(0.3), width: 1),
           color: setColour),
-      padding: const EdgeInsets.only(left: 5),
-      // color: setColour,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -146,12 +144,13 @@ class GeneralSetContainer extends StatelessWidget {
             ),
           Row(
             children: [
-              if (false) Expanded(
-                  child: _buildField(
-                label: "Rest Time",
-                value: null,
-                setType: setType,
-              )),
+              if (false)
+                Expanded(
+                    child: _buildField(
+                  label: "Rest Time",
+                  value: null,
+                  setType: setType,
+                )),
               Expanded(
                   child: _buildField(
                 label: "Warm Up",
@@ -208,19 +207,23 @@ class GeneralSetContainer extends StatelessWidget {
                         )
                       : _buildField(
                           label: "Duration",
-                          value: set.setDuration,
+                          value: set.setDuration ?? "- - -",
                           setType: setType,
                         )),
-              if (false) Expanded(
-                  child: _buildField(
-                label: "Effort",
-                value: null,
-                setType: setType,
-              )),
+              if (false)
+                Expanded(
+                    child: _buildField(
+                  label: "Effort",
+                  value: null,
+                  setType: setType,
+                )),
             ],
           ),
           AnimatedContainer(
             duration: const Duration(seconds: 1),
+            decoration: BoxDecoration(
+                border: Border.fromBorderSide(BorderSide(
+                    width: 1, color: Colors.black.withOpacity(0.1)))),
             child: Column(
               children: [
                 SizedBox(
@@ -262,6 +265,8 @@ class GeneralSetContainer extends StatelessWidget {
       required SetType setType,
       Function(dynamic)? updateSetFunction}) {
     Map<String, TextFieldType> textFieldTypeMap = {
+      // "Warm up Set": TextFieldType.text,
+      // "Working Set": TextFieldType.text,
       "Rest Time": TextFieldType.duration,
       "Warm Up": TextFieldType.bool,
       "Weight": TextFieldType.number,
