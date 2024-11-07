@@ -183,11 +183,16 @@ class GeneralSetContainer extends StatelessWidget {
                 )),
             ],
           ),
-          ExpandableNotesTextField(
-            headerTextStyle: headerTextStyle,
-            setType: setType,
-            notes: set.notes,
-          ),
+          if (setType == SetType.current || set.notes != null)
+            ExpandableNotesTextField(
+              headerTextStyle: headerTextStyle,
+              setType: setType,
+              notes: set.notes,
+            )
+          else
+            const SizedBox(
+              height: 24,
+            )
         ],
       ),
     );

@@ -26,13 +26,14 @@ class ExpandableNotesTextField extends StatefulWidget {
 class _ExpandableNotesTextFieldState extends State<ExpandableNotesTextField> {
   bool _isExpanded = false;
 
+  // Keeping this here in-case we want to show notes field despite there being none
+  // bool showIcon() => widget.setType == SetType.current || widget.notes != null;
+
   void _toggleExpanded() {
     setState(() {
       _isExpanded = !_isExpanded;
     });
   }
-
-  bool showIcon() => widget.setType == SetType.current || widget.notes != null;
 
   @override
   Widget build(BuildContext context) {
@@ -52,21 +53,17 @@ class _ExpandableNotesTextFieldState extends State<ExpandableNotesTextField> {
               ),
               Align(
                   alignment: Alignment.centerRight,
-                  child: showIcon()
-                      ? IconButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: _toggleExpanded,
-                          icon: Icon(
-                            _isExpanded
-                                ? Icons.arrow_drop_down
-                                : Icons.arrow_right,
-                            color: widget.setType == SetType.completed
-                                ? Colors.black
-                                : Colors.white,
-                            size: 22,
-                          ),
-                        )
-                      : Container()),
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: _toggleExpanded,
+                    icon: Icon(
+                      _isExpanded ? Icons.arrow_drop_down : Icons.arrow_right,
+                      color: widget.setType == SetType.completed
+                          ? Colors.black
+                          : Colors.white,
+                      size: 23,
+                    ),
+                  ))
             ],
           ),
         ),
