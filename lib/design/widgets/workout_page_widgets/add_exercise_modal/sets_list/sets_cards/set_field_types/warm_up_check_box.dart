@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'general_set_container_widget.dart';
+import '../general_set_container_widget.dart';
 
 class WarmupCheckbox extends StatefulWidget {
   final bool isBoxChecked;

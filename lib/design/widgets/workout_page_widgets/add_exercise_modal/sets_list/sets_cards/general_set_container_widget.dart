@@ -6,9 +6,9 @@ import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_cubit.dart';
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_state.dart';
 
-import 'duration_text_field_widget.dart';
-import 'set_numerical_fields_widget.dart';
-import 'warm_up_check_box.dart';
+import 'set_field_types/duration_text_field_widget.dart';
+import 'set_field_types/set_field_widget.dart';
+import 'set_field_types/warm_up_check_box.dart';
 
 enum SetType { comparison, current, completed }
 
