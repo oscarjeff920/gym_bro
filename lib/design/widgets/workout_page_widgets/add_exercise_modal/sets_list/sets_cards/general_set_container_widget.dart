@@ -6,10 +6,14 @@ import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_cubit.dart';
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_state.dart';
 
+import 'finish_set_button_widget.dart';
 import 'set_field_types/duration_text_field_widget.dart';
+import 'set_field_types/notes_text_field_animated_container_widget.dart';
 import 'set_field_types/set_field_widget.dart';
 import 'set_field_types/warm_up_check_box.dart';
+import 'working_warmup_set_header_counter_widget.dart';
 
+// enums
 enum SetType { comparison, current, completed }
 
 enum TextFieldType { duration, text, number, bool }
@@ -229,163 +233,6 @@ class GeneralSetContainer extends StatelessWidget {
                 : TextInputType.text,
             updateSetFunction: updateSetFunction,
           )
-      ],
-    );
-  }
-}
-
-class FinishSetButton extends StatelessWidget {
-  const FinishSetButton({
-    super.key,
-    required this.currentSet,
-  });
-
-  final CurrentSet? currentSet;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 15.0),
-      child: SizedBox(
-        width: 20,
-        height: 20,
-        child: IconButton(
-          padding: const EdgeInsets.all(0),
-          onPressed: currentSet!.weight != null && currentSet!.reps != null
-              ? () {
-                  BlocProvider.of<SetTimerCubit>(context).stopTimer();
-                  BlocProvider.of<AddExerciseCubit>(context).updateCurrentSet(
-                      CurrentSet(
-                          setDuration: BlocProvider.of<SetTimerCubit>(context)
-                              .returnTimed()));
-                  BlocProvider.of<AddExerciseCubit>(context).saveCompletedSet();
-                  BlocProvider.of<SetTimerCubit>(context).resetTimer();
-                }
-              : null,
-          disabledColor: Colors.black.withOpacity(0),
-          color: const Color.fromRGBO(0, 200, 0, 1),
-          icon: const Icon(
-            Icons.check,
-            size: 20,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class WorkingSetCount extends StatelessWidget {
-  const WorkingSetCount({
-    super.key,
-    required this.setNumber,
-  });
-
-  final int? setNumber;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          setNumber == null ? "Warm up Set" : "Working Set: ",
-          style: const TextStyle(
-            color: Color.fromRGBO(255, 255, 255, 0.6),
-            fontSize: 11,
-          ),
-        ),
-        Text(
-          setNumber == null ? "" : "$setNumber",
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Color.fromRGBO(255, 255, 255, 1),
-            fontSize: 11,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class ExpandableNotesTextField extends StatefulWidget {
-  final TextStyle headerTextStyle;
-  final SetType setType;
-  final String? notes;
-
-  const ExpandableNotesTextField({
-    super.key,
-    required this.headerTextStyle,
-    required this.setType,
-    required this.notes,
-  });
-
-  @override
-  State<ExpandableNotesTextField> createState() =>
-      _ExpandableNotesTextFieldState();
-}
-
-class _ExpandableNotesTextFieldState extends State<ExpandableNotesTextField> {
-  bool _isExpanded = false;
-
-  void _toggleExpanded() {
-    setState(() {
-      _isExpanded = !_isExpanded;
-    });
-  }
-
-  bool showIcon() => widget.setType == SetType.current || widget.notes != null;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-              border: Border(
-                  top: BorderSide(
-                      width: 1, color: Colors.black.withOpacity(0.1)))),
-          height: 24,
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Text("Notes..", style: widget.headerTextStyle),
-              ),
-              Align(
-                  alignment: Alignment.centerRight,
-                  child: showIcon()
-                      ? IconButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: _toggleExpanded,
-                          icon: Icon(
-                            _isExpanded
-                                ? Icons.arrow_drop_down
-                                : Icons.arrow_right,
-                            color: widget.setType == SetType.completed
-                                ? Colors.black
-                                : Colors.white,
-                            size: 15,
-                          ),
-                        )
-                      : Container()),
-            ],
-          ),
-        ),
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 50),
-          height: _isExpanded ? 50 : 0,
-          // Adjust height for expanded/collapsed states
-          child: _isExpanded
-              ? SetNumericalField(
-                  value: widget.notes,
-                  setType: widget.setType,
-                  inputType: TextInputType.text,
-                  updateSetFunction: (notes) {
-                    BlocProvider.of<AddExerciseCubit>(context)
-                        .updateCurrentSet(CurrentSet(notes: notes));
-                  },
-                )
-              : null,
-        ),
       ],
     );
   }
