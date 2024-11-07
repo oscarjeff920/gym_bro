@@ -89,56 +89,10 @@ class GeneralSetContainer extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
-                    setNumber == null ? "Warm up Set" : "Working Set: ",
-                    style: const TextStyle(
-                      color: Color.fromRGBO(255, 255, 255, 0.6),
-                      fontSize: 11,
-                    ),
-                  ),
-                  Text(
-                    setNumber == null ? "" : "$setNumber",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(255, 255, 255, 1),
-                      fontSize: 11,
-                    ),
-                  ),
+                  WorkingSetCount(setNumber: setNumber),
                   const Spacer(),
                   if (setType == SetType.current)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 15.0),
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: IconButton(
-                          padding: const EdgeInsets.all(0),
-                          onPressed: currentSet!.weight != null &&
-                                  currentSet!.reps != null
-                              ? () {
-                                  BlocProvider.of<SetTimerCubit>(context)
-                                      .stopTimer();
-                                  BlocProvider.of<AddExerciseCubit>(context)
-                                      .updateCurrentSet(CurrentSet(
-                                          setDuration:
-                                              BlocProvider.of<SetTimerCubit>(
-                                                      context)
-                                                  .returnTimed()));
-                                  BlocProvider.of<AddExerciseCubit>(context)
-                                      .saveCompletedSet();
-                                  BlocProvider.of<SetTimerCubit>(context)
-                                      .resetTimer();
-                                }
-                              : null,
-                          disabledColor: Colors.black.withOpacity(0),
-                          color: const Color.fromRGBO(0, 200, 0, 1),
-                          icon: const Icon(
-                            Icons.check,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    ),
+                    FinishSetButton(currentSet: currentSet),
                 ],
               ),
             ),
@@ -165,6 +119,12 @@ class GeneralSetContainer extends StatelessWidget {
                   child: _buildField(
                 label: "Weight",
                 value: set.weight,
+                // The following field is required because weight is a double.
+                // When a double is converted to a string, it includes a decimal (e.g., 1 becomes "1.0").
+                // This can cause issues when entering a value: if you enter "1", it displays as "1.0"
+                // with the cursor placed after the decimal point. To enter "11",
+                // you'd need to manually move the cursor, which can be inconvenient.
+                updateDisplay: false,
                 updateSetFunction: (newValue) {
                   double weightValue = double.parse(newValue);
                   BlocProvider.of<AddExerciseCubit>(context)
@@ -233,6 +193,7 @@ class GeneralSetContainer extends StatelessWidget {
       {required String label,
       required dynamic value,
       required SetType setType,
+      bool updateDisplay = true,
       Function(dynamic)? updateSetFunction}) {
     Map<String, TextFieldType> textFieldTypeMap = {
       // "Warm up Set": TextFieldType.text,
@@ -262,11 +223,84 @@ class GeneralSetContainer extends StatelessWidget {
           SetNumericalField(
             value: value,
             setType: setType,
+            updateField: updateDisplay,
             inputType: textFieldTypeMap[label] == TextFieldType.number
                 ? TextInputType.number
                 : TextInputType.text,
             updateSetFunction: updateSetFunction,
           )
+      ],
+    );
+  }
+}
+
+class FinishSetButton extends StatelessWidget {
+  const FinishSetButton({
+    super.key,
+    required this.currentSet,
+  });
+
+  final CurrentSet? currentSet;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 15.0),
+      child: SizedBox(
+        width: 20,
+        height: 20,
+        child: IconButton(
+          padding: const EdgeInsets.all(0),
+          onPressed: currentSet!.weight != null && currentSet!.reps != null
+              ? () {
+                  BlocProvider.of<SetTimerCubit>(context).stopTimer();
+                  BlocProvider.of<AddExerciseCubit>(context).updateCurrentSet(
+                      CurrentSet(
+                          setDuration: BlocProvider.of<SetTimerCubit>(context)
+                              .returnTimed()));
+                  BlocProvider.of<AddExerciseCubit>(context).saveCompletedSet();
+                  BlocProvider.of<SetTimerCubit>(context).resetTimer();
+                }
+              : null,
+          disabledColor: Colors.black.withOpacity(0),
+          color: const Color.fromRGBO(0, 200, 0, 1),
+          icon: const Icon(
+            Icons.check,
+            size: 20,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class WorkingSetCount extends StatelessWidget {
+  const WorkingSetCount({
+    super.key,
+    required this.setNumber,
+  });
+
+  final int? setNumber;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          setNumber == null ? "Warm up Set" : "Working Set: ",
+          style: const TextStyle(
+            color: Color.fromRGBO(255, 255, 255, 0.6),
+            fontSize: 11,
+          ),
+        ),
+        Text(
+          setNumber == null ? "" : "$setNumber",
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color.fromRGBO(255, 255, 255, 1),
+            fontSize: 11,
+          ),
+        ),
       ],
     );
   }
