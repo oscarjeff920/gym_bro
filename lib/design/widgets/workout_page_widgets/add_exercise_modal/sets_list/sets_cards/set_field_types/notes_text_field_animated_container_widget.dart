@@ -54,18 +54,18 @@ class _ExpandableNotesTextFieldState extends State<ExpandableNotesTextField> {
                   alignment: Alignment.centerRight,
                   child: showIcon()
                       ? IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: _toggleExpanded,
-                    icon: Icon(
-                      _isExpanded
-                          ? Icons.arrow_drop_down
-                          : Icons.arrow_right,
-                      color: widget.setType == SetType.completed
-                          ? Colors.black
-                          : Colors.white,
-                      size: 15,
-                    ),
-                  )
+                          padding: EdgeInsets.zero,
+                          onPressed: _toggleExpanded,
+                          icon: Icon(
+                            _isExpanded
+                                ? Icons.arrow_drop_down
+                                : Icons.arrow_right,
+                            color: widget.setType == SetType.completed
+                                ? Colors.black
+                                : Colors.white,
+                            size: 22,
+                          ),
+                        )
                       : Container()),
             ],
           ),
@@ -76,14 +76,14 @@ class _ExpandableNotesTextFieldState extends State<ExpandableNotesTextField> {
           // Adjust height for expanded/collapsed states
           child: _isExpanded
               ? SetNumericalField(
-            value: widget.notes,
-            setType: widget.setType,
-            inputType: TextInputType.text,
-            updateSetFunction: (notes) {
-              BlocProvider.of<AddExerciseCubit>(context)
-                  .updateCurrentSet(CurrentSet(notes: notes));
-            },
-          )
+                  value: widget.notes,
+                  setType: widget.setType,
+                  inputType: TextInputType.text,
+                  updateSetFunction: (notes) {
+                    BlocProvider.of<AddExerciseCubit>(context)
+                        .updateCurrentSet(CurrentSet(notes: notes));
+                  },
+                )
               : null,
         ),
       ],
