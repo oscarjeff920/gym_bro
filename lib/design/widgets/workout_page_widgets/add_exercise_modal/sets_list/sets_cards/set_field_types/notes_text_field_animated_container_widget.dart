@@ -10,12 +10,14 @@ class ExpandableNotesTextField extends StatefulWidget {
   final TextStyle headerTextStyle;
   final SetType setType;
   final String? notes;
+  final double notesContainerHeight;
 
   const ExpandableNotesTextField({
     super.key,
     required this.headerTextStyle,
     required this.setType,
     required this.notes,
+    required this.notesContainerHeight,
   });
 
   @override
@@ -35,51 +37,77 @@ class _ExpandableNotesTextFieldState extends State<ExpandableNotesTextField> {
     });
   }
 
+  double get opacityValue => 0.5;
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          decoration: BoxDecoration(
-              border: Border(
-                  top: BorderSide(
-                      width: 1, color: Colors.black.withOpacity(0.1)))),
-          height: 24,
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Text("Notes..", style: widget.headerTextStyle),
-              ),
-              Align(
-                  alignment: Alignment.centerRight,
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: _toggleExpanded,
-                    icon: Icon(
-                      _isExpanded ? Icons.arrow_drop_down : Icons.arrow_right,
-                      color: widget.setType == SetType.completed
-                          ? Colors.black
-                          : Colors.white,
-                      size: 23,
+        GestureDetector(
+          onTap: _toggleExpanded,
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border(
+              top: BorderSide(width: 1, color: Colors.black.withOpacity(0.1)),
+              bottom:
+                  BorderSide(width: 1, color: Colors.black.withOpacity(0.1)),
+            )),
+            height: widget.notesContainerHeight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Spacer(),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Text(
+                      "Notes..",
+                      style: TextStyle(
+                          color: _isExpanded
+                              ? widget.headerTextStyle.color
+                              : widget.headerTextStyle.color!
+                                  .withOpacity(opacityValue),
+                          fontSize: 10),
                     ),
-                  ))
-            ],
+                  ),
+                ),
+                const Spacer(flex: 12),
+                Expanded(
+                  child: Icon(
+                    _isExpanded ? Icons.arrow_drop_down : Icons.arrow_right,
+                    color: widget.setType == SetType.completed
+                        ? _isExpanded
+                            ? Colors.black
+                            : Colors.black.withOpacity(opacityValue)
+                        : _isExpanded
+                            ? Colors.white
+                            : Colors.white.withOpacity(opacityValue),
+                    size: 24,
+                  ),
+                ),
+                const Spacer()
+              ],
+            ),
           ),
         ),
         AnimatedContainer(
-          duration: const Duration(milliseconds: 50),
-          height: _isExpanded ? 50 : 0,
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.bounceInOut,
+          height: _isExpanded ? 35 : 0,
           // Adjust height for expanded/collapsed states
           child: _isExpanded
-              ? SetNumericalField(
-                  value: widget.notes,
-                  setType: widget.setType,
-                  inputType: TextInputType.text,
-                  updateSetFunction: (notes) {
-                    BlocProvider.of<AddExerciseCubit>(context)
-                        .updateCurrentSet(CurrentSet(notes: notes));
-                  },
+              ? Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: SetNumericalField(
+                    value: widget.notes,
+                    autoFocus: true,
+                    setType: widget.setType,
+                    inputType: TextInputType.text,
+                    updateSetFunction: (notes) {
+                      BlocProvider.of<AddExerciseCubit>(context)
+                          .updateCurrentSet(CurrentSet(notes: notes));
+                    },
+                  ),
                 )
               : null,
         ),

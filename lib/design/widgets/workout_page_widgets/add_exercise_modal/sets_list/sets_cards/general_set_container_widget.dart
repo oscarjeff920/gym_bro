@@ -78,6 +78,8 @@ class GeneralSetContainer extends StatelessWidget {
     }
   }
 
+  double get notesContainerHeight => 28;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -188,10 +190,11 @@ class GeneralSetContainer extends StatelessWidget {
               headerTextStyle: headerTextStyle,
               setType: setType,
               notes: set.notes,
+              notesContainerHeight: notesContainerHeight,
             )
           else
-            const SizedBox(
-              height: 24,
+            SizedBox(
+              height: notesContainerHeight,
             )
         ],
       ),
@@ -233,6 +236,7 @@ class GeneralSetContainer extends StatelessWidget {
             value: value,
             setType: setType,
             updateField: updateDisplay,
+            autoFocus: label == "Weight" && value == null ? true : false,
             inputType: textFieldTypeMap[label] == TextFieldType.number
                 ? TextInputType.number
                 : TextInputType.text,

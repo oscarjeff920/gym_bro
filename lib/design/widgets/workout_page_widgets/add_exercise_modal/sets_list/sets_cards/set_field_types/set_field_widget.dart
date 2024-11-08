@@ -7,6 +7,7 @@ class SetNumericalField extends StatefulWidget {
   final bool updateField;
   final SetType setType;
   final TextInputType inputType;
+  final bool autoFocus;
 
   const SetNumericalField(
       {super.key,
@@ -14,6 +15,7 @@ class SetNumericalField extends StatefulWidget {
       this.updateSetFunction,
       required this.setType,
       required this.inputType,
+      this.autoFocus = false,
       this.updateField = true});
 
   Color get activeColour =>
@@ -59,7 +61,12 @@ class _SetNumericalFieldState extends State<SetNumericalField> {
   Widget build(BuildContext context) {
     return TextField(
       style: TextStyle(color: widget.activeColour),
-      decoration: const InputDecoration(border: InputBorder.none),
+      cursorColor: widget.activeColour,
+      autofocus: widget.autoFocus,
+      decoration: const InputDecoration(
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.only(bottom: 5) //, top: 5),
+          ),
       controller: setController(),
       keyboardType: widget.inputType,
       textAlign: TextAlign.center,
