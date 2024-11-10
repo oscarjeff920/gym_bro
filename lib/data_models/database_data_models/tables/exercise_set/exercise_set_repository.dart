@@ -16,6 +16,7 @@ class ExerciseSetRepository {
 
     final returnObj = await db.transaction((txn) async {
       // Sub-query to find the most recent exercise with movement_id
+      // TODO: This currently doesn't order by time, just date..
       String queryMostRecentExerciseByMovementIdString = """
       SELECT 
         $exerciseTableName.id,

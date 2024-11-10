@@ -29,7 +29,7 @@ class _SetNumericalFieldState extends State<SetNumericalField> {
   late bool isReadOnly = widget.setType == SetType.current ? false : true;
   late final TextEditingController _controller;
 
-  TextEditingController setController() {
+  TextEditingController get setController {
     // If the field is a double, set updateField to false.
     // This is necessary because when a double is converted to a string,
     // it automatically includes a decimal (e.g., 1 becomes "1.0").
@@ -67,7 +67,7 @@ class _SetNumericalFieldState extends State<SetNumericalField> {
           border: InputBorder.none,
           contentPadding: EdgeInsets.only(bottom: 5) //, top: 5),
           ),
-      controller: setController(),
+      controller: setController,
       keyboardType: widget.inputType,
       textAlign: TextAlign.center,
       onChanged: (String inputtedValue) {

@@ -37,6 +37,12 @@ class _ExpandableNotesTextFieldState extends State<ExpandableNotesTextField> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _isExpanded = false;
+  }
+
   double get opacityValue => 0.5;
 
   @override
@@ -57,34 +63,36 @@ class _ExpandableNotesTextFieldState extends State<ExpandableNotesTextField> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Spacer(),
-                Expanded(
-                  child: Padding(
+                Padding(
                     padding: const EdgeInsets.only(top: 5),
-                    child: Text(
-                      "Notes..",
-                      style: TextStyle(
-                          color: _isExpanded
-                              ? widget.headerTextStyle.color
-                              : widget.headerTextStyle.color!
-                                  .withOpacity(opacityValue),
-                          fontSize: 10),
+                    child: SizedBox(
+                      width: 35,
+                      child: Text(
+                        "Notes..",
+                        style: TextStyle(
+                            color: _isExpanded
+                                ? widget.headerTextStyle.color
+                                : widget.headerTextStyle.color!
+                                    .withOpacity(opacityValue),
+                            fontSize: 10),
+                      ),
                     ),
                   ),
-                ),
                 const Spacer(flex: 12),
-                Expanded(
-                  child: Icon(
-                    _isExpanded ? Icons.arrow_drop_down : Icons.arrow_right,
-                    color: widget.setType == SetType.completed
-                        ? _isExpanded
-                            ? Colors.black
-                            : Colors.black.withOpacity(opacityValue)
-                        : _isExpanded
-                            ? Colors.white
-                            : Colors.white.withOpacity(opacityValue),
-                    size: 24,
+                SizedBox(
+                    width: 35,
+                    child: Icon(
+                      _isExpanded ? Icons.arrow_drop_down : Icons.arrow_right,
+                      color: widget.setType == SetType.completed
+                          ? _isExpanded
+                              ? Colors.black
+                              : Colors.black.withOpacity(opacityValue)
+                          : _isExpanded
+                              ? Colors.white
+                              : Colors.white.withOpacity(opacityValue),
+                      size: 24,
+                    ),
                   ),
-                ),
                 const Spacer()
               ],
             ),
