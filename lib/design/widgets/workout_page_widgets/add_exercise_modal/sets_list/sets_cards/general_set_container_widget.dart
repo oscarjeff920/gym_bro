@@ -44,19 +44,29 @@ class GeneralSetContainer extends StatelessWidget {
   });
 
   SetType get setType {
-    if (currentSet != null) return SetType.current;
-    if (comparisonSet != null) return SetType.comparison;
-    if (completedSet != null) return SetType.completed;
-    throw ArgumentError(
-        'The set container needs either a current set, completed set or comparison set');
+    if (currentSet != null) {
+      return SetType.current;
+    } else if (comparisonSet != null) {
+      return SetType.comparison;
+    } else if (completedSet != null) {
+      return SetType.completed;
+    } else {
+      throw ArgumentError(
+          'The set container needs either a current set, completed set or comparison set');
+    }
   }
 
   dynamic get set {
-    if (currentSet != null) return currentSet;
-    if (comparisonSet != null) return comparisonSet;
-    if (completedSet != null) return completedSet;
-    throw ArgumentError(
-        'The set container needs either a current set, completed set or comparison set');
+    if (currentSet != null) {
+      return currentSet;
+    } else if (comparisonSet != null) {
+      return comparisonSet;
+    } else if (completedSet != null) {
+      return completedSet;
+    } else {
+      throw ArgumentError(
+          'The set container needs either a current set, completed set or comparison set');
+    }
   }
 
   TextStyle get headerTextStyle {
@@ -130,7 +140,7 @@ class GeneralSetContainer extends StatelessWidget {
                 // This can cause issues when entering a value: if you enter "1", it displays as "1.0"
                 // with the cursor placed after the decimal point. To enter "11",
                 // you'd need to manually move the cursor, which can be inconvenient.
-                updateDisplay: false,
+                updateDisplay: setType == SetType.current ? false : true,
                 updateSetFunction: (newValue) {
                   double weightValue = double.parse(newValue);
                   BlocProvider.of<AddExerciseCubit>(context)
