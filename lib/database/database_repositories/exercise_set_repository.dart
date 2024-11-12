@@ -3,7 +3,7 @@ import 'dart:core';
 import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:gym_bro/database/database_connector.dart';
 
-import 'exercise_set_object.dart';
+import '../../data_models/database_data_models/tables/exercise_set/exercise_set_object.dart';
 
 class ExerciseSetRepository {
   final DatabaseHelper databaseHelper;

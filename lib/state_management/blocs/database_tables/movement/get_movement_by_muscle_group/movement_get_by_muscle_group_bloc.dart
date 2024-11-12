@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/data_models/database_data_models/tables/movement/movement_repository.dart';
+import 'package:gym_bro/database/database_repositories/movement_repository.dart';
 
 import 'movement_get_by_muscle_group_event.dart';
 import 'movement_get_by_muscle_group_state.dart';

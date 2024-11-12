@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_object.dart';
-import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_repository.dart';
+import 'package:gym_bro/database/database_repositories/exercise_set_repository.dart';
 
 import 'exercise_set_table_operations_event.dart';
 import 'exercise_set_table_operations_state.dart';

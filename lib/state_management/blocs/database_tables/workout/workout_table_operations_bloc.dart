@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
-import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_repository.dart';
+import 'package:gym_bro/database/database_repositories/workout_repository.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/workout/workout_table_operations_state.dart';
 
@@ -40,6 +40,7 @@ class WorkoutTableOperationsBloc
     yield WorkoutTableInsertState();
     try {
       await workoutRepository.insertNewFullWorkout(event.newWorkout);
+      await workoutRepository.backupDatabase();
       yield WorkoutTableSuccessfulNewWorkoutInsertState();
     } catch (e) {
       print("Whoops.. we've got reached a WorkoutTableInsertErrorState\n$e");
