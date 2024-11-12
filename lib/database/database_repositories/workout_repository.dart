@@ -12,6 +12,9 @@ class WorkoutRepository {
 
   WorkoutRepository(this.databaseHelper);
 
+  backupDatabase() => databaseHelper.backupDatabase();
+  exportDatabaseToDownloads() => databaseHelper.exportDatabaseToDownloads();
+
   // Methods to list workouts on home page:
   // Future<Map<DateTime, Map<int, List<LoadedWorkoutModel>>>>
   retrieveWorkoutsAndGroupByWeek(
