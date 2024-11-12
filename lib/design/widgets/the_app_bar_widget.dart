@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TheAppBar extends StatelessWidget implements PreferredSizeWidget{
+class TheAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool hasBackButton;
 
   const TheAppBar({
@@ -18,7 +18,18 @@ class TheAppBar extends StatelessWidget implements PreferredSizeWidget{
       ),
       elevation: 20,
       backgroundColor: const Color.fromRGBO(7, 99, 133, 1.0),
-      iconTheme: hasBackButton ? const IconThemeData(color: Colors.white) : null,
+      iconTheme:
+          hasBackButton ? const IconThemeData(color: Colors.white) : null,
+      actions: [
+        IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed("/settings-page");
+            },
+            icon: const Icon(
+              Icons.settings,
+              color: Colors.white,
+            ))
+      ],
     );
   }
 
