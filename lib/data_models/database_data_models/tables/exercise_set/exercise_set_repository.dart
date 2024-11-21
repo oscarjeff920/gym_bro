@@ -16,6 +16,7 @@ class ExerciseSetRepository {
 
     final returnObj = await db.transaction((txn) async {
       // Sub-query to find the most recent exercise with movement_id
+      // TODO: This currently doesn't order by time, just date..
       String queryMostRecentExerciseByMovementIdString = """
       SELECT 
         $exerciseTableName.id,
@@ -32,10 +33,10 @@ class ExerciseSetRepository {
         $workoutTableName.day DESC
       LIMIT 1;
       """;
-      List<Map> latestExercise =
+      List<Map<String, dynamic>> latestExercise =
           await txn.rawQuery(queryMostRecentExerciseByMovementIdString);
       if (latestExercise.isEmpty) {
-        List<Map> returnList = [];
+        List<Map<String, dynamic>> returnList = [];
         return {'data': returnList};
       }
 
@@ -49,7 +50,7 @@ class ExerciseSetRepository {
       ORDER BY $exerciseSetTableName.set_order ASC;
       """;
 
-      List<Map> latestExerciseSetsByMovementId =
+      List<Map<String, dynamic>> latestExerciseSetsByMovementId =
           await txn.rawQuery(queryAllExerciseSetsByExerciseIdString);
 
       return {

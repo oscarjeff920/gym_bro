@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        // BLoCs
         // Workout Table BLoCs
         BlocProvider(
             create: (context) => WorkoutTableOperationsBloc(
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
             create: (context) => MovementGetNameByIdBloc(
                 movementRepository: MovementRepository(databaseHelper))),
 
+        // Cubits
         BlocProvider(create: (context) => ActiveWorkoutCubit()),
         BlocProvider(create: (context) => OpenExerciseModalCubit()),
         BlocProvider(create: (context) => AddExerciseCubit()),
@@ -75,7 +77,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => WorkoutTimerCubit()),
         BlocProvider(create: (context) => DisplayPrCubit()),
         BlocProvider(create: (context) => AddNewMovementCubit()),
-        BlocProvider(create: (context) => BackupCurrentWorkoutCubit()..loadBackupState()),
+        BlocProvider(
+            create: (context) =>
+                BackupCurrentWorkoutCubit()..loadBackupState()),
         BlocProvider(create: (context) => SaveErrorStateCubit()),
       ],
       child: MaterialApp(

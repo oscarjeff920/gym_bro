@@ -33,29 +33,6 @@ class ExerciseSetTableOperationsBloc extends Bloc<
             .getAllExerciseSetsByExerciseId(exercise.id);
 
         exerciseSetsExerciseIndex[exercise.id] = query;
-        //
-        // LoadedExerciseModel newExercise = LoadedExerciseModel(
-        //     id: exercise.id,
-        //     exerciseOrder: exercise.exerciseOrder,
-        //     movementName: exercise.movementName,
-        //     movementId: exercise.movementId,
-        //     exerciseDuration: exercise.exerciseDuration,
-        //     numWorkingSets: exercise.numWorkingSets,
-        //     primaryMuscleGroup: exercise.primaryMuscleGroup,
-        //     exerciseSets: query
-        //         .map((exerciseSet) =>
-        //         LoadedExerciseSetModel(
-        //             id: exerciseSet.id!,
-        //             exerciseSetOrder: exerciseSet.setOrder,
-        //             isWarmUp: exerciseSet.isWarmUp,
-        //             weight: exerciseSet.weight,
-        //             reps: exerciseSet.reps,
-        //             extraReps: exerciseSet.extraReps,
-        //             setDuration: exerciseSet.duration,
-        //             notes: exerciseSet.notes
-        //         )).toList()
-
-        // exercisesWithSets.add(newExercise);
       }
 
       yield ExerciseSetTableSuccessfulQueryAllByExerciseIdState(

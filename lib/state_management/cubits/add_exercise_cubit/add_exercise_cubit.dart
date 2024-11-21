@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
+import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/joined_tables/movement-muscle_group/movement-muscle_group_methods.dart';
 import 'package:gym_bro/data_models/database_data_models/joined_tables/movement_muscle_group_join_object.dart';
@@ -24,14 +25,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
             .first,
         selectedMovement: completedExercise.movementName,
         selectedMovementId: completedExercise.movementId,
-        setsDone: completedExercise.exerciseSets
-            .map((exerciseSet) => Sets(
-                  isWarmUp: exerciseSet.isWarmUp,
-                  weight: exerciseSet.weight,
-                  reps: exerciseSet.reps,
-                  extraReps: exerciseSet.extraReps,
-                ))
-            .toList(),
+        setsDone: completedExercise.exerciseSets,
         numWorkingSets: completedExercise.numWorkingSets,
         workedMuscleGroups: completedExercise.workedMuscleGroups);
 
@@ -67,7 +61,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         selectedMovement: movementMuscleGroupJoin.movementName,
         selectedMovementId: movementMuscleGroupJoin.movementId,
         workedMuscleGroups: movementMuscleGroupJoin.workedMuscleGroups,
-        currentSet: const CurrentSet(),
+        currentSet: const CurrentSet(isWarmUp: true),
         setsDone: const [],
         numWorkingSets: 0));
   }
@@ -79,7 +73,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         selectedMuscleGroup: generatedState.selectedMuscleGroup,
         selectedMovement: newMovementName,
         selectedMovementId: null,
-        currentSet: const CurrentSet(),
+        currentSet: const CurrentSet(isWarmUp: true),
         setsDone: const [],
         numWorkingSets: 0,
         workedMuscleGroups: generatedState.workedMuscleGroups));
@@ -89,9 +83,10 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
     AddExerciseState generatedState = state.copyWith();
 
     CurrentSet updatedState = set;
+    // TODO: need to work out what this is about
     if (generatedState.currentSet != null) {
       updatedState = CurrentSet(
-        isWarmUp: set.isWarmUp ?? generatedState.currentSet!.isWarmUp ?? false,
+        isWarmUp: set.isWarmUp ?? generatedState.currentSet!.isWarmUp,
         weight: set.weight ?? generatedState.currentSet!.weight,
         reps: set.reps ?? generatedState.currentSet!.reps,
         extraReps: set.extraReps ?? generatedState.currentSet!.extraReps,
@@ -110,31 +105,34 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         workedMuscleGroups: generatedState.workedMuscleGroups));
   }
 
-  saveCompletedSet() {
+  void saveCompletedSet() {
     AddExerciseState generatedState = state.copyWith();
 
     // storing all previous sets in a new array 'setsDone'
     // for the latest set to be added to then passed to the new state
-    List<Sets> setsDone = [];
+    List<GeneralExerciseSetModel> setsDone = [];
     for (var set in generatedState.setsDone) {
       setsDone.add(set);
     }
 
     // converting the completed set from CurrentSet to Sets
-    Sets completedSet = Sets(
+    GeneralExerciseSetModel completedSet = GeneralExerciseSetModel(
         isWarmUp: generatedState.currentSet!.isWarmUp!,
         weight: generatedState.currentSet!.weight!,
         reps: generatedState.currentSet!.reps!,
         extraReps: generatedState.currentSet!.extraReps,
-        setDuration: generatedState.currentSet!.setDuration,
+        setDuration: generatedState.currentSet!.setDurationToString(),
+        exerciseSetOrder: setsDone.length + 1,
         notes: generatedState.currentSet!.notes);
     setsDone.add(completedSet);
 
+    // preparing for proceeding set
     emit(AddExerciseState(
         selectedMuscleGroup: generatedState.selectedMuscleGroup,
         selectedMovement: generatedState.selectedMovement,
         selectedMovementId: generatedState.selectedMovementId,
-        currentSet: const CurrentSet(),
+        currentSet: CurrentSet(
+            isWarmUp: completedSet.isWarmUp, weight: completedSet.weight),
         setsDone: setsDone,
         numWorkingSets: completedSet.isWarmUp
             ? generatedState.numWorkingSets

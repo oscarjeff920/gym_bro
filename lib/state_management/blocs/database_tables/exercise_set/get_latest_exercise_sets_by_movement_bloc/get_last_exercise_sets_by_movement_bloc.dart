@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
+import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_repository.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_event.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_state.dart';
@@ -33,18 +33,18 @@ class GetLastExerciseSetsByMovementBloc extends Bloc<
       try {
         Map previousSetsObj = await exerciseSetRepository
             .getLatestExerciseSetsByMovement(event.movementId!);
-        List<Map> retrievedPreviousSets = previousSetsObj['data'];
+        List<Map<String, dynamic>> retrievedPreviousSets = previousSetsObj['data'];
         if (retrievedPreviousSets.isEmpty) {
           yield SuccessfulGetLastExerciseSetsByMovementQueryState(
               lastExerciseSetsData: previousSetsObj, movementPRData: const {});
           return;
         }
 
-        List<Sets> previousExerciseSets = retrievedPreviousSets
-            .map((exerciseSet) => Sets.fromMap(exerciseSet))
+        List<GeneralExerciseSetModel> previousExerciseSets = retrievedPreviousSets
+            .map((exerciseSet) => GeneralExerciseSetModel.fromDbMap(map: exerciseSet))
             .toList();
 
-        Map returnPreviousExerciseSetsObj = {
+        Map<String, dynamic> returnPreviousExerciseSetsObj = {
           'data': previousExerciseSets,
           'dateString': state.dateToString(previousSetsObj['year'],
               previousSetsObj['month'], previousSetsObj['day'])
@@ -53,11 +53,11 @@ class GetLastExerciseSetsByMovementBloc extends Bloc<
         // Get Movement PR
         Map movementPRSetObj =
             await exerciseSetRepository.getMovementPRSet(event.movementId!);
-        Map movementPR = movementPRSetObj['data'];
+        Map<String, dynamic> movementPR = movementPRSetObj['data'];
 
-        Sets movementPRSet = Sets.fromMap(movementPR);
+        GeneralExerciseSetModel movementPRSet = GeneralExerciseSetModel.fromDbMap(map: movementPR);
 
-        Map returnMovementPRSetObj = {
+        Map<String, dynamic> returnMovementPRSetObj = {
           'data': movementPRSet,
           'dateString': state.dateToString(movementPRSetObj['year'],
               movementPRSetObj['month'], movementPRSetObj['day'])
@@ -66,9 +66,10 @@ class GetLastExerciseSetsByMovementBloc extends Bloc<
         yield SuccessfulGetLastExerciseSetsByMovementQueryState(
             lastExerciseSetsData: returnPreviousExerciseSetsObj,
             movementPRData: returnMovementPRSetObj);
-      } catch (e) {
+      } catch (e, stackTrace) {
         print(
             "error in getting movement PR, GetLastExerciseSetsByMovementBloc: $e");
+        print("StackTrace: $stackTrace");
         yield GetLastExerciseSetsQueryErrorState(error: e);
       }
     }

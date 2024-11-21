@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/joined_tables/movement-muscle_group/movement-muscle_group_methods.dart';
 
@@ -9,14 +10,14 @@ class AddExerciseState extends Equatable {
   final String? selectedMovement;
   final int? selectedMovementId;
   final CurrentSet? currentSet;
-  final List<Sets> setsDone;
+  final List<GeneralExerciseSetModel> setsDone;
   final int numWorkingSets;
 
   const AddExerciseState(
       {required this.selectedMuscleGroup,
+        required this.workedMuscleGroups,
       required this.selectedMovement,
       required this.selectedMovementId,
-      required this.workedMuscleGroups,
       this.currentSet,
       required this.setsDone,
       required this.numWorkingSets});

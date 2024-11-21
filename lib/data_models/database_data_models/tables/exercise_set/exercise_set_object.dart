@@ -37,12 +37,8 @@ class ExerciseSetTable {
       reps: map['reps'],
       extraReps: map['extra_reps'],
       duration: map['duration'],
-      notes: map['maps'],
+      notes: map['notes'],
     );
-  }
-
-  String durationToString(Duration duration_) {
-    return duration_.toString();
   }
 
   Map<String, dynamic> toMap() {

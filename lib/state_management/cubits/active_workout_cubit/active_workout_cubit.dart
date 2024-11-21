@@ -54,8 +54,6 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
     if (state is NewActiveWorkoutState) {
       NewActiveWorkoutState currentState = state as NewActiveWorkoutState;
 
-      int index = 0;
-
       NewExerciseModel updatedExercise = NewExerciseModel(
           movementId: newExercise.selectedMovementId,
           exerciseOrder: currentState.exercises.length,
@@ -64,14 +62,7 @@ class ActiveWorkoutCubit extends Cubit<ActiveWorkoutState> {
           numWorkingSets: newExercise.numWorkingSets,
           workedMuscleGroups: newExercise.workedMuscleGroups!,
           movementName: newExercise.selectedMovement!,
-          exerciseSets: newExercise.setsDone.map((set_) {
-            GeneralExerciseSetModel convertedModel =
-                GeneralExerciseSetModel.fromSetsObject(
-                    exerciseSet: set_, setOrder: index);
-            index += 1;
-
-            return convertedModel;
-          }).toList());
+          exerciseSets: newExercise.setsDone);
 
       NewActiveWorkoutState generatedState = NewActiveWorkoutState.copyWith(
           currentState: currentState, newExercises: [updatedExercise]);

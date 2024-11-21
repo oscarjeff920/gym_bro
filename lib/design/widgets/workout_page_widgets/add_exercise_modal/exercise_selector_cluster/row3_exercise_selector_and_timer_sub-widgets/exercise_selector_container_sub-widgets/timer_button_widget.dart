@@ -41,9 +41,9 @@ class TimerButton extends StatelessWidget {
       }
       return TextButton(
           style: ButtonStyle(
-            side: MaterialStateProperty.all(
+            side: WidgetStateProperty.all(
                 const BorderSide(color: Colors.black, width: 1.5)),
-            backgroundColor: MaterialStatePropertyAll<Color>(
+            backgroundColor: WidgetStatePropertyAll<Color>(
                 timerColour.withOpacity(isExerciseSelected ? 1 : 0.3)),
           ),
           onPressed: isExerciseSelected

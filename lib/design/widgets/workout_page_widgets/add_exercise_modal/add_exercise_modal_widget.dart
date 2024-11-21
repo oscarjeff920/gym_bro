@@ -51,9 +51,9 @@ class AddExerciseModal extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 10.0),
-                                    child: SetsList(
-                                        currentSet: state.currentSet,
-                                        doneSets: state.setsDone),
+                                    child: SetsListContainer(
+                                            currentSet: state.currentSet,
+                                            completedSets: state.setsDone),
                                   ),
                                 ),
                               ],
