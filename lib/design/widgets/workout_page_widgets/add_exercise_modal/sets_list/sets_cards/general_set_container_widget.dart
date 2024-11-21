@@ -9,7 +9,7 @@ import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_state.
 import 'finish_set_button_widget.dart';
 import 'set_field_types/duration_text_field_widget.dart';
 import 'set_field_types/notes_text_field_animated_container_widget.dart';
-import 'set_field_types/set_field_widget.dart';
+import 'set_field_types/general_set_field_widget.dart';
 import 'set_field_types/warm_up_check_box.dart';
 import 'working_warmup_set_header_counter_widget.dart';
 
@@ -242,7 +242,7 @@ class GeneralSetContainer extends StatelessWidget {
             setType: setType,
           )
         else
-          SetNumericalField(
+          GeneralSetField(
             value: value,
             setType: setType,
             updateField: updateDisplay,

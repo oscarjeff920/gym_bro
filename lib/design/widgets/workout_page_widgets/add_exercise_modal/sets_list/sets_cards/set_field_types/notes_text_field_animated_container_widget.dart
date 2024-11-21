@@ -4,7 +4,7 @@ import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/sets_list/sets_cards/general_set_container_widget.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 
-import 'set_field_widget.dart';
+import 'general_set_field_widget.dart';
 
 class ExpandableNotesTextField extends StatefulWidget {
   final TextStyle headerTextStyle;
@@ -106,7 +106,7 @@ class _ExpandableNotesTextFieldState extends State<ExpandableNotesTextField> {
           child: _isExpanded
               ? Padding(
                   padding: const EdgeInsets.only(bottom: 10.0),
-                  child: SetNumericalField(
+                  child: GeneralSetField(
                     value: widget.notes,
                     autoFocus: true,
                     setType: widget.setType,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/sets_list/sets_cards/general_set_container_widget.dart';
 
-class SetNumericalField extends StatefulWidget {
+class GeneralSetField extends StatefulWidget {
   final dynamic value;
   final Function(dynamic)? updateSetFunction;
   final bool updateField;
@@ -9,7 +9,7 @@ class SetNumericalField extends StatefulWidget {
   final TextInputType inputType;
   final bool autoFocus;
 
-  const SetNumericalField(
+  const GeneralSetField(
       {super.key,
       required this.value,
       this.updateSetFunction,
@@ -22,10 +22,10 @@ class SetNumericalField extends StatefulWidget {
       setType == SetType.completed ? Colors.black : Colors.white;
 
   @override
-  State<SetNumericalField> createState() => _SetNumericalFieldState();
+  State<GeneralSetField> createState() => _GeneralSetFieldState();
 }
 
-class _SetNumericalFieldState extends State<SetNumericalField> {
+class _GeneralSetFieldState extends State<GeneralSetField> {
   late bool isReadOnly = widget.setType == SetType.current ? false : true;
   late final TextEditingController _controller;
 
