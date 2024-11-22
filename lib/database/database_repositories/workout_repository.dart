@@ -12,6 +12,18 @@ class WorkoutRepository {
 
   WorkoutRepository(this.databaseHelper);
 
+  backupDatabase() => databaseHelper.backupDatabase();
+
+  exportDatabaseToDownloads() => databaseHelper.exportDatabaseToDownloads();
+
+  printDatabaseToStdin() async {
+    final database = await databaseHelper.database;
+    Map<String, String> sqlDump =
+        await databaseHelper.exportDatabaseToSQLDump(database);
+    // Chuck break point in here to access INSERT full database query via debugger
+    print("\nCurrent Data:\n\n");
+  }
+
   // Methods to list workouts on home page:
   // Future<Map<DateTime, Map<int, List<LoadedWorkoutModel>>>>
   retrieveWorkoutsAndGroupByWeek(

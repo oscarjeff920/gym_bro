@@ -46,5 +46,8 @@ app.*.map.json
 *db
 *db-journal
 
+db/*.db*
+
+assets/database/*.sql
 assets/debug/saved_error_state.json
 

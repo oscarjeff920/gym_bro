@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_repository.dart';
-import 'package:gym_bro/data_models/database_data_models/tables/movement/movement_repository.dart';
+import 'package:gym_bro/database/database_repositories/exercise_set_repository.dart';
+import 'package:gym_bro/database/database_repositories/movement_repository.dart';
 import 'package:gym_bro/database/database_connector.dart';
 import 'package:gym_bro/design/routing/router.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_bloc.dart';
@@ -15,8 +15,8 @@ import 'package:gym_bro/state_management/cubits/save_error_state_cubit/save_erro
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_cubit.dart';
 import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_cubit.dart';
 
-import 'data_models/database_data_models/tables/exercise/exercise_repository.dart';
-import 'data_models/database_data_models/tables/workout/workout_repository.dart';
+import 'database/database_repositories/exercise_repository.dart';
+import 'database/database_repositories/workout_repository.dart';
 import 'state_management/blocs/database_tables/exercise/exercise_table_operations_bloc.dart';
 import 'state_management/blocs/database_tables/exercise_set/exercise_set_table_operations_bloc.dart';
 import 'state_management/blocs/database_tables/movement/get_movement_name_by_id/movement_get_name_by_id_bloc.dart';

@@ -1,7 +1,7 @@
 import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:gym_bro/database/database_connector.dart';
 
-import 'muscle_group_object.dart';
+import '../../data_models/database_data_models/tables/muscle_group/muscle_group_object.dart';
 
 class MuscleGroupRepository {
   final DatabaseHelper databaseHelper;
