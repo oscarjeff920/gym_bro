@@ -10,9 +10,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: const TheAppBar(
-        hasBackButton: true,
-      ),
+      appBar: const TheAppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

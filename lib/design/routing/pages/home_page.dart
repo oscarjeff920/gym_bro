@@ -37,9 +37,7 @@ class HomePage extends StatelessWidget {
     return MultiBlocListener(
       listeners: homePageStateListeners(context),
       child: Scaffold(
-        appBar: const TheAppBar(
-          hasBackButton: false,
-        ),
+        appBar: const TheAppBar(),
         backgroundColor: Colors.grey,
         body: Stack(children: [
           BlocBuilder<WorkoutTableOperationsBloc, WorkoutTableOperationsState>(
@@ -97,7 +95,9 @@ class HomePage extends StatelessWidget {
         ]),
         // FOR DEBUG
         floatingActionButton: false
-            ? const LoadErroredWorkoutButton(loadFromAssetDebug: true,)
+            ? const LoadErroredWorkoutButton(
+                loadFromAssetDebug: true,
+              )
             : false
                 ? const DebugStateChecker()
                 : null,
@@ -105,8 +105,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  List<BlocListener> homePageStateListeners(
-      BuildContext context) {
+  List<BlocListener> homePageStateListeners(BuildContext context) {
     return [
       BlocListener<BackupCurrentWorkoutCubit, BackupCurrentWorkoutState>(
           listener: (context, state) {

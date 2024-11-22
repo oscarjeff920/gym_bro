@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 
 class TheAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final bool hasBackButton;
 
   const TheAppBar({
     super.key,
-    this.hasBackButton = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
       centerTitle: true,
-      title: const Text(
-        "Gym Brooo",
-        style: TextStyle(color: Colors.white),
+      title: GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushNamed("/");
+        },
+        child: const Text(
+          "Gym Brooo",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       elevation: 20,
       backgroundColor: const Color.fromRGBO(7, 99, 133, 1.0),
-      iconTheme:
-          hasBackButton ? const IconThemeData(color: Colors.white) : null,
+      iconTheme: null,
       actions: [
         IconButton(
             onPressed: () {
