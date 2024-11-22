@@ -56,6 +56,44 @@ class DatabaseHelper {
     }
   }
 
+  Future<Map<String, String>> exportDatabaseToSQLDump(Database db) async {
+    // Initialize two StringBuffers to store the schema and data separately
+    StringBuffer schemaDump = StringBuffer();
+    StringBuffer dataDump = StringBuffer();
+
+    // Retrieve all table names from the SQLite schema
+    List<Map<String, dynamic>> tables =
+        await db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'");
+
+    for (var table in tables) {
+      String tableName = table['name'];
+
+      // Skip SQLite metadata tables
+      if (tableName == 'android_metadata' || tableName == 'sqlite_sequence')
+        continue;
+
+      // Retrieve and add CREATE TABLE statement to the schema dump
+      List<Map<String, dynamic>> createTable = await db.rawQuery(
+          "SELECT sql FROM sqlite_master WHERE name = ?", [tableName]);
+      String createStatement = createTable.first['sql'];
+      schemaDump.writeln('$createStatement;');
+
+      // Retrieve all rows from the table and generate INSERT statements for data dump
+      List<Map<String, dynamic>> rows = await db.query(tableName);
+      for (var row in rows) {
+        String keys = row.keys.map((key) => '"$key"').join(', ');
+        String values = row.values.map((value) => "'$value'").join(', ');
+        dataDump.writeln("INSERT INTO $tableName ($keys) VALUES ($values);");
+      }
+    }
+
+    // Return both schema and data dumps as separate strings in a map
+    return {
+      'schema': schemaDump.toString(),
+      'data': dataDump.toString(),
+    };
+  }
+
   Future<void> exportDatabaseToDownloads() async {
     // Get the path to the original database
     Directory appDocDir = await getApplicationDocumentsDirectory();
@@ -94,26 +132,27 @@ class DatabaseHelper {
     }
   }
 
-/// Backup the database to an accessible location.
-Future<void> backupDatabase() async {
-  try {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    final dbPath = join(appDocDir.path, "$currentDbName.db");  // Path to your current database
+  /// Backup the database to an accessible location.
+  Future<void> backupDatabase() async {
+    try {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      final dbPath = join(
+          appDocDir.path, "$currentDbName.db"); // Path to your current database
 
-    // Get a location to save the backup (e.g., Downloads, Documents, etc.)
-    // final backupDir = await getExternalStorageDirectory(); // Can be adjusted depending on platform
-    // final backupPath = '${backupDir!.path}/Download/GymBro_backup.db';  // Backup file path
-    // Get the path to the Downloads folder
-    final externalStorageDir = await getExternalStorageDirectory()!;
-    String downloadsPath = '${externalStorageDir!.path}/GymBro1_backup.db';
+      // Get a location to save the backup (e.g., Downloads, Documents, etc.)
+      // final backupDir = await getExternalStorageDirectory(); // Can be adjusted depending on platform
+      // final backupPath = '${backupDir!.path}/Download/GymBro_backup.db';  // Backup file path
+      // Get the path to the Downloads folder
+      final externalStorageDir = await getExternalStorageDirectory()!;
+      String downloadsPath = '${externalStorageDir!.path}/GymBro1_backup.db';
 
-    // Copy the database to the backup location
-    final dbFile = File(dbPath);
-    await dbFile.copy(downloadsPath);
+      // Copy the database to the backup location
+      final dbFile = File(dbPath);
+      await dbFile.copy(downloadsPath);
 
-    print('Database backup successful: $downloadsPath');
-  } catch (e) {
-    print('Error backing up database: $e');
+      print('Database backup successful: $downloadsPath');
+    } catch (e) {
+      print('Error backing up database: $e');
+    }
   }
-}
 }

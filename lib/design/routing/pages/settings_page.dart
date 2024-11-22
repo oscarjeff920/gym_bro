@@ -35,6 +35,22 @@ class SettingsPage extends StatelessWidget {
                       Icon(Icons.backup_outlined)
                     ],
                   ))),
+          Expanded(
+              child: TextButton(
+                  style:
+                      const ButtonStyle(elevation: WidgetStatePropertyAll(10)),
+                  onPressed: () {
+                    BlocProvider.of<WorkoutTableOperationsBloc>(context)
+                        .workoutRepository
+                        .printDatabaseToStdin();
+                  },
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text("Offload Db Dump to Debug"),
+                      Icon(Icons.print)
+                    ],
+                  ))),
           const Spacer(
             flex: 12,
           )
