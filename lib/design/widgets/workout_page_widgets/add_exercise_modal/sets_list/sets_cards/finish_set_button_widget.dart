@@ -15,9 +15,9 @@ class FinishSetButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 15.0),
+      padding: const EdgeInsets.only(right: 5.0),
       child: SizedBox(
-        width: 20,
+        width: 60,
         height: 20,
         child: IconButton(
           padding: const EdgeInsets.all(0),
@@ -36,7 +36,7 @@ class FinishSetButton extends StatelessWidget {
           color: const Color.fromRGBO(0, 200, 0, 1),
           icon: const Icon(
             Icons.check,
-            size: 20,
+            size: 22,
           ),
         ),
       ),
