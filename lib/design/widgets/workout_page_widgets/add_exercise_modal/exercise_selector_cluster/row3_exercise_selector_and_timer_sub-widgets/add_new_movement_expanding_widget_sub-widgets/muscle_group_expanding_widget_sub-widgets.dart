@@ -18,7 +18,8 @@ class MuscleGroupHeaderWidget extends StatelessWidget {
       child: Text(
         "$muscleRole Muscle Group(s):",
         style: const TextStyle(
-          fontSize: 10,
+          fontSize: 13,
+          fontWeight: FontWeight.bold,
           color: Color.fromRGBO(10, 10, 10, 0.6),
         ),
       ),

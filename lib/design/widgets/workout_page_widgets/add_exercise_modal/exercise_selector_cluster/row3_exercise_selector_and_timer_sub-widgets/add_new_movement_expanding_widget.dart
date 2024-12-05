@@ -23,7 +23,7 @@ class AddNewMovementExpandedWidget extends StatelessWidget {
           // Duration of the animation
           curve: Curves.easeInOut,
           // Curve for the animation
-          height: state.isNewMovementSelected ? 300 : 0,
+          height: state.isNewMovementSelected ? 320 : 0,
           // Height of the container
           child: Padding(
             padding: const EdgeInsets.only(top: 10, left: 8, right: 8),
@@ -38,18 +38,19 @@ class AddNewMovementExpandedWidget extends StatelessWidget {
                   AddNewMovementNameTextField(
                     newMovementName: state.movementName,
                   ),
-                  const SpacerWidget(height: 8),
+                  const SpacerWidget(height: 12),
                   const MuscleGroupHeaderWidget(isPrimary: true),
                   const MuscleGroupIndicatorRowWidget(
                     isPrimary: true,
                   ),
-                  const SpacerWidget(height: 8),
+                  const SpacerWidget(height: 12),
                   const MuscleGroupHeaderWidget(
                     isPrimary: false,
                   ),
                   const MuscleGroupIndicatorRowWidget(
                     isPrimary: false,
                   ),
+                  const SpacerWidget(height: 12),
                   ButtonRowWidget(
                     newMovementName: state.movementName,
                   )
