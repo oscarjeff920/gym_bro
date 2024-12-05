@@ -8,47 +8,47 @@ enum RoleType {
 class MuscleGroup {
   final MuscleGroupType type;
   final IconData icon;
-  final Color color;
+  final Color colour;
 
   const MuscleGroup({
     required this.type,
     required this.icon,
-    required this.color,
+    required this.colour,
   });
 
-  // Static list to hold all muscle groups for easy iteration
-  static final List<MuscleGroup> allMuscleGroups = [
-    const MuscleGroup(
+  // Static Map to hold all muscle groups for easy iteration
+  static final Map<MuscleGroupType, MuscleGroup> allMuscleGroups = {
+    MuscleGroupType.chest: const MuscleGroup(
       type: MuscleGroupType.chest,
       icon: Icons.favorite_outline_sharp,
-      color: Color.fromRGBO(255, 80, 80, 1),
+      colour: Color.fromRGBO(255, 80, 80, 1),
     ),
-    const MuscleGroup(
+    MuscleGroupType.shoulders: const MuscleGroup(
       type: MuscleGroupType.shoulders,
       icon: Icons.emoji_people,
-      color: Color.fromRGBO(10, 200, 255, 1),
+      colour: Color.fromRGBO(10, 200, 255, 1),
     ),
-    const MuscleGroup(
+    MuscleGroupType.biceps: const MuscleGroup(
       type: MuscleGroupType.biceps,
       icon: Icons.fitness_center,
-      color: Color.fromRGBO(255, 140, 80, 1),
+      colour: Color.fromRGBO(255, 140, 80, 1),
     ),
-    const MuscleGroup(
+    MuscleGroupType.triceps: const MuscleGroup(
       type: MuscleGroupType.triceps,
       icon: Icons.expand,
-      color: Color.fromRGBO(240, 220, 100, 1),
+      colour: Color.fromRGBO(240, 220, 100, 1),
     ),
-    const MuscleGroup(
+    MuscleGroupType.back: const MuscleGroup(
       type: MuscleGroupType.back,
       icon: Icons.rowing,
-      color: Color.fromRGBO(150, 150, 255, 1),
+      colour: Color.fromRGBO(150, 150, 255, 1),
     ),
-    const MuscleGroup(
+    MuscleGroupType.legs: const MuscleGroup(
       type: MuscleGroupType.legs,
       icon: Icons.sports_martial_arts,
-      color: Color.fromRGBO(30, 225, 75, 1),
+      colour: Color.fromRGBO(30, 225, 75, 1),
     ),
-  ];
+  };
 }
 
 enum MuscleGroupType {
@@ -59,4 +59,3 @@ enum MuscleGroupType {
   back,
   legs,
 }
-
