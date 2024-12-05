@@ -10,6 +10,8 @@ class WeeklyMuscleGroupSetCounter extends StatelessWidget {
   const WeeklyMuscleGroupSetCounter(
       {super.key, required this.muscleGroup, required this.workoutsOfTheWeek});
 
+  get muscleGroupObject => MuscleGroup.allMuscleGroups[muscleGroup];
+
   @override
   Widget build(BuildContext context) {
     int muscleGroupWorkingSets = 0;
@@ -23,7 +25,7 @@ class WeeklyMuscleGroupSetCounter extends StatelessWidget {
     if (muscleGroupWorkingSets < 10) {
       containerColour = Colors.grey.withOpacity(0);
     } else if (muscleGroupWorkingSets < 20) {
-      containerColour = muscleGroupColours[muscleGroup]!;
+      containerColour = muscleGroupObject.colour;
     } else {
       containerColour = Colors.white;
     }
@@ -111,7 +113,7 @@ class MuscleIcon extends StatelessWidget {
     }
 
     return Icon(
-      assignIcon(muscleGroup),
+      MuscleGroup.allMuscleGroups[muscleGroup]!.icon,
       color: iconColour,
       size: iconSize,
     );

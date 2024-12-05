@@ -44,13 +44,16 @@ class CompletedExercisesScaffold extends StatelessWidget {
                       duration: const Duration(seconds: 1),
                       child: CompletedExerciseTile(
                         tileIndex: index,
-                        primaryMuscleGroupColour: muscleGroupColours[
-                            exercises[isCurrentWorkout ? index - 1 : index]
-                                .workedMuscleGroups
-                                .returnPrimaryMuscleGroups()
-                                .first]!,
+                        primaryMuscleGroupColour: MuscleGroup
+                            .allMuscleGroups[
+                                exercises[isCurrentWorkout ? index - 1 : index]
+                                    .workedMuscleGroups
+                                    .returnPrimaryMuscleGroups()
+                                    .first]!
+                            .colour,
                         tileSpacingValue: tileSpacingValue,
-                        exercise: exercises[isCurrentWorkout ? index - 1 : index],
+                        exercise:
+                            exercises[isCurrentWorkout ? index - 1 : index],
                       ),
                     );
                   }
