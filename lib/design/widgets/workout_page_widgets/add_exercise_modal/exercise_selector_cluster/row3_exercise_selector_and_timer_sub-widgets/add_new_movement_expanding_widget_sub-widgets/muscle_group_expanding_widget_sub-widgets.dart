@@ -76,7 +76,7 @@ class _RaisedMuscleGroupButtonState extends State<RaisedMuscleGroupButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(2.0),
+      padding: const EdgeInsets.all(4.0),
       child: AspectRatio(
         aspectRatio: 1,
         child: ElevatedButton(
@@ -85,16 +85,23 @@ class _RaisedMuscleGroupButtonState extends State<RaisedMuscleGroupButton> {
           },
           style: ButtonStyle(
             padding: const WidgetStatePropertyAll(EdgeInsets.all(0)),
+            shape: widget.isPrimary
+                ? WidgetStateProperty.all(const RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.zero, // No border radius for square shape
+                  ))
+                : null,
             elevation: _isToggled
                 ? const WidgetStatePropertyAll(0)
                 : const WidgetStatePropertyAll(3),
             backgroundColor: _isToggled
                 ? WidgetStatePropertyAll(widget.muscleGroup.colour)
-                : const WidgetStatePropertyAll(Colors.white),
+                : const WidgetStatePropertyAll(Color.fromRGBO(255, 255, 255, 0.75)),
           ),
           child: Icon(
             widget.muscleGroup.icon,
             color: Colors.black,
+            size: widget.isPrimary ? 30 : 20
           ),
         ),
       ),
