@@ -5,7 +5,7 @@ import 'package:gym_bro/state_management/cubits/add_new_movement_cubit/add_new_m
 
 import 'add_new_movement_expanding_widget_sub-widgets/add_new_movement_name_button_widgets.dart';
 import 'add_new_movement_expanding_widget_sub-widgets/add_new_movement_name_sub-widgets.dart';
-import 'add_new_movement_expanding_widget_sub-widgets/primary_muscle_group_expanding_widget_sub-widgets.dart';
+import 'add_new_movement_expanding_widget_sub-widgets/muscle_group_expanding_widget_sub-widgets.dart';
 
 class AddNewMovementExpandedWidget extends StatelessWidget {
   const AddNewMovementExpandedWidget({
@@ -23,7 +23,7 @@ class AddNewMovementExpandedWidget extends StatelessWidget {
           // Duration of the animation
           curve: Curves.easeInOut,
           // Curve for the animation
-          height: state.isNewMovementSelected ? 175 : 0,
+          height: state.isNewMovementSelected ? 300 : 0,
           // Height of the container
           child: Padding(
             padding: const EdgeInsets.only(top: 10, left: 8, right: 8),
@@ -38,12 +38,21 @@ class AddNewMovementExpandedWidget extends StatelessWidget {
                   AddNewMovementNameTextField(
                     newMovementName: state.movementName,
                   ),
-
                   const SpacerWidget(height: 8),
-
-                  const PrimaryMuscleGroupHeaderWidget(),
-                  const PrimaryMuscleGroupIndicatorRowWidget(),
-                  ButtonRowWidget(newMovementName: state.movementName,)
+                  const MuscleGroupHeaderWidget(isPrimary: true),
+                  const MuscleGroupIndicatorRowWidget(
+                    isPrimary: true,
+                  ),
+                  const SpacerWidget(height: 8),
+                  const MuscleGroupHeaderWidget(
+                    isPrimary: false,
+                  ),
+                  const MuscleGroupIndicatorRowWidget(
+                    isPrimary: false,
+                  ),
+                  ButtonRowWidget(
+                    newMovementName: state.movementName,
+                  )
                 ],
               ),
             ),
