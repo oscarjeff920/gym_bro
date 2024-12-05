@@ -32,7 +32,9 @@ class AddExerciseModal extends StatelessWidget {
                     child: BlocBuilder<AddExerciseCubit, AddExerciseState>(
                       builder: (context, state) {
                         Color modalColour = state.selectedMuscleGroup != null
-                            ? muscleGroupColours[state.selectedMuscleGroup]!
+                            ? MuscleGroup
+                                .allMuscleGroups[state.selectedMuscleGroup]!
+                                .colour
                             : const Color(0xffA9A9A9);
 
                         return AnimatedContainer(
@@ -52,8 +54,8 @@ class AddExerciseModal extends StatelessWidget {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 10.0),
                                     child: SetsListContainer(
-                                            currentSet: state.currentSet,
-                                            completedSets: state.setsDone),
+                                        currentSet: state.currentSet,
+                                        completedSets: state.setsDone),
                                   ),
                                 ),
                               ],

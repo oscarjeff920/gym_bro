@@ -187,9 +187,9 @@ class MuscleIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Icon(
-      assignIcon(muscleGroup),
+      MuscleGroup.allMuscleGroups[muscleGroup]!.icon,
       color: selectedMuscleGroup == null || selectedMuscleGroup == muscleGroup
-          ? muscleGroupColours[muscleGroup]
+          ? MuscleGroup.allMuscleGroups[muscleGroup]!.colour
           : Colors.grey,
       size: iconSize,
     );

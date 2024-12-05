@@ -137,7 +137,7 @@ class CardMuscleGroupIcon extends StatelessWidget {
         width: size,
         child: showIcon
             ? Icon(
-                assignIcon(muscleGroup),
+                MuscleGroup.allMuscleGroups[muscleGroup]!.icon,
                 size: size,
               )
             : null);

@@ -12,6 +12,8 @@ class MuscleGroupButton extends StatelessWidget {
 
   final MuscleGroupType muscleGroup;
 
+  MuscleGroup get muscleGroupObject => MuscleGroup.allMuscleGroups[muscleGroup]!;
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -25,9 +27,9 @@ class MuscleGroupButton extends StatelessWidget {
             .add(ResetGetLastExerciseSetsByMovementEvent());
       },
       icon: Icon(
-        assignIcon(muscleGroup),
+        muscleGroupObject.icon,
         size: 40,
-        color: muscleGroupColours[muscleGroup],
+        color: muscleGroupObject.colour,
       ),
     );
   }

@@ -32,7 +32,7 @@ class ExerciseDropdownMenu extends StatelessWidget {
           label: "New Movement",
           leadingIcon: const Icon(Icons.add),
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.white)))
+              backgroundColor: WidgetStateProperty.all(Colors.white)))
     ];
     TextStyle movementTextStyle = const TextStyle(fontSize: 16);
 
@@ -43,16 +43,17 @@ class ExerciseDropdownMenu extends StatelessWidget {
             return DropdownMenu(
               enabled: isEnabled,
               menuStyle: const MenuStyle(
-                surfaceTintColor: MaterialStatePropertyAll(Colors.black),
-                backgroundColor: MaterialStatePropertyAll(Colors.yellow),
-                elevation: MaterialStatePropertyAll(100),
-                side: MaterialStatePropertyAll(BorderSide(width: 3)),
+                surfaceTintColor: WidgetStatePropertyAll(Colors.black),
+                backgroundColor: WidgetStatePropertyAll(Colors.yellow),
+                elevation: WidgetStatePropertyAll(100),
+                side: WidgetStatePropertyAll(BorderSide(width: 3)),
               ),
               width: 250,
               menuHeight: 300,
               textStyle: movementTextStyle,
               leadingIcon: selectedMuscleGroup != null
-                  ? Icon(assignIcon(selectedMuscleGroup!))
+                  ? Icon(
+                      MuscleGroup.allMuscleGroups[selectedMuscleGroup!]!.icon)
                   : null,
               label: Text(label),
               dropdownMenuEntries: exerciseEntries,
@@ -71,7 +72,6 @@ class ExerciseDropdownMenu extends StatelessWidget {
                   BlocProvider.of<GetLastExerciseSetsByMovementBloc>(context)
                       .add(ResetGetLastExerciseSetsByMovementEvent());
 
-
                   BlocProvider.of<AddNewMovementCubit>(context)
                       .openAddNewMovementExpansionPanel();
                 } else {
@@ -80,7 +80,7 @@ class ExerciseDropdownMenu extends StatelessWidget {
                       .selectExercise(value);
                   BlocProvider.of<GetLastExerciseSetsByMovementBloc>(context)
                       .add(QueryLastExerciseSetsByMovementEvent(
-                      movementId: movementId));
+                          movementId: movementId));
                   BlocProvider.of<AddNewMovementCubit>(context)
                       .closeAddNewMovementExpansionPanel();
                 }
@@ -98,7 +98,8 @@ class ExerciseDropdownMenu extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 7),
                         child: Icon(
-                          assignIcon(selectedMuscleGroup!),
+                          MuscleGroup
+                              .allMuscleGroups[selectedMuscleGroup!]!.icon,
                           size: 28,
                         )),
                     Flexible(
