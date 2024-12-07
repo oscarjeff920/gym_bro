@@ -65,17 +65,6 @@ class AddExerciseState extends Equatable {
     );
   }
 
-  String? muscleGroupToString() {
-    if (selectedMuscleGroup == null) {
-      return null;
-    }
-    String groupName = selectedMuscleGroup.toString().split(".")[1];
-    String capitalizedGroupName =
-        groupName[0].toUpperCase() + groupName.substring(1);
-
-    return capitalizedGroupName;
-  }
-
   @override
   List<Object?> get props => [
         selectedMuscleGroup,
