@@ -48,7 +48,7 @@ class AddExerciseModal extends StatelessWidget {
                                 ExerciseSelectorCluster(
                                     modalColour: modalColour,
                                     muscleGroupName:
-                                        state.muscleGroupToString()),
+                                        state.selectedMuscleGroup!.name),
                                 Expanded(
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
