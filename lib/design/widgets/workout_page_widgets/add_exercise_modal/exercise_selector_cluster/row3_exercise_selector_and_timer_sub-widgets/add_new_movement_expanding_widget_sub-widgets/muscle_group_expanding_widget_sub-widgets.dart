@@ -20,7 +20,7 @@ class MuscleGroupHeaderWidget extends StatelessWidget {
       child: Text(
         "$muscleRole Muscle Group(s):",
         style: const TextStyle(
-          fontSize: 13,
+          fontSize: 11,
           fontWeight: FontWeight.bold,
           color: Color.fromRGBO(10, 10, 10, 0.6),
         ),
@@ -110,70 +110,3 @@ class RaisedMuscleGroupButton extends StatelessWidget {
     );
   }
 }
-
-// class RaisedMuscleGroupButton extends StatefulWidget {
-//   final MuscleGroupType selectedMuscleGroup;
-//   final MuscleGroup muscleGroup;
-//   final bool isPrimary;
-//
-//   const RaisedMuscleGroupButton(
-//       {super.key,
-//       required this.selectedMuscleGroup,
-//       required this.muscleGroup,
-//       required this.isPrimary});
-//
-//   bool get _isButtonFixed =>
-//       selectedMuscleGroup.name == muscleGroup.type.name ? true : false;
-//
-//   @override
-//   State<RaisedMuscleGroupButton> createState() =>
-//       _RaisedMuscleGroupButtonState();
-// }
-//
-// class _RaisedMuscleGroupButtonState extends State<RaisedMuscleGroupButton> {
-//   bool _isToggled = false;
-//
-//   void _toggleButton() {
-//     setState(() {
-//       _isToggled = !_isToggled;
-//       BlocProvider.of<AddNewMovementCubit>(context).updateWorkedMuscleGroups(
-//           isPrimary: widget.isPrimary,
-//           muscleGroup: widget.muscleGroup.type,
-//           toggleOn: _isToggled
-//       );
-//     });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.all(4.0),
-//       child: AspectRatio(
-//         aspectRatio: 1,
-//         child: ElevatedButton(
-//           onPressed: () {
-//             _toggleButton();
-//           },
-//           style: ButtonStyle(
-//             padding: const WidgetStatePropertyAll(EdgeInsets.all(0)),
-//             shape: widget.isPrimary
-//                 ? WidgetStateProperty.all(const RoundedRectangleBorder(
-//                     borderRadius:
-//                         BorderRadius.zero, // No border radius for square shape
-//                   ))
-//                 : null,
-//             elevation: _isToggled
-//                 ? const WidgetStatePropertyAll(0)
-//                 : const WidgetStatePropertyAll(3),
-//             backgroundColor: _isToggled
-//                 ? WidgetStatePropertyAll(widget.muscleGroup.colour)
-//                 : const WidgetStatePropertyAll(
-//                     Color.fromRGBO(255, 255, 255, 0.75)),
-//           ),
-//           child: Icon(widget.muscleGroup.icon,
-//               color: Colors.black, size: widget.isPrimary ? 30 : 20),
-//         ),
-//       ),
-//     );
-//   }
-// }
