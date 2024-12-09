@@ -14,7 +14,7 @@ class AddNewMovementNameHeaderWidget extends StatelessWidget {
       child: Text(
         "Movement Name:",
         style: TextStyle(
-          fontSize: 13,
+          fontSize: 11,
           fontWeight: FontWeight.bold,
           color: Color.fromRGBO(10, 10, 10, 0.6),
         ),
@@ -36,11 +36,15 @@ class AddNewMovementNameTextField extends StatelessWidget {
           textAlignVertical: TextAlignVertical.bottom,
           controller: TextEditingController()..text = newMovementName ?? "",
           decoration: const InputDecoration(
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Color.fromRGBO(0, 0, 0, 0.2), width: 0.5)),
+              contentPadding: EdgeInsets.only(bottom: 5, top: 0),
               prefix: SizedBox(
-            width: 10,
-          )),
+                width: 7,
+              )),
           style: const TextStyle(
-            fontSize: 23,
+            fontSize: 20,
           ),
           onSubmitted: (String inputText) {
             BlocProvider.of<AddNewMovementCubit>(context)
