@@ -1,12 +1,10 @@
 import 'package:equatable/equatable.dart';
-import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/joined_tables/movement-muscle_group/movement-muscle_group_methods.dart';
 
 class AddExerciseState extends Equatable {
-  final MuscleGroupType? selectedMuscleGroup;
-  final MovementWorkedMuscleGroupsType? workedMuscleGroups;
+  final MovementWorkedMuscleGroupsType workedMuscleGroups;
   final String? selectedMovement;
   final int? selectedMovementId;
   final CurrentSet? currentSet;
@@ -14,8 +12,7 @@ class AddExerciseState extends Equatable {
   final int numWorkingSets;
 
   const AddExerciseState(
-      {required this.selectedMuscleGroup,
-        required this.workedMuscleGroups,
+      {required this.workedMuscleGroups,
       required this.selectedMovement,
       required this.selectedMovementId,
       this.currentSet,
@@ -24,8 +21,7 @@ class AddExerciseState extends Equatable {
 
   @override
   toString() {
-    String defaultMessage = "\nselected muscleGroup: $selectedMuscleGroup"
-        "\nselected movement: $selectedMovement"
+    String defaultMessage = "\nselected movement: $selectedMovement"
         "\nselected movementId: $selectedMovementId"
         "\nsets done: $setsDone"
         "\nnumb working sets: $numWorkingSets"
@@ -49,39 +45,28 @@ class AddExerciseState extends Equatable {
   }
 
   AddExerciseState copyWith(
-      {MuscleGroupType? muscleGroup,
-      String? movementName,
-      int? movementId,
-      int? workingSets,
-      MovementWorkedMuscleGroupsType? movementWorkedMuscleGroups}) {
+      {String? selectedMovementNameCopy,
+      CurrentSet? currentSetCopy,
+      List<GeneralExerciseSetModel>? setsDoneCopy,
+      int? movementIdCopy,
+      int? numWorkingSetsCopy,
+      MovementWorkedMuscleGroupsType? movementWorkedMuscleGroupsCopy}) {
     return AddExerciseState(
-      selectedMuscleGroup: muscleGroup ?? selectedMuscleGroup,
-      selectedMovement: movementName ?? selectedMovement,
-      selectedMovementId: movementId ?? selectedMovementId,
-      currentSet: currentSet,
-      setsDone: setsDone,
-      numWorkingSets: workingSets ?? numWorkingSets,
-      workedMuscleGroups: movementWorkedMuscleGroups ?? workedMuscleGroups,
+      selectedMovement: selectedMovementNameCopy ?? selectedMovement,
+      selectedMovementId: movementIdCopy ?? selectedMovementId,
+      currentSet: currentSetCopy ?? currentSet,
+      setsDone: setsDoneCopy ?? setsDone,
+      numWorkingSets: numWorkingSetsCopy ?? numWorkingSets,
+      workedMuscleGroups: movementWorkedMuscleGroupsCopy ?? workedMuscleGroups,
     );
-  }
-
-  String? muscleGroupToString() {
-    if (selectedMuscleGroup == null) {
-      return null;
-    }
-    String groupName = selectedMuscleGroup.toString().split(".")[1];
-    String capitalizedGroupName =
-        groupName[0].toUpperCase() + groupName.substring(1);
-
-    return capitalizedGroupName;
   }
 
   @override
   List<Object?> get props => [
-        selectedMuscleGroup,
         selectedMovement,
         selectedMovementId,
         currentSet,
-        setsDone
+        setsDone,
+        workedMuscleGroups
       ];
 }
