@@ -14,13 +14,13 @@ class AddNewMovementState extends Equatable {
       this.workedMuscleGroups});
 
   AddNewMovementState copyWith(
-      {String? copyMovementName,
-      MovementWorkedMuscleGroupsType? copyWorkedMuscleGroups}) {
+      {bool? isNewMovementSelectedCopy, bool? showAnimatedChildrenCopy,String? movementNameCopy,
+      MovementWorkedMuscleGroupsType? workedMuscleGroupsCopy}) {
     return AddNewMovementState(
-      isNewMovementSelected: isNewMovementSelected,
-      showAnimatedChildren: showAnimatedChildren,
-      movementName: copyMovementName ?? movementName,
-      workedMuscleGroups: copyWorkedMuscleGroups ?? workedMuscleGroups,
+      isNewMovementSelected: isNewMovementSelectedCopy ?? isNewMovementSelected,
+      showAnimatedChildren: showAnimatedChildrenCopy ?? showAnimatedChildren,
+      movementName: movementNameCopy ?? movementName,
+      workedMuscleGroups: workedMuscleGroupsCopy ?? workedMuscleGroups,
     );
   }
 
