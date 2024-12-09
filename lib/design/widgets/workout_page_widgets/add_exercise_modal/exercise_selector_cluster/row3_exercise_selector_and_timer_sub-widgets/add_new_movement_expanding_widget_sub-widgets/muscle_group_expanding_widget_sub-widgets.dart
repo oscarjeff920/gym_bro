@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
+import 'package:gym_bro/state_management/cubits/add_new_movement_cubit/add_new_movement_cubit.dart';
 
 class MuscleGroupHeaderWidget extends StatelessWidget {
   final bool isPrimary;
@@ -42,6 +43,7 @@ class MuscleGroupIndicatorRowWidget extends StatelessWidget {
             for (var muscleGroup in MuscleGroup.allMuscleGroups.values)
               Expanded(
                 child: RaisedMuscleGroupButton(
+                  selectedMuscleGroup: state.selectedMuscleGroup!.type,
                   muscleGroup: muscleGroup,
                   isPrimary: isPrimary,
                 ),
@@ -54,11 +56,18 @@ class MuscleGroupIndicatorRowWidget extends StatelessWidget {
 }
 
 class RaisedMuscleGroupButton extends StatefulWidget {
+  final MuscleGroupType selectedMuscleGroup;
   final MuscleGroup muscleGroup;
   final bool isPrimary;
 
   const RaisedMuscleGroupButton(
-      {super.key, required this.muscleGroup, required this.isPrimary});
+      {super.key,
+      required this.selectedMuscleGroup,
+      required this.muscleGroup,
+      required this.isPrimary});
+
+  bool get _isButtonFixed =>
+      selectedMuscleGroup.name == muscleGroup.type.name ? true : false;
 
   @override
   State<RaisedMuscleGroupButton> createState() =>
@@ -71,6 +80,11 @@ class _RaisedMuscleGroupButtonState extends State<RaisedMuscleGroupButton> {
   void _toggleButton() {
     setState(() {
       _isToggled = !_isToggled;
+      BlocProvider.of<AddNewMovementCubit>(context).updateWorkedMuscleGroups(
+          isPrimary: widget.isPrimary,
+          muscleGroup: widget.muscleGroup.type,
+          toggleOn: _isToggled
+      );
     });
   }
 
@@ -97,13 +111,11 @@ class _RaisedMuscleGroupButtonState extends State<RaisedMuscleGroupButton> {
                 : const WidgetStatePropertyAll(3),
             backgroundColor: _isToggled
                 ? WidgetStatePropertyAll(widget.muscleGroup.colour)
-                : const WidgetStatePropertyAll(Color.fromRGBO(255, 255, 255, 0.75)),
+                : const WidgetStatePropertyAll(
+                    Color.fromRGBO(255, 255, 255, 0.75)),
           ),
-          child: Icon(
-            widget.muscleGroup.icon,
-            color: Colors.black,
-            size: widget.isPrimary ? 30 : 20
-          ),
+          child: Icon(widget.muscleGroup.icon,
+              color: Colors.black, size: widget.isPrimary ? 30 : 20),
         ),
       ),
     );
