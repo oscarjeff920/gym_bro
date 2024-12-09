@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_state.dart';
@@ -44,13 +43,12 @@ class CompletedExercisesScaffold extends StatelessWidget {
                       duration: const Duration(seconds: 1),
                       child: CompletedExerciseTile(
                         tileIndex: index,
-                        primaryMuscleGroupColour: MuscleGroup
-                            .allMuscleGroups[
-                                exercises[isCurrentWorkout ? index - 1 : index]
-                                    .workedMuscleGroups
-                                    .returnPrimaryMuscleGroups()
-                                    .first]!
-                            .colour,
+                        primaryMuscleGroupColour:
+                            exercises[isCurrentWorkout ? index - 1 : index]
+                                .workedMuscleGroups
+                                .returnPrimaryMuscleGroups()
+                                .first
+                                .colour,
                         tileSpacingValue: tileSpacingValue,
                         exercise:
                             exercises[isCurrentWorkout ? index - 1 : index],

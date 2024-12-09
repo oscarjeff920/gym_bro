@@ -40,15 +40,17 @@ class AddNewMovementExpandedWidget extends StatelessWidget {
                   ),
                   const SpacerWidget(height: 12),
                   const MuscleGroupHeaderWidget(isPrimary: true),
-                  const MuscleGroupIndicatorRowWidget(
+                  MuscleGroupIndicatorRowWidget(
                     isPrimary: true,
+                    workedMuscleGroups: state.workedMuscleGroups!,
                   ),
                   const SpacerWidget(height: 12),
                   const MuscleGroupHeaderWidget(
                     isPrimary: false,
                   ),
-                  const MuscleGroupIndicatorRowWidget(
+                  MuscleGroupIndicatorRowWidget(
                     isPrimary: false,
+                    workedMuscleGroups: state.workedMuscleGroups!,
                   ),
                   const SpacerWidget(height: 12),
                   ButtonRowWidget(

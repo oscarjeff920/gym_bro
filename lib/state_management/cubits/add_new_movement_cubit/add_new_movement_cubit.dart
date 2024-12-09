@@ -5,11 +5,14 @@ import 'package:gym_bro/data_models/database_data_models/joined_tables/movement-
 import 'add_new_movement_state.dart';
 
 class AddNewMovementCubit extends Cubit<AddNewMovementState> {
-  AddNewMovementCubit() : super(const AddNewMovementState());
+  AddNewMovementCubit()
+      : super(AddNewMovementState(
+            workedMuscleGroups:
+                MovementWorkedMuscleGroupsType(workedMuscleGroupsMap: {})));
 
   openAddNewMovementExpansionPanel() {
-    AddNewMovementState generatedState1 = state.copyWith(
-        isNewMovementSelectedCopy: true);
+    AddNewMovementState generatedState1 =
+        state.copyWith(isNewMovementSelectedCopy: true);
     emit(generatedState1);
     Future.delayed(const Duration(milliseconds: 500), () {
       AddNewMovementState generatedState2 = state.copyWith(
@@ -23,21 +26,22 @@ class AddNewMovementCubit extends Cubit<AddNewMovementState> {
     AddNewMovementState generatedState = state.copyWith(
         workedMuscleGroupsCopy: MovementWorkedMuscleGroupsType(
             workedMuscleGroupsMap: {
-              selectedMuscleGroup.type: RoleType.primary
-            }));
+          selectedMuscleGroup.type: RoleType.primary
+        }));
     emit(generatedState);
   }
 
-  void updateWorkedMuscleGroups({required bool isPrimary,
-    required MuscleGroupType muscleGroup,
-    required bool toggleOn}) {
+  void updateWorkedMuscleGroups(
+      {required bool isPrimary,
+      required MuscleGroupType muscleGroup,
+      required bool toggleOn}) {
     Map<MuscleGroupType, RoleType> updatedWorkedMuscleGroups =
-    _muscleGroupButtonToggled(
-        isPrimary: isPrimary,
-        muscleGroup: muscleGroup,
-        toggleOn: toggleOn,
-        currentWorkedMuscleGroups:
-        state.workedMuscleGroups!.workedMuscleGroupsMap);
+        _muscleGroupButtonToggled(
+            isPrimary: isPrimary,
+            muscleGroup: muscleGroup,
+            toggleOn: toggleOn,
+            currentWorkedMuscleGroups:
+                state.workedMuscleGroups!.workedMuscleGroupsMap);
 
     AddNewMovementState generatedState = state.copyWith(
         workedMuscleGroupsCopy: MovementWorkedMuscleGroupsType(
@@ -48,9 +52,9 @@ class AddNewMovementCubit extends Cubit<AddNewMovementState> {
   // Public Wrapper for testing of _muscleGroupButtonToggled
   Map<MuscleGroupType, RoleType> testMuscleGroupButtonToggled(
       {required bool isPrimary,
-        required MuscleGroupType muscleGroup,
-        required bool toggleOn,
-        required Map<MuscleGroupType, RoleType> currentWorkedMuscleGroups}) {
+      required MuscleGroupType muscleGroup,
+      required bool toggleOn,
+      required Map<MuscleGroupType, RoleType> currentWorkedMuscleGroups}) {
     return _muscleGroupButtonToggled(
         isPrimary: isPrimary,
         muscleGroup: muscleGroup,
@@ -60,12 +64,12 @@ class AddNewMovementCubit extends Cubit<AddNewMovementState> {
 
   Map<MuscleGroupType, RoleType> _muscleGroupButtonToggled(
       {required bool isPrimary,
-        required MuscleGroupType muscleGroup,
-        required bool toggleOn,
-        required Map<MuscleGroupType, RoleType> currentWorkedMuscleGroups}) {
+      required MuscleGroupType muscleGroup,
+      required bool toggleOn,
+      required Map<MuscleGroupType, RoleType> currentWorkedMuscleGroups}) {
     // TODO: need to add some validation so that you cant have one muscle group being both primary and secondary
     RoleType newMuscleGroupRole =
-    isPrimary ? RoleType.primary : RoleType.secondary;
+        isPrimary ? RoleType.primary : RoleType.secondary;
 
     if (toggleOn) {
       if (currentWorkedMuscleGroups.containsKey(muscleGroup) &&
@@ -94,17 +98,20 @@ class AddNewMovementCubit extends Cubit<AddNewMovementState> {
 
   addWorkedMuscleGroup(MovementWorkedMuscleGroupsType workedMuscleGroups) {
     AddNewMovementState generatedState =
-    state.copyWith(workedMuscleGroupsCopy: workedMuscleGroups);
+        state.copyWith(workedMuscleGroupsCopy: workedMuscleGroups);
     emit(generatedState);
   }
 
   closeAddNewMovementExpansionPanel() {
-    emit(const AddNewMovementState());
+    emit(AddNewMovementState(
+        workedMuscleGroups:
+            MovementWorkedMuscleGroupsType(workedMuscleGroupsMap: {})));
   }
 
   typeMovementName(String name) {
     // TODO: do these need to be explicitly stated?
-    AddNewMovementState generatedState = state.copyWith(isNewMovementSelectedCopy: true,
+    AddNewMovementState generatedState = state.copyWith(
+        isNewMovementSelectedCopy: true,
         showAnimatedChildrenCopy: true,
         movementNameCopy: name);
     emit(generatedState);

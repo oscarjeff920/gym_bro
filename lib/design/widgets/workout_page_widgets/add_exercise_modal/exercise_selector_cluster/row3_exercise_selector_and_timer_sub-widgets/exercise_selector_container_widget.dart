@@ -33,8 +33,9 @@ class ExerciseSelectorContainer extends StatelessWidget {
           }
         },
         builder: (addExerciseContext, addExerciseState) {
-          MuscleGroup? selectedMuscleGroup =
-              addExerciseState.selectedMuscleGroup;
+          MuscleGroup? firstPrimaryMuscleGroup =
+              addExerciseState.workedMuscleGroups?.returnPrimaryMuscleGroups()
+              .first;
           return BlocBuilder<MovementByMuscleGroupBloc,
               MovementGetByMuscleGroupState>(
             builder: (context, state) {
@@ -54,7 +55,7 @@ class ExerciseSelectorContainer extends StatelessWidget {
                       opacity:
                           state is MovementGetByMuscleGroupSuccessfulQueryState ? 1 : 0,
                       child: ExerciseDropdownMenu(
-                          selectedMuscleGroup: selectedMuscleGroup,
+                          selectedMuscleGroup: firstPrimaryMuscleGroup,
                           matchingExercises: dropdownList),
                     ),
                     Opacity(
