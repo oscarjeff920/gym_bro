@@ -23,7 +23,7 @@ class ExerciseSelectorCluster extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         PrimaryMuscleGroupHeadingContainer(
-            currentMuscleGroupName: selectedMuscleGroup?.type.name,
+            currentMuscleGroupName: selectedMuscleGroup?.title,
             usedHeight: rowHeight),
         MuscleGroupButtons(usedHeight: rowHeight),
         if (workedMuscleGroups != null &&
