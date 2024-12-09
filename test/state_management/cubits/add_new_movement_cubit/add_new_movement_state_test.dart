@@ -10,12 +10,12 @@ void main() {
     };
     AddNewMovementCubit mockCubit = AddNewMovementCubit();
     test('toggleOn new primary muscle group successfully adds it', () {
-      Map<MuscleGroupType, RoleType> actualResult = mockCubit.testMuscleGroupButtonToggled(
-          isPrimary: true,
-          muscleGroup: MuscleGroupType.shoulders,
-          toggleOn: true,
-          currentWorkedMuscleGroups: Map.from(initWorkedMuscleGroups)
-      );
+      Map<MuscleGroupType, RoleType> actualResult =
+          mockCubit.testMuscleGroupButtonToggled(
+              isPrimary: true,
+              muscleGroup: MuscleGroupType.shoulders,
+              toggleOn: true,
+              currentWorkedMuscleGroups: Map.from(initWorkedMuscleGroups));
 
       Map<MuscleGroupType, RoleType> expectedResult = {
         MuscleGroupType.chest: RoleType.primary,
@@ -26,12 +26,12 @@ void main() {
       expect(actualResult, expectedResult);
     });
     test('toggleOn new secondary muscle group successfully adds it', () {
-      Map<MuscleGroupType, RoleType> actualResult = mockCubit.testMuscleGroupButtonToggled(
-          isPrimary: false,
-          muscleGroup: MuscleGroupType.shoulders,
-          toggleOn: true,
-          currentWorkedMuscleGroups: Map.from(initWorkedMuscleGroups)
-      );
+      Map<MuscleGroupType, RoleType> actualResult =
+          mockCubit.testMuscleGroupButtonToggled(
+              isPrimary: false,
+              muscleGroup: MuscleGroupType.shoulders,
+              toggleOn: true,
+              currentWorkedMuscleGroups: Map.from(initWorkedMuscleGroups));
 
       Map<MuscleGroupType, RoleType> expectedResult = {
         MuscleGroupType.chest: RoleType.primary,
@@ -41,19 +41,39 @@ void main() {
 
       expect(actualResult, expectedResult);
     });
+    test('toggleOn existing muscle group throws error', () {
+      expect(
+          () => mockCubit.testMuscleGroupButtonToggled(
+              isPrimary: true,
+              muscleGroup: MuscleGroupType.chest,
+              toggleOn: true,
+              currentWorkedMuscleGroups: Map.from(initWorkedMuscleGroups)),
+          throwsA(isA<StateError>().having((e) => e.message, 'message',
+              'toggleOn but ${MuscleGroupType.chest}-${RoleType.primary} already exists..')));
+    });
     test('toggleOff existing primary muscle group successfully removes it', () {
-      Map<MuscleGroupType, RoleType> actualResult = mockCubit.testMuscleGroupButtonToggled(
-          isPrimary: true,
-          muscleGroup: MuscleGroupType.chest,
-          toggleOn: false,
-          currentWorkedMuscleGroups: Map.from(initWorkedMuscleGroups)
-      );
+      Map<MuscleGroupType, RoleType> actualResult =
+          mockCubit.testMuscleGroupButtonToggled(
+              isPrimary: true,
+              muscleGroup: MuscleGroupType.chest,
+              toggleOn: false,
+              currentWorkedMuscleGroups: Map.from(initWorkedMuscleGroups));
 
       Map<MuscleGroupType, RoleType> expectedResult = {
         MuscleGroupType.triceps: RoleType.secondary,
       };
 
       expect(actualResult, expectedResult);
+    });
+    test('toggleOff new muscle group throws error', () {
+      expect(
+              () => mockCubit.testMuscleGroupButtonToggled(
+              isPrimary: true,
+              muscleGroup: MuscleGroupType.legs,
+              toggleOn: false,
+              currentWorkedMuscleGroups: Map.from(initWorkedMuscleGroups)),
+          throwsA(isA<StateError>().having((e) => e.message, 'message',
+              "toggleOff but ${MuscleGroupType.legs}-${RoleType.primary} doesn't exist..")));
     });
   });
 }

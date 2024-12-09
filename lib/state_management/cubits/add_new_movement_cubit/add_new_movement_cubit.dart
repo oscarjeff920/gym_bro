@@ -67,17 +67,15 @@ class AddNewMovementCubit extends Cubit<AddNewMovementState> {
       required MuscleGroupType muscleGroup,
       required bool toggleOn,
       required Map<MuscleGroupType, RoleType> currentWorkedMuscleGroups}) {
-    // TODO: need to add some validation so that you cant have one muscle group being both primary and secondary
     RoleType newMuscleGroupRole =
         isPrimary ? RoleType.primary : RoleType.secondary;
 
     if (toggleOn) {
       if (currentWorkedMuscleGroups.containsKey(muscleGroup) &&
           currentWorkedMuscleGroups[muscleGroup] == newMuscleGroupRole) {
-        print("toggleOn but $muscleGroup-$newMuscleGroupRole already exists..");
         // once auto toggling of initial primary has been set up we can throw this error
         // if the muscle group is being toggled on, it shouldn't exist in the map
-        // throw Error('');
+        throw StateError('toggleOn but $muscleGroup-$newMuscleGroupRole already exists..');
       } else {
         currentWorkedMuscleGroups[muscleGroup] = newMuscleGroupRole;
       }
@@ -86,10 +84,9 @@ class AddNewMovementCubit extends Cubit<AddNewMovementState> {
           currentWorkedMuscleGroups[muscleGroup] == newMuscleGroupRole) {
         RoleType? removedRole = currentWorkedMuscleGroups.remove(muscleGroup);
       } else {
-        print("toggleOff but $muscleGroup-$newMuscleGroupRole doesn't exist..");
         // if the workedMuscleGroupsMap is being toggled off, it should already exist in
         // the workedMuscleGroups, if it doesn't something has gone wrong
-        // throw Error();
+        throw StateError("toggleOff but $muscleGroup-$newMuscleGroupRole doesn't exist..");
       }
     }
 
