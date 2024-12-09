@@ -11,7 +11,7 @@ import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_time
 class ExerciseDropdownMenu extends StatelessWidget {
   final List matchingExercises;
 
-  final MuscleGroupType? selectedMuscleGroup;
+  final MuscleGroup? selectedMuscleGroup;
 
   const ExerciseDropdownMenu({
     super.key,
@@ -52,8 +52,7 @@ class ExerciseDropdownMenu extends StatelessWidget {
               menuHeight: 300,
               textStyle: movementTextStyle,
               leadingIcon: selectedMuscleGroup != null
-                  ? Icon(
-                      MuscleGroup.allMuscleGroups[selectedMuscleGroup!]!.icon)
+                  ? Icon(selectedMuscleGroup!.icon)
                   : null,
               label: Text(label),
               dropdownMenuEntries: exerciseEntries,
@@ -74,6 +73,9 @@ class ExerciseDropdownMenu extends StatelessWidget {
 
                   BlocProvider.of<AddNewMovementCubit>(context)
                       .openAddNewMovementExpansionPanel();
+                  BlocProvider.of<AddNewMovementCubit>(context)
+                      .addSelectedMuscleGroupToWorkedMuscleGroups(
+                          selectedMuscleGroup!);
                 } else {
                   movementId = value.movementId;
                   BlocProvider.of<AddExerciseCubit>(context)
@@ -98,8 +100,7 @@ class ExerciseDropdownMenu extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 7),
                         child: Icon(
-                          MuscleGroup
-                              .allMuscleGroups[selectedMuscleGroup!]!.icon,
+                          selectedMuscleGroup!.icon,
                           size: 28,
                         )),
                     Flexible(

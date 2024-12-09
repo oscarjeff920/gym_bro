@@ -5,7 +5,7 @@ import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/joined_tables/movement-muscle_group/movement-muscle_group_methods.dart';
 
 class AddExerciseState extends Equatable {
-  final MuscleGroupType? selectedMuscleGroup;
+  final MuscleGroup? selectedMuscleGroup;
   final MovementWorkedMuscleGroupsType? workedMuscleGroups;
   final String? selectedMovement;
   final int? selectedMovementId;
@@ -15,7 +15,7 @@ class AddExerciseState extends Equatable {
 
   const AddExerciseState(
       {required this.selectedMuscleGroup,
-        required this.workedMuscleGroups,
+      required this.workedMuscleGroups,
       required this.selectedMovement,
       required this.selectedMovementId,
       this.currentSet,
@@ -49,19 +49,21 @@ class AddExerciseState extends Equatable {
   }
 
   AddExerciseState copyWith(
-      {MuscleGroupType? muscleGroup,
-      String? movementName,
-      int? movementId,
-      int? workingSets,
-      MovementWorkedMuscleGroupsType? movementWorkedMuscleGroups}) {
+      {MuscleGroup? selectedMuscleGroupCopy,
+      String? selectedMovementNameCopy,
+      CurrentSet? currentSetCopy,
+      List<GeneralExerciseSetModel>? setsDoneCopy,
+      int? movementIdCopy,
+      int? numWorkingSetsCopy,
+      MovementWorkedMuscleGroupsType? movementWorkedMuscleGroupsCopy}) {
     return AddExerciseState(
-      selectedMuscleGroup: muscleGroup ?? selectedMuscleGroup,
-      selectedMovement: movementName ?? selectedMovement,
-      selectedMovementId: movementId ?? selectedMovementId,
-      currentSet: currentSet,
-      setsDone: setsDone,
-      numWorkingSets: workingSets ?? numWorkingSets,
-      workedMuscleGroups: movementWorkedMuscleGroups ?? workedMuscleGroups,
+      selectedMuscleGroup: selectedMuscleGroupCopy ?? selectedMuscleGroup,
+      selectedMovement: selectedMovementNameCopy ?? selectedMovement,
+      selectedMovementId: movementIdCopy ?? selectedMovementId,
+      currentSet: currentSetCopy ?? currentSet,
+      setsDone: setsDoneCopy ?? setsDone,
+      numWorkingSets: numWorkingSetsCopy ?? numWorkingSets,
+      workedMuscleGroups: movementWorkedMuscleGroupsCopy ?? workedMuscleGroups,
     );
   }
 

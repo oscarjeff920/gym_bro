@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/exercise_selector_cluster/row1_title_sub-widgets/primary_muscle_group_heading_container_widget.dart';
 import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/exercise_selector_cluster/row3_exercise_selector_and_timer_sub-widgets/exercise_selector_container_widget.dart';
 
@@ -6,13 +7,11 @@ import 'row2_muscle_group_buttons_sub-widgets/muscle_group_buttons_widget.dart';
 import 'row3_exercise_selector_and_timer_sub-widgets/add_new_movement_expanding_widget.dart';
 
 class ExerciseSelectorCluster extends StatelessWidget {
-  final Color modalColour;
-  final String? muscleGroupName;
+  final MuscleGroup? selectedMuscleGroup;
 
   const ExerciseSelectorCluster({
     super.key,
-    required this.modalColour,
-    this.muscleGroupName,
+    required this.selectedMuscleGroup
   });
 
   @override
@@ -22,15 +21,17 @@ class ExerciseSelectorCluster extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         PrimaryMuscleGroupHeadingContainer(
-            currentMuscleGroupName: muscleGroupName, usedHeight: rowHeight),
+            currentMuscleGroupName: selectedMuscleGroup?.type.name, usedHeight: rowHeight),
         MuscleGroupButtons(usedHeight: rowHeight),
-        ExerciseSelectorContainer(
-            modalColour: modalColour, usedHeight: rowHeight),
-        const Padding(
-          padding: EdgeInsets.only(top: 5.0, left: 5, right: 5),
-          child: AddNewMovementExpandedWidget(),
+        if (selectedMuscleGroup != null) ExerciseSelectorContainer(
+            modalColour: selectedMuscleGroup!.colour, usedHeight: rowHeight),
+        Padding(
+          padding: const EdgeInsets.only(top: 5.0, left: 5, right: 5),
+          child: selectedMuscleGroup != null ? const AddNewMovementExpandedWidget() : Container(),
         ),
       ],
     );
   }
 }
+
+
