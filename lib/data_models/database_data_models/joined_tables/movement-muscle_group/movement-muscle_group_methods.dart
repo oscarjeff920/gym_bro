@@ -85,9 +85,9 @@ class MovementWorkedMuscleGroupsType {
   // For a movement this method returns all the primary muscle groups involved
   List<MuscleGroupType> returnPrimaryMuscleGroups() {
     List<MuscleGroupType> primaryMuscleGroups = [];
-    for (var muscleGroup in workedMuscleGroupsMap.entries) {
-      if (muscleGroup.value == RoleType.primary) {
-        primaryMuscleGroups.add(muscleGroup.key);
+    for (var muscleGroupPair in workedMuscleGroupsMap.entries) {
+      if (muscleGroupPair.value == RoleType.primary) {
+        primaryMuscleGroups.add(muscleGroupPair.key);
       }
     }
     return primaryMuscleGroups;
