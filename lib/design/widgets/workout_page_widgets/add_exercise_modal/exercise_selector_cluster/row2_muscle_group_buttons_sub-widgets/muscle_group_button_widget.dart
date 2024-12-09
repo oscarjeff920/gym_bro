@@ -10,9 +10,7 @@ import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_
 class MuscleGroupButton extends StatelessWidget {
   const MuscleGroupButton({super.key, required this.muscleGroup});
 
-  final MuscleGroupType muscleGroup;
-
-  MuscleGroup get muscleGroupObject => MuscleGroup.allMuscleGroups[muscleGroup]!;
+  final MuscleGroup muscleGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +20,14 @@ class MuscleGroupButton extends StatelessWidget {
             .selectMuscleGroup(muscleGroup);
         BlocProvider.of<MovementByMuscleGroupBloc>(context).add(
             QueryMovementByPrimaryMuscleEvent(
-                selectedMuscleGroup: muscleGroup));
+                selectedMuscleGroup: muscleGroup.type));
         BlocProvider.of<GetLastExerciseSetsByMovementBloc>(context)
             .add(ResetGetLastExerciseSetsByMovementEvent());
       },
       icon: Icon(
-        muscleGroupObject.icon,
+        muscleGroup.icon,
         size: 40,
-        color: muscleGroupObject.colour,
+        color: muscleGroup.colour,
       ),
     );
   }

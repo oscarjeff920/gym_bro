@@ -33,7 +33,7 @@ class ExerciseSelectorContainer extends StatelessWidget {
           }
         },
         builder: (addExerciseContext, addExerciseState) {
-          MuscleGroupType? selectedMuscleGroup =
+          MuscleGroup? selectedMuscleGroup =
               addExerciseState.selectedMuscleGroup;
           return BlocBuilder<MovementByMuscleGroupBloc,
               MovementGetByMuscleGroupState>(

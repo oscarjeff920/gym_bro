@@ -58,7 +58,7 @@ class MuscleGroupSetCounter extends StatelessWidget {
               children: [
                 Center(
                   child: MuscleIcon(
-                    muscleGroup: muscleGroup,
+                    muscleGroup: MuscleGroup.allMuscleGroups[muscleGroup]!,
                     selectedMuscleGroup: state.selectedMuscleGroup,
                     iconSize: 34,
                   ),
@@ -74,8 +74,8 @@ class MuscleGroupSetCounter extends StatelessWidget {
                         child: PrimaryMuscleSetsText(
                             textScaleFactor: 1.5,
                             primaryMuscleSets: primaryMuscleSets,
-                            selectedMuscleGroup: state.selectedMuscleGroup,
-                            muscleGroup: muscleGroup),
+                            selectedMuscleGroup: MuscleGroup.allMuscleGroups[state.selectedMuscleGroup],
+                            muscleGroup: MuscleGroup.allMuscleGroups[muscleGroup]!),
                       ),
                       SizedBox(
                         width: 5,
@@ -96,7 +96,7 @@ class MuscleGroupSetCounter extends StatelessWidget {
                         child: SecondaryMuscleSetsText(
                           textScaleFactor: 1.0,
                           secondaryMuscleSets: secondaryMuscleSets,
-                          muscleGroup: muscleGroup,
+                          muscleGroup: MuscleGroup.allMuscleGroups[muscleGroup]!,
                           selectedMuscleGroup: state.selectedMuscleGroup,
                         ),
                       ),
@@ -122,8 +122,8 @@ class SecondaryMuscleSetsText extends StatelessWidget {
   });
 
   final int secondaryMuscleSets;
-  final MuscleGroupType muscleGroup;
-  final MuscleGroupType? selectedMuscleGroup;
+  final MuscleGroup muscleGroup;
+  final MuscleGroup? selectedMuscleGroup;
   final double textScaleFactor;
 
   @override
@@ -152,8 +152,8 @@ class PrimaryMuscleSetsText extends StatelessWidget {
   });
 
   final int primaryMuscleSets;
-  final MuscleGroupType muscleGroup;
-  final MuscleGroupType? selectedMuscleGroup;
+  final MuscleGroup muscleGroup;
+  final MuscleGroup? selectedMuscleGroup;
   final double textScaleFactor;
 
   @override
@@ -180,16 +180,16 @@ class MuscleIcon extends StatelessWidget {
     required this.iconSize,
   });
 
-  final MuscleGroupType muscleGroup;
-  final MuscleGroupType? selectedMuscleGroup;
+  final MuscleGroup muscleGroup;
+  final MuscleGroup? selectedMuscleGroup;
   final double iconSize;
 
   @override
   Widget build(BuildContext context) {
     return Icon(
-      MuscleGroup.allMuscleGroups[muscleGroup]!.icon,
+      muscleGroup.icon,
       color: selectedMuscleGroup == null || selectedMuscleGroup == muscleGroup
-          ? MuscleGroup.allMuscleGroups[muscleGroup]!.colour
+          ? muscleGroup.colour
           : Colors.grey,
       size: iconSize,
     );

@@ -20,9 +20,10 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
 
   addCompletedExercise(GeneralWorkoutPageExerciseModel completedExercise) {
     AddExerciseState newState = AddExerciseState(
-        selectedMuscleGroup: completedExercise.workedMuscleGroups
+        selectedMuscleGroup: MuscleGroup.allMuscleGroups[completedExercise
+            .workedMuscleGroups
             .returnPrimaryMuscleGroups()
-            .first,
+            .first],
         selectedMovement: completedExercise.movementName,
         selectedMovementId: completedExercise.movementId,
         setsDone: completedExercise.exerciseSets,
@@ -42,7 +43,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         workedMuscleGroups: null));
   }
 
-  selectMuscleGroup(MuscleGroupType muscleGroup) {
+  selectMuscleGroup(MuscleGroup muscleGroup) {
     emit(AddExerciseState(
         selectedMuscleGroup: muscleGroup,
         selectedMovement: null,
@@ -50,7 +51,7 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         setsDone: const [],
         numWorkingSets: 0,
         workedMuscleGroups: MovementWorkedMuscleGroupsType(
-            workedMuscleGroupsMap: {muscleGroup: RoleType.primary})));
+            workedMuscleGroupsMap: {muscleGroup.type: RoleType.primary})));
   }
 
   selectExercise(MovementMuscleGroupJoin movementMuscleGroupJoin) {
@@ -66,17 +67,16 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         numWorkingSets: 0));
   }
 
-  addNewMovement(String newMovementName) {
-    AddExerciseState generatedState = state.copyWith();
+  addNewMovement(String newMovementName,
+      MovementWorkedMuscleGroupsType workedMuscleGroups) {
+    AddExerciseState generatedState = state.copyWith(
+        selectedMovementNameCopy: newMovementName,
+        currentSetCopy: const CurrentSet(isWarmUp: true),
+        setsDoneCopy: const [],
+        numWorkingSetsCopy: 0,
+        movementWorkedMuscleGroupsCopy: workedMuscleGroups);
 
-    emit(AddExerciseState(
-        selectedMuscleGroup: generatedState.selectedMuscleGroup,
-        selectedMovement: newMovementName,
-        selectedMovementId: null,
-        currentSet: const CurrentSet(isWarmUp: true),
-        setsDone: const [],
-        numWorkingSets: 0,
-        workedMuscleGroups: generatedState.workedMuscleGroups));
+    emit(generatedState);
   }
 
   updateCurrentSet(CurrentSet set) {
