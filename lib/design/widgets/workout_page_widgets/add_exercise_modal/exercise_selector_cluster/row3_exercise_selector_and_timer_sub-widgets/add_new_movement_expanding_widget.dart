@@ -53,6 +53,7 @@ class AddNewMovementExpandedWidget extends StatelessWidget {
                   const SpacerWidget(height: 12),
                   ButtonRowWidget(
                     newMovementName: state.movementName,
+                    workedMuscleGroups: state.workedMuscleGroups
                   )
                 ],
               ),
