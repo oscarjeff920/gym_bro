@@ -14,7 +14,7 @@ void main() {
           isPrimary: true,
           muscleGroup: MuscleGroupType.shoulders,
           toggleOn: true,
-          currentWorkedMuscleGroups: initWorkedMuscleGroups
+          currentWorkedMuscleGroups: Map.from(initWorkedMuscleGroups)
       );
 
       Map<MuscleGroupType, RoleType> expectedResult = {
@@ -30,7 +30,7 @@ void main() {
           isPrimary: false,
           muscleGroup: MuscleGroupType.shoulders,
           toggleOn: true,
-          currentWorkedMuscleGroups: initWorkedMuscleGroups
+          currentWorkedMuscleGroups: Map.from(initWorkedMuscleGroups)
       );
 
       Map<MuscleGroupType, RoleType> expectedResult = {
@@ -46,7 +46,7 @@ void main() {
           isPrimary: true,
           muscleGroup: MuscleGroupType.chest,
           toggleOn: false,
-          currentWorkedMuscleGroups: initWorkedMuscleGroups
+          currentWorkedMuscleGroups: Map.from(initWorkedMuscleGroups)
       );
 
       Map<MuscleGroupType, RoleType> expectedResult = {
