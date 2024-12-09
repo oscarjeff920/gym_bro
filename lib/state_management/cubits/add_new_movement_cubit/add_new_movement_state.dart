@@ -5,13 +5,13 @@ class AddNewMovementState extends Equatable {
   final bool isNewMovementSelected;
   final bool showAnimatedChildren;
   final String? movementName;
-  final MovementWorkedMuscleGroupsType? workedMuscleGroups;
+  final MovementWorkedMuscleGroupsType workedMuscleGroups;
 
   const AddNewMovementState(
       {this.isNewMovementSelected = false,
       this.showAnimatedChildren = false,
       this.movementName,
-      this.workedMuscleGroups});
+      required this.workedMuscleGroups});
 
   AddNewMovementState copyWith(
       {bool? isNewMovementSelectedCopy, bool? showAnimatedChildrenCopy,String? movementNameCopy,

@@ -6,6 +6,7 @@ import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_
 import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_by_muscle_group/movement_get_by_muscle_group_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_by_muscle_group/movement_get_by_muscle_group_event.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
+import 'package:gym_bro/state_management/cubits/add_new_movement_cubit/add_new_movement_cubit.dart';
 
 class MuscleGroupButton extends StatelessWidget {
   const MuscleGroupButton({super.key, required this.muscleGroup});
@@ -18,6 +19,8 @@ class MuscleGroupButton extends StatelessWidget {
       onPressed: () {
         BlocProvider.of<AddExerciseCubit>(context)
             .selectMuscleGroup(muscleGroup);
+        BlocProvider.of<AddNewMovementCubit>(context)
+            .addSelectedMuscleGroupToWorkedMuscleGroups(muscleGroup);
         BlocProvider.of<MovementByMuscleGroupBloc>(context).add(
             QueryMovementByPrimaryMuscleEvent(
                 selectedMuscleGroup: muscleGroup.type));
