@@ -11,7 +11,7 @@ class ButtonRowWidget extends StatelessWidget {
       required this.workedMuscleGroups});
 
   final String? newMovementName;
-  final MovementWorkedMuscleGroupsType? workedMuscleGroups;
+  final MovementWorkedMuscleGroupsType workedMuscleGroups;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class AcceptAddNewMovementButton extends StatelessWidget {
       required this.workedMuscleGroups});
 
   final String? newMovementName;
-  final MovementWorkedMuscleGroupsType? workedMuscleGroups;
+  final MovementWorkedMuscleGroupsType workedMuscleGroups;
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +46,24 @@ class AcceptAddNewMovementButton extends StatelessWidget {
       disabledColor: Colors.black.withOpacity(0),
       onPressed: newMovementName != null
           ? () {
-              BlocProvider.of<AddExerciseCubit>(context)
-                  .addNewMovement(newMovementName!, workedMuscleGroups!);
-              BlocProvider.of<AddNewMovementCubit>(context)
-                  .closeAddNewMovementExpansionPanel();
+              if (workedMuscleGroups.returnPrimaryMuscleGroups().isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Center(
+                      child: Text(
+                        'Error: A minimum of 1 primary muscle group must be selected to create a new movement',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              } else {
+                BlocProvider.of<AddExerciseCubit>(context)
+                    .addNewMovement(newMovementName!, workedMuscleGroups);
+                BlocProvider.of<AddNewMovementCubit>(context)
+                    .closeAddNewMovementExpansionPanel();
+              }
             }
           : null,
       icon: const Icon(Icons.check_circle_outline, size: 40),
