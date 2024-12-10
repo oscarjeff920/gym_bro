@@ -38,6 +38,9 @@ class AddNewMovementNameTextField extends StatelessWidget {
           decoration: const InputDecoration(
               focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
+                      color: Color.fromRGBO(0, 0, 0, 0.5), width: 1)),
+              enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
                       color: Color.fromRGBO(0, 0, 0, 0.2), width: 0.5)),
               contentPadding: EdgeInsets.only(bottom: 5, top: 0),
               prefix: SizedBox(
