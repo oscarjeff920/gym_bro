@@ -97,7 +97,8 @@ class MuscleGroupSetCounter extends StatelessWidget {
                           textScaleFactor: 1.5,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: highlightSecondaryMuscleGroup
+                            color: highlightSecondaryMuscleGroup ||
+                                    highlightPrimaryMuscleGroup
                                 ? Colors.black
                                 : Colors.grey,
                           ),
