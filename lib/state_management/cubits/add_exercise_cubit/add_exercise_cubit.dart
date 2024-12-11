@@ -10,19 +10,16 @@ import 'add_exercise_state.dart';
 
 class AddExerciseCubit extends Cubit<AddExerciseState> {
   AddExerciseCubit()
-      : super(const AddExerciseState(
-            selectedMuscleGroup: null,
+      : super(AddExerciseState(
             selectedMovement: null,
             selectedMovementId: null,
             numWorkingSets: 0,
-            setsDone: [],
-            workedMuscleGroups: null));
+            setsDone: const [],
+            workedMuscleGroups:
+                MovementWorkedMuscleGroupsType(workedMuscleGroupsMap: {})));
 
   addCompletedExercise(GeneralWorkoutPageExerciseModel completedExercise) {
     AddExerciseState newState = AddExerciseState(
-        selectedMuscleGroup: completedExercise.workedMuscleGroups
-            .returnPrimaryMuscleGroups()
-            .first,
         selectedMovement: completedExercise.movementName,
         selectedMovementId: completedExercise.movementId,
         setsDone: completedExercise.exerciseSets,
@@ -33,31 +30,29 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
   }
 
   clearSavedExercise() {
-    emit(const AddExerciseState(
-        selectedMuscleGroup: null,
+    emit(AddExerciseState(
         selectedMovement: null,
         selectedMovementId: null,
         numWorkingSets: 0,
-        setsDone: [],
-        workedMuscleGroups: null));
+        setsDone: const [],
+        workedMuscleGroups:
+            MovementWorkedMuscleGroupsType(workedMuscleGroupsMap: {})));
   }
 
-  selectMuscleGroup(MuscleGroupType muscleGroup) {
+  selectMuscleGroup(MuscleGroup muscleGroup) {
     emit(AddExerciseState(
-        selectedMuscleGroup: muscleGroup,
         selectedMovement: null,
         selectedMovementId: null,
         setsDone: const [],
         numWorkingSets: 0,
         workedMuscleGroups: MovementWorkedMuscleGroupsType(
-            workedMuscleGroupsMap: {muscleGroup: RoleType.primary})));
+            workedMuscleGroupsMap: {muscleGroup.type: RoleType.primary})));
   }
 
   selectExercise(MovementMuscleGroupJoin movementMuscleGroupJoin) {
     AddExerciseState generatedState = state.copyWith();
 
     emit(AddExerciseState(
-        selectedMuscleGroup: generatedState.selectedMuscleGroup,
         selectedMovement: movementMuscleGroupJoin.movementName,
         selectedMovementId: movementMuscleGroupJoin.movementId,
         workedMuscleGroups: movementMuscleGroupJoin.workedMuscleGroups,
@@ -66,17 +61,16 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
         numWorkingSets: 0));
   }
 
-  addNewMovement(String newMovementName) {
-    AddExerciseState generatedState = state.copyWith();
+  addNewMovement(String newMovementName,
+      MovementWorkedMuscleGroupsType workedMuscleGroups) {
+    AddExerciseState generatedState = state.copyWith(
+        selectedMovementNameCopy: newMovementName,
+        currentSetCopy: const CurrentSet(isWarmUp: true),
+        setsDoneCopy: const [],
+        numWorkingSetsCopy: 0,
+        movementWorkedMuscleGroupsCopy: workedMuscleGroups);
 
-    emit(AddExerciseState(
-        selectedMuscleGroup: generatedState.selectedMuscleGroup,
-        selectedMovement: newMovementName,
-        selectedMovementId: null,
-        currentSet: const CurrentSet(isWarmUp: true),
-        setsDone: const [],
-        numWorkingSets: 0,
-        workedMuscleGroups: generatedState.workedMuscleGroups));
+    emit(generatedState);
   }
 
   updateCurrentSet(CurrentSet set) {
@@ -96,7 +90,6 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
     }
 
     emit(AddExerciseState(
-        selectedMuscleGroup: generatedState.selectedMuscleGroup,
         selectedMovement: generatedState.selectedMovement,
         selectedMovementId: generatedState.selectedMovementId,
         currentSet: updatedState,
@@ -128,7 +121,6 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
 
     // preparing for proceeding set
     emit(AddExerciseState(
-        selectedMuscleGroup: generatedState.selectedMuscleGroup,
         selectedMovement: generatedState.selectedMovement,
         selectedMovementId: generatedState.selectedMovementId,
         currentSet: CurrentSet(

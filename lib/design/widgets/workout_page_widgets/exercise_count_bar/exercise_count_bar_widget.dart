@@ -29,31 +29,29 @@ class ExerciseCountBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
-                    const MuscleGroupSetCounter(
-                      muscleGroup: MuscleGroupType.chest,
-                    ),
-                    SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
-                    const MuscleGroupSetCounter(
-                      muscleGroup: MuscleGroupType.shoulders,
-                    ),
-                    SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
-                    const MuscleGroupSetCounter(
-                      muscleGroup: MuscleGroupType.biceps,
-                    ),
-                    SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
-                    const MuscleGroupSetCounter(
-                      muscleGroup: MuscleGroupType.triceps,
-                    ),
-                    SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
-                    const MuscleGroupSetCounter(
-                      muscleGroup: MuscleGroupType.back,
-                    ),
-                    SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
-                    const MuscleGroupSetCounter(
-                      muscleGroup: MuscleGroupType.legs,
-                    ),
-                    // SizedBox(width: spacerWidth, child: Center(child: Container(width: 2, height: spacerHeight, color: Colors.black12,),),),
+                    for (MuscleGroup muscleGroup
+                        in MuscleGroup.allMuscleGroups.values)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          MuscleGroupSetCounter(muscleGroup: muscleGroup),
+                          if (muscleGroup !=
+                              MuscleGroup.allMuscleGroups.values.last)
+                            // only adding division between muscle groups,
+                            // and not at the end
+                            SizedBox(
+                              width: spacerWidth,
+                              child: Center(
+                                child: Container(
+                                  width: 2,
+                                  height: spacerHeight,
+                                  color: Colors.black12,
+                                ),
+                              ),
+                            ),
+                        ],
+                      )
                   ],
                 ),
               ),

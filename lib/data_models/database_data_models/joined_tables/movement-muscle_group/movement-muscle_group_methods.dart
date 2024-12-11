@@ -83,25 +83,27 @@ class MovementWorkedMuscleGroupsType {
   }
 
   // For a movement this method returns all the primary muscle groups involved
-  List<MuscleGroupType> returnPrimaryMuscleGroups() {
-    List<MuscleGroupType> primaryMuscleGroups = [];
-    for (var muscleGroup in workedMuscleGroupsMap.entries) {
-      if (muscleGroup.value == RoleType.primary) {
-        primaryMuscleGroups.add(muscleGroup.key);
+  List<MuscleGroup> returnPrimaryMuscleGroups() {
+    List<MuscleGroup> primaryMuscleGroups = [];
+    for (var muscleGroupPair in workedMuscleGroupsMap.entries) {
+      if (muscleGroupPair.value == RoleType.primary) {
+        primaryMuscleGroups
+            .add(MuscleGroup.allMuscleGroups[muscleGroupPair.key]!);
       }
     }
     return primaryMuscleGroups;
   }
 
   // For a movement this method returns all the secondary muscle groups involved
-  List<MuscleGroupType> returnSecondaryMuscleGroups() {
-    List<MuscleGroupType> primaryMuscleGroups = [];
-    for (var muscleGroup in workedMuscleGroupsMap.entries) {
-      if (muscleGroup.value == RoleType.secondary) {
-        primaryMuscleGroups.add(muscleGroup.key);
+  List<MuscleGroup> returnSecondaryMuscleGroups() {
+    List<MuscleGroup> secondaryMuscleGroups = [];
+    for (var muscleGroupPair in workedMuscleGroupsMap.entries) {
+      if (muscleGroupPair.value == RoleType.secondary) {
+        secondaryMuscleGroups
+            .add(MuscleGroup.allMuscleGroups[muscleGroupPair.key]!);
       }
     }
-    return primaryMuscleGroups;
+    return secondaryMuscleGroups;
   }
 
   int getWorkingSetsPerMuscleGroup(
@@ -123,5 +125,17 @@ class MovementWorkedMuscleGroupsType {
       return (workingSets / 2).floor();
     }
     return 0;
+  }
+
+  bool isMuscleGroupWorked(MuscleGroupType muscleGroupType) {
+    if (workedMuscleGroupsMap.containsKey(muscleGroupType)) return true;
+    return false;
+  }
+
+  bool isMuscleGroupWorkedWithRole(
+      MuscleGroupType muscleGroupType, RoleType roleType) {
+    if (workedMuscleGroupsMap.containsKey(muscleGroupType) &&
+        workedMuscleGroupsMap[muscleGroupType] == roleType) return true;
+    return false;
   }
 }

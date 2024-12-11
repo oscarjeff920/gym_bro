@@ -47,7 +47,7 @@ class WorkoutCard extends StatelessWidget {
                 BlocProvider.of<MovementGetNameByIdBloc>(context).add(
                     QueryMovementNameByIdEvent(
                         namelessExercises: workout!.exercises));
-                  // fetching exerciseSets to display when exercise card is clicked
+                // fetching exerciseSets to display when exercise card is clicked
                 BlocProvider.of<ExerciseSetTableOperationsBloc>(context).add(
                     QueryAllExerciseSetsByExerciseEvent(
                         setlessExercises: workout!.exercises));
@@ -76,19 +76,10 @@ class WorkoutCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  CardMuscleGroupIcon(
-                      muscleGroup: MuscleGroupType.chest, workout: workout!),
-                  CardMuscleGroupIcon(
-                      muscleGroup: MuscleGroupType.shoulders,
-                      workout: workout!),
-                  CardMuscleGroupIcon(
-                      muscleGroup: MuscleGroupType.biceps, workout: workout!),
-                  CardMuscleGroupIcon(
-                      muscleGroup: MuscleGroupType.triceps, workout: workout!),
-                  CardMuscleGroupIcon(
-                      muscleGroup: MuscleGroupType.back, workout: workout!),
-                  CardMuscleGroupIcon(
-                      muscleGroup: MuscleGroupType.legs, workout: workout!),
+                  for (MuscleGroup muscleGroup
+                      in MuscleGroup.allMuscleGroups.values)
+                    CardMuscleGroupIcon(
+                        muscleGroup: muscleGroup, workout: workout!)
                 ],
               ),
             if (workout != null && numberOfWorkouts > 1)
@@ -121,7 +112,7 @@ class CardMuscleGroupIcon extends StatelessWidget {
   const CardMuscleGroupIcon(
       {super.key, required this.muscleGroup, required this.workout});
 
-  final MuscleGroupType muscleGroup;
+  final MuscleGroup muscleGroup;
   final WorkoutTableWithExercisesWorkedMuscleGroups workout;
 
   @override
@@ -129,7 +120,7 @@ class CardMuscleGroupIcon extends StatelessWidget {
     bool showIcon = false;
     // TODO: different colour if muscle group is not primary
     bool isPrimary = true;
-    if (workout.getNumWorkingSetsPerMuscleInWorkout(muscleGroup) > 0) {
+    if (workout.getNumWorkingSetsPerMuscleInWorkout(muscleGroup.type) > 0) {
       showIcon = true;
     }
     double size = 13;
@@ -137,7 +128,7 @@ class CardMuscleGroupIcon extends StatelessWidget {
         width: size,
         child: showIcon
             ? Icon(
-                assignIcon(muscleGroup),
+                muscleGroup.icon,
                 size: size,
               )
             : null);

@@ -18,7 +18,7 @@ class MuscleGroupButtons extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          for (var group in MuscleGroupType.values.toList())
+          for (var group in MuscleGroup.allMuscleGroups.values.toList())
             MuscleGroupButton(
               muscleGroup: group,
             )
