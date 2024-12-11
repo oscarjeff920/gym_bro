@@ -105,7 +105,7 @@ class GeneralSetContainer extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  WorkingSetCount(setNumber: setNumber),
+                  WorkingSetCount(setNumber: setNumber, isCurrent: setType == SetType.current),
                   const Spacer(),
                   if (setType == SetType.current)
                     FinishSetButton(currentSet: currentSet),
