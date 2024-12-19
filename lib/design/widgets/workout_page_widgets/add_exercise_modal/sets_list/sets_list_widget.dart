@@ -33,6 +33,21 @@ class SetsListContainer extends StatelessWidget {
               int? comparisonExerciseWorkingSetNumber;
               int comparisonExerciseTotalWorkingSets;
 
+              // this function prevents code duplication when calling an instance
+              // of GeneralSetContainer if comparisonSet == null or not
+              GeneralSetContainer buildGeneralSetContainer(
+                  {GeneralExerciseSetModel? comparisonSet}) {
+                return GeneralSetContainer(
+                  currentSet: currentSet!,
+                  setNumber: currentSet!.isWarmUp!
+                      ? null
+                      : completedSets.length -
+                          state.getNumberOfWarmUpSets(sets: completedSets) +
+                          1,
+                  comparisonSet: comparisonSet,
+                );
+              }
+
               if (state is SuccessfulGetLastExerciseSetsByMovementQueryState &&
                   state.lastExerciseSetsData['data'].isNotEmpty) {
                 List<GeneralExerciseSetModel> lastExerciseSets =
@@ -88,14 +103,7 @@ class SetsListContainer extends StatelessWidget {
                         GeneralSetContainer(
                             comparisonSet: comparisonSet,
                             setNumber: comparisonExerciseWorkingSetNumber),
-                        GeneralSetContainer(
-                          currentSet: currentSet!,
-                          setNumber: currentSet!.isWarmUp!
-                              ? null
-                              : completedSets.length -
-                                  state.getNumberOfWarmUpSets(
-                                      sets: completedSets) +
-                                  1,
+                        buildGeneralSetContainer(
                           comparisonSet: comparisonSet,
                         ),
                       ],
@@ -105,13 +113,7 @@ class SetsListContainer extends StatelessWidget {
               }
               // If theres no previous exercise data for this movement:
               return currentSet != null
-                  ? GeneralSetContainer(
-                      currentSet: currentSet!,
-                      setNumber: currentSet!.isWarmUp!
-                          ? null
-                          : completedSets.length -
-                              state.getNumberOfWarmUpSets(sets: completedSets),
-                    )
+                  ? buildGeneralSetContainer()
                   : Container();
             },
           ),
