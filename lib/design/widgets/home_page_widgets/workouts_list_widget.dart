@@ -102,12 +102,10 @@ class WorkoutWeekBlockContainer extends StatelessWidget {
                   isCurrentWeek: index == 0,
                   isToggledOn: isToggled),
               AnimatedContainer(
-                duration: const Duration(milliseconds: 350),
+                duration: const Duration(milliseconds: 700),
                 height: isToggled ? 223 : 0, //183 : 0,
-                child: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeOutExpo,
-                  opacity: isToggled ? 1 : 0,
+                curve: Curves.easeInOutQuart,
+                child: SingleChildScrollView(
                   child: WeekDayWorkoutCardsAnimatedContainer(
                     weekDayIntegerMap: weekDayIntegerMap,
                     weekStartDate: weekStartDate,
