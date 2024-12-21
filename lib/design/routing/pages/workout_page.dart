@@ -81,17 +81,25 @@ class WorkoutOverviewPage extends StatelessWidget {
                             default:
                               fadedValue = 0;
                           }
-                          return IgnorePointer(
-                            child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 200),
-                                color: Colors.black.withOpacity(fadedValue)),
-                          );
+                          return Stack(children: [
+                            IgnorePointer(
+                              child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 100),
+                                  color: Colors.black.withOpacity(fadedValue)),
+                            ),
+                            Column(
+                              children: [
+                                Expanded(
+                                  flex: 10,
+                                    child:
+                                        AddExerciseModal(isOpen: state.isOpen)),
+                                SizedBox(height: 70,)
+                                // const Spacer()
+                              ],
+                            )
+                          ]);
                         },
                       ),
-                      BlocBuilder<OpenExerciseModalCubit,
-                          OpenExerciseModalState>(builder: (context, state) {
-                        return AddExerciseModal(isOpen: state.isOpen);
-                      }),
                     ]),
                   ),
                   const ExerciseCountBar()
