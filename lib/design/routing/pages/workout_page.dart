@@ -87,7 +87,6 @@ class WorkoutOverviewPage extends StatelessWidget {
                                   duration: const Duration(milliseconds: 100),
                                   color: Colors.black.withOpacity(fadedValue)),
                             ),
-                            // AddExerciseModal(isOpen: state.isOpen)
                             Column(
                               children: [
                                 Expanded(
@@ -101,10 +100,6 @@ class WorkoutOverviewPage extends StatelessWidget {
                           ]);
                         },
                       ),
-                      // BlocBuilder<OpenExerciseModalCubit,
-                      //     OpenExerciseModalState>(builder: (context, state) {
-                      //   return AddExerciseModal(isOpen: state.isOpen);
-                      // }),
                     ]),
                   ),
                   const ExerciseCountBar()
