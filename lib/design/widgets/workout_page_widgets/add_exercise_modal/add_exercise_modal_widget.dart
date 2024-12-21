@@ -20,15 +20,14 @@ class AddExerciseModal extends StatelessWidget {
       return IgnorePointer(
         ignoring: !isOpen,
         child: Padding(
-          padding:
-              const EdgeInsets.only(top: 12, left: 12, right: 12),
+          padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
           child: SingleChildScrollView(
             clipBehavior: Clip.antiAlias,
             child: Align(
               alignment: Alignment.bottomLeft,
               child: AnimatedContainer(
                   height: !isOpen ? 0 : constraints.maxHeight - 10,
-                  duration: const Duration(milliseconds: 1500),
+                  duration: const Duration(milliseconds: 2000),
                   curve: Curves.easeOutQuint,
                   child: Stack(children: [
                     ClipRRect(
@@ -78,34 +77,33 @@ class AddExerciseModal extends StatelessWidget {
                         },
                       ),
                     ),
-                    if (true)
-                      Align(
-                        alignment: const Alignment(0, 1),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 750),
-                            curve: Curves.easeOut,
-                            width: !isOpen ? 0 : constraints.maxWidth,
-                            child: AnimatedOpacity(
-                              opacity: !isOpen ? 0 : 1,
-                              duration: const Duration(milliseconds: 500),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  CloseModalButton(
-                                    isFinished: false,
-                                  ),
-                                  CloseModalButton(
-                                    isFinished: true,
-                                  ),
-                                ],
-                              ),
+                    Align(
+                      alignment: const Alignment(0, 1),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 750),
+                          curve: Curves.easeOut,
+                          width: !isOpen ? 0 : constraints.maxWidth,
+                          child: AnimatedOpacity(
+                            opacity: !isOpen ? 0 : 1,
+                            duration: const Duration(milliseconds: 500),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                CloseModalButton(
+                                  isFinished: false,
+                                ),
+                                CloseModalButton(
+                                  isFinished: true,
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      )
+                      ),
+                    )
                   ])),
             ),
           ),
