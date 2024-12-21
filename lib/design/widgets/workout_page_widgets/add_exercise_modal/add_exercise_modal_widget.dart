@@ -15,80 +15,102 @@ class AddExerciseModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IgnorePointer(
+    return LayoutBuilder(builder: (context, constraints) {
+      print("Max height => ${constraints.maxHeight}");
+      return IgnorePointer(
         ignoring: !isOpen,
-        child: AnimatedOpacity(
-            opacity: isOpen ? 1 : 0,
-            duration: const Duration(milliseconds: 200),
-            child: SizedBox(
-              height: 800,
-              child: Stack(children: [
-                Padding(
-                  // padding: const EdgeInsets.only(bottom: 10),
-                  padding: const EdgeInsets.only(
-                      top: 12, left: 12, right: 12, bottom: 100),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: BlocBuilder<AddExerciseCubit, AddExerciseState>(
-                      builder: (context, state) {
-                        // This is a legitimate case for state.selectedMuscleGroup
-                        // in the future this will be a mix of primary muscle group colours
-                        MuscleGroup? firstPrimaryMuscleGroup = state
-                                .workedMuscleGroups
-                                .returnPrimaryMuscleGroups()
-                                .isEmpty
-                            ? null
-                            : state.workedMuscleGroups
-                                .returnPrimaryMuscleGroups()
-                                .first;
-                        Color modalColour = firstPrimaryMuscleGroup?.colour ??
-                            const Color(0xffA9A9A9);
+        child: Padding(
+          padding:
+              const EdgeInsets.only(top: 12, left: 12, right: 12),
+          child: SingleChildScrollView(
+            clipBehavior: Clip.antiAlias,
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: AnimatedContainer(
+                  height: !isOpen ? 0 : constraints.maxHeight - 10,
+                  duration: const Duration(milliseconds: 1500),
+                  curve: Curves.easeOutQuint,
+                  child: Stack(children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: BlocBuilder<AddExerciseCubit, AddExerciseState>(
+                        builder: (context, state) {
+                          // This is a legitimate case for state.selectedMuscleGroup
+                          // in the future this will be a mix of primary muscle group colours
+                          MuscleGroup? firstPrimaryMuscleGroup = state
+                                  .workedMuscleGroups
+                                  .returnPrimaryMuscleGroups()
+                                  .isEmpty
+                              ? null
+                              : state.workedMuscleGroups
+                                  .returnPrimaryMuscleGroups()
+                                  .first;
+                          Color modalColour = firstPrimaryMuscleGroup?.colour ??
+                              const Color(0xffA9A9A9);
 
-                        return AnimatedContainer(
-                          duration: const Duration(milliseconds: 350),
-                          color: modalColour,
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ExerciseSelectorCluster(
-                                    selectedMuscleGroup:
-                                        firstPrimaryMuscleGroup,
-                                    workedMuscleGroups:
-                                        state.workedMuscleGroups),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    child: SetsListContainer(
-                                        currentSet: state.currentSet,
-                                        completedSets: state.setsDone),
+                          return AnimatedContainer(
+                            duration: const Duration(milliseconds: 350),
+                            color: modalColour,
+                            child: Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ExerciseSelectorCluster(
+                                      selectedMuscleGroup:
+                                          firstPrimaryMuscleGroup,
+                                      workedMuscleGroups:
+                                          state.workedMuscleGroups),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10.0),
+                                      child: SetsListContainer(
+                                          currentSet: state.currentSet,
+                                          completedSets: state.setsDone),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    if (true)
+                      Align(
+                        alignment: const Alignment(0, 1),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 750),
+                            curve: Curves.easeOut,
+                            width: !isOpen ? 0 : constraints.maxWidth,
+                            child: AnimatedOpacity(
+                              opacity: !isOpen ? 0 : 1,
+                              duration: const Duration(milliseconds: 500),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  CloseModalButton(
+                                    isFinished: false,
+                                  ),
+                                  CloseModalButton(
+                                    isFinished: true,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                const Align(
-                  alignment: Alignment(0, 0.78),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CloseModalButton(
-                        isFinished: false,
-                      ),
-                      CloseModalButton(
-                        isFinished: true,
-                      ),
-                    ],
-                  ),
-                )
-              ]),
-            )));
+                        ),
+                      )
+                  ])),
+            ),
+          ),
+        ),
+      );
+    });
   }
 }
