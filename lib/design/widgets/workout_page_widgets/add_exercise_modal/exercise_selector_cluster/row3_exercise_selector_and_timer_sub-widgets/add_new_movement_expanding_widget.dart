@@ -20,11 +20,8 @@ class AddNewMovementExpandedWidget extends StatelessWidget {
           // color: const Color.fromRGBO(5, 5, 5, 0.5),
           color: const Color.fromRGBO(255, 255, 255, 0.8),
           duration: const Duration(milliseconds: 500),
-          // Duration of the animation
           curve: Curves.easeInOut,
-          // Curve for the animation
-          height: state.isNewMovementSelected ? 320 : 0,
-          // Height of the container
+          height: state.isNewMovementSelected ? null : 0,
           child: Padding(
             padding: const EdgeInsets.only(top: 10, left: 8, right: 8),
             child: AnimatedOpacity(
