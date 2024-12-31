@@ -77,7 +77,6 @@ class WorkoutCard extends StatelessWidget {
                         style: TextStyle(color: Colors.black))
                 : const Icon(
                     Icons.sentiment_dissatisfied_sharp,
-                    color: Colors.black,
                   ),
             const SizedBox(
               height: 8,
