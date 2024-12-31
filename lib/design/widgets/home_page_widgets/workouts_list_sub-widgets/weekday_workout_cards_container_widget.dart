@@ -13,7 +13,8 @@ class WeekDayWorkoutCardsAnimatedContainer extends StatelessWidget {
 
   final Map<int, String> weekDayIntegerMap;
   final DateTime weekStartDate;
-  final Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>> workoutsOfTheWeek;
+  final Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>
+      workoutsOfTheWeek;
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +65,26 @@ class WeekDayWorkoutScaffold extends StatelessWidget {
 
   final Map<int, String> weekDayIntegerMap;
   final int n;
-  final Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>> workoutsOfTheWeek;
+  final Map<int, List<WorkoutTableWithExercisesWorkedMuscleGroups>>
+      workoutsOfTheWeek;
   final DateTime weekStartDate;
+
+  DateTime get workoutDate => weekStartDate.add(Duration(days: n));
+
+  bool get isToday {
+    DateTime date = weekStartDate.add(Duration(days: n));
+    DateTime today = DateTime.now();
+    return date.day == today.day && date.month == today.month ? true : false;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(weekDayIntegerMap[n]!),
+        Text(
+          weekDayIntegerMap[n]!,
+          style: TextStyle(color: isToday ? Colors.orange : Colors.black),
+        ),
         SizedBox(
           width: 90,
           child: SingleChildScrollView(
@@ -83,9 +96,8 @@ class WeekDayWorkoutScaffold extends StatelessWidget {
                         .entries
                         .map(
                           (workout) => WorkoutCard(
-                            weekDayIntegerMap: weekDayIntegerMap,
-                            n: n,
-                            weekStartDate: weekStartDate,
+                            isToday: isToday,
+                            workoutDate: workoutDate,
                             workout: workout.value,
                             workoutIndex: workout.key,
                             numberOfWorkouts: workoutsOfTheWeek[n]!.length,
@@ -93,9 +105,8 @@ class WeekDayWorkoutScaffold extends StatelessWidget {
                         )
                         .toList())
                 : WorkoutCard(
-                    weekDayIntegerMap: weekDayIntegerMap,
-                    n: n,
-                    weekStartDate: weekStartDate,
+                    isToday: isToday,
+                    workoutDate: workoutDate,
                     workout: null,
                   ),
           ),

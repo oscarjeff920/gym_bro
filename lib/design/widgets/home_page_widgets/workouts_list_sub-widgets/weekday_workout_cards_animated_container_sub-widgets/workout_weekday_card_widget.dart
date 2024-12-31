@@ -9,32 +9,33 @@ import 'package:gym_bro/state_management/blocs/database_tables/movement/get_move
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 
 class WorkoutCard extends StatelessWidget {
-  const WorkoutCard(
-      {super.key,
-      required this.weekDayIntegerMap,
-      required this.n,
-      required this.weekStartDate,
-      required this.workout,
-      this.workoutIndex = 0,
-      this.numberOfWorkouts = 1});
-
-  final Map<int, String> weekDayIntegerMap;
-  final int n;
-  final DateTime weekStartDate;
+  final bool isToday;
+  final DateTime workoutDate;
   final WorkoutTableWithExercisesWorkedMuscleGroups? workout;
   final int numberOfWorkouts;
   final int workoutIndex;
 
+  const WorkoutCard(
+      {super.key,
+      required this.isToday,
+      required this.workoutDate,
+      required this.workout,
+      this.workoutIndex = 0,
+      this.numberOfWorkouts = 1});
+
   @override
   Widget build(BuildContext context) {
-    DateTime workoutDate = weekStartDate.add(Duration(days: n));
-    return SizedBox(
+    return Container(
+      decoration: isToday
+          ? BoxDecoration(
+              border: Border.all(color: Colors.orangeAccent, width: 1))
+          : null,
       height: 75,
       width: 90,
       child: ElevatedButton(
         style: ButtonStyle(
-          padding: MaterialStateProperty.all(const EdgeInsets.all(5)),
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+          padding: WidgetStateProperty.all(const EdgeInsets.all(5)),
+          shape: WidgetStateProperty.all(RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(0.0), // Square corners
           )),
         ),
@@ -60,14 +61,23 @@ class WorkoutCard extends StatelessWidget {
             Text(
               "${workoutDate.day < 10 ? '0${workoutDate.day}' : workoutDate.day}"
               "/${workoutDate.month < 10 ? '0${workoutDate.month}' : workoutDate.month}",
+              style: TextStyle(color: isToday ? Colors.orange : Colors.black),
               softWrap: true,
               textScaleFactor: 0.70,
             ),
             workout != null
                 ? workout!.workoutStartTime != null
-                    ? Text(workout!.workoutStartTime!)
-                    : const Text("- - - -")
-                : const Icon(Icons.sentiment_dissatisfied_sharp),
+                    ? Text(
+                        // TODO: if we ever remove the seconds from the start time, we need to remove the substring
+                        workout!.workoutStartTime!.substring(
+                            0, workout!.workoutStartTime!.length - 3),
+                        textScaleFactor: 0.8,
+                        style: const TextStyle(color: Colors.black))
+                    : const Text("- - - -",
+                        style: TextStyle(color: Colors.black))
+                : const Icon(
+                    Icons.sentiment_dissatisfied_sharp,
+                  ),
             const SizedBox(
               height: 8,
             ),
@@ -82,6 +92,8 @@ class WorkoutCard extends StatelessWidget {
                         muscleGroup: muscleGroup, workout: workout!)
                 ],
               ),
+            // This is the little indicator showing which workout is showing
+            // if more than 1 workout was done in one day
             if (workout != null && numberOfWorkouts > 1)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
