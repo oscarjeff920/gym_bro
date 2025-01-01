@@ -90,6 +90,21 @@ class GeneralSetContainer extends StatelessWidget {
 
   double get notesContainerHeight => 28;
 
+  double _calculateEffective1RM(double weight, int reps) {
+    if (reps < 5) {
+      // Brzycki Formula
+      return weight / (1.0278 - (0.0278 * reps));
+    } else {
+      // Epley Formula
+      return weight * (1 + (0.0333 * reps));
+    }
+  }
+
+  String returnEffective1RM({required double weight, required int reps}) {
+    double calculatedWeight = _calculateEffective1RM(weight, reps);
+    return calculatedWeight.toStringAsFixed(2);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -105,7 +120,9 @@ class GeneralSetContainer extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  WorkingSetCount(setNumber: setNumber, isCurrent: setType == SetType.current),
+                  WorkingSetCount(
+                      setNumber: setNumber,
+                      isCurrent: setType == SetType.current),
                   const Spacer(),
                   if (setType == SetType.current)
                     FinishSetButton(currentSet: currentSet),
@@ -186,13 +203,19 @@ class GeneralSetContainer extends StatelessWidget {
                           value: set.setDuration ?? "- - -",
                           setType: setType,
                         )),
-              if (false)
-                Expanded(
-                    child: _buildField(
-                  label: "Effort",
-                  value: null,
+              Expanded(
+                  child: Container(
+                color: !(set.weight == null || set.reps == null || set.weight == 0 || set.isWarmUp)
+                    ? Colors.yellow.withOpacity(0.3)
+                    : null,
+                child: _buildField(
+                  label: "Eff. 1RM",
+                  value: !(set.weight == null || set.reps == null || set.weight == 0 || set.isWarmUp)
+                      ? returnEffective1RM(weight: set.weight, reps: set.reps)
+                      : "",
                   setType: setType,
-                )),
+                ),
+              )),
             ],
           ),
           if (setType == SetType.current || set.notes != null)
@@ -226,7 +249,7 @@ class GeneralSetContainer extends StatelessWidget {
       "Reps": TextFieldType.number,
       "+ Reps": TextFieldType.number,
       "Duration": TextFieldType.duration,
-      "Effort": TextFieldType.text,
+      "Eff. 1RM": TextFieldType.text,
       "Notes": TextFieldType.text,
     };
 
