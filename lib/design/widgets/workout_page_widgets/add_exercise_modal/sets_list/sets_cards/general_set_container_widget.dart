@@ -239,9 +239,14 @@ class GeneralSetContainer extends StatelessWidget {
                     Effective1RMUtils.calculateEffective1RM(
                         comparisonSet?.weight, comparisonSet?.reps)),
                 updateSetFunction: (newValue) {
-                  double weightValue = double.parse(newValue);
+                  double? weightValue;
+                  if (newValue == "") {
+                    weightValue = null;
+                  } else {
+                    weightValue = double.parse(newValue);
+                  }
                   BlocProvider.of<AddExerciseCubit>(context)
-                      .updateCurrentSet(CurrentSet(weight: weightValue));
+                      .updateWeightCurrentSet(weightValue);
                 },
                 setType: setType,
               )),
@@ -254,9 +259,14 @@ class GeneralSetContainer extends StatelessWidget {
                     Effective1RMUtils.calculateEffective1RM(
                         comparisonSet?.weight, comparisonSet?.reps)),
                 updateSetFunction: (newValue) {
-                  int reps = int.parse(newValue);
+                  int? reps;
+                  if (newValue == "") {
+                    reps = null;
+                  } else {
+                    reps = int.parse(newValue);
+                  }
                   BlocProvider.of<AddExerciseCubit>(context)
-                      .updateCurrentSet(CurrentSet(reps: reps));
+                      .updateRepsCurrentSet(reps);
                 },
                 setType: setType,
               )),

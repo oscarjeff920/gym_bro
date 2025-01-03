@@ -74,28 +74,84 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
   }
 
   updateCurrentSet(CurrentSet set) {
-    AddExerciseState generatedState = state.copyWith();
+    AddExerciseState currentState = state.copyWith();
 
-    CurrentSet updatedState = set;
+    CurrentSet updatedSet;
     // TODO: need to work out what this is about
-    if (generatedState.currentSet != null) {
-      updatedState = CurrentSet(
-        isWarmUp: set.isWarmUp ?? generatedState.currentSet!.isWarmUp,
-        weight: set.weight ?? generatedState.currentSet!.weight,
-        reps: set.reps ?? generatedState.currentSet!.reps,
-        extraReps: set.extraReps ?? generatedState.currentSet!.extraReps,
-        setDuration: set.setDuration ?? generatedState.currentSet!.setDuration,
-        notes: set.notes ?? generatedState.currentSet!.notes,
+    // this is causing a problem because if we want to remove a value its passed through as null
+    // the block below then sees that the value is null and assigns it to the previous value..
+    if (currentState.currentSet != null) {
+      updatedSet = CurrentSet(
+        isWarmUp: set.isWarmUp ?? currentState.currentSet!.isWarmUp,
+        weight: set.weight ?? currentState.currentSet!.weight,
+        reps: set.reps ?? currentState.currentSet!.reps,
+        extraReps: set.extraReps ?? currentState.currentSet!.extraReps,
+        setDuration: set.setDuration ?? currentState.currentSet!.setDuration,
+        notes: set.notes ?? currentState.currentSet!.notes,
       );
+    } else {
+      updatedSet = const CurrentSet();
     }
 
     emit(AddExerciseState(
-        selectedMovement: generatedState.selectedMovement,
-        selectedMovementId: generatedState.selectedMovementId,
-        currentSet: updatedState,
-        setsDone: generatedState.setsDone,
-        numWorkingSets: generatedState.numWorkingSets,
-        workedMuscleGroups: generatedState.workedMuscleGroups));
+        selectedMovement: currentState.selectedMovement,
+        selectedMovementId: currentState.selectedMovementId,
+        currentSet: updatedSet,
+        setsDone: currentState.setsDone,
+        numWorkingSets: currentState.numWorkingSets,
+        workedMuscleGroups: currentState.workedMuscleGroups));
+  }
+
+  updateWeightCurrentSet(double? weight) {
+    AddExerciseState currentState = state.copyWith();
+
+    CurrentSet updatedSet;
+    if (currentState.currentSet != null) {
+      updatedSet = CurrentSet(
+        isWarmUp: currentState.currentSet!.isWarmUp,
+        weight: weight,
+        reps: currentState.currentSet!.reps,
+        extraReps: currentState.currentSet!.extraReps,
+        setDuration: currentState.currentSet!.setDuration,
+        notes: currentState.currentSet!.notes,
+      );
+    } else {
+      updatedSet = const CurrentSet();
+    }
+
+    emit(AddExerciseState(
+        selectedMovement: currentState.selectedMovement,
+        selectedMovementId: currentState.selectedMovementId,
+        currentSet: updatedSet,
+        setsDone: currentState.setsDone,
+        numWorkingSets: currentState.numWorkingSets,
+        workedMuscleGroups: currentState.workedMuscleGroups));
+  }
+
+  updateRepsCurrentSet(int? reps) {
+    AddExerciseState currentState = state.copyWith();
+
+    CurrentSet updatedSet;
+    if (currentState.currentSet != null) {
+      updatedSet = CurrentSet(
+        isWarmUp: currentState.currentSet!.isWarmUp,
+        weight: currentState.currentSet!.weight,
+        reps: reps,
+        extraReps: currentState.currentSet!.extraReps,
+        setDuration: currentState.currentSet!.setDuration,
+        notes: currentState.currentSet!.notes,
+      );
+    } else {
+      updatedSet = const CurrentSet();
+    }
+
+    emit(AddExerciseState(
+        selectedMovement: currentState.selectedMovement,
+        selectedMovementId: currentState.selectedMovementId,
+        currentSet: updatedSet,
+        setsDone: currentState.setsDone,
+        numWorkingSets: currentState.numWorkingSets,
+        workedMuscleGroups: currentState.workedMuscleGroups));
   }
 
   void saveCompletedSet() {
