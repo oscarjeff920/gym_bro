@@ -20,26 +20,6 @@ enum TextFieldType { duration, text, number, bool }
 
 // Effective 1RM class
 class Effective1RMUtils {
-  static _(dynamic set, GeneralExerciseSetModel? comparisonSet) {
-    if (set.isWarmUp || set.weight == null && set.reps == null) {
-      // don't show
-    }
-    if (set.weight == null || set.reps == null) {
-      if (comparisonSet == null) {
-        // don't show
-      }
-      comparisonSet as GeneralExerciseSetModel;
-      // show comparison set 1RM
-      // Highlight in black
-      if (set.weight == null) {
-        double effectiveWeight = calculateWeightFrom1RM(set.reps,
-            calculateEffective1RM(comparisonSet.weight, comparisonSet.reps));
-      } else {
-        int effectiveReps = calculateRepsFrom1RM(set.weight,
-            calculateEffective1RM(comparisonSet.weight, comparisonSet.reps));
-      }
-    }
-  }
 
   static bool showComparison1RM(
       dynamic set, SetType setType, bool nullComparisonSet) {
