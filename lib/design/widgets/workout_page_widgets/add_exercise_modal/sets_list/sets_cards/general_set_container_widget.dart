@@ -85,7 +85,7 @@ class Effective1RMUtils {
 
   // Calculate Reps from Effective 1RM
   static double calculateRepsFrom1RM(double weight, double eff1RM) {
-    double conversionMethod(bool isEpley) {
+    double conversionMethod({required bool isEpley}) {
       double c1 = isEpley ? 1 : 1.0278;
       double c2 = isEpley ? 0.0333 : 0.0278;
 
@@ -94,9 +94,9 @@ class Effective1RMUtils {
       return numerator / c2;
     }
 
-    double answer = conversionMethod(true) < 5
-        ? conversionMethod(false)
-        : conversionMethod(true);
+    double answer = conversionMethod(isEpley: true) < 5
+        ? conversionMethod(isEpley: false)
+        : conversionMethod(isEpley: true);
 
     return answer;
   }

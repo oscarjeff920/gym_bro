@@ -50,8 +50,6 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
   }
 
   selectExercise(MovementMuscleGroupJoin movementMuscleGroupJoin) {
-    AddExerciseState generatedState = state.copyWith();
-
     emit(AddExerciseState(
         selectedMovement: movementMuscleGroupJoin.movementName,
         selectedMovementId: movementMuscleGroupJoin.movementId,
