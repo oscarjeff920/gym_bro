@@ -8,6 +8,7 @@ class GeneralSetField extends StatefulWidget {
   final SetType setType;
   final TextInputType inputType;
   final bool autoFocus;
+  final String? hintText;
 
   const GeneralSetField(
       {super.key,
@@ -15,6 +16,7 @@ class GeneralSetField extends StatefulWidget {
       this.updateSetFunction,
       required this.setType,
       required this.inputType,
+        this.hintText,
       this.autoFocus = false,
       this.updateField = true});
 
@@ -63,7 +65,8 @@ class _GeneralSetFieldState extends State<GeneralSetField> {
       style: TextStyle(color: widget.activeColour),
       cursorColor: widget.activeColour,
       autofocus: widget.autoFocus,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
+        hintText: widget.hintText,
           border: InputBorder.none,
           contentPadding: EdgeInsets.only(bottom: 5) //, top: 5),
           ),

@@ -20,7 +20,6 @@ enum TextFieldType { duration, text, number, bool }
 
 // Effective 1RM class
 class Effective1RMUtils {
-
   static bool showComparison1RM(
       dynamic set, SetType setType, bool nullComparisonSet) {
     if (set.isWarmUp || setType == SetType.comparison || nullComparisonSet) {
@@ -45,7 +44,9 @@ class Effective1RMUtils {
     return true;
   }
 
-  static double calculateEffective1RM(double weight, int reps) {
+  // Calculate Effective 1RM
+  static double? calculateEffective1RM(double? weight, int? reps) {
+    if (weight == null || reps == null) return null;
     if (reps < 5) {
       // Brzycki Formula
       return weight / (1.0278 - (0.0278 * reps));
@@ -55,12 +56,15 @@ class Effective1RMUtils {
     }
   }
 
-  static String returnEffective1RM(
+  static String? returnEffective1RM(
       {required double weight, required int reps}) {
-    double calculatedWeight = calculateEffective1RM(weight, reps);
+    double? calculatedWeight = calculateEffective1RM(weight, reps);
+
+    if (calculatedWeight == null) return null;
     return calculatedWeight.toStringAsFixed(2);
   }
 
+  // Calculate Weight from Effective 1RM
   static double calculateWeightFrom1RM(int reps, double eff1RM) {
     if (reps < 5) {
       // Brzycki Conversion
@@ -71,7 +75,16 @@ class Effective1RMUtils {
     }
   }
 
-  static int calculateRepsFrom1RM(double weight, double eff1RM) {
+  static String? returnCalculatedWeightFrom1RM(int? reps, double? eff1RM) {
+    if (reps == null || eff1RM == null) return null;
+
+    double calculatedWeight = calculateWeightFrom1RM(reps, eff1RM);
+
+    return calculatedWeight.toStringAsFixed(2);
+  }
+
+  // Calculate Reps from Effective 1RM
+  static double calculateRepsFrom1RM(double weight, double eff1RM) {
     double conversionMethod(bool isEpley) {
       double c1 = isEpley ? 1 : 1.0278;
       double c2 = isEpley ? 0.0333 : 0.0278;
@@ -85,7 +98,14 @@ class Effective1RMUtils {
         ? conversionMethod(false)
         : conversionMethod(true);
 
-    return answer.floor();
+    return answer;
+  }
+
+  static String? returnCalculatedRepsFrom1RM(double? weight, double? eff1RM) {
+    if (weight == null || eff1RM == null) return null;
+
+    double calculatedReps = calculateRepsFrom1RM(weight, eff1RM);
+    return calculatedReps.toStringAsFixed(0);
   }
 }
 
@@ -214,6 +234,10 @@ class GeneralSetContainer extends StatelessWidget {
                 // with the cursor placed after the decimal point. To enter "11",
                 // you'd need to manually move the cursor, which can be inconvenient.
                 updateDisplay: setType == SetType.current ? false : true,
+                hintText: Effective1RMUtils.returnCalculatedWeightFrom1RM(
+                    set.reps,
+                    Effective1RMUtils.calculateEffective1RM(
+                        comparisonSet?.weight, comparisonSet?.reps)),
                 updateSetFunction: (newValue) {
                   double weightValue = double.parse(newValue);
                   BlocProvider.of<AddExerciseCubit>(context)
@@ -225,6 +249,10 @@ class GeneralSetContainer extends StatelessWidget {
                   child: _buildField(
                 label: "Reps",
                 value: set.reps,
+                hintText: Effective1RMUtils.returnCalculatedRepsFrom1RM(
+                    set.weight,
+                    Effective1RMUtils.calculateEffective1RM(
+                        comparisonSet?.weight, comparisonSet?.reps)),
                 updateSetFunction: (newValue) {
                   int reps = int.parse(newValue);
                   BlocProvider.of<AddExerciseCubit>(context)
@@ -307,6 +335,7 @@ class GeneralSetContainer extends StatelessWidget {
       required dynamic value,
       required SetType setType,
       bool updateDisplay = true,
+      String? hintText,
       Function(dynamic)? updateSetFunction}) {
     Map<String, TextFieldType> textFieldTypeMap = {
       // "Warm up Set": TextFieldType.text,
@@ -336,6 +365,7 @@ class GeneralSetContainer extends StatelessWidget {
           GeneralSetField(
             value: value,
             setType: setType,
+            hintText: hintText,
             updateField: updateDisplay,
             autoFocus: label == "Weight" && value == null ? true : false,
             inputType: textFieldTypeMap[label] == TextFieldType.number
