@@ -275,9 +275,14 @@ class GeneralSetContainer extends StatelessWidget {
                 label: "+ Reps",
                 value: set.extraReps,
                 updateSetFunction: (newValue) {
-                  int extraReps = int.parse(newValue);
+                  int? extraReps;
+                  if (newValue == "") {
+                    extraReps = null;
+                  } else {
+                    extraReps = int.parse(newValue);
+                  }
                   BlocProvider.of<AddExerciseCubit>(context)
-                      .updateCurrentSet(CurrentSet(extraReps: extraReps));
+                      .updateExtraRepsCurrentSet(extraReps);
                 },
                 setType: setType,
               )),
