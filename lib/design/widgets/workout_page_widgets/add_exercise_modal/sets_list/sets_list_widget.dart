@@ -100,9 +100,11 @@ class SetsListContainer extends StatelessWidget {
                             date: comparisonExerciseDate,
                             workingSetsCount:
                                 comparisonExerciseTotalWorkingSets),
+                        // This is the black comparison set container
                         GeneralSetContainer(
                             comparisonSet: comparisonSet,
                             setNumber: comparisonExerciseWorkingSetNumber),
+                        // This is the current set container
                         buildGeneralSetContainer(
                           comparisonSet: comparisonSet,
                         ),
@@ -111,7 +113,8 @@ class SetsListContainer extends StatelessWidget {
                   },
                 );
               }
-              // If theres no previous exercise data for this movement:
+              // If theres no previous exercise data for this movement
+              // just show the current set container
               return currentSet != null
                   ? buildGeneralSetContainer()
                   : Container();
