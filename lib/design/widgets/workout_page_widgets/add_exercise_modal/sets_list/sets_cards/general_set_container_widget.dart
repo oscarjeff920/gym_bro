@@ -18,6 +18,97 @@ enum SetType { comparison, current, completed }
 
 enum TextFieldType { duration, text, number, bool }
 
+// Effective 1RM class
+class Effective1RMUtils {
+  static _(dynamic set, GeneralExerciseSetModel? comparisonSet) {
+    if (set.isWarmUp || set.weight == null && set.reps == null) {
+      // don't show
+    }
+    if (set.weight == null || set.reps == null) {
+      if (comparisonSet == null) {
+        // don't show
+      }
+      comparisonSet as GeneralExerciseSetModel;
+      // show comparison set 1RM
+      // Highlight in black
+      if (set.weight == null) {
+        double effectiveWeight = calculateWeightFrom1RM(set.reps,
+            calculateEffective1RM(comparisonSet.weight, comparisonSet.reps));
+      } else {
+        int effectiveReps = calculateRepsFrom1RM(set.weight,
+            calculateEffective1RM(comparisonSet.weight, comparisonSet.reps));
+      }
+    }
+  }
+
+  static bool showComparison1RM(
+      dynamic set, SetType setType, bool nullComparisonSet) {
+    if (set.isWarmUp || setType == SetType.comparison || nullComparisonSet) {
+      return false;
+    }
+
+    // Check for partial inputs
+    bool hasPartialInput = (set.weight == null && set.reps != null) ||
+        (set.weight != null && set.reps == null);
+
+    return hasPartialInput;
+  }
+
+  static bool showEffective1RM(dynamic set) {
+    // we only want to show the Eff 1RM if we have both weight and reps
+    if (set.isWarmUp ||
+        set.weight == null ||
+        set.reps == null ||
+        set.weight == 0) {
+      return false;
+    }
+    return true;
+  }
+
+  static double calculateEffective1RM(double weight, int reps) {
+    if (reps < 5) {
+      // Brzycki Formula
+      return weight / (1.0278 - (0.0278 * reps));
+    } else {
+      // Epley Formula
+      return weight * (1 + (0.0333 * reps));
+    }
+  }
+
+  static String returnEffective1RM(
+      {required double weight, required int reps}) {
+    double calculatedWeight = calculateEffective1RM(weight, reps);
+    return calculatedWeight.toStringAsFixed(2);
+  }
+
+  static double calculateWeightFrom1RM(int reps, double eff1RM) {
+    if (reps < 5) {
+      // Brzycki Conversion
+      return eff1RM / (1.0278 - (0.0278 * reps));
+    } else {
+      // Epley Conversion
+      return eff1RM * (1 + (0.0333 * reps));
+    }
+  }
+
+  static int calculateRepsFrom1RM(double weight, double eff1RM) {
+    double conversionMethod(bool isEpley) {
+      double c1 = isEpley ? 1 : 1.0278;
+      double c2 = isEpley ? 0.0333 : 0.0278;
+
+      double numerator = c1 - (weight / eff1RM);
+
+      return numerator / c2;
+    }
+
+    double answer = conversionMethod(true) < 5
+        ? conversionMethod(false)
+        : conversionMethod(true);
+
+    return answer.floor();
+  }
+}
+
 Map<String, TextFieldType> textFieldTypeMap = {
   "Rest Time": TextFieldType.duration,
   "Warm Up": TextFieldType.number,
@@ -89,21 +180,6 @@ class GeneralSetContainer extends StatelessWidget {
   }
 
   double get notesContainerHeight => 28;
-
-  double _calculateEffective1RM(double weight, int reps) {
-    if (reps < 5) {
-      // Brzycki Formula
-      return weight / (1.0278 - (0.0278 * reps));
-    } else {
-      // Epley Formula
-      return weight * (1 + (0.0333 * reps));
-    }
-  }
-
-  String returnEffective1RM({required double weight, required int reps}) {
-    double calculatedWeight = _calculateEffective1RM(weight, reps);
-    return calculatedWeight.toStringAsFixed(2);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -205,14 +281,26 @@ class GeneralSetContainer extends StatelessWidget {
                         )),
               Expanded(
                   child: Container(
-                color: !(set.weight == null || set.reps == null || set.weight == 0 || set.isWarmUp)
-                    ? Colors.yellow.withOpacity(0.3)
-                    : null,
+                color: Effective1RMUtils.showComparison1RM(
+                        set, setType, comparisonSet == null)
+                    ? Colors.black.withOpacity(0.3)
+                    : Effective1RMUtils.showEffective1RM(set)
+                        ? Colors.yellow.withOpacity(0.3)
+                        : null,
                 child: _buildField(
                   label: "Eff. 1RM",
-                  value: !(set.weight == null || set.reps == null || set.weight == 0 || set.isWarmUp)
-                      ? returnEffective1RM(weight: set.weight, reps: set.reps)
-                      : "",
+                  // if both weight and reps are valued the effective 1RM will show,
+                  // if only one is valued then we show the comparison set's Eff 1RM
+                  // unless the set is warm up, in which case no 1RM is shown
+                  value: Effective1RMUtils.showComparison1RM(
+                          set, setType, comparisonSet == null)
+                      ? Effective1RMUtils.returnEffective1RM(
+                          weight: comparisonSet!.weight,
+                          reps: comparisonSet!.reps)
+                      : Effective1RMUtils.showEffective1RM(set)
+                          ? Effective1RMUtils.returnEffective1RM(
+                              weight: set.weight, reps: set.reps)
+                          : "",
                   setType: setType,
                 ),
               )),
