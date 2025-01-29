@@ -67,3 +67,7 @@ enum MuscleGroupType {
   back,
   legs,
 }
+
+enum SetType { comparison, current, completed }
+
+enum TextFieldType { duration, text, number, bool }

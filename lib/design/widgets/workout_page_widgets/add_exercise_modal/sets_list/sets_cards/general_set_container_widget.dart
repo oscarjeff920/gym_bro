@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/constants/utils/effective_1RM_utils.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
@@ -12,102 +14,6 @@ import 'set_field_types/notes_text_field_animated_container_widget.dart';
 import 'set_field_types/general_set_field_widget.dart';
 import 'set_field_types/warm_up_check_box.dart';
 import 'working_warmup_set_header_counter_widget.dart';
-
-// enums
-enum SetType { comparison, current, completed }
-
-enum TextFieldType { duration, text, number, bool }
-
-// Effective 1RM class
-class Effective1RMUtils {
-  static bool showComparison1RM(
-      dynamic set, SetType setType, bool nullComparisonSet) {
-    if (set.isWarmUp || setType == SetType.comparison || nullComparisonSet) {
-      return false;
-    }
-
-    // Check for partial inputs
-    bool hasPartialInput = (set.weight == null && set.reps != null) ||
-        (set.weight != null && set.reps == null);
-
-    return hasPartialInput;
-  }
-
-  static bool showEffective1RM(dynamic set) {
-    // we only want to show the Eff 1RM if we have both weight and reps
-    if (set.isWarmUp ||
-        set.weight == null ||
-        set.reps == null ||
-        set.weight == 0) {
-      return false;
-    }
-    return true;
-  }
-
-  // Calculate Effective 1RM
-  static double? calculateEffective1RM(double? weight, int? reps) {
-    if (weight == null || reps == null) return null;
-    if (reps < 5) {
-      // Brzycki Formula
-      return weight / (1.0278 - (0.0278 * reps));
-    } else {
-      // Epley Formula
-      return weight * (1 + (0.0333 * reps));
-    }
-  }
-
-  static String? returnEffective1RM(
-      {required double weight, required int reps}) {
-    double? calculatedWeight = calculateEffective1RM(weight, reps);
-
-    if (calculatedWeight == null) return null;
-    return calculatedWeight.toStringAsFixed(2);
-  }
-
-  // Calculate Weight from Effective 1RM
-  static double calculateWeightFrom1RM(int reps, double eff1RM) {
-    if (reps < 5) {
-      // Brzycki Conversion
-      return eff1RM / (1.0278 - (0.0278 * reps));
-    } else {
-      // Epley Conversion
-      return eff1RM * (1 + (0.0333 * reps));
-    }
-  }
-
-  static String? returnCalculatedWeightFrom1RM(int? reps, double? eff1RM) {
-    if (reps == null || eff1RM == null) return null;
-
-    double calculatedWeight = calculateWeightFrom1RM(reps, eff1RM);
-
-    return calculatedWeight.toStringAsFixed(2);
-  }
-
-  // Calculate Reps from Effective 1RM
-  static double calculateRepsFrom1RM(double weight, double eff1RM) {
-    double conversionMethod({required bool isEpley}) {
-      double c1 = isEpley ? 1 : 1.0278;
-      double c2 = isEpley ? 0.0333 : 0.0278;
-
-      double numerator = c1 - (weight / eff1RM);
-
-      return numerator / c2;
-    }
-
-    double answer = conversionMethod(isEpley: true) < 5
-        ? conversionMethod(isEpley: false)
-        : conversionMethod(isEpley: true);
-
-    return answer;
-  }
-
-  static String? returnCalculatedRepsFrom1RM(double? weight, double? eff1RM) {
-    if (weight == null || eff1RM == null) return null;
-
-    double calculatedReps = calculateRepsFrom1RM(weight, eff1RM);
-    return calculatedReps.toStringAsFixed(0);
-  }
-}
 
 Map<String, TextFieldType> textFieldTypeMap = {
   "Rest Time": TextFieldType.duration,
