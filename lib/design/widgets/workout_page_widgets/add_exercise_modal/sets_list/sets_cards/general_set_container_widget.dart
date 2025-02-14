@@ -210,7 +210,7 @@ class GeneralSetContainer extends StatelessWidget {
                         )),
               Expanded(
                   child: Container(
-                color: Estimated1RMUtils.showComparison1RM(
+                color: Estimated1RMUtils.showComparisonSetEstimated1RM(
                         set, setType, comparisonSet == null)
                     ? Colors.black.withOpacity(0.3)
                     : Estimated1RMUtils.showEstimated1RM(set)
@@ -221,7 +221,7 @@ class GeneralSetContainer extends StatelessWidget {
                   // if both weight and reps are valued the effective 1RM will show,
                   // if only one is valued then we show the comparison set's Eff 1RM
                   // unless the set is warm up, in which case no 1RM is shown
-                  value: Estimated1RMUtils.showComparison1RM(
+                  value: Estimated1RMUtils.showComparisonSetEstimated1RM(
                           set, setType, comparisonSet == null)
                       ? Estimated1RMUtils.returnEstimated1RM(
                           weight: comparisonSet!.weight,

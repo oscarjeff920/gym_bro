@@ -2,7 +2,9 @@
 import 'package:gym_bro/constants/enums.dart';
 
 class Estimated1RMUtils {
-  static bool showComparison1RM(
+  // This method determines on *The Current Set* if we want to show
+  // the required weight or reps to reach the Est1RM of the comparison set
+  static bool showComparisonSetEstimated1RM(
       dynamic set, SetType setType, bool nullComparisonSet) {
     if (set.isWarmUp || setType == SetType.comparison || nullComparisonSet) {
       return false;
@@ -15,6 +17,8 @@ class Estimated1RMUtils {
     return hasPartialInput;
   }
 
+  // This determines if we want to show the estimated 1RM
+  // based on the presence of the current set's weight and reps
   static bool showEstimated1RM(dynamic set) {
     // we only want to show the Est 1RM if we have both weight and reps
     if (set.isWarmUp ||
@@ -36,7 +40,6 @@ class Estimated1RMUtils {
       // Epley Formula
       return weight * (1 + (0.0333 * reps));
     }
-    return weight / (1.0278 - (0.0278 * reps));
   }
 
   static String? returnEstimated1RM(
