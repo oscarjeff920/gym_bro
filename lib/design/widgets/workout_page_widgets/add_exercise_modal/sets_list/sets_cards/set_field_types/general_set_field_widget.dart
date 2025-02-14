@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/sets_list/sets_cards/general_set_container_widget.dart';
+import 'package:gym_bro/constants/enums.dart';
 
 class GeneralSetField extends StatefulWidget {
   final dynamic value;

@@ -1,7 +1,7 @@
 // Effective 1RM class
 import 'package:gym_bro/constants/enums.dart';
 
-class Effective1RMUtils {
+class Estimated1RMUtils {
   static bool showComparison1RM(
       dynamic set, SetType setType, bool nullComparisonSet) {
     if (set.isWarmUp || setType == SetType.comparison || nullComparisonSet) {
@@ -15,7 +15,7 @@ class Effective1RMUtils {
     return hasPartialInput;
   }
 
-  static bool showEffective1RM(dynamic set) {
+  static bool showEstimated1RM(dynamic set) {
     // we only want to show the Eff 1RM if we have both weight and reps
     if (set.isWarmUp ||
         set.weight == null ||
@@ -27,7 +27,7 @@ class Effective1RMUtils {
   }
 
   // Calculate Effective 1RM
-  static double? calculateEffective1RM(double? weight, int? reps) {
+  static double? calculateEstimated1RM(double? weight, int? reps) {
     if (weight == null || reps == null) return null;
     if (reps < 5) {
       // Brzycki Formula
@@ -36,11 +36,12 @@ class Effective1RMUtils {
       // Epley Formula
       return weight * (1 + (0.0333 * reps));
     }
+    return weight / (1.0278 - (0.0278 * reps));
   }
 
-  static String? returnEffective1RM(
+  static String? returnEstimated1RM(
       {required double weight, required int reps}) {
-    double? calculatedWeight = calculateEffective1RM(weight, reps);
+    double? calculatedWeight = calculateEstimated1RM(weight, reps);
 
     if (calculatedWeight == null) return null;
     return calculatedWeight.toStringAsFixed(2);
@@ -87,8 +88,8 @@ class Effective1RMUtils {
     int roundedReps = returnReps.round();
     int lowerReps = returnReps.round() - 1;
 
-    double calculatedEff1RM = calculateEffective1RM(weight, roundedReps)!;
-    double oneLessRepEff1RM = calculateEffective1RM(weight, lowerReps)!;
+    double calculatedEff1RM = calculateEstimated1RM(weight, roundedReps)!;
+    double oneLessRepEff1RM = calculateEstimated1RM(weight, lowerReps)!;
 
     const double epsilon = 0.01; // Tolerance for floating-point errors
 

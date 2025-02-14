@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/constants/enums.dart';
-import 'package:gym_bro/constants/utils/effective_1RM_utils.dart';
+import 'package:gym_bro/constants/utils/estimated_1RM_utils.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
@@ -140,9 +140,9 @@ class GeneralSetContainer extends StatelessWidget {
                 // with the cursor placed after the decimal point. To enter "11",
                 // you'd need to manually move the cursor, which can be inconvenient.
                 updateDisplay: setType == SetType.current ? false : true,
-                hintText: Effective1RMUtils.returnCalculatedWeightFrom1RM(
+                hintText: Estimated1RMUtils.returnCalculatedWeightFrom1RM(
                     set.reps,
-                    Effective1RMUtils.calculateEffective1RM(
+                    Estimated1RMUtils.calculateEstimated1RM(
                         comparisonSet?.weight, comparisonSet?.reps)),
                 updateSetFunction: (newValue) {
                   double? weightValue;
@@ -160,9 +160,9 @@ class GeneralSetContainer extends StatelessWidget {
                   child: _buildField(
                 label: "Reps",
                 value: set.reps,
-                hintText: Effective1RMUtils.returnCalculatedRepsFrom1RM(
+                hintText: Estimated1RMUtils.returnCalculatedRepsFrom1RM(
                     set.weight,
-                    Effective1RMUtils.calculateEffective1RM(
+                    Estimated1RMUtils.calculateEstimated1RM(
                         comparisonSet?.weight, comparisonSet?.reps)),
                 updateSetFunction: (newValue) {
                   int? reps;
@@ -210,24 +210,24 @@ class GeneralSetContainer extends StatelessWidget {
                         )),
               Expanded(
                   child: Container(
-                color: Effective1RMUtils.showComparison1RM(
+                color: Estimated1RMUtils.showComparison1RM(
                         set, setType, comparisonSet == null)
                     ? Colors.black.withOpacity(0.3)
-                    : Effective1RMUtils.showEffective1RM(set)
+                    : Estimated1RMUtils.showEstimated1RM(set)
                         ? Colors.yellow.withOpacity(0.3)
                         : null,
                 child: _buildField(
-                  label: "Eff. 1RM",
+                  label: "Est. 1RM",
                   // if both weight and reps are valued the effective 1RM will show,
                   // if only one is valued then we show the comparison set's Eff 1RM
                   // unless the set is warm up, in which case no 1RM is shown
-                  value: Effective1RMUtils.showComparison1RM(
+                  value: Estimated1RMUtils.showComparison1RM(
                           set, setType, comparisonSet == null)
-                      ? Effective1RMUtils.returnEffective1RM(
+                      ? Estimated1RMUtils.returnEstimated1RM(
                           weight: comparisonSet!.weight,
                           reps: comparisonSet!.reps)
-                      : Effective1RMUtils.showEffective1RM(set)
-                          ? Effective1RMUtils.returnEffective1RM(
+                      : Estimated1RMUtils.showEstimated1RM(set)
+                          ? Estimated1RMUtils.returnEstimated1RM(
                               weight: set.weight, reps: set.reps)
                           : "",
                   setType: setType,

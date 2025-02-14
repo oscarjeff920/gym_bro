@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../general_set_container_widget.dart';
+import 'package:gym_bro/constants/enums.dart';
 
 class DurationTextFieldWidget extends StatelessWidget {
   final String? displayDuration;
