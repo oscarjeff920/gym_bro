@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
-import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/sets_list/sets_cards/general_set_container_widget.dart';
+import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 
 import 'general_set_field_widget.dart';
@@ -64,35 +63,35 @@ class _ExpandableNotesTextFieldState extends State<ExpandableNotesTextField> {
               children: [
                 const Spacer(),
                 Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: SizedBox(
-                      width: 35,
-                      child: Text(
-                        "Notes..",
-                        style: TextStyle(
-                            color: _isExpanded
-                                ? widget.headerTextStyle.color
-                                : widget.headerTextStyle.color!
-                                    .withOpacity(opacityValue),
-                            fontSize: 10),
-                      ),
+                  padding: const EdgeInsets.only(top: 5),
+                  child: SizedBox(
+                    width: 35,
+                    child: Text(
+                      "Notes..",
+                      style: TextStyle(
+                          color: _isExpanded
+                              ? widget.headerTextStyle.color
+                              : widget.headerTextStyle.color!
+                                  .withOpacity(opacityValue),
+                          fontSize: 10),
                     ),
                   ),
+                ),
                 const Spacer(flex: 12),
                 SizedBox(
-                    width: 35,
-                    child: Icon(
-                      _isExpanded ? Icons.arrow_drop_down : Icons.arrow_right,
-                      color: widget.setType == SetType.completed
-                          ? _isExpanded
-                              ? Colors.black
-                              : Colors.black.withOpacity(opacityValue)
-                          : _isExpanded
-                              ? Colors.white
-                              : Colors.white.withOpacity(opacityValue),
-                      size: 24,
-                    ),
+                  width: 35,
+                  child: Icon(
+                    _isExpanded ? Icons.arrow_drop_down : Icons.arrow_right,
+                    color: widget.setType == SetType.completed
+                        ? _isExpanded
+                            ? Colors.black
+                            : Colors.black.withOpacity(opacityValue)
+                        : _isExpanded
+                            ? Colors.white
+                            : Colors.white.withOpacity(opacityValue),
+                    size: 24,
                   ),
+                ),
                 const Spacer()
               ],
             ),
@@ -111,9 +110,15 @@ class _ExpandableNotesTextFieldState extends State<ExpandableNotesTextField> {
                     autoFocus: true,
                     setType: widget.setType,
                     inputType: TextInputType.text,
-                    updateSetFunction: (notes) {
+                    updateSetFunction: (newValue) {
+                      String? notes;
+                      if (newValue == "") {
+                        notes = null;
+                      } else {
+                        notes = newValue;
+                      }
                       BlocProvider.of<AddExerciseCubit>(context)
-                          .updateCurrentSet(CurrentSet(notes: notes));
+                          .updateNotesCurrentSet(notes);
                     },
                   ),
                 )

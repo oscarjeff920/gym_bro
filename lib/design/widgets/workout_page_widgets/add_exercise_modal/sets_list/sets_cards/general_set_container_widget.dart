@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/constants/enums.dart';
+import 'package:gym_bro/constants/utils/estimated_1RM_utils.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
@@ -12,22 +14,6 @@ import 'set_field_types/notes_text_field_animated_container_widget.dart';
 import 'set_field_types/general_set_field_widget.dart';
 import 'set_field_types/warm_up_check_box.dart';
 import 'working_warmup_set_header_counter_widget.dart';
-
-// enums
-enum SetType { comparison, current, completed }
-
-enum TextFieldType { duration, text, number, bool }
-
-Map<String, TextFieldType> textFieldTypeMap = {
-  "Rest Time": TextFieldType.duration,
-  "Warm Up": TextFieldType.number,
-  "Weight": TextFieldType.number,
-  "Reps": TextFieldType.number,
-  "+ Reps": TextFieldType.number,
-  "Duration": TextFieldType.duration,
-  "Effort": TextFieldType.text,
-  "Notes": TextFieldType.text,
-};
 
 class GeneralSetContainer extends StatelessWidget {
   final GeneralExerciseSetModel? comparisonSet;
@@ -105,7 +91,9 @@ class GeneralSetContainer extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  WorkingSetCount(setNumber: setNumber, isCurrent: setType == SetType.current),
+                  WorkingSetCount(
+                      setNumber: setNumber,
+                      isCurrent: setType == SetType.current),
                   const Spacer(),
                   if (setType == SetType.current)
                     FinishSetButton(currentSet: currentSet),
@@ -141,10 +129,19 @@ class GeneralSetContainer extends StatelessWidget {
                 // with the cursor placed after the decimal point. To enter "11",
                 // you'd need to manually move the cursor, which can be inconvenient.
                 updateDisplay: setType == SetType.current ? false : true,
+                hintText: Estimated1RMUtils.returnCalculatedWeightFrom1RM(
+                    set.reps,
+                    Estimated1RMUtils.calculateEstimated1RM(
+                        comparisonSet?.weight, comparisonSet?.reps)),
                 updateSetFunction: (newValue) {
-                  double weightValue = double.parse(newValue);
+                  double? weightValue;
+                  if (newValue == "") {
+                    weightValue = null;
+                  } else {
+                    weightValue = double.parse(newValue);
+                  }
                   BlocProvider.of<AddExerciseCubit>(context)
-                      .updateCurrentSet(CurrentSet(weight: weightValue));
+                      .updateWeightCurrentSet(weightValue);
                 },
                 setType: setType,
               )),
@@ -152,10 +149,19 @@ class GeneralSetContainer extends StatelessWidget {
                   child: _buildField(
                 label: "Reps",
                 value: set.reps,
+                hintText: Estimated1RMUtils.returnCalculatedRepsFrom1RM(
+                    set.weight,
+                    Estimated1RMUtils.calculateEstimated1RM(
+                        comparisonSet?.weight, comparisonSet?.reps)),
                 updateSetFunction: (newValue) {
-                  int reps = int.parse(newValue);
+                  int? reps;
+                  if (newValue == "") {
+                    reps = null;
+                  } else {
+                    reps = int.parse(newValue);
+                  }
                   BlocProvider.of<AddExerciseCubit>(context)
-                      .updateCurrentSet(CurrentSet(reps: reps));
+                      .updateRepsCurrentSet(reps);
                 },
                 setType: setType,
               )),
@@ -164,9 +170,14 @@ class GeneralSetContainer extends StatelessWidget {
                 label: "+ Reps",
                 value: set.extraReps,
                 updateSetFunction: (newValue) {
-                  int extraReps = int.parse(newValue);
+                  int? extraReps;
+                  if (newValue == "") {
+                    extraReps = null;
+                  } else {
+                    extraReps = int.parse(newValue);
+                  }
                   BlocProvider.of<AddExerciseCubit>(context)
-                      .updateCurrentSet(CurrentSet(extraReps: extraReps));
+                      .updateExtraRepsCurrentSet(extraReps);
                 },
                 setType: setType,
               )),
@@ -186,13 +197,28 @@ class GeneralSetContainer extends StatelessWidget {
                           value: set.setDuration ?? "- - -",
                           setType: setType,
                         )),
-              if (false)
-                Expanded(
-                    child: _buildField(
-                  label: "Effort",
-                  value: null,
+              Expanded(
+                  child: Container(
+                color: Estimated1RMUtils.showComparisonSetEstimated1RM(
+                        set, setType, comparisonSet == null)
+                    ? Colors.black.withOpacity(0.3)
+                    : Estimated1RMUtils.showEstimated1RM(set)
+                        ? Colors.yellow.withOpacity(0.3)
+                        : null,
+                child: _buildField(
+                  label: "Est. 1RM",
+                  value: Estimated1RMUtils.showComparisonSetEstimated1RM(
+                          set, setType, comparisonSet == null)
+                      ? Estimated1RMUtils.returnEstimated1RM(
+                          weight: comparisonSet!.weight,
+                          reps: comparisonSet!.reps)
+                      : Estimated1RMUtils.showEstimated1RM(set)
+                          ? Estimated1RMUtils.returnEstimated1RM(
+                              weight: set.weight, reps: set.reps)
+                          : "",
                   setType: setType,
-                )),
+                ),
+              )),
             ],
           ),
           if (setType == SetType.current || set.notes != null)
@@ -216,17 +242,16 @@ class GeneralSetContainer extends StatelessWidget {
       required dynamic value,
       required SetType setType,
       bool updateDisplay = true,
+      String? hintText,
       Function(dynamic)? updateSetFunction}) {
     Map<String, TextFieldType> textFieldTypeMap = {
-      // "Warm up Set": TextFieldType.text,
-      // "Working Set": TextFieldType.text,
       "Rest Time": TextFieldType.duration,
       "Warm Up": TextFieldType.bool,
       "Weight": TextFieldType.number,
       "Reps": TextFieldType.number,
       "+ Reps": TextFieldType.number,
       "Duration": TextFieldType.duration,
-      "Effort": TextFieldType.text,
+      "Est. 1RM": TextFieldType.text,
       "Notes": TextFieldType.text,
     };
 
@@ -245,6 +270,7 @@ class GeneralSetContainer extends StatelessWidget {
           GeneralSetField(
             value: value,
             setType: setType,
+            hintText: hintText,
             updateField: updateDisplay,
             autoFocus: label == "Weight" && value == null ? true : false,
             inputType: textFieldTypeMap[label] == TextFieldType.number

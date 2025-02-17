@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_bro/design/widgets/workout_page_widgets/add_exercise_modal/sets_list/sets_cards/general_set_container_widget.dart';
+import 'package:gym_bro/constants/enums.dart';
 
 class GeneralSetField extends StatefulWidget {
   final dynamic value;
@@ -8,6 +8,7 @@ class GeneralSetField extends StatefulWidget {
   final SetType setType;
   final TextInputType inputType;
   final bool autoFocus;
+  final String? hintText;
 
   const GeneralSetField(
       {super.key,
@@ -15,6 +16,7 @@ class GeneralSetField extends StatefulWidget {
       this.updateSetFunction,
       required this.setType,
       required this.inputType,
+        this.hintText,
       this.autoFocus = false,
       this.updateField = true});
 
@@ -63,7 +65,8 @@ class _GeneralSetFieldState extends State<GeneralSetField> {
       style: TextStyle(color: widget.activeColour),
       cursorColor: widget.activeColour,
       autofocus: widget.autoFocus,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
+        hintText: widget.hintText,
           border: InputBorder.none,
           contentPadding: EdgeInsets.only(bottom: 5) //, top: 5),
           ),

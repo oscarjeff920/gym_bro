@@ -50,8 +50,6 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
   }
 
   selectExercise(MovementMuscleGroupJoin movementMuscleGroupJoin) {
-    AddExerciseState generatedState = state.copyWith();
-
     emit(AddExerciseState(
         selectedMovement: movementMuscleGroupJoin.movementName,
         selectedMovementId: movementMuscleGroupJoin.movementId,
@@ -73,30 +71,131 @@ class AddExerciseCubit extends Cubit<AddExerciseState> {
     emit(generatedState);
   }
 
-  updateCurrentSet(CurrentSet set) {
-    AddExerciseState generatedState = state.copyWith();
-
-    CurrentSet updatedState = set;
-    // TODO: need to work out what this is about
-    if (generatedState.currentSet != null) {
-      updatedState = CurrentSet(
-        isWarmUp: set.isWarmUp ?? generatedState.currentSet!.isWarmUp,
-        weight: set.weight ?? generatedState.currentSet!.weight,
-        reps: set.reps ?? generatedState.currentSet!.reps,
-        extraReps: set.extraReps ?? generatedState.currentSet!.extraReps,
-        setDuration: set.setDuration ?? generatedState.currentSet!.setDuration,
-        notes: set.notes ?? generatedState.currentSet!.notes,
-      );
-    }
+  // Updating State CurrentSet
+  // ============================
+  // as theres no way to differentiate between null values explicitly set
+  // and null values due to omitted field assignment:
+  //    exSet = CurrentSet(reps: null);
+  //    exSet.reps == null && exSet.weight == null
+  // there's no good way of updating a field to null with a generalised method
+  // the update set method has been split for each field
+  // that could be meaningfully set to null
+  void _emitUpdatedCurrentSetState(CurrentSet updatedSet) {
+    AddExerciseState currentState = state.copyWith();
 
     emit(AddExerciseState(
-        selectedMovement: generatedState.selectedMovement,
-        selectedMovementId: generatedState.selectedMovementId,
-        currentSet: updatedState,
-        setsDone: generatedState.setsDone,
-        numWorkingSets: generatedState.numWorkingSets,
-        workedMuscleGroups: generatedState.workedMuscleGroups));
+      selectedMovement: currentState.selectedMovement,
+      selectedMovementId: currentState.selectedMovementId,
+      currentSet: updatedSet,
+      setsDone: currentState.setsDone,
+      numWorkingSets: currentState.numWorkingSets,
+      workedMuscleGroups: currentState.workedMuscleGroups,
+    ));
   }
+
+  // Generalised method for fields that can't be meaningfully re-set to null on update
+  // isWarmUp, setDuration
+  updateCurrentSet(CurrentSet set) {
+    AddExerciseState currentState = state.copyWith();
+
+    CurrentSet updatedSet;
+    if (currentState.currentSet != null) {
+      updatedSet = CurrentSet(
+        isWarmUp: set.isWarmUp ?? currentState.currentSet!.isWarmUp,
+        weight: set.weight ?? currentState.currentSet!.weight,
+        reps: set.reps ?? currentState.currentSet!.reps,
+        extraReps: set.extraReps ?? currentState.currentSet!.extraReps,
+        setDuration: set.setDuration ?? currentState.currentSet!.setDuration,
+        notes: set.notes ?? currentState.currentSet!.notes,
+      );
+    } else {
+      updatedSet = const CurrentSet();
+    }
+
+    _emitUpdatedCurrentSetState(updatedSet);
+  }
+
+  updateWeightCurrentSet(double? weight) {
+    AddExerciseState currentState = state.copyWith();
+
+    CurrentSet updatedSet;
+    if (currentState.currentSet != null) {
+      updatedSet = CurrentSet(
+        isWarmUp: currentState.currentSet!.isWarmUp,
+        weight: weight,
+        reps: currentState.currentSet!.reps,
+        extraReps: currentState.currentSet!.extraReps,
+        setDuration: currentState.currentSet!.setDuration,
+        notes: currentState.currentSet!.notes,
+      );
+    } else {
+      updatedSet = const CurrentSet();
+    }
+
+    _emitUpdatedCurrentSetState(updatedSet);
+  }
+
+  updateRepsCurrentSet(int? reps) {
+    AddExerciseState currentState = state.copyWith();
+
+    CurrentSet updatedSet;
+    if (currentState.currentSet != null) {
+      updatedSet = CurrentSet(
+        isWarmUp: currentState.currentSet!.isWarmUp,
+        weight: currentState.currentSet!.weight,
+        reps: reps,
+        extraReps: currentState.currentSet!.extraReps,
+        setDuration: currentState.currentSet!.setDuration,
+        notes: currentState.currentSet!.notes,
+      );
+    } else {
+      updatedSet = const CurrentSet();
+    }
+
+    _emitUpdatedCurrentSetState(updatedSet);
+  }
+
+  updateExtraRepsCurrentSet(int? extraReps) {
+    AddExerciseState currentState = state.copyWith();
+
+    CurrentSet updatedSet;
+    if (currentState.currentSet != null) {
+      updatedSet = CurrentSet(
+        isWarmUp: currentState.currentSet!.isWarmUp,
+        weight: currentState.currentSet!.weight,
+        reps: currentState.currentSet!.reps,
+        extraReps: extraReps,
+        setDuration: currentState.currentSet!.setDuration,
+        notes: currentState.currentSet!.notes,
+      );
+    } else {
+      updatedSet = const CurrentSet();
+    }
+
+    _emitUpdatedCurrentSetState(updatedSet);
+  }
+
+  updateNotesCurrentSet(String? notes) {
+    AddExerciseState currentState = state.copyWith();
+
+    CurrentSet updatedSet;
+    if (currentState.currentSet != null) {
+      updatedSet = CurrentSet(
+        isWarmUp: currentState.currentSet!.isWarmUp,
+        weight: currentState.currentSet!.weight,
+        reps: currentState.currentSet!.reps,
+        extraReps: currentState.currentSet!.extraReps,
+        setDuration: currentState.currentSet!.setDuration,
+        notes: notes,
+      );
+    } else {
+      updatedSet = const CurrentSet();
+    }
+
+    _emitUpdatedCurrentSetState(updatedSet);
+  }
+
+  // ==============================
 
   void saveCompletedSet() {
     AddExerciseState generatedState = state.copyWith();
