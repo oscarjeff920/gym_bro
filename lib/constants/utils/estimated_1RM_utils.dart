@@ -2,7 +2,7 @@
 import 'package:gym_bro/constants/enums.dart';
 
 class Estimated1RMUtils {
-  // This method determines on *The Current Set* if we want to show
+  // This method determines on The Current Set if we want to show
   // the required weight or reps to reach the Est1RM of the comparison set
   static bool showComparisonSetEstimated1RM(
       dynamic set, SetType setType, bool nullComparisonSet) {
@@ -79,10 +79,11 @@ class Estimated1RMUtils {
 
     // Calculate using both formulas
     double brzyckiReps = (1.0278 - (weight / est1RM)) / 0.0278;
-    double epleyReps = ((weight / est1RM) - 1) / 0.0333;
+    double epleyReps = ((est1RM / weight) - 1) / 0.0333;
 
     // Return the appropriate reps based on formulas
-    double returnReps = weight / est1RM > 0.8 // Brzycki works better for heavier loads
+    double returnReps = weight / est1RM >
+            0.8 //|| epleyReps < 0// Brzycki works better for heavier loads
         ? brzyckiReps
         : epleyReps;
 
@@ -97,7 +98,7 @@ class Estimated1RMUtils {
 
     // Return the reps that give the closest estimated 1RM
     return (calculatedEff1RM - est1RM).abs() <
-        (oneLessRepEff1RM - est1RM).abs() + epsilon
+            (oneLessRepEff1RM - est1RM).abs() + epsilon
         ? roundedReps.toDouble()
         : lowerReps.toDouble();
   }
@@ -106,6 +107,15 @@ class Estimated1RMUtils {
     if (weight == null || est1RM == null) return null;
 
     double calculatedReps = calculateRepsFrom1RM(weight, est1RM);
-    return calculatedReps.toStringAsFixed(0);
+
+    String repsAsIntString = calculatedReps.toStringAsFixed(0);
+
+    if (int.parse(repsAsIntString) > 30) {
+      return '30+';
+    } else if (int.parse(repsAsIntString) > 10) {
+      return '~$repsAsIntString';
+    } else {
+      return repsAsIntString;
+    }
   }
 }

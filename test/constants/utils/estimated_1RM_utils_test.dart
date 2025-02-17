@@ -191,6 +191,8 @@ void main() {
         {'weight': 55, 'expected': 2, '1RM': 56.6},
         {'weight': 55, 'expected': 3, '1RM': 58.2},
         {'weight': 55, 'expected': 4, '1RM': 60},
+         // Placeholder to test live anomalies
+        // {'weight': 1, 'expected': 2, '1RM': 12},
       ];
 
       for (var test in test1RMAndWeightRanges) {

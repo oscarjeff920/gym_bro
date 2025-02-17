@@ -15,17 +15,6 @@ import 'set_field_types/general_set_field_widget.dart';
 import 'set_field_types/warm_up_check_box.dart';
 import 'working_warmup_set_header_counter_widget.dart';
 
-Map<String, TextFieldType> textFieldTypeMap = {
-  "Rest Time": TextFieldType.duration,
-  "Warm Up": TextFieldType.number,
-  "Weight": TextFieldType.number,
-  "Reps": TextFieldType.number,
-  "+ Reps": TextFieldType.number,
-  "Duration": TextFieldType.duration,
-  "Effort": TextFieldType.text,
-  "Notes": TextFieldType.text,
-};
-
 class GeneralSetContainer extends StatelessWidget {
   final GeneralExerciseSetModel? comparisonSet;
   final CurrentSet? currentSet;
@@ -218,9 +207,6 @@ class GeneralSetContainer extends StatelessWidget {
                         : null,
                 child: _buildField(
                   label: "Est. 1RM",
-                  // if both weight and reps are valued the effective 1RM will show,
-                  // if only one is valued then we show the comparison set's Eff 1RM
-                  // unless the set is warm up, in which case no 1RM is shown
                   value: Estimated1RMUtils.showComparisonSetEstimated1RM(
                           set, setType, comparisonSet == null)
                       ? Estimated1RMUtils.returnEstimated1RM(
@@ -259,15 +245,13 @@ class GeneralSetContainer extends StatelessWidget {
       String? hintText,
       Function(dynamic)? updateSetFunction}) {
     Map<String, TextFieldType> textFieldTypeMap = {
-      // "Warm up Set": TextFieldType.text,
-      // "Working Set": TextFieldType.text,
       "Rest Time": TextFieldType.duration,
       "Warm Up": TextFieldType.bool,
       "Weight": TextFieldType.number,
       "Reps": TextFieldType.number,
       "+ Reps": TextFieldType.number,
       "Duration": TextFieldType.duration,
-      "Eff. 1RM": TextFieldType.text,
+      "Est. 1RM": TextFieldType.text,
       "Notes": TextFieldType.text,
     };
 
