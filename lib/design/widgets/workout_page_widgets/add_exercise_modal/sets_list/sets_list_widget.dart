@@ -7,7 +7,7 @@ import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_
 import 'package:gym_bro/state_management/cubits/display_pr_cubit/display_pr_cubit.dart';
 import 'package:gym_bro/state_management/cubits/display_pr_cubit/display_pr_state.dart';
 
-import 'sets_cards/previous_set_card_headers_widget.dart';
+import 'sets_cards/comparison_set_card_headers_widget.dart';
 import 'sets_cards/general_set_container_widget.dart';
 
 class SetsListContainer extends StatelessWidget {
