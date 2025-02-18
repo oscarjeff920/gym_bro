@@ -99,7 +99,9 @@ class SetsListContainer extends StatelessWidget {
                             isPr: prState_.displayedPR,
                             date: comparisonExerciseDate,
                             workingSetsCount:
-                                comparisonExerciseTotalWorkingSets),
+                                comparisonExerciseTotalWorkingSets,
+                          setOrder: comparisonSet.exerciseSetOrder,
+                        ),
                         // This is the black comparison set container
                         GeneralSetContainer(
                             comparisonSet: comparisonSet,
