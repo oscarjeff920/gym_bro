@@ -31,22 +31,22 @@ class ExerciseSetRepository {
         $workoutTableName.year DESC, 
         $workoutTableName.month DESC, 
         $workoutTableName.day DESC
-      LIMIT 1;
+      LIMIT 10;
       """;
-      List<Map<String, dynamic>> latestExercise =
+      List<Map<String, dynamic>> latestExercises =
           await txn.rawQuery(queryMostRecentExerciseByMovementIdString);
-      if (latestExercise.isEmpty) {
+      if (latestExercises.isEmpty) {
         List<Map<String, dynamic>> returnList = [];
         return {'data': returnList};
       }
 
-      // Main query to get all exercise_set records for the most recent exercise
+      // Main query to get all exercise_set records for each of the fetched exercises
       String queryAllExerciseSetsByExerciseIdString = """
       SELECT $exerciseSetTableName.* FROM $exerciseSetTableName
       JOIN $exerciseTableName ON 
         $exerciseSetTableName.exercise_id = $exerciseTableName.id
       WHERE
-        $exerciseTableName.id = ${latestExercise.first['id']}
+        $exerciseTableName.id = ${latestExercises.first['id']}
       ORDER BY $exerciseSetTableName.set_order ASC;
       """;
 
@@ -55,9 +55,9 @@ class ExerciseSetRepository {
 
       return {
         'data': latestExerciseSetsByMovementId,
-        'year': latestExercise.first['year'],
-        'month': latestExercise.first['month'],
-        'day': latestExercise.first['day']
+        'year': latestExercises.first['year'],
+        'month': latestExercises.first['month'],
+        'day': latestExercises.first['day']
       };
     });
 

@@ -34,7 +34,7 @@ class ExerciseSelectorContainer extends StatelessWidget {
         },
         builder: (addExerciseContext, addExerciseState) {
           MuscleGroup? firstPrimaryMuscleGroup =
-              addExerciseState.workedMuscleGroups?.returnPrimaryMuscleGroups()
+              addExerciseState.workedMuscleGroups.returnPrimaryMuscleGroups()
               .first;
           return BlocBuilder<MovementByMuscleGroupBloc,
               MovementGetByMuscleGroupState>(
