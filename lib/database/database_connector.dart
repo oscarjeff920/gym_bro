@@ -25,6 +25,19 @@ class DatabaseHelper {
     return _database!;
   }
 
+  Future runCreateDbCommands({dbConnection, addInitData=false}) async {
+    List<String> runCommands;
+    if (addInitData) {
+      runCommands = [...SQL_CREATE_TABLE_COMMANDS, ...SQL_INSERT_INIT_DATA_COMMANDS];
+    } else {
+      runCommands = SQL_CREATE_TABLE_COMMANDS;
+    }
+
+    for (String command in runCommands) {
+      await dbConnection.execute(command);
+    }
+  }
+
   Future<Database> initializeDB() async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
 
@@ -39,11 +52,7 @@ class DatabaseHelper {
   Future<void> _createDatabase(Database db, int version) async {
     if (version == 1) {
       try {
-        // await db.execute(SQL_CREATE_TABLE_COMMANDS);
-        for (String command in SQL_CREATE_TABLE_COMMANDS) {
-          print("running command");
-          await db.execute(command);
-        }
+        await runCreateDbCommands(dbConnection: db, addInitData: true);
       } catch (e) {
         print("epic failL: $e");
         rethrow;
