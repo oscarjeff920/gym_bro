@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_bro/database/database_repositories/exercise_set_repository.dart';
 import 'package:gym_bro/database/database_repositories/movement_repository.dart';
-import 'package:gym_bro/database/database_connector.dart';
+import 'package:gym_bro/database/database_helper.dart';
 import 'package:gym_bro/design/routing/router.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/movement/get_movement_by_muscle_group/movement_get_by_muscle_group_bloc.dart';
