@@ -173,14 +173,14 @@ class GetLastExerciseSetQueryingState
 
 class SuccessfulGetLastExerciseSetsByMovementQueryState
     extends GetLastExerciseSetsByMovementState {
-  final Map lastExerciseSetsData;
+  final List<Map<String, dynamic>> previous10ExerciseSessionsSetsData;
   final Map movementPRData;
 
   SuccessfulGetLastExerciseSetsByMovementQueryState(
-      {required this.lastExerciseSetsData, required this.movementPRData});
+      {required this.previous10ExerciseSessionsSetsData, required this.movementPRData});
 
   @override
-  List<Object?> get props => [lastExerciseSetsData, movementPRData];
+  List<Object?> get props => [previous10ExerciseSessionsSetsData, movementPRData];
 }
 
 class GetLastExerciseSetsQueryErrorState

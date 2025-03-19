@@ -6,7 +6,7 @@ import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_
 void main() {
   group('getEquivalentWarmupSetIndex', () {
     final mockState = SuccessfulGetLastExerciseSetsByMovementQueryState(
-        lastExerciseSetsData: const {}, movementPRData: const {});
+        previous10ExerciseSessionsSetsData: const [], movementPRData: const {});
     test('Returns currentSetIndex when comparison set is warmup', () {
       int resultIndex = mockState.getEquivalentWarmupSetIndex(
           currentSetIndex: 2,
@@ -93,7 +93,7 @@ void main() {
   });
   group('getEquivalentWorkingSetIndex', () {
     final mockState = SuccessfulGetLastExerciseSetsByMovementQueryState(
-        lastExerciseSetsData: const {}, movementPRData: const {});
+        previous10ExerciseSessionsSetsData: const [], movementPRData: const {});
     test('Returns the first working set index of comparisonExerciseSets', () {
       int resultIndex = mockState.getEquivalentWorkingSetIndex(
           currentWorkingSetIndex: 0,
@@ -290,7 +290,7 @@ void main() {
   });
   group('provideMatchingPreviousSetIndex', () {
     final mockState = SuccessfulGetLastExerciseSetsByMovementQueryState(
-        lastExerciseSetsData: const {}, movementPRData: const {});
+        previous10ExerciseSessionsSetsData: const [], movementPRData: const {});
     test('1st set is warm up for current and comparison set', () {
       int resultIndex = mockState.provideMatchingPreviousSetIndex(
           currentSet: const CurrentSet(isWarmUp: true),

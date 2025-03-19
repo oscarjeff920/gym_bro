@@ -25,10 +25,10 @@ class ExerciseSetRepository {
     for (var exerciseData in latestExercises) {
       List<Map<String,
           dynamic>> exerciseSetsData = await getExerciseSetsByExerciseId(
-          exerciseData['exercise_id'], db);
+          exerciseData['id'], db);
 
       returnData.add({
-        'data': exerciseSetsData,
+        'sets': exerciseSetsData,
         'year': exerciseData['year'],
         'month': exerciseData['month'],
         'day': exerciseData['day'],
@@ -77,60 +77,6 @@ class ExerciseSetRepository {
 
     return exerciseSetsByMovementId;
   }
-
-  // // to display the sets from the most recent exercise of this movement
-  // Future<Map> getLatestExerciseSetsByMovement(int movementId) async {
-  //   final db = await databaseHelper.database;
-  //
-  //   final returnObj = await db.transaction((txn) async {
-  //     // Sub-query to find the most recent exercise with movement_id
-  //     // TODO: This currently doesn't order by time, just date..
-  //     String queryMostRecentExerciseByMovementIdString = """
-  //     SELECT
-  //       $exerciseTableName.id,
-  //       $workoutTableName.year,
-  //       $workoutTableName.month,
-  //       $workoutTableName.day
-  //     FROM $exerciseTableName
-  //     JOIN $workoutTableName ON
-  //       $exerciseTableName.workout_id = $workoutTableName.id
-  //     WHERE $exerciseTableName.movement_id = $movementId
-  //     ORDER BY
-  //       $workoutTableName.year DESC,
-  //       $workoutTableName.month DESC,
-  //       $workoutTableName.day DESC
-  //     LIMIT 10;
-  //     """;
-  //     List<Map<String, dynamic>> latestExercises =
-  //     await txn.rawQuery(queryMostRecentExerciseByMovementIdString);
-  //     if (latestExercises.isEmpty) {
-  //       List<Map<String, dynamic>> returnList = [];
-  //       return {'data': returnList};
-  //     }
-  //
-  //     // Main query to get all exercise_set records for each of the fetched exercises
-  //     String queryAllExerciseSetsByExerciseIdString = """
-  //     SELECT $exerciseSetTableName.* FROM $exerciseSetTableName
-  //     JOIN $exerciseTableName ON
-  //       $exerciseSetTableName.exercise_id = $exerciseTableName.id
-  //     WHERE
-  //       $exerciseTableName.id = ${latestExercises.first['id']}
-  //     ORDER BY $exerciseSetTableName.set_order ASC;
-  //     """;
-  //
-  //     List<Map<String, dynamic>> latestExerciseSetsByMovementId =
-  //     await txn.rawQuery(queryAllExerciseSetsByExerciseIdString);
-  //
-  //     return {
-  //       'data': latestExerciseSetsByMovementId,
-  //       'year': latestExercises.first['year'],
-  //       'month': latestExercises.first['month'],
-  //       'day': latestExercises.first['day']
-  //     };
-  //   });
-  //
-  //   return returnObj;
-  // }
 
   Future<Map> getMovementPRSet(int movementId) async {
     final db = await databaseHelper.database;

@@ -9,6 +9,7 @@ import 'package:gym_bro/state_management/blocs/database_tables/movement/get_move
 import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_workout_cubit.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import 'package:gym_bro/state_management/cubits/add_new_movement_cubit/add_new_movement_cubit.dart';
+import 'package:gym_bro/state_management/cubits/current_comparison_set_tracking_cubit/current_comparison_set_tracker_cubit.dart';
 import 'package:gym_bro/state_management/cubits/display_pr_cubit/display_pr_cubit.dart';
 import 'package:gym_bro/state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 import 'package:gym_bro/state_management/cubits/save_error_state_cubit/save_error_state_cubit.dart';
@@ -77,6 +78,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => WorkoutTimerCubit()),
         BlocProvider(create: (context) => DisplayPrCubit()),
         BlocProvider(create: (context) => AddNewMovementCubit()),
+        BlocProvider(create: (context) => CurrentComparisonSetTrackerCubit()),
         BlocProvider(
             create: (context) =>
                 BackupCurrentWorkoutCubit()..loadBackupState()),

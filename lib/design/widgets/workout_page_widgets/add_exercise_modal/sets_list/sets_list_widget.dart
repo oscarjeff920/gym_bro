@@ -4,6 +4,7 @@ import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_bloc.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_state.dart';
+import 'package:gym_bro/state_management/cubits/current_comparison_set_tracking_cubit/current_comparison_set_tracker_cubit.dart';
 import 'package:gym_bro/state_management/cubits/display_pr_cubit/display_pr_cubit.dart';
 import 'package:gym_bro/state_management/cubits/display_pr_cubit/display_pr_state.dart';
 
@@ -49,19 +50,24 @@ class SetsListContainer extends StatelessWidget {
               }
 
               if (state is SuccessfulGetLastExerciseSetsByMovementQueryState &&
-                  state.lastExerciseSetsData['data'].isNotEmpty) {
-                List<GeneralExerciseSetModel> lastExerciseSets =
-                    state.lastExerciseSetsData['data'];
+                  state.previous10ExerciseSessionsSetsData.isNotEmpty) {
+                // This is the data for the currently selected/visible exercise session
+                Map<String, dynamic> selectedPreviousExerciseSessionSetsData =
+                    state.previous10ExerciseSessionsSetsData.elementAt(
+                        BlocProvider.of<CurrentComparisonSetTrackerCubit>(
+                                context)
+                            .indexPreviousExercise);
                 GeneralExerciseSetModel movementPR =
                     state.movementPRData['data'];
 
-                // Here we're getting the most relevant set from the previous exercise
+                // Here we're getting the most relevant set from the previous exercise session
                 // to display and compare to the current
                 int comparisonExerciseSetIndex =
                     state.provideMatchingPreviousSetIndex(
                         currentSet: currentSet!,
                         completedSets: completedSets,
-                        comparisonExerciseSets: lastExerciseSets);
+                        comparisonExerciseSets:
+                            selectedPreviousExerciseSessionSetsData['sets']);
 
                 return BlocBuilder<DisplayPrCubit, DisplayPrState>(
                   builder: (prContext, prState_) {
@@ -74,9 +80,12 @@ class SetsListContainer extends StatelessWidget {
                       comparisonExerciseTotalWorkingSets = 0;
                     } else {
                       comparisonExerciseDate =
-                          state.lastExerciseSetsData['dateString'];
+                          selectedPreviousExerciseSessionSetsData['dateString'];
+
+                      // This is the set that matches the current set, from the selected exercise session
                       comparisonSet =
-                          lastExerciseSets[comparisonExerciseSetIndex];
+                          selectedPreviousExerciseSessionSetsData['sets']
+                              [comparisonExerciseSetIndex];
                       // If the comparison set is a warm up, working set number = null
                       comparisonExerciseWorkingSetNumber = comparisonSet
                               .isWarmUp
@@ -85,21 +94,25 @@ class SetsListContainer extends StatelessWidget {
                           // the current working set number, to correctly show
                           // which working set is being displayed
                           : state
-                              .getPreviousWorkingSets(lastExerciseSets.sublist(
-                                  0, comparisonExerciseSetIndex + 1))
+                              .getPreviousWorkingSets(
+                                  selectedPreviousExerciseSessionSetsData[
+                                          'sets']
+                                      .sublist(
+                                          0, comparisonExerciseSetIndex + 1))
                               .length;
 
-                      comparisonExerciseTotalWorkingSets =
-                          state.getPreviousWorkingSets(lastExerciseSets).length;
+                      comparisonExerciseTotalWorkingSets = state
+                          .getPreviousWorkingSets(
+                              selectedPreviousExerciseSessionSetsData['sets'])
+                          .length;
                     }
 
                     return Column(
                       children: [
                         ComparisonSetCardHeaders(
-                            isPr: prState_.displayedPR,
-                            date: comparisonExerciseDate,
-                            workingSetsCount:
-                                comparisonExerciseTotalWorkingSets,
+                          isPr: prState_.displayedPR,
+                          date: comparisonExerciseDate,
+                          workingSetsCount: comparisonExerciseTotalWorkingSets,
                           setOrder: comparisonSet.exerciseSetOrder,
                         ),
                         // This is the black comparison set container
