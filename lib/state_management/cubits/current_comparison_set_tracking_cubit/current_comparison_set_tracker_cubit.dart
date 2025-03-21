@@ -5,25 +5,43 @@ class CurrentComparisonSetTrackerCubit
     extends Cubit<CurrentComparisonSetTrackerState> {
   CurrentComparisonSetTrackerCubit()
       : super(const CurrentComparisonSetTrackerState(
-            currentPreviousExerciseIndex: 0, currentPRExerciseIndex: 0));
+            currentPreviousExerciseIndex: 0,
+            currentPRExerciseIndex: 0,
+            maxIndexOfPreviousExerciseSessions: 0,
+            maxIndexOfPRExerciseSessions: 0));
 
   get indexPR => state.currentPRExerciseIndex;
+
   get indexPreviousExercise => state.currentPreviousExerciseIndex;
 
   resetIndexState() {
     emit(const CurrentComparisonSetTrackerState(
-        currentPreviousExerciseIndex: 0, currentPRExerciseIndex: 0));
+        currentPreviousExerciseIndex: 0,
+        currentPRExerciseIndex: 0,
+        maxIndexOfPreviousExerciseSessions: 0,
+        maxIndexOfPRExerciseSessions: 0));
   }
 
-  updatePreviousExerciseIndexState(int newIndex) {
-    CurrentComparisonSetTrackerState generatedState =
-        state.copyWith(updatedPreviousExerciseIndex: newIndex);
+  addMaxIndexes({required int maxIndexPreviousSets, required int maxIndexPR}) {
+    CurrentComparisonSetTrackerState generatedState = state.copyWith(
+        updatedMaxIndexPreviousSets: maxIndexPreviousSets,
+        updatedMaxIndexPR: maxIndexPR);
     emit(generatedState);
   }
 
-  updatePRIndexState(int newIndex) {
-    CurrentComparisonSetTrackerState generatedState =
-        state.copyWith(updatedPRIndex: newIndex);
+  updateCurrentIndex({required bool isPr, required bool isIncrease}) {
+    int adjustment = isIncrease ? 1 : -1;
+
+    CurrentComparisonSetTrackerState generatedState;
+    if (isPr) {
+      generatedState = state.copyWith(
+          updatedPRIndex: state.currentPRExerciseIndex + adjustment);
+    } else {
+      generatedState = state.copyWith(
+          updatedPreviousExerciseIndex:
+              state.currentPreviousExerciseIndex + adjustment);
+    }
+
     emit(generatedState);
   }
 }

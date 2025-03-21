@@ -51,14 +51,27 @@ class SetsListContainer extends StatelessWidget {
 
               if (state is SuccessfulGetLastExerciseSetsByMovementQueryState &&
                   state.previous10ExerciseSessionsSetsData.isNotEmpty) {
+                int currentIndexPreviousExerciseSession =
+                    BlocProvider.of<CurrentComparisonSetTrackerCubit>(context)
+                        .indexPreviousExercise;
+                // int currentIndexPr =
+                //     BlocProvider.of<CurrentComparisonSetTrackerCubit>(context)
+                //         .indexPR;
                 // This is the data for the currently selected/visible exercise session
                 Map<String, dynamic> selectedPreviousExerciseSessionSetsData =
-                    state.previous10ExerciseSessionsSetsData.elementAt(
-                        BlocProvider.of<CurrentComparisonSetTrackerCubit>(
-                                context)
-                            .indexPreviousExercise);
+                    state.previous10ExerciseSessionsSetsData
+                        .elementAt(currentIndexPreviousExerciseSession);
                 GeneralExerciseSetModel movementPR =
                     state.movementPRData['data'];
+
+                // Here we set the number of entries of previous exercise sessions
+                // so we know when we're at the last for the toggle
+                // TODO: PR max index hardcoded to 0 for now as it only retrieves one entry
+                BlocProvider.of<CurrentComparisonSetTrackerCubit>(context)
+                    .addMaxIndexes(
+                        maxIndexPreviousSets:
+                            state.previous10ExerciseSessionsSetsData.length - 1,
+                        maxIndexPR: 0);
 
                 // Here we're getting the most relevant set from the previous exercise session
                 // to display and compare to the current
