@@ -51,7 +51,7 @@ class SetsListContainer extends StatelessWidget {
 
               if (state is SuccessfulGetLastExerciseSetsByMovementQueryState &&
                   state.previous10ExerciseSessionsSetsData.isNotEmpty) {
-                int currentIndexPreviousExerciseSession =
+                int selectedPreviousExerciseSessionIndex =
                     BlocProvider.of<CurrentComparisonSetTrackerCubit>(context)
                         .indexPreviousExercise;
                 // int currentIndexPr =
@@ -60,7 +60,7 @@ class SetsListContainer extends StatelessWidget {
                 // This is the data for the currently selected/visible exercise session
                 Map<String, dynamic> selectedPreviousExerciseSessionSetsData =
                     state.previous10ExerciseSessionsSetsData
-                        .elementAt(currentIndexPreviousExerciseSession);
+                        .elementAt(selectedPreviousExerciseSessionIndex);
                 GeneralExerciseSetModel movementPR =
                     state.movementPRData['data'];
 
