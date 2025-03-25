@@ -21,9 +21,9 @@ class ComparisonSetCardHeaders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 5, left: 0, right: 5),
+      margin: const EdgeInsets.only(bottom: 5, left: 0, right: 0),
       padding: const EdgeInsets.symmetric(vertical: 4),
-      height: 30,
+      height: 32,
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: Colors.black, width: 1.5),
@@ -32,7 +32,7 @@ class ComparisonSetCardHeaders extends StatelessWidget {
       // height: 35,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             padding: const EdgeInsets.only(
