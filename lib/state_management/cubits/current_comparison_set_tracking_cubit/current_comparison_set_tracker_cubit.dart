@@ -11,10 +11,9 @@ class CurrentComparisonSetTrackerCubit
             maxIndexOfPRExerciseSessions: 0));
 
   get indexPR => state.currentPRExerciseIndex;
-
   get indexPreviousExercise => state.currentPreviousExerciseIndex;
 
-  resetIndexState() {
+  resetIndexStates() {
     emit(const CurrentComparisonSetTrackerState(
         currentPreviousExerciseIndex: 0,
         currentPRExerciseIndex: 0,
