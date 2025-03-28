@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:gym_bro/database/database_helper.dart';
 import 'package:sqflite_common/sqlite_api.dart';
@@ -18,13 +19,13 @@ class ExerciseSetRepository {
     List<Map<String, dynamic>> returnData = [];
 
     List<Map<String, dynamic>> latestExercises =
-        await getLatestExercisesByMovementId(movementId, db);
+        await queryLatestExercisesByMovementId(movementId, db);
 
     if (latestExercises.isEmpty) return returnData;
 
     for (var exerciseData in latestExercises) {
       List<Map<String, dynamic>> exerciseSetsData =
-          await getExerciseSetsByExerciseId(exerciseData['id'], db);
+          await queryExerciseSetsByExerciseId(exerciseData['id'], db);
 
       returnData.add({
         'sets': exerciseSetsData,
@@ -72,7 +73,7 @@ class ExerciseSetRepository {
   //   return returnData;
   // }
 
-  Future<List<Map<String, dynamic>>> getLatestExercisesByMovementId(
+  Future<List<Map<String, dynamic>>> queryLatestExercisesByMovementId(
       int movementId, dbConnection) async {
     // TODO: This currently doesn't order by time, just date..
     String queryMostRecentExerciseByMovementIdString = """
@@ -99,7 +100,7 @@ class ExerciseSetRepository {
     return latestExercises;
   }
 
-  Future<List<Map<String, dynamic>>> getExerciseSetsByExerciseId(
+  Future<List<Map<String, dynamic>>> queryExerciseSetsByExerciseId(
       int exerciseId, dbConnection) async {
     final List<Map<String, dynamic>> exerciseSetsByMovementId =
         await dbConnection.query(
@@ -124,7 +125,7 @@ class ExerciseSetRepository {
   //   if (movementPRs.isEmpty) return returnData;
   // }
 
-  Future<List<Map<String, dynamic>>> getLastPRSessionsByMovementId(
+  Future<List<Map<String, dynamic>>> queryDistinctPRSetsByMovementId(
       int movementId, dbConnection) async {
     String queryPRsForMovementIdWithDupes = """
        SELECT
@@ -195,6 +196,29 @@ class ExerciseSetRepository {
         await dbConnection.rawQuery(filteredQueryForUniquePRs);
 
     return movementPRsList;
+  }
+
+  Future<List<Map<String, dynamic>>> getDistinctPRSetsByMovementIdWrapper(
+      int movementId) async {
+    final db = await databaseHelper.database;
+
+    final List<Map<String, dynamic>> PRSets =
+        await queryDistinctPRSetsByMovementId(movementId, db);
+
+    final List<Map<String, dynamic>> formattedPRSets = [];
+
+    for (Map<String, dynamic> PRSet in PRSets) {
+      List<Map<String, dynamic>> returnExerciseSet =
+          await queryExerciseSetsByExerciseId(PRSet['exercise_set_id'], db);
+      formattedPRSets.add({
+        'data': returnExerciseSet,
+        'year': PRSet['year'],
+        'month': PRSet['month'],
+        'day': PRSet['day']
+      });
+    }
+
+    return formattedPRSets;
   }
 
   Future<Map> getMovementPRSet(int movementId) async {

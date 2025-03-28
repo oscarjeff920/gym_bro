@@ -37,7 +37,7 @@ void main() {
       int movementId = 0;
 
       List<Map<String, dynamic>> returnedResult = await exerciseSetRepository
-          .getLatestExercisesByMovementId(movementId, database);
+          .queryLatestExercisesByMovementId(movementId, database);
 
       for (var returnedData in returnedResult) {
         expect(returnedData['movement_id'], movementId);
@@ -53,7 +53,7 @@ void main() {
       int movementId = 1;
 
       List<Map<String, dynamic>> returnedResult = await exerciseSetRepository
-          .getLatestExercisesByMovementId(movementId, database);
+          .queryLatestExercisesByMovementId(movementId, database);
 
       DateTime? previousWorkoutDate;
       DateTime currentWorkoutDate;
@@ -87,7 +87,7 @@ void main() {
       int movementId = 1;
 
       List<Map<String, dynamic>> returnedResult = await exerciseSetRepository
-          .getLatestExercisesByMovementId(movementId, database);
+          .queryLatestExercisesByMovementId(movementId, database);
 
       expect(returnedResult.length, 10);
     });
@@ -101,7 +101,7 @@ void main() {
       int movementId = 0;
 
       List<Map<String, dynamic>> returnedResult = await exerciseSetRepository
-          .getLatestExercisesByMovementId(movementId, database);
+          .queryLatestExercisesByMovementId(movementId, database);
 
       expect(returnedResult.length, 2);
     });
@@ -114,15 +114,15 @@ void main() {
         }
       });
       List<Map<String, dynamic>> exerciseIdIs0Results =
-          await exerciseSetRepository.getExerciseSetsByExerciseId(0, database);
+          await exerciseSetRepository.queryExerciseSetsByExerciseId(0, database);
       expect(exerciseIdIs0Results.length, 7);
 
       List<Map<String, dynamic>> exerciseIdIs1Results =
-          await exerciseSetRepository.getExerciseSetsByExerciseId(1, database);
+          await exerciseSetRepository.queryExerciseSetsByExerciseId(1, database);
       expect(exerciseIdIs1Results.length, 2);
 
       List<Map<String, dynamic>> exerciseIdIs2Results =
-          await exerciseSetRepository.getExerciseSetsByExerciseId(2, database);
+          await exerciseSetRepository.queryExerciseSetsByExerciseId(2, database);
       expect(exerciseIdIs2Results.length, 5);
     });
     test('Retrieves entries with matching exercise ID', () async {
@@ -135,7 +135,7 @@ void main() {
       int exerciseId = 0;
 
       List<Map<String, dynamic>> returnedResults = await exerciseSetRepository
-          .getExerciseSetsByExerciseId(exerciseId, database);
+          .queryExerciseSetsByExerciseId(exerciseId, database);
 
       for (var result in returnedResults) {
         expect(result['exercise_id'], exerciseId);
@@ -148,15 +148,15 @@ void main() {
         }
       });
       List<Map<String, dynamic>> exerciseIdIs0Results =
-          await exerciseSetRepository.getExerciseSetsByExerciseId(0, database);
+          await exerciseSetRepository.queryExerciseSetsByExerciseId(0, database);
       expect(exerciseIdIs0Results.length, 7);
 
       List<Map<String, dynamic>> exerciseIdIs1Results =
-          await exerciseSetRepository.getExerciseSetsByExerciseId(1, database);
+          await exerciseSetRepository.queryExerciseSetsByExerciseId(1, database);
       expect(exerciseIdIs1Results.length, 2);
 
       List<Map<String, dynamic>> exerciseIdIs2Results =
-          await exerciseSetRepository.getExerciseSetsByExerciseId(2, database);
+          await exerciseSetRepository.queryExerciseSetsByExerciseId(2, database);
       expect(exerciseIdIs2Results.length, 5);
     });
   });
@@ -168,7 +168,7 @@ void main() {
         }
       });
       List<Map<String, dynamic>> returnFirstInstanceOfPR =
-          await exerciseSetRepository.getLastPRSessionsByMovementId(
+          await exerciseSetRepository.queryDistinctPRSetsByMovementId(
               1, database);
       expect(returnFirstInstanceOfPR.length, 1);
       expect(returnFirstInstanceOfPR.firstOrNull, {
@@ -193,7 +193,7 @@ void main() {
         }
       });
       List<Map<String, dynamic>> returnFirstInstanceOfPR =
-          await exerciseSetRepository.getLastPRSessionsByMovementId(
+          await exerciseSetRepository.queryDistinctPRSetsByMovementId(
               10, database);
       expect(returnFirstInstanceOfPR.length, 0);
     });
