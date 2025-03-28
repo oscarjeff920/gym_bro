@@ -125,8 +125,6 @@ void main() {
           await exerciseSetRepository.getExerciseSetsByExerciseId(2, database);
       expect(exerciseIdIs2Results.length, 5);
     });
-  });
-  group('Integration tests for getExerciseSetsByExerciseId', () {
     test('Retrieves entries with matching exercise ID', () async {
       mockData2.forEach((table, data) {
         for (final insertData in data) {
@@ -160,6 +158,44 @@ void main() {
       List<Map<String, dynamic>> exerciseIdIs2Results =
           await exerciseSetRepository.getExerciseSetsByExerciseId(2, database);
       expect(exerciseIdIs2Results.length, 5);
+    });
+  });
+  group('Integration tests for getLastPRSessionsByMovementId', () {
+    test('query returns the first instance of PR', () async {
+      mockData3.forEach((table, data) {
+        for (final insertData in data) {
+          database.insert(table, insertData);
+        }
+      });
+      List<Map<String, dynamic>> returnFirstInstanceOfPR =
+          await exerciseSetRepository.getLastPRSessionsByMovementId(
+              1, database);
+      expect(returnFirstInstanceOfPR.length, 1);
+      expect(returnFirstInstanceOfPR.firstOrNull, {
+        'weight': 60,
+        'reps': 2,
+        'extra_reps': null,
+        'set_order': 2,
+        'year': 2024,
+        'month': 3,
+        'day': 4,
+        'start_time': null,
+        'movement_id': 1,
+        'workout_id': 1,
+        'exercise_id': 1,
+        'exercise_set_id': 1,
+      });
+    });
+    test('query returns empty for movement_id that does not exist', () async {
+      mockData3.forEach((table, data) {
+        for (final insertData in data) {
+          database.insert(table, insertData);
+        }
+      });
+      List<Map<String, dynamic>> returnFirstInstanceOfPR =
+          await exerciseSetRepository.getLastPRSessionsByMovementId(
+              10, database);
+      expect(returnFirstInstanceOfPR.length, 0);
     });
   });
 }

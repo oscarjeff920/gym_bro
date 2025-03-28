@@ -51,3 +51,25 @@ const Map<String, List<Map<String, dynamic>>> mockData2 = {
     {'exercise_id': 2, 'set_order': 4, 'is_warm_up': 0, 'weight': 0, 'reps': 0},
   ]
 };
+
+const Map<String, List<Map<String, dynamic>>> mockData3 = {
+  workoutTableName: [
+    {'id': 0, 'year': 2025, 'month': 2, 'day': 3},
+    {'id': 1, 'year': 2024, 'month': 3, 'day': 4},
+    {'id': 2, 'year': 2025, 'month': 1, 'day': 5},
+    {'id': 3, 'year': 2025, 'month': 4, 'day': 6},
+  ],
+  exerciseTableName: [
+    {'id': 0, 'movement_id': 1, 'workout_id': 0, 'exercise_order': 0},
+    {'id': 1, 'movement_id': 1, 'workout_id': 1, 'exercise_order': 0},
+    {'id': 2, 'movement_id': 1, 'workout_id': 2, 'exercise_order': 0},
+    {'id': 3, 'movement_id': 1, 'workout_id': 3, 'exercise_order': 0},
+  ],
+  exerciseSetTableName: [
+    {'id': 0, 'exercise_id': 0, 'set_order': 1, 'weight': 60, 'reps': 2},
+    {'id': 1, 'exercise_id': 1, 'set_order': 2, 'weight': 60, 'reps': 2},
+    {'id': 2, 'exercise_id': 2, 'set_order': 3, 'weight': 60, 'reps': 2},
+    {'id': 3, 'exercise_id': 3, 'set_order': 0, 'weight': 60, 'reps': 2},
+    {'id': 4, 'exercise_id': 3, 'set_order': 4, 'weight': 60, 'reps': 2},
+  ]
+};
