@@ -6,32 +6,6 @@ class GetLastExerciseSetsByMovementState extends Equatable {
   @override
   List<Object?> get props => [];
 
-  String dateToString(int year, int month, int day) {
-    String yearString;
-    String monthString;
-    String dayString;
-
-    if (year.toString().length > 2) {
-      yearString = year.toString().substring(year.toString().length - 2);
-    } else {
-      yearString = year.toString();
-    }
-
-    if (month.toString().length == 1) {
-      monthString = "0$month";
-    } else {
-      monthString = month.toString();
-    }
-
-    if (day.toString().length == 1) {
-      dayString = "0$day";
-    } else {
-      dayString = day.toString();
-    }
-
-    return "$dayString/$monthString/$yearString";
-  }
-
   int getNumberOfWarmUpSets({required sets}) {
     List<GeneralExerciseSetModel> warmupSets =
         sets.where((exerciseSet) => exerciseSet.isWarmUp == true).toList();
@@ -174,7 +148,7 @@ class GetLastExerciseSetQueryingState
 class SuccessfulGetLastExerciseSetsByMovementQueryState
     extends GetLastExerciseSetsByMovementState {
   final List<Map<String, dynamic>> previous10ExerciseSessionsSetsData;
-  final Map movementPRData;
+  final List<Map<String, dynamic>> movementPRData;
 
   SuccessfulGetLastExerciseSetsByMovementQueryState(
       {required this.previous10ExerciseSessionsSetsData, required this.movementPRData});

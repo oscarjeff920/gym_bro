@@ -68,8 +68,9 @@ class SetsListContainer extends StatelessWidget {
                         selectedPreviousExerciseSessionSetsData = state
                             .previous10ExerciseSessionsSetsData
                             .elementAt(selectedPreviousExerciseSessionIndex);
-                    GeneralExerciseSetModel movementPR =
-                        state.movementPRData['data'];
+                    GeneralExerciseSetModel movementPR = state.movementPRData
+                        .elementAt(
+                            selectedPreviousExerciseSessionIndex)['data'];
 
                     // Here we set the number of entries of previous exercise sessions
                     // so we know when we're at the last for the toggle
@@ -79,7 +80,7 @@ class SetsListContainer extends StatelessWidget {
                             maxIndexPreviousSets: state
                                     .previous10ExerciseSessionsSetsData.length -
                                 1,
-                            maxIndexPR: 0);
+                            maxIndexPR: state.movementPRData.length - 1);
 
                     // Here we're getting the most relevant set from the previous exercise session
                     // to display and compare to the current
@@ -94,8 +95,10 @@ class SetsListContainer extends StatelessWidget {
                     return BlocBuilder<DisplayPrCubit, DisplayPrState>(
                       builder: (prContext, prState_) {
                         if (prState_.displayedPR) {
-                          comparisonExerciseDate =
-                              state.movementPRData['dateString'];
+                          comparisonExerciseDate = state.movementPRData
+                                  .elementAt(
+                                      selectedPreviousExerciseSessionIndex)[
+                              'dateString'];
                           comparisonSet = movementPR;
                           comparisonExerciseWorkingSetNumber = null;
                           // TODO: not a fan of setting to 0, but in the future I can add the real value

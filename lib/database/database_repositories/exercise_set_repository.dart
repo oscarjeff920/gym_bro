@@ -1,11 +1,11 @@
 import 'dart:core';
 
+import 'package:gym_bro/constants/utils/custom_datetime_utils.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:gym_bro/database/database_helper.dart';
-import 'package:sqflite_common/sqlite_api.dart';
 
-import '../../data_models/database_data_models/tables/exercise_set/exercise_set_object.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_object.dart';
 
 class ExerciseSetRepository {
   final DatabaseHelper databaseHelper;
@@ -28,50 +28,20 @@ class ExerciseSetRepository {
           await queryExerciseSetsByExerciseId(exerciseData['id'], db);
 
       returnData.add({
-        'sets': exerciseSetsData,
+        'sets': exerciseSetsData
+            .map((exerciseSet) =>
+                GeneralExerciseSetModel.fromDbMap(map: exerciseSet))
+            .toList(),
         'year': exerciseData['year'],
         'month': exerciseData['month'],
         'day': exerciseData['day'],
+        'dateString': CustomDatetimeUtils.dateToString(
+            exerciseData['year'], exerciseData['month'], exerciseData['day'])
       });
     }
 
     return returnData;
   }
-
-  // Future<List<Map<String, dynamic>>> getComparisonSetsByMovementIdWrapper(
-  //     int movementId, bool isPr) async {
-  //   final db = await databaseHelper.database;
-  //
-  //   final comparisonExerciseSessionsQueryMethod;
-  //   final comparisonExerciseSetsQueryMethod;
-  //   if (isPr) {
-  //     comparisonExerciseSessionsQueryMethod = getLastPRSessionsByMovementId;
-  //     comparisonExerciseSetsQueryMethod =
-  //   }
-  //
-  //
-  //   List<Map<String, dynamic>> returnData = [];
-  //
-  //   List<Map<String, dynamic>> returnComparisonExerciseSessions = isPr
-  //       ? await getLastPRsByMovementId(movementId, db)
-  //       : await getLatestExercisesByMovementId(movementId, db);
-  //
-  //   if (returnComparisonExerciseSessions.isEmpty) return returnData;
-  //
-  //   for (var exerciseData in returnComparisonExerciseSessions) {
-  //     List<Map<String, dynamic>> exerciseSetsData =
-  //         await getExerciseSetsByExerciseId(exerciseData['id'], db);
-  //
-  //     returnData.add({
-  //       'sets': exerciseSetsData,
-  //       'year': exerciseData['year'],
-  //       'month': exerciseData['month'],
-  //       'day': exerciseData['day'],
-  //     });
-  //   }
-  //
-  //   return returnData;
-  // }
 
   Future<List<Map<String, dynamic>>> queryLatestExercisesByMovementId(
       int movementId, dbConnection) async {
@@ -113,17 +83,31 @@ class ExerciseSetRepository {
     return exerciseSetsByMovementId;
   }
 
-  // Future<List<Map<String, dynamic>>> getMovementPRSetsWrapper(
-  //     int movementId) async {
-  //   final db = await databaseHelper.database;
-  //
-  //   List<Map<String, dynamic>> returnData = [];
-  //
-  //   List<Map<String, dynamic>> movementPRs =
-  //       await getLastPRSessionsByMovementId(movementId, db);
-  //
-  //   if (movementPRs.isEmpty) return returnData;
-  // }
+  Future<List<Map<String, dynamic>>> getDistinctPRSetsByMovementIdWrapper(
+      int movementId) async {
+    final db = await databaseHelper.database;
+
+    final List<Map<String, dynamic>> PRSets =
+        await queryDistinctPRSetsByMovementId(movementId, db);
+
+    final List<Map<String, dynamic>> formattedPRSets = [];
+
+    for (Map<String, dynamic> PRSetData in PRSets) {
+      List<Map<String, dynamic>> returnExerciseSet =
+          await queryExerciseSetsByExerciseSetId(
+              PRSetData['exercise_set_id'], db);
+      formattedPRSets.add({
+        'data': GeneralExerciseSetModel.fromDbMap(map: returnExerciseSet.first),
+        'year': PRSetData['year'],
+        'month': PRSetData['month'],
+        'day': PRSetData['day'],
+        'dateString': CustomDatetimeUtils.dateToString(
+            PRSetData['year'], PRSetData['month'], PRSetData['day'])
+      });
+    }
+
+    return formattedPRSets;
+  }
 
   Future<List<Map<String, dynamic>>> queryDistinctPRSetsByMovementId(
       int movementId, dbConnection) async {
@@ -198,98 +182,25 @@ class ExerciseSetRepository {
     return movementPRsList;
   }
 
-  Future<List<Map<String, dynamic>>> getDistinctPRSetsByMovementIdWrapper(
-      int movementId) async {
-    final db = await databaseHelper.database;
+  Future<List<Map<String, dynamic>>> queryExerciseSetsByExerciseSetId(
+      int exerciseSetId, dbConnection) async {
+    final List<Map<String, dynamic>> exerciseSetsByMovementId =
+        await dbConnection.query(
+      exerciseSetTableName,
+      where: 'id = ?',
+      whereArgs: [exerciseSetId],
+      orderBy: 'set_order ASC',
+    );
 
-    final List<Map<String, dynamic>> PRSets =
-        await queryDistinctPRSetsByMovementId(movementId, db);
-
-    final List<Map<String, dynamic>> formattedPRSets = [];
-
-    for (Map<String, dynamic> PRSet in PRSets) {
-      List<Map<String, dynamic>> returnExerciseSet =
-          await queryExerciseSetsByExerciseId(PRSet['exercise_set_id'], db);
-      formattedPRSets.add({
-        'data': returnExerciseSet,
-        'year': PRSet['year'],
-        'month': PRSet['month'],
-        'day': PRSet['day']
-      });
-    }
-
-    return formattedPRSets;
-  }
-
-  Future<Map> getMovementPRSet(int movementId) async {
-    final db = await databaseHelper.database;
-
-    final Map returnObj = await db.transaction((txn) async {
-      String queryPRForMovementId = """
-      SELECT $exerciseSetTableName.* FROM $exerciseSetTableName
-      JOIN $exerciseTableName ON 
-        $exerciseTableName.id = $exerciseSetTableName.exercise_id
-      WHERE $exerciseTableName.movement_id = $movementId
-      ORDER BY
-        $exerciseSetTableName.weight DESC, 
-        $exerciseSetTableName.reps DESC, 
-        $exerciseSetTableName.extra_reps DESC
-      LIMIT 1;
-      """;
-      List<Map> movementPRList = await txn.rawQuery(queryPRForMovementId);
-      if (movementPRList.isEmpty) {
-        List<Map> returnList = [];
-        return {'data': returnList};
-      }
-      Map movementPR = movementPRList.first;
-
-      String queryPRDate = """
-      SELECT 
-        $workoutTableName.year, 
-        $workoutTableName.month, 
-        $workoutTableName.day 
-      FROM $workoutTableName
-      JOIN $exerciseTableName ON 
-        $workoutTableName.id = $exerciseTableName.workout_id
-      WHERE 
-        $exerciseTableName.id = ${movementPR['exercise_id']};      
-      """;
-      List<Map> movementPRDateList = await txn.rawQuery(queryPRDate);
-      Map movementPRDate = movementPRDateList.first;
-
-      return {
-        'data': movementPR,
-        'year': movementPRDate['year'],
-        'month': movementPRDate['month'],
-        'day': movementPRDate['day']
-      };
-    });
-
-    return returnObj;
+    return exerciseSetsByMovementId;
   }
 
   Future<List<ExerciseSetTable>> getAllExerciseSetsByExerciseId(
       int exerciseId) async {
     final db = await databaseHelper.database;
 
-    String dbQuery = """
-    SELECT
-      $exerciseSetTableName.id,
-      $exerciseSetTableName.exercise_id,
-      $exerciseSetTableName.set_order,
-      $exerciseSetTableName.is_warm_up,
-      $exerciseSetTableName.weight,
-      $exerciseSetTableName.reps,
-      $exerciseSetTableName.extra_reps,
-      $exerciseSetTableName.duration,
-      $exerciseSetTableName.notes
-    FROM $exerciseSetTableName
-    WHERE $exerciseSetTableName.exercise_id = $exerciseId
-    ORDER BY $exerciseSetTableName.set_order ASC;
-    """;
-
     final List<Map<String, dynamic>> allExerciseSets =
-        await db.rawQuery(dbQuery);
+        await queryExerciseSetsByExerciseId(exerciseId, db);
 
     return allExerciseSets
         .map((exerciseSet) => ExerciseSetTable.fromMap(exerciseSet))
