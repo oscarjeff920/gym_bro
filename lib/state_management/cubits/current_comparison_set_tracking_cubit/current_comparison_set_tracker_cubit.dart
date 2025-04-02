@@ -21,6 +21,20 @@ class CurrentComparisonSetTrackerCubit
         maxIndexOfPRExerciseSessions: 0));
   }
 
+  resetPreviousExerciseSessionIndex() {
+    CurrentComparisonSetTrackerState generatedState = state.copyWith(
+        updatedPreviousExerciseIndex: 0);
+
+    emit(generatedState);
+  }
+
+  resetPRIndex() {
+    CurrentComparisonSetTrackerState generatedState = state.copyWith(
+        updatedPRIndex: 0);
+
+    emit(generatedState);
+  }
+
   addMaxIndexes({required int maxIndexPreviousSets, required int maxIndexPR}) {
     CurrentComparisonSetTrackerState generatedState = state.copyWith(
         updatedMaxIndexPreviousSets: maxIndexPreviousSets,

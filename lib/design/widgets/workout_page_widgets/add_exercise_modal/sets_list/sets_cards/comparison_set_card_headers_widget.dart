@@ -101,9 +101,22 @@ class ComparisonSetCardHeaders extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Text(
-                      date,
-                      textScaler: const TextScaler.linear(1),
+                    GestureDetector(
+                      onDoubleTap: () {
+                        if (isPr) {
+                          BlocProvider.of<CurrentComparisonSetTrackerCubit>(
+                                  context)
+                              .resetPRIndex();
+                        } else {
+                          BlocProvider.of<CurrentComparisonSetTrackerCubit>(
+                                  context)
+                              .resetPreviousExerciseSessionIndex();
+                        }
+                      },
+                      child: Text(
+                        date,
+                        textScaler: const TextScaler.linear(1),
+                      ),
                     ),
                     SizedBox(
                       width: 30,
