@@ -97,7 +97,7 @@ class ExerciseSetRepository {
           await queryExerciseSetsByExerciseSetId(
               PRSetData['exercise_set_id'], db);
       formattedPRSets.add({
-        'data': GeneralExerciseSetModel.fromDbMap(map: returnExerciseSet.first),
+        'PR_set': GeneralExerciseSetModel.fromDbMap(map: returnExerciseSet.first),
         'year': PRSetData['year'],
         'month': PRSetData['month'],
         'day': PRSetData['day'],

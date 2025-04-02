@@ -33,11 +33,6 @@ class SetsListContainer extends StatelessWidget {
               return BlocBuilder<GetLastExerciseSetsByMovementBloc,
                   GetLastExerciseSetsByMovementState>(
                 builder: (context, state) {
-                  String comparisonExerciseDate;
-                  GeneralExerciseSetModel comparisonSet;
-                  int? comparisonExerciseWorkingSetNumber;
-                  int comparisonExerciseTotalWorkingSets;
-
                   // this function prevents code duplication when calling an instance
                   // of GeneralSetContainer if comparisonSet == null or not
                   GeneralSetContainer buildGeneralSetContainer(
@@ -47,11 +42,16 @@ class SetsListContainer extends StatelessWidget {
                       setNumber: currentSet!.isWarmUp!
                           ? null
                           : completedSets.length -
-                              state.getNumberOfWarmUpSets(sets: completedSets) +
-                              1,
+                          state.getNumberOfWarmUpSets(sets: completedSets) +
+                          1,
                       comparisonSet: comparisonSet,
                     );
                   }
+
+                  String comparisonExerciseDate;
+                  GeneralExerciseSetModel comparisonSet;
+                  int? comparisonExerciseWorkingSetNumber;
+                  int comparisonExerciseTotalWorkingSets;
 
                   if (state
                           is SuccessfulGetLastExerciseSetsByMovementQueryState &&
@@ -67,14 +67,14 @@ class SetsListContainer extends StatelessWidget {
                     Map<String, dynamic>
                         selectedPreviousExerciseSessionSetsData = state
                             .previous10ExerciseSessionsSetsData
-                            .elementAt(selectedPreviousExerciseSessionIndex);
+                            .elementAt(comparisonSetTrackerState.currentPreviousExerciseIndex);
+
                     GeneralExerciseSetModel movementPR = state.movementPRData
                         .elementAt(
-                            selectedPreviousExerciseSessionIndex)['data'];
+                            comparisonSetTrackerState.currentPRExerciseIndex)['PR_set'];
 
                     // Here we set the number of entries of previous exercise sessions
                     // so we know when we're at the last for the toggle
-                    // TODO: PR max index hardcoded to 0 for now as it only retrieves one entry
                     BlocProvider.of<CurrentComparisonSetTrackerCubit>(context)
                         .addMaxIndexes(
                             maxIndexPreviousSets: state
