@@ -6,6 +6,7 @@ import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
 import 'package:gym_bro/state_management/cubits/add_new_movement_cubit/add_new_movement_cubit.dart';
+import 'package:gym_bro/state_management/cubits/current_comparison_set_tracking_cubit/current_comparison_set_tracker_cubit.dart';
 import 'package:gym_bro/state_management/cubits/workout_timer_cubit/workout_timer_cubit.dart';
 
 class ExerciseDropdownMenu extends StatelessWidget {
@@ -115,9 +116,13 @@ class ExerciseDropdownMenu extends StatelessWidget {
                     Align(
                         alignment: Alignment.centerRight,
                         child: IconButton(
-                            onPressed: () =>
-                                BlocProvider.of<AddExerciseCubit>(context)
-                                    .selectMuscleGroup(selectedMuscleGroup!),
+                            onPressed: () {
+                              BlocProvider.of<AddExerciseCubit>(context)
+                                  .selectMuscleGroup(selectedMuscleGroup!);
+                              BlocProvider.of<CurrentComparisonSetTrackerCubit>(
+                                      context)
+                                  .resetIndexStates();
+                            },
                             icon: const Icon(Icons.delete_forever)))
                   ],
                 ),

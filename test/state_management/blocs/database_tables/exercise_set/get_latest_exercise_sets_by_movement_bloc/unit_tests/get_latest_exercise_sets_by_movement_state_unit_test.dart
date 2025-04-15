@@ -1,12 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_state.dart';
 
 void main() {
   group('getEquivalentWarmupSetIndex', () {
-    final mockState = SuccessfulGetLastExerciseSetsByMovementQueryState(
-        previous10ExerciseSessionsSetsData: const [], movementPRData: const []);
+    final mockState =
+        SuccessfulGetLastExerciseSetsByMovementQueryState(returnData: {
+      for (ComparisonDisplayType displayType in ComparisonDisplayType.values)
+        displayType: const []
+    });
     test('Returns currentSetIndex when comparison set is warmup', () {
       int resultIndex = mockState.getEquivalentWarmupSetIndex(
           currentSetIndex: 2,
@@ -83,7 +87,7 @@ void main() {
     });
     test('Throws ArgumentError if comparisonExerciseSets is empty', () {
       expect(
-            () => mockState.getEquivalentWarmupSetIndex(
+        () => mockState.getEquivalentWarmupSetIndex(
           currentSetIndex: 0,
           comparisonExerciseSets: [],
         ),
@@ -92,8 +96,11 @@ void main() {
     });
   });
   group('getEquivalentWorkingSetIndex', () {
-    final mockState = SuccessfulGetLastExerciseSetsByMovementQueryState(
-        previous10ExerciseSessionsSetsData: const [], movementPRData: const []);
+    final mockState =
+        SuccessfulGetLastExerciseSetsByMovementQueryState(returnData: {
+      for (ComparisonDisplayType displayType in ComparisonDisplayType.values)
+        displayType: const []
+    });
     test('Returns the first working set index of comparisonExerciseSets', () {
       int resultIndex = mockState.getEquivalentWorkingSetIndex(
           currentWorkingSetIndex: 0,
@@ -280,7 +287,7 @@ void main() {
     });
     test('Throws ArgumentError if comparisonExerciseSets is empty', () {
       expect(
-            () => mockState.getEquivalentWorkingSetIndex(
+        () => mockState.getEquivalentWorkingSetIndex(
           currentWorkingSetIndex: 0,
           comparisonExerciseSets: [],
         ),
@@ -289,8 +296,11 @@ void main() {
     });
   });
   group('provideMatchingPreviousSetIndex', () {
-    final mockState = SuccessfulGetLastExerciseSetsByMovementQueryState(
-        previous10ExerciseSessionsSetsData: const [], movementPRData: const []);
+    final mockState =
+        SuccessfulGetLastExerciseSetsByMovementQueryState(returnData: {
+      for (ComparisonDisplayType displayType in ComparisonDisplayType.values)
+        displayType: const []
+    });
     test('1st set is warm up for current and comparison set', () {
       int resultIndex = mockState.provideMatchingPreviousSetIndex(
           currentSet: const CurrentSet(isWarmUp: true),

@@ -1,59 +1,95 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/state_management/cubits/current_comparison_set_tracking_cubit/current_comparison_set_tracker_state.dart';
 
 class CurrentComparisonSetTrackerCubit
     extends Cubit<CurrentComparisonSetTrackerState> {
   CurrentComparisonSetTrackerCubit()
-      : super(const CurrentComparisonSetTrackerState(
-            currentPreviousExerciseIndex: 0,
-            currentPRExerciseIndex: 0,
-            maxIndexOfPreviousExerciseSessions: 0,
-            maxIndexOfPRExerciseSessions: 0));
+      : super(CurrentComparisonSetTrackerState(
+          currentComparisonSetData: {
+            for (ComparisonDisplayType displayType
+                in ComparisonDisplayType.values)
+              displayType: {
+                for (CurrentComparisonSetDataType comparisonSetDataType
+                    in CurrentComparisonSetDataType.values)
+                  comparisonSetDataType: 0
+              }
+          },
+        ));
 
-  get indexPR => state.currentPRExerciseIndex;
-  get indexPreviousExercise => state.currentPreviousExerciseIndex;
+  // get getCurrentPRIndex => state.currentPRExerciseIndex;
+  //
+  // get getCurrentPreviousExerciseSessionIndex =>
+  //     state.currentPreviousExerciseIndex;
 
   resetIndexStates() {
-    emit(const CurrentComparisonSetTrackerState(
-        currentPreviousExerciseIndex: 0,
-        currentPRExerciseIndex: 0,
-        maxIndexOfPreviousExerciseSessions: 0,
-        maxIndexOfPRExerciseSessions: 0));
+    emit(CurrentComparisonSetTrackerState(
+      currentComparisonSetData: {
+        for (ComparisonDisplayType displayType in ComparisonDisplayType.values)
+          displayType: {
+            for (CurrentComparisonSetDataType comparisonSetDataType
+                in CurrentComparisonSetDataType.values)
+              comparisonSetDataType: 0
+          }
+      },
+    ));
+  }
+
+  resetIndex(ComparisonDisplayType selectedComparisonDisplayType) {
+    CurrentComparisonSetTrackerState generatedState =
+        state.copyWith(newIndexMap: {selectedComparisonDisplayType: 0});
+
+    emit(generatedState);
   }
 
   resetPreviousExerciseSessionIndex() {
-    CurrentComparisonSetTrackerState generatedState = state.copyWith(
-        updatedPreviousExerciseIndex: 0);
+    CurrentComparisonSetTrackerState generatedState =
+        state.copyWith(newPreviousExerciseIndex: 0);
 
     emit(generatedState);
   }
 
   resetPRIndex() {
-    CurrentComparisonSetTrackerState generatedState = state.copyWith(
-        updatedPRIndex: 0);
+    CurrentComparisonSetTrackerState generatedState =
+        state.copyWith(newPRIndex: 0);
 
     emit(generatedState);
   }
 
-  addMaxIndexes({required int maxIndexPreviousSets, required int maxIndexPR}) {
+  addMaxIndexes(
+      {required Map<ComparisonDisplayType, List>
+          exerciseSetsByMovementReturnData}) {
     CurrentComparisonSetTrackerState generatedState = state.copyWith(
-        updatedMaxIndexPreviousSets: maxIndexPreviousSets,
-        updatedMaxIndexPR: maxIndexPR);
+        newMaxIndexPreviousSets:
+            exerciseSetsByMovementReturnData[ComparisonDisplayType.latest]!
+                    .length -
+                1,
+        newMaxIndexPR:
+            exerciseSetsByMovementReturnData[ComparisonDisplayType.PR]!.length -
+                1);
     emit(generatedState);
   }
 
-  updateCurrentIndex({required bool isPr, required bool isIncrease}) {
+  updateCurrentIndex(
+      {required ComparisonDisplayType currentDisplayType,
+      required bool isIncrease}) {
     int adjustment = isIncrease ? 1 : -1;
 
-    CurrentComparisonSetTrackerState generatedState;
-    if (isPr) {
-      generatedState = state.copyWith(
-          updatedPRIndex: state.currentPRExerciseIndex + adjustment);
-    } else {
-      generatedState = state.copyWith(
-          updatedPreviousExerciseIndex:
-              state.currentPreviousExerciseIndex + adjustment);
-    }
+    CurrentComparisonSetTrackerState generatedState = state.copyWith(
+        newIndexMap: {
+          currentDisplayType:
+              state.getIndexByDisplayType(currentDisplayType) + adjustment
+        });
+
+    // generatedState = state.copyWith()
+    // if (isPr) {
+    //   generatedState = state.copyWith(
+    //       newPRIndex: state.currentPRExerciseIndex + adjustment);
+    // } else {
+    //   generatedState = state.copyWith(
+    //       newPreviousExerciseIndex:
+    //       state.currentPreviousExerciseIndex + adjustment);
+    // }
 
     emit(generatedState);
   }

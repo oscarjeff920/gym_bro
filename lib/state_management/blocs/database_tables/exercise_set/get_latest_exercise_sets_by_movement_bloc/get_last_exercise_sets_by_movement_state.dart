@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 
@@ -147,14 +148,13 @@ class GetLastExerciseSetQueryingState
 
 class SuccessfulGetLastExerciseSetsByMovementQueryState
     extends GetLastExerciseSetsByMovementState {
-  final List<Map<String, dynamic>> previous10ExerciseSessionsSetsData;
-  final List<Map<String, dynamic>> movementPRData;
+  final Map<ComparisonDisplayType, List<Map<String, dynamic>>> returnData;
 
   SuccessfulGetLastExerciseSetsByMovementQueryState(
-      {required this.previous10ExerciseSessionsSetsData, required this.movementPRData});
+      {required this.returnData});
 
   @override
-  List<Object?> get props => [previous10ExerciseSessionsSetsData, movementPRData];
+  List<Object?> get props => [returnData];
 }
 
 class GetLastExerciseSetsQueryErrorState

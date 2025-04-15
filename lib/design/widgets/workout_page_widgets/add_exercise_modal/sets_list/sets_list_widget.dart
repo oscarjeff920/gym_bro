@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/state_management/blocs/database_tables/exercise_set/get_latest_exercise_sets_by_movement_bloc/get_last_exercise_sets_by_movement_bloc.dart';
@@ -27,144 +28,8 @@ class SetsListContainer extends StatelessWidget {
     return ListView(
       children: [
         if (currentSet != null)
-          BlocBuilder<CurrentComparisonSetTrackerCubit,
-              CurrentComparisonSetTrackerState>(
-            builder: (comparisonSetTrackerContext, comparisonSetTrackerState) {
-              return BlocBuilder<GetLastExerciseSetsByMovementBloc,
-                  GetLastExerciseSetsByMovementState>(
-                builder: (context, state) {
-                  // this function prevents code duplication when calling an instance
-                  // of GeneralSetContainer if comparisonSet == null or not
-                  GeneralSetContainer buildGeneralSetContainer(
-                      {GeneralExerciseSetModel? comparisonSet}) {
-                    return GeneralSetContainer(
-                      currentSet: currentSet!,
-                      setNumber: currentSet!.isWarmUp!
-                          ? null
-                          : completedSets.length -
-                          state.getNumberOfWarmUpSets(sets: completedSets) +
-                          1,
-                      comparisonSet: comparisonSet,
-                    );
-                  }
-
-                  String comparisonExerciseDate;
-                  GeneralExerciseSetModel comparisonSet;
-                  int? comparisonExerciseWorkingSetNumber;
-                  int comparisonExerciseTotalWorkingSets;
-
-                  if (state
-                          is SuccessfulGetLastExerciseSetsByMovementQueryState &&
-                      state.previous10ExerciseSessionsSetsData.isNotEmpty) {
-                    int selectedPreviousExerciseSessionIndex =
-                        BlocProvider.of<CurrentComparisonSetTrackerCubit>(
-                                context)
-                            .indexPreviousExercise;
-                    // int currentIndexPr =
-                    //     BlocProvider.of<CurrentComparisonSetTrackerCubit>(context)
-                    //         .indexPR;
-                    // This is the data for the currently selected/visible exercise session
-                    Map<String, dynamic>
-                        selectedPreviousExerciseSessionSetsData = state
-                            .previous10ExerciseSessionsSetsData
-                            .elementAt(comparisonSetTrackerState.currentPreviousExerciseIndex);
-
-                    GeneralExerciseSetModel movementPR = state.movementPRData
-                        .elementAt(
-                            comparisonSetTrackerState.currentPRExerciseIndex)['PR_set'];
-
-                    // Here we set the number of entries of previous exercise sessions
-                    // so we know when we're at the last for the toggle
-                    BlocProvider.of<CurrentComparisonSetTrackerCubit>(context)
-                        .addMaxIndexes(
-                            maxIndexPreviousSets: state
-                                    .previous10ExerciseSessionsSetsData.length -
-                                1,
-                            maxIndexPR: state.movementPRData.length - 1);
-
-                    // Here we're getting the most relevant set from the previous exercise session
-                    // to display and compare to the current
-                    int comparisonExerciseSetIndex =
-                        state.provideMatchingPreviousSetIndex(
-                            currentSet: currentSet!,
-                            completedSets: completedSets,
-                            comparisonExerciseSets:
-                                selectedPreviousExerciseSessionSetsData[
-                                    'sets']);
-
-                    return BlocBuilder<DisplayPrCubit, DisplayPrState>(
-                      builder: (prContext, prState_) {
-                        if (prState_.displayedPR) {
-                          comparisonExerciseDate = state.movementPRData
-                                  .elementAt(
-                                      selectedPreviousExerciseSessionIndex)[
-                              'dateString'];
-                          comparisonSet = movementPR;
-                          comparisonExerciseWorkingSetNumber = null;
-                          // TODO: not a fan of setting to 0, but in the future I can add the real value
-                          comparisonExerciseTotalWorkingSets = 0;
-                        } else {
-                          comparisonExerciseDate =
-                              selectedPreviousExerciseSessionSetsData[
-                                  'dateString'];
-
-                          // This is the set that matches the current set, from the selected exercise session
-                          comparisonSet =
-                              selectedPreviousExerciseSessionSetsData['sets']
-                                  [comparisonExerciseSetIndex];
-                          // If the comparison set is a warm up, working set number = null
-                          comparisonExerciseWorkingSetNumber = comparisonSet
-                                  .isWarmUp
-                              ? null
-                              // we want to display the number of working sets up to
-                              // the current working set number, to correctly show
-                              // which working set is being displayed
-                              : state
-                                  .getPreviousWorkingSets(
-                                      selectedPreviousExerciseSessionSetsData[
-                                              'sets']
-                                          .sublist(0,
-                                              comparisonExerciseSetIndex + 1))
-                                  .length;
-
-                          comparisonExerciseTotalWorkingSets = state
-                              .getPreviousWorkingSets(
-                                  selectedPreviousExerciseSessionSetsData[
-                                      'sets'])
-                              .length;
-                        }
-
-                        return Column(
-                          children: [
-                            ComparisonSetCardHeaders(
-                              isPr: prState_.displayedPR,
-                              date: comparisonExerciseDate,
-                              workingSetsCount:
-                                  comparisonExerciseTotalWorkingSets,
-                              setOrder: comparisonSet.exerciseSetOrder,
-                            ),
-                            // This is the black comparison set container
-                            GeneralSetContainer(
-                                comparisonSet: comparisonSet,
-                                setNumber: comparisonExerciseWorkingSetNumber),
-                            // This is the current set container
-                            buildGeneralSetContainer(
-                              comparisonSet: comparisonSet,
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                  // If theres no previous exercise data for this movement
-                  // just show the current set container
-                  return currentSet != null
-                      ? buildGeneralSetContainer()
-                      : Container();
-                },
-              );
-            },
-          ),
+          CurrentSetScaffold(
+              currentSet: currentSet!, completedSets: completedSets),
         const SizedBox(
           height: 15,
         ),
@@ -173,3 +38,278 @@ class SetsListContainer extends StatelessWidget {
     );
   }
 }
+
+class CurrentSetScaffold extends StatelessWidget {
+  const CurrentSetScaffold({
+    super.key,
+    required this.currentSet,
+    required this.completedSets,
+  });
+
+  final CurrentSet currentSet;
+  final List<GeneralExerciseSetModel> completedSets;
+
+  GeneralSetContainer buildGeneralSetContainer(
+      {GeneralExerciseSetModel? comparisonSet,
+      required CurrentSet currentSet_,
+      required int numberOfWarmupSets}) {
+    return GeneralSetContainer(
+      currentSet: currentSet_,
+      setNumber: currentSet_.isWarmUp!
+          ? null
+          : (completedSets.length - 1) - numberOfWarmupSets,
+      comparisonSet: comparisonSet,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // return BlocBuilder<GetLastExerciseSetsByMovementBloc,
+    //     GetLastExerciseSetsByMovementState>(
+    //   builder: (context, state) {
+    //     if (state is SuccessfulGetLastExerciseSetsByMovementQueryState &&
+    //         state.previous10ExerciseSessionsSetsData.isNotEmpty) {
+    // int selectedPreviousExerciseSessionIndex =
+    //     BlocProvider
+    //         .of<CurrentComparisonSetTrackerCubit>(context)
+    //         .getCurrentPreviousExerciseSessionIndex;
+    // // int currentIndexPr =
+    // //     BlocProvider.of<CurrentComparisonSetTrackerCubit>(context)
+    // //         .indexPR;
+    // // This is the data for the currently selected/visible exercise session
+    // Map<String, dynamic> selectedPreviousExerciseSessionSetsData =
+    // state.previous10ExerciseSessionsSetsData.elementAt(
+    //     comparisonSetTrackerState.currentPreviousExerciseIndex);
+    //
+    // GeneralExerciseSetModel movementPR = state.movementPRData.elementAt(
+    //     comparisonSetTrackerState.currentPRExerciseIndex)['PR_set'];
+    //
+    // // Here we set the number of entries of previous exercise sessions
+    // // so we know when we're at the last for the toggle
+    // BlocProvider.of<CurrentComparisonSetTrackerCubit>(context)
+    //     .addMaxIndexes(
+    //     maxIndexPreviousSets:
+    //     state.previous10ExerciseSessionsSetsData.length - 1,
+    //     maxIndexPR: state.movementPRData.length - 1);
+    //
+    // // Here we're getting the most relevant set from the previous exercise session
+    // // to display and compare to the current
+    // int comparisonExerciseSetIndex =
+    // state.provideMatchingPreviousSetIndex(
+    //     currentSet: currentSet,
+    //     completedSets: completedSets,
+    //     comparisonExerciseSets:
+    //     selectedPreviousExerciseSessionSetsData['sets']);
+    //
+    // return BlocBuilder<DisplayPrCubit, DisplayPrState>(
+    //   builder: (prContext, prState_) {
+    //     String comparisonExerciseDate;
+    //     GeneralExerciseSetModel comparisonSet;
+    //     int? comparisonExerciseWorkingSetNumber;
+    //     int comparisonExerciseTotalWorkingSets;
+    //
+    //     if (prState_.displayedPR) {
+    //       comparisonExerciseDate = state.movementPRData.elementAt(
+    //           selectedPreviousExerciseSessionIndex)['dateString'];
+    //       comparisonSet = movementPR;
+    //       comparisonExerciseWorkingSetNumber = null;
+    //       // TODO: not a fan of setting to 0, but in the future I can add the real value
+    //       comparisonExerciseTotalWorkingSets = 0;
+    //     } else {
+    //       comparisonExerciseDate =
+    //       selectedPreviousExerciseSessionSetsData['dateString'];
+    //
+    //       // This is the set that matches the current set, from the selected exercise session
+    //       comparisonSet = selectedPreviousExerciseSessionSetsData['sets']
+    //       [comparisonExerciseSetIndex];
+    //       // If the comparison set is a warm up, working set number = null
+    //       comparisonExerciseWorkingSetNumber = comparisonSet.isWarmUp
+    //           ? null
+    //       // we want to display the number of working sets up to
+    //       // the current working set number, to correctly show
+    //       // which working set is being displayed
+    //           : state
+    //           .getPreviousWorkingSets(
+    //           selectedPreviousExerciseSessionSetsData['sets']
+    //               .sublist(0, comparisonExerciseSetIndex + 1))
+    //           .length;
+    //
+    //       comparisonExerciseTotalWorkingSets = state
+    //           .getPreviousWorkingSets(
+    //           selectedPreviousExerciseSessionSetsData['sets'])
+    //           .length;
+    //     }
+    return BlocBuilder<GetLastExerciseSetsByMovementBloc,
+        GetLastExerciseSetsByMovementState>(
+      builder: (context, state) {
+        if (state is SuccessfulGetLastExerciseSetsByMovementQueryState &&
+            state.returnData[ComparisonDisplayType.latest]!.isNotEmpty) {
+
+          BlocProvider.of<CurrentComparisonSetTrackerCubit>(context).addMaxIndexes(exerciseSetsByMovementReturnData: state.returnData);
+          return Column(
+            children: [
+              // TODO: this cares about PR and current comparison set
+              ComparisonSetCardHeaders(
+                exerciseSetsByMovementReturnData: state.returnData,
+                // date: date,
+                // workingSetsCount: workingSetsCount,
+                // isPr: isPr,
+                // toggleIsPR: toggleIsPR,
+                // setOrder: setOrder
+              ),
+
+              // TODO: This also cares about PR and current comparison set
+              // This is the current set container
+              BlocBuilder<DisplayPrCubit, DisplayPrState>(
+                builder: (displayPrContext, displayPrState) {
+                  // TODO: bad name -> displayedComparisonSetType
+                  List displayedComparisonSetType = state.returnData[
+                      displayPrState.currentDisplayedComparisonSetType]!;
+
+                  return BlocBuilder<CurrentComparisonSetTrackerCubit,
+                      CurrentComparisonSetTrackerState>(
+                    builder: (currentComparisonSetTrackerContext,
+                        currentComparisonSetTrackerState) {
+                      Map<String, dynamic> currentlyDisplayedComparisonSetData =
+                          displayedComparisonSetType.elementAt(
+                              currentComparisonSetTrackerState
+                                  .getIndexByDisplayType(displayPrState
+                                      .currentDisplayedComparisonSetType));
+
+                      GeneralExerciseSetModel comparisonSet;
+                      if (displayPrState.isPRDisplayed) {
+                        comparisonSet =
+                            currentlyDisplayedComparisonSetData['PR_set'];
+                      } else {
+                        comparisonSet =
+                            currentlyDisplayedComparisonSetData['sets']
+                                .elementAt(completedSets.length);
+                      }
+
+                      return Column(
+                        children: [
+                          // This is the Comparison Set container
+                          GeneralSetContainer(
+                              comparisonSet: comparisonSet, setNumber: 4),
+
+                          // This is the Current Set container
+                          // it needs info on the comparison set to show est 1RM and other things
+                          buildGeneralSetContainer(
+                            comparisonSet: comparisonSet,
+                            currentSet_: currentSet,
+                            numberOfWarmupSets: state.getNumberOfWarmUpSets(
+                                sets: completedSets),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          );
+          // },
+          // );
+        } else {
+          // If theres no previous exercise data for this movement
+          // just show the current set container
+          return buildGeneralSetContainer(
+              currentSet_: currentSet,
+              numberOfWarmupSets:
+                  state.getNumberOfWarmUpSets(sets: completedSets));
+        }
+      },
+    );
+  }
+}
+
+// class ComparisonSetInfo extends StatelessWidget {
+//   const ComparisonSetInfo({super.key,
+//     required this.lastExerciseSetsReturnData,
+//     // required this.previousExerciseSessionsData,
+//     // required this.PRSessionsData,
+//     required this.numCompletedSets});
+//
+//   final Map<ComparisonDisplayType, List<Map<String, dynamic>>> lastExerciseSetsReturnData;
+//   // final List<Map<String, dynamic>> previousExerciseSessionsData;
+//   // final List<Map<String, dynamic>> PRSessionsData;
+//   final int numCompletedSets;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<CurrentComparisonSetTrackerCubit,
+//         CurrentComparisonSetTrackerState>(
+//       builder: (comparisonSetTrackerContext, comparisonSetTrackerState) {
+//         Map<String, dynamic> currentComparisonSessionData;
+//         GeneralExerciseSetModel currentComparisonSet;
+//
+//         if (_isPR) {
+//           currentComparisonSessionData = widget.PRSessionsData.elementAt(
+//               comparisonSetTrackerState.currentPRExerciseIndex);
+//           currentComparisonSet = currentComparisonSessionData['PR_set'];
+//         } else {
+//           currentComparisonSessionData = widget.previousExerciseSessionsData
+//               .elementAt(
+//               comparisonSetTrackerState.currentPreviousExerciseIndex);
+//           currentComparisonSet = currentComparisonSessionData['sets']
+//               .elementAt(widget.numCompletedSets - 1);
+//         }
+//         return Column(
+//           children: [
+//             ComparisonSetCardHeaders(
+//               isPr: _isPR,
+//               toggleIsPR: _toggleIsPR,
+//               date: currentComparisonSessionData['dateString'],
+//               workingSetsCount:,
+//               setOrder: currentComparisonSet.exerciseSetOrder,
+//             ),
+//             // This is the comparison set container (black)
+//             GeneralSetContainer(
+//                 comparisonSet: currentComparisonSet,
+//                 setNumber: comparisonExerciseWorkingSetNumber),
+//           ],
+//         );
+//       },
+//     );
+//   }
+// }
+
+// class ComparisonSet extends StatelessWidget {
+//   const ComparisonSet({
+//     super.key,
+//     required this.isPR,
+//     required this.comparisonExerciseDate,
+//     required this.comparisonExerciseTotalWorkingSets,
+//     required this.comparisonSet,
+//     required this.comparisonExerciseWorkingSetNumber,
+//   });
+//
+//   final bool isPR;
+//   final String comparisonExerciseDate;
+//   final int comparisonExerciseTotalWorkingSets;
+//   final GeneralExerciseSetModel comparisonSet;
+//   final int? comparisonExerciseWorkingSetNumber;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<CurrentComparisonSetTrackerCubit,
+//         CurrentComparisonSetTrackerState>(
+//       builder: (comparisonSetTrackerContext, comparisonSetTrackerState) {
+//         return Column(
+//           children: [
+//             ComparisonSetCardHeaders(
+//               isPr: isPR,
+//               date: comparisonExerciseDate,
+//               workingSetsCount: comparisonExerciseTotalWorkingSets,
+//               setOrder: comparisonSet.exerciseSetOrder,
+//             ),
+//             // This is the black comparison set container
+//             GeneralSetContainer(
+//                 comparisonSet: comparisonSet,
+//                 setNumber: comparisonExerciseWorkingSetNumber),
+//           ],
+//         );
+//       },
+//     );
+//   }
+// }

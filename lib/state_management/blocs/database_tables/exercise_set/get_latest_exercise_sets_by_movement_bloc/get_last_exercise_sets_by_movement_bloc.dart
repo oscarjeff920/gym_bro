@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/constants/utils/custom_datetime_utils.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/database/database_repositories/exercise_set_repository.dart';
@@ -27,9 +28,10 @@ class GetLastExerciseSetsByMovementBloc extends Bloc<
       QueryLastExerciseSetsByMovementEvent event) async* {
     yield GetLastExerciseSetQueryingState();
     if (event.movementId == null) {
-      yield SuccessfulGetLastExerciseSetsByMovementQueryState(
-          previous10ExerciseSessionsSetsData: const [],
-          movementPRData: const []);
+      yield SuccessfulGetLastExerciseSetsByMovementQueryState(returnData: {
+        for (ComparisonDisplayType displayType in ComparisonDisplayType.values)
+          displayType: []
+      });
     } else {
       // Get Previous Exercise Sets
       try {
@@ -43,9 +45,11 @@ class GetLastExerciseSetsByMovementBloc extends Bloc<
             await exerciseSetRepository
                 .getDistinctPRSetsByMovementIdWrapper(event.movementId!);
 
-        yield SuccessfulGetLastExerciseSetsByMovementQueryState(
-            previous10ExerciseSessionsSetsData: previousSetsGroupsData,
-            movementPRData: movementPRSetsObj);
+        // TODO: should have some sort of copy with here...
+        yield SuccessfulGetLastExerciseSetsByMovementQueryState(returnData: {
+          ComparisonDisplayType.latest: previousSetsGroupsData,
+          ComparisonDisplayType.PR: movementPRSetsObj
+        });
       } catch (e, stackTrace) {
         print(
             "error in getting movement PR, GetLastExerciseSetsByMovementBloc: $e");
