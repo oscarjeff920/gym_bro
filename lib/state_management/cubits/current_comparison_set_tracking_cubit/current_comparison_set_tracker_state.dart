@@ -1,45 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:gym_bro/constants/enums.dart';
 
-// class CurrentComparisonSetTrackerState extends Equatable {
-//   final int currentPreviousExerciseIndex;
-//   final int maxIndexOfPreviousExerciseSessions;
-//   final int currentPRExerciseIndex;
-//   final int maxIndexOfPRExerciseSessions;
-//
-//   const CurrentComparisonSetTrackerState(
-//       {required this.currentPreviousExerciseIndex,
-//       required this.maxIndexOfPreviousExerciseSessions,
-//       required this.currentPRExerciseIndex,
-//       required this.maxIndexOfPRExerciseSessions});
-//
-//   @override
-//   get props => [
-//         currentPreviousExerciseIndex,
-//         maxIndexOfPreviousExerciseSessions,
-//         currentPRExerciseIndex,
-//         maxIndexOfPRExerciseSessions
-//       ];
-//
-//   copyWith(
-//       {int? updatedPreviousExerciseIndex,
-//       int? updatedMaxIndexPreviousSets,
-//       int? updatedPRIndex,
-//       int? updatedMaxIndexPR}) {
-//     CurrentComparisonSetTrackerState copiedState =
-//         CurrentComparisonSetTrackerState(
-//             currentPreviousExerciseIndex: updatedPreviousExerciseIndex ??
-//                 currentPreviousExerciseIndex,
-//             maxIndexOfPreviousExerciseSessions: updatedMaxIndexPreviousSets ??
-//                 maxIndexOfPreviousExerciseSessions,
-//             currentPRExerciseIndex: updatedPRIndex ?? currentPRExerciseIndex,
-//             maxIndexOfPRExerciseSessions:
-//                 updatedMaxIndexPR ?? maxIndexOfPRExerciseSessions);
-//
-//     return copiedState;
-//   }
-// }
-
 class CurrentComparisonSetTrackerState extends Equatable {
   final Map<ComparisonDisplayType, Map<CurrentComparisonSetDataType, int>>
       currentComparisonSetData;
@@ -70,13 +31,13 @@ class CurrentComparisonSetTrackerState extends Equatable {
 
   int getMaxIndexByDisplayType(ComparisonDisplayType displayType) {
     return currentComparisonSetData[displayType]![
-    CurrentComparisonSetDataType.maxIndex]!;
+        CurrentComparisonSetDataType.maxIndex]!;
   }
 
   bool isIndexAtMax(ComparisonDisplayType displayType) {
     int currentIndex = getIndexByDisplayType(displayType);
     int maxIndex = getMaxIndexByDisplayType(displayType);
-    return  currentIndex >= maxIndex;
+    return currentIndex >= maxIndex;
   }
 
   bool indexNotAtMax(ComparisonDisplayType displayType) {

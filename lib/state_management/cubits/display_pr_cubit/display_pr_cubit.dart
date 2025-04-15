@@ -13,10 +13,13 @@ class DisplayPrCubit extends Cubit<DisplayPrState> {
   }
 
   void toggleComparisonType() {
-    if (state.currentDisplayedComparisonSetType == ComparisonDisplayType.latest) {
-      emit(const DisplayPrState(currentDisplayedComparisonSetType: ComparisonDisplayType.PR));
+    if (state.currentDisplayedComparisonSetType ==
+        ComparisonDisplayType.latest) {
+      emit(const DisplayPrState(
+          currentDisplayedComparisonSetType: ComparisonDisplayType.PR));
     } else {
-      emit(const DisplayPrState(currentDisplayedComparisonSetType: ComparisonDisplayType.latest));
+      emit(const DisplayPrState(
+          currentDisplayedComparisonSetType: ComparisonDisplayType.latest));
     }
   }
 }

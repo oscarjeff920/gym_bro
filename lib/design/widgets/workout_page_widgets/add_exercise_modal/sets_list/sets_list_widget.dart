@@ -151,11 +151,6 @@ class CurrentSetScaffold extends StatelessWidget {
               // TODO: this cares about PR and current comparison set
               ComparisonSetCardHeaders(
                 exerciseSetsByMovementReturnData: state.returnData,
-                // date: date,
-                // workingSetsCount: workingSetsCount,
-                // isPr: isPr,
-                // toggleIsPR: toggleIsPR,
-                // setOrder: setOrder
               ),
 
               // TODO: This also cares about PR and current comparison set
@@ -222,94 +217,3 @@ class CurrentSetScaffold extends StatelessWidget {
     );
   }
 }
-
-// class ComparisonSetInfo extends StatelessWidget {
-//   const ComparisonSetInfo({super.key,
-//     required this.lastExerciseSetsReturnData,
-//     // required this.previousExerciseSessionsData,
-//     // required this.PRSessionsData,
-//     required this.numCompletedSets});
-//
-//   final Map<ComparisonDisplayType, List<Map<String, dynamic>>> lastExerciseSetsReturnData;
-//   // final List<Map<String, dynamic>> previousExerciseSessionsData;
-//   // final List<Map<String, dynamic>> PRSessionsData;
-//   final int numCompletedSets;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<CurrentComparisonSetTrackerCubit,
-//         CurrentComparisonSetTrackerState>(
-//       builder: (comparisonSetTrackerContext, comparisonSetTrackerState) {
-//         Map<String, dynamic> currentComparisonSessionData;
-//         GeneralExerciseSetModel currentComparisonSet;
-//
-//         if (_isPR) {
-//           currentComparisonSessionData = widget.PRSessionsData.elementAt(
-//               comparisonSetTrackerState.currentPRExerciseIndex);
-//           currentComparisonSet = currentComparisonSessionData['PR_set'];
-//         } else {
-//           currentComparisonSessionData = widget.previousExerciseSessionsData
-//               .elementAt(
-//               comparisonSetTrackerState.currentPreviousExerciseIndex);
-//           currentComparisonSet = currentComparisonSessionData['sets']
-//               .elementAt(widget.numCompletedSets - 1);
-//         }
-//         return Column(
-//           children: [
-//             ComparisonSetCardHeaders(
-//               isPr: _isPR,
-//               toggleIsPR: _toggleIsPR,
-//               date: currentComparisonSessionData['dateString'],
-//               workingSetsCount:,
-//               setOrder: currentComparisonSet.exerciseSetOrder,
-//             ),
-//             // This is the comparison set container (black)
-//             GeneralSetContainer(
-//                 comparisonSet: currentComparisonSet,
-//                 setNumber: comparisonExerciseWorkingSetNumber),
-//           ],
-//         );
-//       },
-//     );
-//   }
-// }
-
-// class ComparisonSet extends StatelessWidget {
-//   const ComparisonSet({
-//     super.key,
-//     required this.isPR,
-//     required this.comparisonExerciseDate,
-//     required this.comparisonExerciseTotalWorkingSets,
-//     required this.comparisonSet,
-//     required this.comparisonExerciseWorkingSetNumber,
-//   });
-//
-//   final bool isPR;
-//   final String comparisonExerciseDate;
-//   final int comparisonExerciseTotalWorkingSets;
-//   final GeneralExerciseSetModel comparisonSet;
-//   final int? comparisonExerciseWorkingSetNumber;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<CurrentComparisonSetTrackerCubit,
-//         CurrentComparisonSetTrackerState>(
-//       builder: (comparisonSetTrackerContext, comparisonSetTrackerState) {
-//         return Column(
-//           children: [
-//             ComparisonSetCardHeaders(
-//               isPr: isPR,
-//               date: comparisonExerciseDate,
-//               workingSetsCount: comparisonExerciseTotalWorkingSets,
-//               setOrder: comparisonSet.exerciseSetOrder,
-//             ),
-//             // This is the black comparison set container
-//             GeneralSetContainer(
-//                 comparisonSet: comparisonSet,
-//                 setNumber: comparisonExerciseWorkingSetNumber),
-//           ],
-//         );
-//       },
-//     );
-//   }
-// }

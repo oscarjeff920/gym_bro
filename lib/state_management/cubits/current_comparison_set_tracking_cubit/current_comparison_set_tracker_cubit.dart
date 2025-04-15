@@ -17,11 +17,6 @@ class CurrentComparisonSetTrackerCubit
           },
         ));
 
-  // get getCurrentPRIndex => state.currentPRExerciseIndex;
-  //
-  // get getCurrentPreviousExerciseSessionIndex =>
-  //     state.currentPreviousExerciseIndex;
-
   resetIndexStates() {
     emit(CurrentComparisonSetTrackerState(
       currentComparisonSetData: {
@@ -80,16 +75,6 @@ class CurrentComparisonSetTrackerCubit
           currentDisplayType:
               state.getIndexByDisplayType(currentDisplayType) + adjustment
         });
-
-    // generatedState = state.copyWith()
-    // if (isPr) {
-    //   generatedState = state.copyWith(
-    //       newPRIndex: state.currentPRExerciseIndex + adjustment);
-    // } else {
-    //   generatedState = state.copyWith(
-    //       newPreviousExerciseIndex:
-    //       state.currentPreviousExerciseIndex + adjustment);
-    // }
 
     emit(generatedState);
   }

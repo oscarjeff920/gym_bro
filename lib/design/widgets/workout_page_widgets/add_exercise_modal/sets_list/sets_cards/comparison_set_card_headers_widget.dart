@@ -11,21 +11,10 @@ class ComparisonSetCardHeaders extends StatelessWidget {
   const ComparisonSetCardHeaders({
     super.key,
     required this.exerciseSetsByMovementReturnData,
-    // required this.date,
-    // required this.workingSetsCount,
-    // required this.isPr,
-    // required this.toggleIsPR,
-    // required this.setOrder,
   });
 
   final Map<ComparisonDisplayType, List<Map<String, dynamic>>>
       exerciseSetsByMovementReturnData;
-
-  // final bool isPr;
-  // final Function toggleIsPR;
-  // final String date;
-  // final int workingSetsCount;
-  // final int setOrder;
 
   @override
   Widget build(BuildContext context) {
@@ -107,14 +96,6 @@ class ComparisonSetCardHeaders extends StatelessWidget {
                                         currentDisplayType: displayPrState
                                             .currentDisplayedComparisonSetType,
                                         isIncrease: true);
-                                // BlocProvider.of<
-                                //             CurrentComparisonSetTrackerCubit>(
-                                //         context)
-                                //     .updateCurrentIndex(
-                                //   isPr: isPr,
-                                //   // as the most recent exercise session is index 0, to go back the index needs to increase
-                                //   isIncrease: true,
-                                // );
                               },
                               icon: const Icon(Icons.chevron_left, size: 20),
                               style: ButtonStyle(
@@ -160,14 +141,6 @@ class ComparisonSetCardHeaders extends StatelessWidget {
                                         currentDisplayType: displayPrState
                                             .currentDisplayedComparisonSetType,
                                         isIncrease: false);
-                                // BlocProvider.of<
-                                //             CurrentComparisonSetTrackerCubit>(
-                                //         context)
-                                //     .updateCurrentIndex(
-                                //   isPr: isPr,
-                                //   // as the most recent exercise session is index 0, to go back the index needs to decrease
-                                //   isIncrease: false,
-                                // );
                               },
                               icon: const Icon(
                                 Icons.chevron_right,
