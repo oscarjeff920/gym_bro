@@ -11,10 +11,12 @@ class ComparisonSetCardHeaders extends StatelessWidget {
   const ComparisonSetCardHeaders({
     super.key,
     required this.exerciseSetsByMovementReturnData,
+    required this.totalWorkingSets
   });
 
   final Map<ComparisonDisplayType, List<Map<String, dynamic>>>
       exerciseSetsByMovementReturnData;
+  final int totalWorkingSets;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class ComparisonSetCardHeaders extends StatelessWidget {
               CurrentComparisonSetTrackerState>(
             builder: (currentComparisonSetTrackerContext,
                 currentComparisonSetTrackerState) {
-              Map currentlyDisplayedComparisonSetData =
+              Map<String, dynamic> currentlyDisplayedComparisonSetData =
                   displayedComparisonSetType.elementAt(
                       currentComparisonSetTrackerState.getIndexByDisplayType(
                           displayPrState.currentDisplayedComparisonSetType));
@@ -167,8 +169,8 @@ class ComparisonSetCardHeaders extends StatelessWidget {
                             textScaleFactor: 0.75,
                           )
                         : Text(
-                            // "Working Sets: $workingSetsCount",
-                            "Working Sets: ERR",
+                            // "Working Sets: $totalWorkingSets",
+                            "Working Sets: ${currentlyDisplayedComparisonSetData['workingSetsCount']!}",
                             textScaleFactor: 0.75,
                           ),
                   ),

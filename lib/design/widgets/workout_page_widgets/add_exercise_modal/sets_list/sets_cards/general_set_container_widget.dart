@@ -5,6 +5,9 @@ import 'package:gym_bro/constants/utils/estimated_1RM_utils.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
+import 'package:gym_bro/state_management/cubits/display_pr_cubit/display_pr_cubit.dart';
+import 'package:gym_bro/state_management/cubits/display_pr_cubit/display_pr_cubit.dart';
+import 'package:gym_bro/state_management/cubits/display_pr_cubit/display_pr_state.dart';
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_cubit.dart';
 import 'package:gym_bro/state_management/cubits/set_timer_cubit/set_timer_state.dart';
 
@@ -105,120 +108,120 @@ class GeneralSetContainer extends StatelessWidget {
               if (false)
                 Expanded(
                     child: _buildField(
-                  label: "Rest Time",
-                  value: null,
-                  setType: setType,
-                )),
+                      label: "Rest Time",
+                      value: null,
+                      setType: setType,
+                    )),
               Expanded(
                   child: _buildField(
-                label: "Warm Up",
-                value: set.isWarmUp,
-                updateSetFunction: (newValue) {
-                  BlocProvider.of<AddExerciseCubit>(context)
-                      .updateCurrentSet(CurrentSet(isWarmUp: newValue));
-                },
-                setType: setType,
-              )),
+                    label: "Warm Up",
+                    value: set.isWarmUp,
+                    updateSetFunction: (newValue) {
+                      BlocProvider.of<AddExerciseCubit>(context)
+                          .updateCurrentSet(CurrentSet(isWarmUp: newValue));
+                    },
+                    setType: setType,
+                  )),
               Expanded(
                   child: _buildField(
-                label: "Weight",
-                value: set.weight,
-                // The following field is required because weight is a double.
-                // When a double is converted to a string, it includes a decimal (e.g., 1 becomes "1.0").
-                // This can cause issues when entering a value: if you enter "1", it displays as "1.0"
-                // with the cursor placed after the decimal point. To enter "11",
-                // you'd need to manually move the cursor, which can be inconvenient.
-                updateDisplay: setType == SetType.current ? false : true,
-                hintText: Estimated1RMUtils.returnCalculatedWeightFrom1RM(
-                    set.reps,
-                    Estimated1RMUtils.calculateEstimated1RM(
-                        comparisonSet?.weight, comparisonSet?.reps)),
-                updateSetFunction: (newValue) {
-                  double? weightValue;
-                  if (newValue == "") {
-                    weightValue = null;
-                  } else {
-                    weightValue = double.parse(newValue);
-                  }
-                  BlocProvider.of<AddExerciseCubit>(context)
-                      .updateWeightCurrentSet(weightValue);
-                },
-                setType: setType,
-              )),
+                    label: "Weight",
+                    value: set.weight,
+                    // The following field is required because weight is a double.
+                    // When a double is converted to a string, it includes a decimal (e.g., 1 becomes "1.0").
+                    // This can cause issues when entering a value: if you enter "1", it displays as "1.0"
+                    // with the cursor placed after the decimal point. To enter "11",
+                    // you'd need to manually move the cursor, which can be inconvenient.
+                    updateDisplay: setType == SetType.current ? false : true,
+                    hintText: Estimated1RMUtils.returnCalculatedWeightFrom1RM(
+                        set.reps,
+                        Estimated1RMUtils.calculateEstimated1RM(
+                            comparisonSet?.weight, comparisonSet?.reps)),
+                    updateSetFunction: (newValue) {
+                      double? weightValue;
+                      if (newValue == "") {
+                        weightValue = null;
+                      } else {
+                        weightValue = double.parse(newValue);
+                      }
+                      BlocProvider.of<AddExerciseCubit>(context)
+                          .updateWeightCurrentSet(weightValue);
+                    },
+                    setType: setType,
+                  )),
               Expanded(
                   child: _buildField(
-                label: "Reps",
-                value: set.reps,
-                hintText: Estimated1RMUtils.returnCalculatedRepsFrom1RM(
-                    set.weight,
-                    Estimated1RMUtils.calculateEstimated1RM(
-                        comparisonSet?.weight, comparisonSet?.reps)),
-                updateSetFunction: (newValue) {
-                  int? reps;
-                  if (newValue == "") {
-                    reps = null;
-                  } else {
-                    reps = int.parse(newValue);
-                  }
-                  BlocProvider.of<AddExerciseCubit>(context)
-                      .updateRepsCurrentSet(reps);
-                },
-                setType: setType,
-              )),
+                    label: "Reps",
+                    value: set.reps,
+                    hintText: Estimated1RMUtils.returnCalculatedRepsFrom1RM(
+                        set.weight,
+                        Estimated1RMUtils.calculateEstimated1RM(
+                            comparisonSet?.weight, comparisonSet?.reps)),
+                    updateSetFunction: (newValue) {
+                      int? reps;
+                      if (newValue == "") {
+                        reps = null;
+                      } else {
+                        reps = int.parse(newValue);
+                      }
+                      BlocProvider.of<AddExerciseCubit>(context)
+                          .updateRepsCurrentSet(reps);
+                    },
+                    setType: setType,
+                  )),
               Expanded(
                   child: _buildField(
-                label: "+ Reps",
-                value: set.extraReps,
-                updateSetFunction: (newValue) {
-                  int? extraReps;
-                  if (newValue == "") {
-                    extraReps = null;
-                  } else {
-                    extraReps = int.parse(newValue);
-                  }
-                  BlocProvider.of<AddExerciseCubit>(context)
-                      .updateExtraRepsCurrentSet(extraReps);
-                },
-                setType: setType,
-              )),
+                    label: "+ Reps",
+                    value: set.extraReps,
+                    updateSetFunction: (newValue) {
+                      int? extraReps;
+                      if (newValue == "") {
+                        extraReps = null;
+                      } else {
+                        extraReps = int.parse(newValue);
+                      }
+                      BlocProvider.of<AddExerciseCubit>(context)
+                          .updateExtraRepsCurrentSet(extraReps);
+                    },
+                    setType: setType,
+                  )),
               Expanded(
                   child: setType == SetType.current
                       ? BlocBuilder<SetTimerCubit, SetTimerState>(
-                          builder: (context, state) {
-                            return _buildField(
-                              label: "Duration",
-                              value: state.toString(),
-                              setType: setType,
-                            );
-                          },
-                        )
+                    builder: (context, state) {
+                      return _buildField(
+                        label: "Duration",
+                        value: state.toString(),
+                        setType: setType,
+                      );
+                    },
+                  )
                       : _buildField(
-                          label: "Duration",
-                          value: set.setDuration ?? "- - -",
-                          setType: setType,
-                        )),
+                    label: "Duration",
+                    value: set.setDuration ?? "- - -",
+                    setType: setType,
+                  )),
               Expanded(
                   child: Container(
-                color: Estimated1RMUtils.showComparisonSetEstimated1RM(
+                    color: Estimated1RMUtils.showComparisonSetEstimated1RM(
                         set, setType, comparisonSet == null)
-                    ? Colors.black.withOpacity(0.3)
-                    : Estimated1RMUtils.showEstimated1RM(set)
+                        ? Colors.black.withOpacity(0.3)
+                        : Estimated1RMUtils.showEstimated1RM(set)
                         ? Colors.yellow.withOpacity(0.3)
                         : null,
-                child: _buildField(
-                  label: "Est. 1RM",
-                  value: Estimated1RMUtils.showComparisonSetEstimated1RM(
+                    child: _buildField(
+                      label: "Est. 1RM",
+                      value: Estimated1RMUtils.showComparisonSetEstimated1RM(
                           set, setType, comparisonSet == null)
-                      ? Estimated1RMUtils.returnEstimated1RM(
+                          ? Estimated1RMUtils.returnEstimated1RM(
                           weight: comparisonSet!.weight,
                           reps: comparisonSet!.reps)
-                      : Estimated1RMUtils.showEstimated1RM(set)
+                          : Estimated1RMUtils.showEstimated1RM(set)
                           ? Estimated1RMUtils.returnEstimated1RM(
-                              weight: set.weight, reps: set.reps)
+                          weight: set.weight, reps: set.reps)
                           : "",
-                  setType: setType,
-                ),
-              )),
+                      setType: setType,
+                    ),
+                  )),
             ],
           ),
           if (setType == SetType.current || set.notes != null)
@@ -237,13 +240,12 @@ class GeneralSetContainer extends StatelessWidget {
     );
   }
 
-  Widget _buildField(
-      {required String label,
-      required dynamic value,
-      required SetType setType,
-      bool updateDisplay = true,
-      String? hintText,
-      Function(dynamic)? updateSetFunction}) {
+  Widget _buildField({required String label,
+    required dynamic value,
+    required SetType setType,
+    bool updateDisplay = true,
+    String? hintText,
+    Function(dynamic)? updateSetFunction}) {
     Map<String, TextFieldType> textFieldTypeMap = {
       "Rest Time": TextFieldType.duration,
       "Warm Up": TextFieldType.bool,
@@ -260,24 +262,25 @@ class GeneralSetContainer extends StatelessWidget {
         SetFieldHeader(header: "$label:", textStyle: headerTextStyle),
         if (textFieldTypeMap[label] == TextFieldType.duration)
           DurationTextFieldWidget(displayDuration: value, setType: setType)
-        else if (textFieldTypeMap[label] == TextFieldType.bool)
-          WarmupCheckbox(
-            isBoxChecked: value,
-            updateSetFunction: updateSetFunction,
-            setType: setType,
-          )
         else
-          GeneralSetField(
-            value: value,
-            setType: setType,
-            hintText: hintText,
-            updateField: updateDisplay,
-            autoFocus: label == "Weight" && value == null ? true : false,
-            inputType: textFieldTypeMap[label] == TextFieldType.number
-                ? TextInputType.number
-                : TextInputType.text,
-            updateSetFunction: updateSetFunction,
-          )
+          if (textFieldTypeMap[label] == TextFieldType.bool)
+            WarmupCheckbox(
+              isBoxChecked: value,
+              updateSetFunction: updateSetFunction,
+              setType: setType,
+            )
+          else
+            GeneralSetField(
+              value: value,
+              setType: setType,
+              hintText: hintText,
+              updateField: updateDisplay,
+              autoFocus: label == "Weight" && value == null ? true : false,
+              inputType: textFieldTypeMap[label] == TextFieldType.number
+                  ? TextInputType.number
+                  : TextInputType.text,
+              updateSetFunction: updateSetFunction,
+            )
       ],
     );
   }

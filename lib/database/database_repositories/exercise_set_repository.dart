@@ -27,11 +27,19 @@ class ExerciseSetRepository {
       List<Map<String, dynamic>> exerciseSetsData =
           await queryExerciseSetsByExerciseId(exerciseData['id'], db);
 
+      int numWorkingSets = 0;
+
+      List<GeneralExerciseSetModel> sets = exerciseSetsData.map((exerciseSet) {
+        if (exerciseSet['is_warm_up'] == 0) {
+          numWorkingSets += 1;
+        }
+
+        return GeneralExerciseSetModel.fromDbMap(map: exerciseSet);
+      }).toList();
+
       returnData.add({
-        'sets': exerciseSetsData
-            .map((exerciseSet) =>
-                GeneralExerciseSetModel.fromDbMap(map: exerciseSet))
-            .toList(),
+        'sets': sets,
+        'workingSetsCount': numWorkingSets,
         'year': exerciseData['year'],
         'month': exerciseData['month'],
         'day': exerciseData['day'],

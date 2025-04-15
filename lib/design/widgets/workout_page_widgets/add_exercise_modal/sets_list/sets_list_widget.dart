@@ -57,7 +57,7 @@ class CurrentSetScaffold extends StatelessWidget {
       currentSet: currentSet_,
       setNumber: currentSet_.isWarmUp!
           ? null
-          : (completedSets.length - 1) - numberOfWarmupSets,
+          : completedSets.length - numberOfWarmupSets + 1,
       comparisonSet: comparisonSet,
     );
   }
@@ -144,12 +144,14 @@ class CurrentSetScaffold extends StatelessWidget {
       builder: (context, state) {
         if (state is SuccessfulGetLastExerciseSetsByMovementQueryState &&
             state.returnData[ComparisonDisplayType.latest]!.isNotEmpty) {
-
-          BlocProvider.of<CurrentComparisonSetTrackerCubit>(context).addMaxIndexes(exerciseSetsByMovementReturnData: state.returnData);
+          BlocProvider.of<CurrentComparisonSetTrackerCubit>(context)
+              .addMaxIndexes(
+                  exerciseSetsByMovementReturnData: state.returnData);
           return Column(
             children: [
               // TODO: this cares about PR and current comparison set
               ComparisonSetCardHeaders(
+                totalWorkingSets: 1,
                 exerciseSetsByMovementReturnData: state.returnData,
               ),
 
@@ -185,7 +187,16 @@ class CurrentSetScaffold extends StatelessWidget {
                         children: [
                           // This is the Comparison Set container
                           GeneralSetContainer(
-                              comparisonSet: comparisonSet, setNumber: 4),
+                              comparisonSet: comparisonSet,
+                              setNumber: displayPrState.isPRDisplayed
+                                  ? completedSets.length + 1
+                                  : state.provideMatchingPreviousSetIndex(
+                                      currentSet: currentSet,
+                                      completedSets: completedSets,
+                                      comparisonExerciseSets:
+                                          currentlyDisplayedComparisonSetData[
+                                              'sets']) + 1
+                          ),
 
                           // This is the Current Set container
                           // it needs info on the comparison set to show est 1RM and other things
