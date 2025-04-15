@@ -18,15 +18,22 @@ class ComparisonSetCardHeaders extends StatelessWidget {
       exerciseSetsByMovementReturnData;
   final int totalWorkingSets;
 
+  Color get col => const Color.fromRGBO(124, 124, 124, 1);
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 5, left: 0, right: 0),
       padding: const EdgeInsets.symmetric(vertical: 4),
-      height: 32,
+      height: 40,
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.black, width: 1.5),
+        color: Colors.black,
+        border: Border(
+            top: BorderSide(color: col, width: 2),
+            bottom: BorderSide(color: col, width: 2),
+            left: BorderSide(color: col, width: 2),
+            right: BorderSide(color: col, width: 2),
+        ),
         borderRadius: BorderRadius.circular(10),
       ),
       // height: 35,
@@ -99,7 +106,7 @@ class ComparisonSetCardHeaders extends StatelessWidget {
                                             .currentDisplayedComparisonSetType,
                                         isIncrease: true);
                               },
-                              icon: const Icon(Icons.chevron_left, size: 20),
+                              icon: const Icon(Icons.chevron_left, size: 28, color: Colors.white,),
                               style: ButtonStyle(
                                 padding:
                                     WidgetStateProperty.all<EdgeInsetsGeometry>(
@@ -123,9 +130,13 @@ class ComparisonSetCardHeaders extends StatelessWidget {
                                   .resetPreviousExerciseSessionIndex();
                             }
                           },
-                          child: Text(
-                            currentlyDisplayedComparisonSetData['dateString'],
-                            textScaler: const TextScaler.linear(1),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Text(
+                              currentlyDisplayedComparisonSetData['dateString'],
+                              textScaler: const TextScaler.linear(1.05),
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -146,7 +157,7 @@ class ComparisonSetCardHeaders extends StatelessWidget {
                               },
                               icon: const Icon(
                                 Icons.chevron_right,
-                                size: 20,
+                                size: 28, color: Colors.white,
                               ),
                               style: ButtonStyle(
                                 padding:
@@ -167,11 +178,14 @@ class ComparisonSetCardHeaders extends StatelessWidget {
                         ? Text(
                             "Set Number: ${currentlyDisplayedComparisonSetData['PR_set'].exerciseSetOrder}",
                             textScaleFactor: 0.75,
+                      style: TextStyle(color: Colors.white),
+
                           )
                         : Text(
                             // "Working Sets: $totalWorkingSets",
                             "Working Sets: ${currentlyDisplayedComparisonSetData['workingSetsCount']!}",
                             textScaleFactor: 0.75,
+                        style: TextStyle(color: Colors.white)
                           ),
                   ),
                 ],
