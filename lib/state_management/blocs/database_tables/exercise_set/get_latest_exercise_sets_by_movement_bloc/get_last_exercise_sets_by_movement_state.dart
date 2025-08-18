@@ -1,36 +1,11 @@
 import 'package:equatable/equatable.dart';
+import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/bloc_data_models/flutter_data_models.dart';
 
 class GetLastExerciseSetsByMovementState extends Equatable {
   @override
   List<Object?> get props => [];
-
-  String dateToString(int year, int month, int day) {
-    String yearString;
-    String monthString;
-    String dayString;
-
-    if (year.toString().length > 2) {
-      yearString = year.toString().substring(year.toString().length - 2);
-    } else {
-      yearString = year.toString();
-    }
-
-    if (month.toString().length == 1) {
-      monthString = "0$month";
-    } else {
-      monthString = month.toString();
-    }
-
-    if (day.toString().length == 1) {
-      dayString = "0$day";
-    } else {
-      dayString = day.toString();
-    }
-
-    return "$dayString/$monthString/$yearString";
-  }
 
   int getNumberOfWarmUpSets({required sets}) {
     List<GeneralExerciseSetModel> warmupSets =
@@ -173,14 +148,13 @@ class GetLastExerciseSetQueryingState
 
 class SuccessfulGetLastExerciseSetsByMovementQueryState
     extends GetLastExerciseSetsByMovementState {
-  final Map lastExerciseSetsData;
-  final Map movementPRData;
+  final Map<ComparisonDisplayType, List<Map<String, dynamic>>> returnData;
 
   SuccessfulGetLastExerciseSetsByMovementQueryState(
-      {required this.lastExerciseSetsData, required this.movementPRData});
+      {required this.returnData});
 
   @override
-  List<Object?> get props => [lastExerciseSetsData, movementPRData];
+  List<Object?> get props => [returnData];
 }
 
 class GetLastExerciseSetsQueryErrorState

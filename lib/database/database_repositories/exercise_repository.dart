@@ -1,7 +1,7 @@
 import 'package:gym_bro/constants/enums.dart';
 import 'package:gym_bro/data_models/FE_data_models/exercise_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
-import 'package:gym_bro/database/database_connector.dart';
+import 'package:gym_bro/database/database_helper.dart';
 
 class ExerciseRepository {
   final DatabaseHelper databaseHelper;

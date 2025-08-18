@@ -61,9 +61,20 @@ CREATE TABLE $exerciseSetTableName (
     notes TEXT,
     FOREIGN KEY (exercise_id) REFERENCES exercise(id)
 );
-""",
-  """
+"""
+  ];
 
+const List<String> SQL_INSERT_INIT_DATA_COMMANDS = [
+  """
+INSERT INTO $muscleGroupTableName(name) VALUES
+  ('chest'),
+  ('back'),
+  ('shoulders'),
+  ('biceps'),
+    ('triceps'),
+  ('legs');
+  """,
+  """
 INSERT INTO $movementTableName (name) VALUES
   ('flat bench press'),
   ('squats'),
@@ -99,16 +110,6 @@ INSERT INTO $movementTableName (name) VALUES
   ('front raises'),
   
   ('vertical row');
-""",
-  """
-
-INSERT INTO $muscleGroupTableName(name) VALUES
-  ('chest'),
-  ('back'),
-  ('shoulders'),
-  ('biceps'),
-    ('triceps'),
-  ('legs');
 """,
   """
   

@@ -93,7 +93,7 @@ class WorkoutOverviewPage extends StatelessWidget {
                                   flex: 10,
                                     child:
                                         AddExerciseModal(isOpen: state.isOpen)),
-                                SizedBox(height: 70,)
+                                const SizedBox(height: 70,)
                                 // const Spacer()
                               ],
                             )

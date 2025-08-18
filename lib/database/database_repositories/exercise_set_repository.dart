@@ -1,25 +1,64 @@
 import 'dart:core';
 
+import 'package:gym_bro/constants/utils/custom_datetime_utils.dart';
+import 'package:gym_bro/data_models/FE_data_models/exercise_set_data_models.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
-import 'package:gym_bro/database/database_connector.dart';
+import 'package:gym_bro/database/database_helper.dart';
 
-import '../../data_models/database_data_models/tables/exercise_set/exercise_set_object.dart';
+import 'package:gym_bro/data_models/database_data_models/tables/exercise_set/exercise_set_object.dart';
 
 class ExerciseSetRepository {
   final DatabaseHelper databaseHelper;
 
   ExerciseSetRepository(this.databaseHelper);
 
-  // to display the sets from the most recent exercise of this movement
-  Future<Map> getLatestExerciseSetsByMovement(int movementId) async {
+  Future<List<Map<String, dynamic>>> getLatestExerciseSetsByMovementIdWrapper(
+      int movementId) async {
     final db = await databaseHelper.database;
 
-    final returnObj = await db.transaction((txn) async {
-      // Sub-query to find the most recent exercise with movement_id
-      // TODO: This currently doesn't order by time, just date..
-      String queryMostRecentExerciseByMovementIdString = """
+    List<Map<String, dynamic>> returnData = [];
+
+    List<Map<String, dynamic>> latestExercises =
+        await queryLatestExercisesByMovementId(movementId, db);
+
+    if (latestExercises.isEmpty) return returnData;
+
+    for (var exerciseData in latestExercises) {
+      List<Map<String, dynamic>> exerciseSetsData =
+          await queryExerciseSetsByExerciseId(exerciseData['id'], db);
+
+      int numWorkingSets = 0;
+
+      List<GeneralExerciseSetModel> sets = exerciseSetsData.map((exerciseSet) {
+        if (exerciseSet['is_warm_up'] == 0) {
+          numWorkingSets += 1;
+        }
+
+        return GeneralExerciseSetModel.fromDbMap(map: exerciseSet);
+      }).toList();
+
+      returnData.add({
+        'sets': sets,
+        'workingSetsCount': numWorkingSets,
+        'year': exerciseData['year'],
+        'month': exerciseData['month'],
+        'day': exerciseData['day'],
+        'dateString': CustomDatetimeUtils.dateToString(
+            exerciseData['year'], exerciseData['month'], exerciseData['day'])
+      });
+    }
+
+    return returnData;
+  }
+
+  Future<List<Map<String, dynamic>>> queryLatestExercisesByMovementId(
+      int movementId, dbConnection) async {
+    // TODO: This currently doesn't order by time, just date..
+    String queryMostRecentExerciseByMovementIdString = """
       SELECT 
         $exerciseTableName.id,
+        $exerciseTableName.movement_id,
+        $exerciseTableName.workout_id,
         $workoutTableName.year,
         $workoutTableName.month,
         $workoutTableName.day
@@ -31,108 +70,145 @@ class ExerciseSetRepository {
         $workoutTableName.year DESC, 
         $workoutTableName.month DESC, 
         $workoutTableName.day DESC
-      LIMIT 1;
+      LIMIT 10;
       """;
-      List<Map<String, dynamic>> latestExercise =
-          await txn.rawQuery(queryMostRecentExerciseByMovementIdString);
-      if (latestExercise.isEmpty) {
-        List<Map<String, dynamic>> returnList = [];
-        return {'data': returnList};
-      }
+    List<Map<String, dynamic>> latestExercises =
+        await dbConnection.rawQuery(queryMostRecentExerciseByMovementIdString);
 
-      // Main query to get all exercise_set records for the most recent exercise
-      String queryAllExerciseSetsByExerciseIdString = """
-      SELECT $exerciseSetTableName.* FROM $exerciseSetTableName
-      JOIN $exerciseTableName ON 
-        $exerciseSetTableName.exercise_id = $exerciseTableName.id
-      WHERE
-        $exerciseTableName.id = ${latestExercise.first['id']}
-      ORDER BY $exerciseSetTableName.set_order ASC;
-      """;
-
-      List<Map<String, dynamic>> latestExerciseSetsByMovementId =
-          await txn.rawQuery(queryAllExerciseSetsByExerciseIdString);
-
-      return {
-        'data': latestExerciseSetsByMovementId,
-        'year': latestExercise.first['year'],
-        'month': latestExercise.first['month'],
-        'day': latestExercise.first['day']
-      };
-    });
-
-    return returnObj;
+    return latestExercises;
   }
 
-  Future<Map> getMovementPRSet(int movementId) async {
+  Future<List<Map<String, dynamic>>> queryExerciseSetsByExerciseId(
+      int exerciseId, dbConnection) async {
+    final List<Map<String, dynamic>> exerciseSetsByMovementId =
+        await dbConnection.query(
+      exerciseSetTableName,
+      where: 'exercise_id = ?',
+      whereArgs: [exerciseId],
+      orderBy: 'set_order ASC',
+    );
+
+    return exerciseSetsByMovementId;
+  }
+
+  Future<List<Map<String, dynamic>>> getDistinctPRSetsByMovementIdWrapper(
+      int movementId) async {
     final db = await databaseHelper.database;
 
-    final Map returnObj = await db.transaction((txn) async {
-      String queryPRForMovementId = """
-      SELECT $exerciseSetTableName.* FROM $exerciseSetTableName
-      JOIN $exerciseTableName ON 
-        $exerciseTableName.id = $exerciseSetTableName.exercise_id
-      WHERE $exerciseTableName.movement_id = $movementId
+    final List<Map<String, dynamic>> PRSets =
+        await queryDistinctPRSetsByMovementId(movementId, db);
+
+    final List<Map<String, dynamic>> formattedPRSets = [];
+
+    for (Map<String, dynamic> PRSetData in PRSets) {
+      List<Map<String, dynamic>> returnExerciseSet =
+          await queryExerciseSetsByExerciseSetId(
+              PRSetData['exercise_set_id'], db);
+      formattedPRSets.add({
+        'PR_set': GeneralExerciseSetModel.fromDbMap(map: returnExerciseSet.first),
+        'year': PRSetData['year'],
+        'month': PRSetData['month'],
+        'day': PRSetData['day'],
+        'dateString': CustomDatetimeUtils.dateToString(
+            PRSetData['year'], PRSetData['month'], PRSetData['day'])
+      });
+    }
+
+    return formattedPRSets;
+  }
+
+  Future<List<Map<String, dynamic>>> queryDistinctPRSetsByMovementId(
+      int movementId, dbConnection) async {
+    String queryPRsForMovementIdWithDupes = """
+       SELECT
+        $exerciseSetTableName.weight,
+        $exerciseSetTableName.reps,
+        $exerciseSetTableName.extra_reps,
+        $exerciseSetTableName.set_order,
+        
+        $workoutTableName.year,
+        $workoutTableName.month,
+        $workoutTableName.day,
+ 
+        $workoutTableName.start_time,
+        
+        $exerciseTableName.movement_id,
+        $exerciseTableName.workout_id,
+        $exerciseTableName.id AS exercise_id,
+        $exerciseSetTableName.id AS exercise_set_id,
+        
+        DENSE_RANK() OVER (
+          PARTITION BY
+            $exerciseSetTableName.weight,
+            $exerciseSetTableName.reps,
+            $exerciseSetTableName.extra_reps
+          ORDER BY
+            $workoutTableName.year ASC,
+            $workoutTableName.month ASC,
+            $workoutTableName.day ASC,
+            $exerciseSetTableName.set_order ASC
+          ) AS dense_rank  
+      FROM $exerciseTableName
+      JOIN $workoutTableName ON 
+        $exerciseTableName.workout_id = $workoutTableName.id
+      JOIN $exerciseSetTableName ON
+        $exerciseSetTableName.exercise_id = $exerciseTableName.id
+        
+      WHERE 
+        $exerciseTableName.movement_id = $movementId 
       ORDER BY
         $exerciseSetTableName.weight DESC, 
         $exerciseSetTableName.reps DESC, 
         $exerciseSetTableName.extra_reps DESC
-      LIMIT 1;
+      LIMIT 5
       """;
-      List<Map> movementPRList = await txn.rawQuery(queryPRForMovementId);
-      if (movementPRList.isEmpty) {
-        List<Map> returnList = [];
-        return {'data': returnList};
-      }
-      Map movementPR = movementPRList.first;
 
-      String queryPRDate = """
-      SELECT 
-        $workoutTableName.year, 
-        $workoutTableName.month, 
-        $workoutTableName.day 
-      FROM $workoutTableName
-      JOIN $exerciseTableName ON 
-        $workoutTableName.id = $exerciseTableName.workout_id
-      WHERE 
-        $exerciseTableName.id = ${movementPR['exercise_id']};      
-      """;
-      List<Map> movementPRDateList = await txn.rawQuery(queryPRDate);
-      Map movementPRDate = movementPRDateList.first;
+    String filteredQueryForUniquePRs = """
+    WITH unfiltered AS ($queryPRsForMovementIdWithDupes)
+    
+    SELECT 
+      unfiltered.weight,
+      unfiltered.reps,
+      unfiltered.extra_reps,
+      unfiltered.set_order,
+      
+      unfiltered.year,
+      unfiltered.month,
+      unfiltered.day,
+      unfiltered.start_time,
+      
+      unfiltered.movement_id,
+      unfiltered.workout_id,
+      unfiltered.exercise_id,
+      unfiltered.exercise_set_id
+    FROM unfiltered
+    WHERE dense_rank = 1;
+    """;
+    List<Map<String, dynamic>> movementPRsList =
+        await dbConnection.rawQuery(filteredQueryForUniquePRs);
 
-      return {
-        'data': movementPR,
-        'year': movementPRDate['year'],
-        'month': movementPRDate['month'],
-        'day': movementPRDate['day']
-      };
-    });
+    return movementPRsList;
+  }
 
-    return returnObj;
+  Future<List<Map<String, dynamic>>> queryExerciseSetsByExerciseSetId(
+      int exerciseSetId, dbConnection) async {
+    final List<Map<String, dynamic>> exerciseSetsByMovementId =
+        await dbConnection.query(
+      exerciseSetTableName,
+      where: 'id = ?',
+      whereArgs: [exerciseSetId],
+      orderBy: 'set_order ASC',
+    );
+
+    return exerciseSetsByMovementId;
   }
 
   Future<List<ExerciseSetTable>> getAllExerciseSetsByExerciseId(
       int exerciseId) async {
     final db = await databaseHelper.database;
 
-    String dbQuery = """
-    SELECT
-      $exerciseSetTableName.id,
-      $exerciseSetTableName.exercise_id,
-      $exerciseSetTableName.set_order,
-      $exerciseSetTableName.is_warm_up,
-      $exerciseSetTableName.weight,
-      $exerciseSetTableName.reps,
-      $exerciseSetTableName.extra_reps,
-      $exerciseSetTableName.duration,
-      $exerciseSetTableName.notes
-    FROM $exerciseSetTableName
-    WHERE $exerciseSetTableName.exercise_id = $exerciseId
-    ORDER BY $exerciseSetTableName.set_order ASC;
-    """;
-
     final List<Map<String, dynamic>> allExerciseSets =
-        await db.rawQuery(dbQuery);
+        await queryExerciseSetsByExerciseId(exerciseId, db);
 
     return allExerciseSets
         .map((exerciseSet) => ExerciseSetTable.fromMap(exerciseSet))

@@ -71,3 +71,7 @@ enum MuscleGroupType {
 enum SetType { comparison, current, completed }
 
 enum TextFieldType { duration, text, number, bool }
+
+enum ComparisonDisplayType { PR, latest }
+
+enum CurrentComparisonSetDataType { currentIndex, maxIndex }

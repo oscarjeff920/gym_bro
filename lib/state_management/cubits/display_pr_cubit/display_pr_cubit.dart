@@ -1,15 +1,25 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_bro/constants/enums.dart';
 
 import 'display_pr_state.dart';
 
 class DisplayPrCubit extends Cubit<DisplayPrState> {
-  DisplayPrCubit() : super(const DisplayPrState(displayedPR: false));
+  DisplayPrCubit()
+      : super(const DisplayPrState(
+            currentDisplayedComparisonSetType: ComparisonDisplayType.latest));
 
-  togglePr() {
-    if (state.displayedPR) {
-      emit(const DisplayPrState(displayedPR: false));
+  void switchComparisonType(ComparisonDisplayType newDisplayType) {
+    emit(DisplayPrState(currentDisplayedComparisonSetType: newDisplayType));
+  }
+
+  void toggleComparisonType() {
+    if (state.currentDisplayedComparisonSetType ==
+        ComparisonDisplayType.latest) {
+      emit(const DisplayPrState(
+          currentDisplayedComparisonSetType: ComparisonDisplayType.PR));
     } else {
-      emit(const DisplayPrState(displayedPR: true));
+      emit(const DisplayPrState(
+          currentDisplayedComparisonSetType: ComparisonDisplayType.latest));
     }
   }
 }

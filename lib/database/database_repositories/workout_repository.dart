@@ -5,7 +5,7 @@ import 'package:gym_bro/data_models/database_data_models/joined_tables/movement-
 import 'package:gym_bro/data_models/database_data_models/tables/exercise/exercise_table_object.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/table_constants.dart';
 import 'package:gym_bro/data_models/database_data_models/tables/workout/workout_object.dart';
-import 'package:gym_bro/database/database_connector.dart';
+import 'package:gym_bro/database/database_helper.dart';
 
 class WorkoutRepository {
   final DatabaseHelper databaseHelper;

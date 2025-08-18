@@ -8,6 +8,7 @@ import 'package:gym_bro/state_management/cubits/active_workout_cubit/active_work
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_cubit.dart';
 import 'package:gym_bro/state_management/cubits/add_exercise_cubit/add_exercise_state.dart';
 import 'package:gym_bro/state_management/cubits/add_new_movement_cubit/add_new_movement_cubit.dart';
+import 'package:gym_bro/state_management/cubits/current_comparison_set_tracking_cubit/current_comparison_set_tracker_cubit.dart';
 
 import '../../../../state_management/cubits/open_exercise_modal_cubit/open_exercise_modal_cubit.dart';
 
@@ -36,6 +37,7 @@ class CloseModalButton extends StatelessWidget {
                 BlocProvider.of<MovementByMuscleGroupBloc>(context).add(ResetMovementByMuscleGroupEvent());
                 BlocProvider.of<GetLastExerciseSetsByMovementBloc>(context).add(ResetGetLastExerciseSetsByMovementEvent());
                 BlocProvider.of<AddExerciseCubit>(context).clearSavedExercise();
+                BlocProvider.of<CurrentComparisonSetTrackerCubit>(context).resetIndexStates();
                 BlocProvider.of<AddNewMovementCubit>(context).closeAddNewMovementExpansionPanel();
                 BlocProvider.of<OpenExerciseModalCubit>(context)
                     .closeExerciseModal();
